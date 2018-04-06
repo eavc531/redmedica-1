@@ -11,25 +11,60 @@
 |
 */
 
+
 route::get('/', function () {
     return redirect()->route('home');
 });
 
+
+Route::get('loginRedirect', 'Auth\LoginController@loginRedirect')->name('loginRedirect');
+
 route::get('home','HomeController@home')->name('home');
 route::resource('user','userController');
 route::resource('medico','medicoController');
+route::get('medico/{id}/perfil','medicoController@medico_perfil')->name('medico_perfil');
+
+route::resource('medico_diary','medico_diaryController');
+
+route::get('medico/{id}/diary/events','medico_diaryController@medico_diary_events')->name('medico_diary_events');
+route::get('medico/{id}/business/hours','medico_diaryController@medico_business_hours')->name('medico_business_hours');
+
+route::post('medico/business/hours/edit','medico_diaryController@medico_business_hours_update')->name('medico_business_hours_update');
+
+Route::get('medico/{id}/panel/diary', 'medico_diaryController@medico_diary')->name('medico_diary');
+Route::get('medico/{id}/panel/schedule', 'medico_diaryController@medico_schedule')->name('medico_schedule');
+
+route::post('medico/schedule/store','medico_diaryController@medico_schedule_store')->name('medico_schedule_store');
+
+Route::get('medico/{id}/diary/fullscreen', 'medico_diaryController@medico_diary_fullscreen')->name('medico_diary_fullscreen');
+
+route::post('medico/list/social_network','medicoController@social_network_list')->name('social_network_list');
+route::post('medico/list/services','medicoController@medico_service_list')->name('medico_service_list');
+route::post('medico/list/experience','medicoController@medico_experience_list')->name('medico_experience_list');
+
+route::post('medicoBorrar','medicoController@medicoBorrar')->name('medicoBorrar');
+route::post('medico/experience/delete','medicoController@medico_experience_delete')->name('medico_experience_delete');
 route::post('medico/service/store','medicoController@service_medico_store')->name('service_medico_store');
 route::post('medic/experience/store','medicoController@medico_experience_store')->name('medico_experience_store');
 route::post('medic/social_network/store','medicoController@medico_social_network_store')->name('medico_social_network_store');
+route::post('borrar_social','medicoController@borrar_social')->name('borrar_social');
+
+route::get('data/primordial/{id}/medico','medicoController@data_primordial_medico')->name('data_primordial_medico');
+
 route::get('medic/{id}/consulting_room/create','consulting_roomController@consulting_room_create')->name('consulting_room_create');
 
 route::resource('patient','patientController');
 route::resource('medicalCenter','medicalCenterController');
-route::resource('photo','photoController');
-route::resource('consulting_room','consulting_roomController');
-route::resource('info_medico','info_medicoController');
-route::get('medico/{id}/info/create','info_medicoController@info_medicoCreate')->name('info_medicoCreate');
+route::get('data/primordial/{id}/medical_center','medicalCenterController@data_primordial_medical_center')->name('data_primordial_medical_center');
 
+route::resource('photo','photoController');
+route::get('medico/photo/delete/{id}','photoController@photo_delete')->name('photo_delete');
+route::post('image/medico/store','photoController@image_store')->name('image_store');
+
+route::resource('consulting_room','consulting_roomController');
+
+route::get('medico/{id}/info/create','medicoController@medico_specialty_create')->name('medico_specialty_create');
+route::post('medico/specialty/store','medicoController@medico_specialty_store')->name('medico_specialty_store');
 
 route::get('confirm/MedicalCenter/{id}/{code}','medicalCenterController@confirmMedicalCenter')->name('confirmMedicalCenter');
 route::get('confirm/medico/{id}/{code}','medicoController@confirmMedico')->name('confirmMedico');
@@ -41,7 +76,10 @@ route::get('confirm/MedicalCenter/{id}','medicalCenterController@successRegMedic
 
 route::post('resend/mail/confirmation','medicoController@resendMailMedicoConfirm')->name('resendMailMedicoConfirm');
 
-route::post('list/result','HomeController@tolist')->name('tolist');
+route::get('list/result/','HomeController@tolist')->name('tolist');
+/////////////////////////////////////////////////////////////////////////////////borar
+route::post('list/result2','HomeController@tolist2')->name('tolist2');
+/////////////////////////////////////////////////////////////////////////////////borrar
 
 route::post('login2','Auth\LoginController@login2')->name('login2');
 

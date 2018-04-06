@@ -118,9 +118,9 @@ class specialty_categoryController extends Controller
          $category = specialty_category::find($id);
          $cat = $category->name;
         if($specialty > 0 or $sub_specialty > 0){
-          $category->delete();
-        }else{
           return back()->with('danger', 'Imposible borrar categoria, existen: '.$specialty.' Especialidades y '.$sub_specialty.' Sub-especialidades Asociada a ella');
+        }else{
+          $category->delete();
         }
 
          return back()->with('danger', 'La Categoria: '.$cat.' a sido Eliminada con Exito');

@@ -4,6 +4,15 @@
 
 
 	<section class="box-register">
+		<div class="row">
+	    <div class="col-12 text-right">
+	      <div class="btn-group " role="group" aria-label="Basic example">
+	        <button type="button" class="btn btn-config-blue">1</button>
+	        <button type="button" class="btn btn-secondary">2</button>
+	        <button type="button" class="btn btn-secondary">3</button>
+	      </div>
+	    </div>
+	  </div>
 		<div class="container">
 			<div class="register">
 				<div class="row">

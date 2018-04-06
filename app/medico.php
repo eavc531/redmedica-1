@@ -20,17 +20,18 @@ class medico extends Model
       'id_promoter',
       'state',
       'showNumber',
+      'phoneOffice1',
+       'phoneOffice2',
 
     ];
 
-    public function specialty(){
-       return $this->belongsTo('App\specialty');
+    public function medico_specialty(){
+       return $this->hasMany('App\medico_specialty');
     }
 
-    // public function medical_center(){
-    //    return $this->hasOne('App\medicalCenter');
-    // }
-
+    public function scopeSearchMedico($query, $search){
+      return $query->where('name','LIKE','%'.$search.'%');
+   }
 
 
 }

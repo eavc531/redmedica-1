@@ -9,7 +9,7 @@ class medicalCenter extends Model
    protected $fillable = [
 
     'id_medicalCenter',
-    'tradename',
+    'name',
     'activePlan',
     'emailAdmin',
     'nameAdmin',
@@ -17,7 +17,8 @@ class medicalCenter extends Model
     'city',
     'billingData',
     'meansOfRecords',
-    'id_promoter'
+    'id_promoter',
+    
    ];
 
 }

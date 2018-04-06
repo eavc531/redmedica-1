@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-          AAAA
         @if(!isset(Auth::user()->id))
         <div class="row">
           <div class="col-lg-6 col-md-6 col-12">
@@ -10,10 +9,10 @@
           <div class="col-lg-6 col-md-6 col-12 pull-right">
             <div class="row">
               <div class="col-lg-6 col-md-6 col-12 p-1">
-                <a href="" data-toggle="modal" data-target="#modal-register"><img class="box-shadox" src="img/botones-medicossi-18.png"></a>
+                <a href="" data-toggle="modal" data-target="#modal-register"><img class="box-shadox" src="{{asset('img/botones-medicossi-18.png')}}"></a>
               </div>
               <div class="col-lg-6 col-md-6 col-12 p-1">
-                <a href="" data-toggle="modal" data-target="#modal-login"><img class="box-shadox" src="img/botones-medicossi-20.png"></a>
+                <a href="" data-toggle="modal" data-target="#modal-login"><img class="box-shadox" src="{{asset('img/botones-medicossi-20.png')}}"></a>
               </div>
             </div>
           </div>
@@ -23,15 +22,23 @@
           <div class="col-12">
             <div id="flip">
               <div class="col-lg-12">
+                {{Form::model(Request::only(['typeSearch','search']),['route'=>'tolist','method'=>'get'])}}
                   <div class="input-group search">
-                    <span class="mr-2 white" id="filter"><i class="fas fa-filter fa-2x"></i></span>
-                      <input type="text" class="form-control search" placeholder="Search for..." id="searchVar">
-                  <button onclick="search()" type="button" class="ml-2 white" data-toggle="modal" data-target=".bd-example-modal-lg"><span id="filter"><i class="fas fa-search fa-2x"></i></span></button>
+                    <span class="mr-2 white" id="filter"><i class="fas fa-filter fa-2x" data-toggle="tooltip" data-placement="top" title="Busqueda Avanzada"></i></span>
+                      {{Form::select('typeSearch',['Centro Medico'=>'Nombre del Centro Médico','Especialidad'=>'Especialidad Médica',  'Medico'=>'Nombre del Médico'],null,['placeholder'=>'Buscar Por:'])}}
+                      {{Form::text('search',null,['class'=>'form-control','placeholder'=>'Ingresar termino de Busqueda'])}}
+                      {{Form::hidden('city',null)}}
+                      {{Form::hidden('state',null)}}
+                  <button type="submit" class="ml-2 white"><span id="filter"><i class="fas fa-search fa-2x"></i></span></button>
                   </div>
+                  {{Form::close()}}
               </div>
             </div>
             <div id="panel">
               <div class="box-filter">
+
+
+
                 <span class="text-left">Filtrar por:</span>
                 <div class="row">
                   <div class="col-4">
@@ -54,7 +61,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-4">
+                  {{-- <div class="col-4">
                     <div class="col-12 mt-3">
                       <div class="form-group">
                           <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
@@ -78,39 +85,246 @@
                           </label>
                       </div>
                     </div>
-                  </div>
+                  </div> --}}
                 </div>
               </div>
             </div>
+{{-- //////////////////tableSearch MEDICOS////////tableSearch MEDICOS////////////////// --}}
+            <div class="text-justify mt-3">
+              @if(isset($medicosCount) and $medicosCount != 0)
+                <div class="card">
+
+                  <div class="card-header">
+                    <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+                    <h4>Busqueda de Medico: {{$search}}</h4>
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-bordered">
+                      <thead class="bg-primary text-white">
+                        <tr>
+                          <td>Nombre Completo</td>
+                          <td>Especialidad</td>
+                          <td>Ciudad</td>
+                          <td>Acciones</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($medicos as $medico)
+                          <tr>
+                            <td>
+                              {{$medico->name}} {{$medico->lastName}}
+                            </td>
+                            <td>
+                                {{$medico->specialty}}
+                            </td>
+                            <td>
+                              {{$medico->city}}
+                            </td>
+                            <td>
+                              <a href="{{route("medico_perfil",$medico->id)}}" class="btn btn-primary">Ver Perfil</a>
+                            </td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer">
+                    {{$medicos->appends(Request::only(['typeSearch']))->links()}}
+                  </div>
+                </div>
+              @elseif(isset($medicosCount))
+                <div class="card">
+                  <div class="card-body">
+                    <h5>No se Encontraron Resultados para la Busqueda de Medico: "{{$search}}"</h5>
+                  </div>
+                </div>
+              @endif
+
+              {{-- Busqueda Medicos por Categoria --}}
+              @if(isset($medicosCount2) and $medicosCount2 != 0)
+                <div class="card">
+
+                  <div class="card-header">
+                    <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+                    <h4>Busqueda de Medico Por Categoria: {{$search}}</h4>
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-bordered">
+                      <thead class="bg-primary text-white">
+                        <tr>
+                          <td>Nombre Completo</td>
+                          <td>Especialidad</td>
+                          <td>Ciudad</td>
+                          <td>Acciones</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($medicos2 as $medico)
+                          <tr>
+                            <td>
+                              {{$medico->name}} {{$medico->lastName}}
+                            </td>
+                            <td>
+                                {{$medico->specialty}}
+                            </td>
+                            <td>
+                              {{$medico->city}}
+                            </td>
+                            <td>
+                              <a href="{{route("medico_perfil",$medico->id)}}" class="btn btn-primary">Ver Perfil</a>
+                            </td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer">
+                    {{$medicos2->appends(Request::only(['typeSearch']))->links()}}
+                  </div>
+                </div>
+              @elseif(isset($medicosCount2))
+                <div class="card">
+                  <div class="card-body">
+                    <h5>No se Encontraron Resultados para la Busqueda de Medico: "{{$search}}"</h5>
+                      <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+                  </div>
+                </div>
+              @endif
+
+              {{-- Centros Medicos --}}
+              <div class="text-justify mt-3">
+                  @if(isset($medicalCentersCount) and $medicalCentersCount != 0)
+                  <div class="card">
+                    <div class="card-header">
+                      <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+                      <h4>Busqueda de Centro Medico:{{$search}}</h4>
+                    </div>
+                    <div class="card-body">
+                      <table class="table table-bordered">
+                        <thead class="bg-primary text-white">
+                          <tr>
+                            <td>Nombre</td>
+                            <td>Ciudad</td>
+                            <td>Acciones</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @foreach ($medicalCenters as $mC)
+                            <tr>
+                              <td>{{$mC->name}}</td>
+                              <td>{{$mC->city}}</td>
+                              <td><a href="" class="btn btn-primary"><i class="far fa-hospital" data-toggle="tooltip" data-placement="top" title="Ver Perfil"></i></a> <a href="" class="btn btn-success"><i class="fas fa-user-md" data-toggle="tooltip" data-placement="top" title="Ver Medicos"></i></a></td>
+                            </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="card-footer">
+                      {{$medicalCenters->appends(Request::only(['typeSearch','search']))->links()}}
+                    </div>
+                  </div>
+                @elseif(isset($medicalCentersCount))
+                  <div class="card">
+                    <div class="card-body">
+                      <h5>No se Encontraron Resultados para la Busqueda del Centro Medico: "{{$search}}"</h5>
+                        <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+                    </div>
+                  </div>
+                @endif
+
+                {{-- especialidades --}}
+                <div class="text-justify mt-3">
+                    @if(isset($specialtyCount) and $specialtyCount != 0)
+                    <div class="card">
+                      <div class="card-header">
+                        <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+                          <h4>Busqueda de Especialidad Médica: {{$search}}</h4>
+                      </div>
+                      <div class="card-body">
+                        <table class="table table-bordered">
+                          <thead class="bg-primary text-white">
+                            <tr>
+                              <td>Nombre</td>
+                              <td>Medicos</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach ($specialties as $specialty)
+                              <tr>
+                                <td>{{$specialty->name}}</td>
+                                <td><a href="" class="btn btn-success"><i class="fas fa-user-md" data-toggle="tooltip" data-placement="top" title="Ver Medicos"></i></a></td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+
+                        </table>
+
+                      </div>
+                      <div class="card-footer">
+                        {{$specialties->appends(Request::only(['typeSearch','search']))->links()}}
+                      </div>
+                    </div>
+
+                  @elseif(isset($specialtyCount) and $specialtyCount == 0)
+                    <div class="card">
+                      <div class="card-body">
+                        <h5>No se Encontraron Resultados para la Busqueda de Especialidad Médica: "{{$search}}"</h5>
+                      </div>
+                    </div>
+                  @endif
+
+
+
             <div class="row my-5">
               <div class="col-6 col-lg-3">
                 <div class="box-img">
-                  <a href=""><img src="img/botones-medicossi-01.jpg" alt="" width="100%" class="img-responsive"></a>
+
+                  {{Form::model(Request::only(['typeSearch','search']),['route'=>'tolist','method'=>'get'])}}
+                    {{Form::hidden('typeSearch','Centro Medico')}}
+                    <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-01.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+                    {{Form::close()}}
+
                 </div>
               </div>
               <div class="col-6 col-lg-3">
                 <div class="box-img">
-                  <a href=""><img src="img/botones-medicossi-05.jpg" alt="" width="100%" class="img-responsive"></a>
+                  {{Form::open(['route'=>'tolist','method'=>'get'])}}
+                    {{Form::hidden('typeSearch','Medicos y Especialistas')}}
+                    <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-05.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+                    {{Form::close()}}
+
                 </div>
               </div>
               <div class="col-6 col-lg-3">
                 <div class="box-img">
-                  <a href=""><img src="img/botones-medicossi-03.jpg" alt="" width="100%" class="img-responsive"></a>
+                  {{Form::model(Request::only(['typeSearch','search']),['route'=>'tolist','method'=>'get'])}}
+                    {{Form::hidden('typeSearch','Dentistas')}}
+                    <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-03.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+                    {{Form::close()}}
+
                 </div>
               </div>
               <div class="col-6 col-lg-3">
                 <div class="box-img">
-                  <a href=""><img src="img/botones-medicossi-11.jpg" alt="" width="100%" class="img-responsive"></a>
+                  {{Form::model(Request::only(['typeSearch','search']),['route'=>'tolist','method'=>'get'])}}
+                    {{Form::hidden('typeSearch','Terapeutas y Nutricion')}}
+                    <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-11.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+                    {{Form::close()}}
+
+
                 </div>
               </div>
             </div>
+
+
+
           </div>
+          {{-- // --}}
         </div>
 
+        <div class="row m-3">
 
-
-
-
+        </div>
 <!-- Modal Login-->
 <div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -122,7 +336,17 @@
 
          </div>
       </div>
+      <div class="alert alert-success" role="alert" id="alert-success-confirm" style="display:none;margin:10px; ">
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
+         <div >
+
+             <h5>Bienvenid@</h5>
+             <p id="text-success-confirm"></p>
+
+
+         </div>
+      </div>
       <div class="modal-header">
 
         <h5 class="modal-title" id="exampleModalLongTitle">Ingresar</h5>
@@ -240,11 +464,35 @@
 </div>
 
    <input type="hidden" name="" value="{{$nada = ''}}">
+
+
+    {{Form::hidden('paginate',null,['id'=>'paginate'])}} {{-- Valor Actual de el take y el skip para la paginacion de las busquedas--}}
+    {{Form::hidden('paginate',null,['id'=>'paginate_skip'])}}
+
+
    @include('home.modals')
+   @section('scriptJS')
+     @if(Session::Has('confirmMedico'))
+       <script type="text/javascript">
+         $(document).ready(function(){
+            $('#modal-login').modal('show');
+
+            $('#text-success-confirm').html('Su Cuenta ha sido Confirmada con exito, ya es posible iniciar sesión con sus Credenciales');
+            $('#alert-success-confirm').fadeIn();
+         });
+       </script>
+     @endif
+
+
+     
 @endsection
 
-@section('scriptJS')
+
+
+
    <script type="text/javascript">
+
+
    // $(document).ready(function(){
    //    tolist();
    // });
@@ -260,6 +508,7 @@
             success:function(result){
                if(result == 'true'){
                   location.reload();
+                  window.location.href = '{{route("loginRedirect")}}';
                }else{
                  $('#text-alert').html('Email o Contraseña Invalida');
                  $('#alert').fadeIn();
@@ -278,24 +527,83 @@
             }
          });
       }
-   // function search(){
-   //
-   //    route = "{{route('tolist')}}";
-   //    search = $('#searchVar').val();
-   //
-   //
-   //
-   //       $.ajax({
-   //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-   //          type:'post',
-   //          url: route,
-   //          data:{search:search},
-   //          success:function(result){
-   //             $('#listSearchAjax').empty().html(result);
-   //             console.log(result);
-   //          }
-   //       });
-   //    }
+
+//Search//Search//Search//Search//Search//Search//Search//Search//Search
+
+   function search(){
+
+      //$('#paginate_skip').val(0);
+      //skip = 0;
+      route = "{{route('tolist')}}";
+      var search = $('#searchVar').val();
+      $('#searchModal').val(search);
+
+         $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type:'post',
+            url: route,
+            data:{search:search},
+            success:function(result){
+               $('#listSearchAjax').empty().html(result);
+               console.log(result);
+            },
+            error:function(error){
+               console.log(error);
+            },
+         });
+      }
+
+      // function pag_next(){
+      //
+      //    skipnow = $('#paginate_skip').val();
+      //    skip = parseInt(skipnow) + parseInt(2);
+      //    $('#paginate_skip').val(skip);
+      //    route = "{{route('tolist')}}";
+      //    var search = $('#searchVar').val();
+      //
+      //       $.ajax({
+      //          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+      //          type:'post',
+      //          url: route,
+      //          data:{search:search,skip:skip},
+      //          success:function(result){
+      //             $('#listSearchAjax').empty().html(result);
+      //             console.log(result);
+      //          },
+      //          error:function(error){
+      //             console.log(error);
+      //          },
+      //       });
+      //    }
+      //
+      //    function pag_prev(){
+      //
+      //       skipnow = $('#paginate_skip').val();
+      //
+      //       skip = parseInt(skipnow) - parseInt(2);
+      //       if(skip < 0){
+      //         $('#paginate_skip').val(0);
+      //       }else{
+      //         $('#paginate_skip').val(skip);
+      //       }
+      //
+      //       route = "{{route('tolist')}}";
+      //       var search = $('#searchVar').val();
+      //
+      //          $.ajax({
+      //             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+      //             type:'post',
+      //             url: route,
+      //             data:{search:search,skip:skip},
+      //             success:function(result){
+      //                $('#listSearchAjax').empty().html(result);
+      //                console.log(result);
+      //             },
+      //             error:function(error){
+      //                console.log(error);
+      //             },
+      //          });
+      //       }
    </script>
 
 @endsection

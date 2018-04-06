@@ -23,8 +23,14 @@ class CreateUsersTable extends Migration
              $table->integer('city_id')->unsigned()->nullable();
              $table->foreign('city_id')->references('id')->on('cities');
 
-             $table->integer('medico_id')->nullable();
-             $table->integer('patient_id')->nullable();
+             $table->integer('medico_id')->unsigned()->nullable();
+            $table->foreign('medico_id')->references('id')->on('medicos');
+
+             $table->integer('patient_id')->unsigned()->nullable();
+             $table->foreign('patient_id')->references('id')->on('patients');
+
+             $table->integer('medical_center_id')->unsigned()->nullable();
+             $table->foreign('medical_center_id')->references('id')->on('medical_centers');
 
              $table->integer('assistant_id')->unsigned()->nullable();
              $table->foreign('assistant_id')->references('id')->on('assistants');

@@ -8,7 +8,7 @@ class consulting_room extends Model
 {
   protected $fillable = [
     "type",
-    "tradeName",
+    "name",
     "addres",
     "colony",
     "numberExt",

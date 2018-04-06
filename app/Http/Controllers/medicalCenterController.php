@@ -1,27 +1,36 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\user;
 use Illuminate\Http\Request;
 use App\medicalCenter;
 use Mail;
 use App\promoter;
 use App\city;
+use App\Role;
 class medicalCenterController extends Controller
 {
+
+  public function data_primordial_medical_center($id){
+
+    $medico = medicalCenter::find($id);
+    $cities = city::all()->pluck('name','name');
+
+   return view('medicalCenter.data_primordial_medical_center')->with('medico', $medico)->with('cities', $cities);
+  }
+
     public function confirmMedicalCenter($id,$code){
       $medicalCenter = medicalCenter::find($id);
 
       if($medicalCenter->confirmation_code == $code){
           $medicalCenter->confirmation_code = null;
-          $medicalCenter->confirmed = 'true';
+          $medicalCenter->confirmation_statuss = 'mailConfirmed';
           $medicalCenter->save();
 
-          return redirect()->route('home')->with('success','Bienvenido: '. $medicalCenter->nameAdmin.', El Centro Medico: '.$medicalCenter->tradename.' a sido aprobado con exito, ya es posible iniciar sesión con su cuenta.');
+          return redirect()->route('home')->with('confirmMedico', 'confirmMedico');
       }
 
-         return redirect()->route('successRegMedicalCenter',$medicalCenter->id)->with('warning', 'No se pudo verificar la autenticacion del usuario,por favor presione el boton "Reenviar Correo de Confirmación" para intentarlo Nuevamente.');
-
+         return redirect()->route('successRegMedicalCenter',$medicalCenter->id)->with('warning', 'No se pudo verificar la autenticacion del usuario, por favor presione el boton "Reenviar Correo de Confirmación" para intentarlo Nuevamente.');
 
     }
     /**
@@ -61,8 +70,8 @@ class medicalCenterController extends Controller
     {
       $code = str_random(25);
         $request->validate([
-          'id_medicalCenter'=>'numeric',
-          'tradename'=>'required|unique:medical_centers',
+          'id_medicalCenter'=>'unique:medical_centers',
+          'name'=>'required',
           'activePlan'=>'nullable',//ARREGLAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRr
           'emailAdmin'=>'required|unique:medical_centers',
           'nameAdmin'=>'required',
@@ -71,6 +80,7 @@ class medicalCenterController extends Controller
           'billingData'=>'nullable',
           'meansOfRecords'=>'nullable',
           'id_promoter'=>'nullable|numeric',
+          'password'=>'required',
 
         ]);
 
@@ -80,6 +90,18 @@ class medicalCenterController extends Controller
         $medicalCenter->confirmation_code = $code;
         $medicalCenter->save();
 
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->emailAdmin;
+        $user->password = bcrypt($request->password);
+        $user->medical_center_id = $medicalCenter->id;
+        $user->confirmation_code = $code;
+        $user->role = 'medical_center';
+        $user->save();
+
+        $role = Role::where('name','medical_center')->first();
+
+        $user->attachRole($role);
         Mail::send('mails.confirmMedicalCenter',['medicalCenter'=>$medicalCenter,'code'=>$code], function($msj) use ($medicalCenter){
            $msj->subject('Médicos Si');
            $msj->to('eavc53189@gmail.com');

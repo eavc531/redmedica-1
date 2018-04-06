@@ -22,6 +22,7 @@ class CreateSpecialtiesTable extends Migration
             $table->string('synonymous3')->nullable();
             $table->integer('specialty_category_id')->unsigned();
             $table->foreign('specialty_category_id')->references('id')->on('specialty_categories');
+            $table->string('role')->default('specialty');
             $table->timestamps();
         });
     }

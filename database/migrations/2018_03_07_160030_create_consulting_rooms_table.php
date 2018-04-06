@@ -15,7 +15,7 @@ class CreateConsultingRoomsTable extends Migration
     {
         Schema::create('consulting_rooms', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tradeName')->nullable();
+            $table->string('name')->nullable();
             $table->string('type');
             $table->string('addres');
             $table->string('numberExt')->nullable();

@@ -12,7 +12,7 @@
 
 				<div class="row mb-3">
 					<div class="col-6 text-left">
-						<a class="btn btn-config-green" href="{{route('specialty.create')}}">Crear Categoria</a>
+						<a class="btn btn-config-green" href="{{route('specialty_category.create')}}">Crear Categoria</a>
 					</div>
 					<div class="col-6 text-right">
 						<a class="btn btn-secondary" href="{{route('home')}}">Atras</a>

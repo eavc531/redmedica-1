@@ -21,3 +21,33 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\medico::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
+        'lastName'=>$faker->lastname,
+        'gender'=>'masculino',
+        'email' => $faker->unique()->safeEmail,
+        'password' => bcrypt('1234'), // secret
+    ];
+});
+
+// // $factory->define(App\event::class, function (Faker $faker) {
+// //     return [
+// //         'title' => $faker->sentence(4),
+// //         'start' => $faker->dateTimeInInterval(),
+// //         'end' => $faker->dateTimeInInterval(),
+// //         'color' => $faker->hexcolor(),
+// //
+// //     ];
+// // });
+// //
+// // $factory->define(App\event::class, function (Faker $faker) {
+// //     return [
+// //         'title' => $faker->sentence(4),
+// //         'start' => $faker->dateTimeInInterval(),
+// //         'end' => $faker->dateTimeInInterval(),
+// //         'color' => $faker->hexcolor(),
+// //
+// //     ];
+// });

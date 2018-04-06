@@ -40,7 +40,7 @@ class consulting_roomController extends Controller
     public function store(Request $request)
     {
       $request->validate([
-        'tradeName'=> 'nullable',
+        'name'=> 'nullable',
         'type'=> 'required',
         'addres'=> 'required',
         'numberExt'=> 'nullable',

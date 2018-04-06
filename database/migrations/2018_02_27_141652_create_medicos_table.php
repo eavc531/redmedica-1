@@ -22,15 +22,16 @@ class CreateMedicosTable extends Migration
             $table->string('email',60);
             $table->string('password');
             $table->string('city')->nullable();
+            $table->string('state')->nullable();
             $table->integer('medicalCenter_id')->unsigned()->nullable();
             $table->foreign('medicalCenter_id')->references('id')->on('medical_centers');
             $table->string('phone')->nullable();
-            $table->string('facebook')->nullable();
+            //$table->string('facebook')->nullable();
             $table->string('id_promoter')->nullable();
             $table->string('showNumber')->nullable();
-            $table->string('state')->nullable();
             $table->string('phoneOffice1')->nullable();
             $table->string('phoneOffice2')->nullable();
+            $table->string('role')->default('medico');
             $table->timestamps();
         });
     }

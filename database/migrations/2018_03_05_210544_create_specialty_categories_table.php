@@ -16,7 +16,7 @@ class CreateSpecialtyCategoriesTable extends Migration
         Schema::create('specialty_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description')->default('Sin Descripción');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

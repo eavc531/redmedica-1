@@ -29,7 +29,7 @@
 
 								<tr>
 										<th scope="row">{{$medicalCenter->id}}</th>
-										<td class="text-center">{{$medicalCenter->tradename}}</td>
+										<td class="text-center">{{$medicalCenter->name}}</td>
 										<td class="text-center">{{$medicalCenter->nameAdmin}}</td>
 										<td class="text-center">{{$medicalCenter->emailAdmin}}</td>
 										<td class="text-center"></td>

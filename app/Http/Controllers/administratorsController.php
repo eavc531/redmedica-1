@@ -101,7 +101,7 @@ class administratorsController extends Controller
         $user->password = bcrypt($request->password);
         $user->administrator_id = $administrator->id;
         $user->save();
-        $role = Role::where('name','Admin')->first();
+        $role = Role::where('name','admin')->first();
 
         $user->attachRole($role);
          return redirect()->route('administrators.index')->with('success', 'Se ha creado un nuevo Administrador de Forma Satisfactoria');

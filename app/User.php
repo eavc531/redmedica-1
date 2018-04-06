@@ -39,4 +39,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
        return $this->belongsTo('App\administrator');
     }
 
+    public function medico(){
+       return $this->belongsTo('App\medico');
+    }
+
 }

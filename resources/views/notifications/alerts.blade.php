@@ -7,8 +7,6 @@
       </div>
     </div>
 
-
-
    @endif
 
    @if(Session::Has('warning'))

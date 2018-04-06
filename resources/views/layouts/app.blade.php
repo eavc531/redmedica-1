@@ -2,18 +2,27 @@
 <html>
 <head>
 	<title>Medicossi</title>
+	{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/styles.css')}}">
+
+	{{-- <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common-material.min.css" />
+	<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.min.css" />
+	<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.mobile.min.css" /> --}}
+	@yield('css')
+
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 
 	<nav class="navbar navbar-toggleable-md navbar-config">
-		{{-- @if(Auth::check() and Auth::user()->role == 'Administrador') --}}
+		@if(Auth::check())
 		<a class="navbar-brand pl-3" id="show" href="#"><i class="fas fa-bars"></i></a>
-		{{-- @endif --}}
+		@endif
 			<ul class="navbar-nav nav">
 				<div class="dropdown text-center">
 					@if(Auth::check())
@@ -70,6 +79,9 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+	{{-- <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+	<script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.timezones.min.js"></script> --}}
 
 	<script type="text/javascript" src="{{asset('js/main.js')}}"></script>
 	@yield('scriptJS')

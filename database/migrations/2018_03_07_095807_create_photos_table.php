@@ -17,7 +17,7 @@ class CreatePhotosTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('path');
-            $table->string('description')->nullable();
+            $table->string('type')->nullable();
 
             $table->integer('medico_id')->unsigned()->nullable();
             $table->foreign('medico_id')->references('id')->on('medicos');

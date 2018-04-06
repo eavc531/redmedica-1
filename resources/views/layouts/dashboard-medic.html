@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Medicossi</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common-material.min.css" />
+	<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.min.css" />
+	<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.mobile.min.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<nav class="navbar navbar-toggleable-md navbar-config">
+		<a class="navbar-brand pl-3" id="show" href="#"><i class="fas fa-bars"></i></a>
+		<ul class="navbar-nav nav">
+			<div class="dropdown text-center">
+				<li class=""  id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a href="" class="font-navbar text-center"> Juan</a></li>
+				<div class="dropdown-menu p-1" aria-labelledby="dropdownMenu2">
+					<a href="#" class="btn-block btn-config-login btn">Editar perfil</a>
+					<a href="#" class="btn-block btn-config-login btn">Sign out</a>
+				</div>
+			</div>
+			<li class="font-navbar"> Servicios profesionales para tu salud</li>
+		</ul>
+		<a href="" class="position-img-navbar"><img src="img/Medicossi-Marca original-01.png" alt="" class="img-navbar"></a>
+	</nav>
+
+	
+
+
+		<!-- Modal note medic -->
+		<div class="modal fade bd-example-modal-lg" id="add-pad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title font-title text-center" id="exampleModalLabel">Configura las que utilices</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row align-self-center">
+							<div class="col-6">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck2">
+									<label class="custom-control-label" for="customCheck2">Altura</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck3">
+									<label class="custom-control-label" for="customCheck3">Peso</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck4">
+									<label class="custom-control-label" for="customCheck4">Teperatura</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck5">
+									<label class="custom-control-label" for="customCheck5">Frecuencia cardiaca</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck6">
+									<label class="custom-control-label" for="customCheck6">Frecuencia respiratoria</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck7">
+									<label class="custom-control-label" for="customCheck7">Oxigenación</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck8">
+									<label class="custom-control-label" for="customCheck8">Indice de masa corporal</label>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck9">
+									<label class="custom-control-label" for="customCheck9">Perimetro cefalico</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck10">
+									<label class="custom-control-label" for="customCheck10">Porcentaje de masa muscular</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck11">
+									<label class="custom-control-label" for="customCheck11">Cintura</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck12">
+									<label class="custom-control-label" for="customCheck12">Cadera</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck13">
+									<label class="custom-control-label" for="customCheck13">Pierna</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck14">
+									<label class="custom-control-label" for="customCheck14">Brazo</label>
+								</div>
+							</div>
+							<hr>
+						</div>
+						<div class="row mt-3">
+							<div class="col-8">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Escriba aquí si quiere agregar mas">
+								</div>
+							</div>
+							<div class="col-4">
+								<a href="" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+								<a href="" class="btn btn-danger"><i class="fas fa-ban"></i></a>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-config-green" data-dismiss="modal">Atras</button>
+						<button type="button" class="btn btn-config-blue">Agregar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal test-laboratory-->
+		<div class="modal fade bd-example-modal-lg" id="test-laboratory2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title font-title text-center" id="exampleModalLabel">Configura las que utilices</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row align-self-center">
+							<div class="col-6">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck2">
+									<label class="custom-control-label" for="customCheck2">Altura</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck3">
+									<label class="custom-control-label" for="customCheck3">Peso</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck4">
+									<label class="custom-control-label" for="customCheck4">Teperatura</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck5">
+									<label class="custom-control-label" for="customCheck5">Frecuencia cardiaca</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck6">
+									<label class="custom-control-label" for="customCheck6">Frecuencia respiratoria</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck7">
+									<label class="custom-control-label" for="customCheck7">Oxigenación</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck8">
+									<label class="custom-control-label" for="customCheck8">Indice de masa corporal</label>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck9">
+									<label class="custom-control-label" for="customCheck9">Perimetro cefalico</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck10">
+									<label class="custom-control-label" for="customCheck10">Porcentaje de masa muscular</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck11">
+									<label class="custom-control-label" for="customCheck11">Cintura</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck12">
+									<label class="custom-control-label" for="customCheck12">Cadera</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck13">
+									<label class="custom-control-label" for="customCheck13">Pierna</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="customCheck14">
+									<label class="custom-control-label" for="customCheck14">Brazo</label>
+								</div>
+							</div>
+							<hr>
+						</div>
+						<div class="row mt-3">
+							<div class="col-8">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Escriba aquí si quiere agregar mas">
+								</div>
+							</div>
+							<div class="col-4">
+								<a href="" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+								<a href="" class="btn btn-danger"><i class="fas fa-ban"></i></a>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-config-green" data-dismiss="modal">Atras</button>
+						<button type="button" class="btn btn-config-blue">Agregar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="margin-footer">
+			<div class="section-footer fixed-bottom">
+				<div class="row align-items-center nomargin p-1">
+					<div class="col-lg-6 col-sm-6 col-12 text-center nopadding">
+						<a href="" class="p-2"><img class="buttons-footer" src="img/botones-medicossi-13.png" alt=""></a>
+						<a href="" class="p-2"><img class="buttons-footer" src="img/botones-medicossi-14.png" alt=""></a>
+						<a href="" class="p-2"><img class="buttons-footer" src="img/botones-medicossi-15.png" alt=""></a>
+						<a href="" class="p-2"><img class="buttons-footer" src="img/botones-medicossi-16.png" alt=""></a>
+					</div>
+					<div class="col-lg-6 col-sm-6 col-12 text-center nopadding">
+						<span class="font-footer"><b>MedicosSi</b> siempre encontrarás tu mejor opción.</span>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.3/js/tether.min.js"></script>
+	<script src="https://use.fontawesome.com/7886bdfbdc.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+	<script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.timezones.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	</html>

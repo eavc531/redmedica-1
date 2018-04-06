@@ -5,6 +5,22 @@
 }
 
 .nomargin{
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.hr{
+  border-color: #007bff;
+}
+
+a{
+	text-decoration: none;
+}
+a:hover, a:active, a:focus{
+	text-decoration: none;
+}
+
+.nomargin{
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
@@ -17,17 +33,20 @@
 	background-color: #799600;
 	border-color: #799600; 
 	color: #fff !important;
+	word-wrap: break-word;
 }
 
 .btn-config-blue{
 	background-color: #0060df;
 	border-color: #0060df;
 	color: #fff !important;
+	word-wrap: break-word;
 }
 
+
+/*** Colors button of dashboard **/
+
 .btn-config-dashboard{
-	background-color: #B7D065;
-	border-color: #B7D065;
 	color: #fff !important;
 	border-radius: 0;
 	font-size: 20px;
@@ -35,9 +54,54 @@
 	white-space: normal; 
 }
 
-.btn-config-dashboard:hover{
+/* Admin */
+
+.color-admin{
+	background-color: #B7D065;
+	border-color: #B7D065;
+}
+
+.color-admin:hover{
 	background-color: #799600;
 	border-color: #799600;
+	color: #000;
+}
+
+/* Promoters */
+
+.color-promoters{
+	background-color: #F1C232;
+	border-color: #F1C232;
+}
+
+.color-promoters:hover{
+	background-color: #c99f22;
+	border-color: #c99f22;
+	color: #000;
+}
+/* Patient */
+
+.color-patient{
+	background-color: #ff00ff;
+	border-color: #ff00ff;
+}
+
+.color-patient:hover{
+	background-color: #e04ce0;
+	border-color: #e04ce0;
+	color: #000;
+}
+
+/* Medic */
+
+.color-medic{
+	background-color: #44c9ce;
+	border-color: #44c9ce;
+}
+
+.color-medic:hover{
+	background-color: #1fa3a3;
+	border-color: #1fa3a3;
 	color: #000;
 }
 
@@ -116,7 +180,7 @@
 .rating.vote-cast .star.selected ~ .star
 {
   /* normal state */
-  color: black;
+  color: #c1c1c1;
 }
 
 .rating:hover .star,
@@ -176,11 +240,6 @@
 #light-purple{
 	background-color: #60579b;
 	border: 2px solid #3823c4;
-}
-
-.card-config h5, h3 {
-	text-shadow: .4px .4px .4px #000;
-	padding: 0 2px 0 2px;
 }
   
  .box-stadistic{
@@ -411,7 +470,14 @@ box-shadow: 1px 1px 1px #000;
   visibility: hidden;
   position: ;
 }
-/*||||||||||||||||||| Control panel medical center |||||||||||||||||||||||*/
+
+.scroll-table{
+	max-height: 500px;
+	overflow-y: auto;
+}
+/*||||||||||||||||||| Control panel medical center / Professional  |||||||||||||||||||||||*/
+
+
 
 .border-head-panel{
 	border: 2px solid #000; 
@@ -437,12 +503,12 @@ box-shadow: 1px 1px 1px #000;
 	font-size: 4em;
 }
 
-.box-control-panel a,label{
+.box-control-panel a{
 	text-decoration: none;
 	color: #a1bc31;
 }
 
-.box-control-panel a:hover{
+.box-control-panel > a:hover{
 	text-decoration: none;
 }
 
@@ -461,6 +527,7 @@ label.filebutton {
     overflow:hidden;
     position:relative;
     background-color: transparent;
+    cursor: pointer;
 }
 
 label span input {
@@ -482,6 +549,188 @@ label span input {
 	font-size: 24px; 
 	color: red;
 }
+
+/* center col-lg-8 */ 
+
+.button-panel{
+	word-wrap: break-word;
+	padding: 13px;
+	max-width: 100%; 
+	color: #0060DF;
+	background-color: #fff;
+	border: 2px solid #0060DF;
+	transition: .3s;
+	border-radius: 15px;
+	min-height: 60px;
+
+}
+
+.button-panel:hover{
+	background-color: #0060DF;
+	color: #fff;
+}
+
+#hover-green{
+	color: #a1bc31;
+	border-color: #a1bc31;
+}
+
+#hover-green:hover{
+	background-color: #a1bc31;
+	color: #fff;
+}
+
+
+/***** Panel professional - shedduler *******/
+/* Checkbox */
+
+.checkbox-wrapper {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  background: url("http://klevismiho.com/checkbox.png") no-repeat bottom;
+  cursor: pointer;
+}
+.checkbox-wrapper.checked {
+  background-position: top;
+}
+.checkbox-wrapper input[type="checkbox"] {
+  opacity: 0;
+}
+
+/* radio switch */
+
+.radio-switch {
+  display: inline-flex;
+  position: relative;
+}
+
+.radio-switch-field {
+  flex-basis: 50%;
+  position: relative;
+}
+
+.radio-switch-field input {
+  cursor: pointer;
+  margin: 0;
+  position: absolute;
+  opacity: 0;
+}
+
+.radio-switch-field label {
+  color: #747474;
+  cursor: pointer;
+  display: block;
+  line-height: 1;
+  position: relative;
+  text-align: left;  
+}
+
+.radio-switch-field:first-child {
+  z-index 2;
+}
+
+.radio-switch-field:first-child label {
+  padding-right: 2em;
+  text-align: right;
+}
+
+.radio-switch-field:first-child label::after {
+  background-color: #00C666;
+  border-radius: 1em;
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
+  content: "";
+  display: block;
+  height: 100%;
+  left: calc(100% - 1.4em);
+  position: absolute;
+  top: 0;
+  transition: 0.1s ease;
+  width: 2.8em;
+  z-index: 1;
+}
+
+.radio-switch-field:last-child {
+  z-index: 1;
+}
+
+.radio-switch-field:last-child label {
+  padding-left: 2em;
+}
+
+.radio-switch-field:last-child label::before {
+  background-color: #fff;
+  border-radius: 1em;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  content: "";
+  display: block;
+  height: 1.4em;
+  left: -1.4em;
+  position: absolute;
+  top: -0.22em;
+  transition: 0.08s ease;
+  width: 1.4em;
+}
+
+.radio-switch-field:first-child [type="radio"]:checked ~ label::after {
+  background-color: #E6E6E6;
+}
+
+.radio-switch-field:last-child [type="radio"]:checked ~ label {
+  pointer-events: none;
+}
+
+.radio-switch-field:last-child [type="radio"]:checked ~ label::before {
+  left: 0;
+}
+
+[type="radio"]:checked ~ label {
+  color: #000;
+}
+
+/* Shedduler */
+
+
+.k-nav-current > .k-link span + span {
+    max-width: 200px;
+}
+
+/*#team-schedule {
+    background: url('../content/web/scheduler/team-schedule.png') transparent no-repeat;
+    height: 115px;
+    position: relative;
+}
+
+#people {
+    background: url('../content/web/scheduler/scheduler-people.png') no-repeat;
+    width: 345px;
+    height: 115px;
+    position: absolute;
+    right: 0;
+}*/
+#alex {
+    position: absolute;
+    left: 4px;
+    top: 81px;
+}
+#bob {
+    position: absolute;
+    left: 119px;
+    top: 81px;
+}
+#charlie {
+    position: absolute;
+    left: 234px;
+    top: 81px;
+}
+/***** Panel professional - Agregar consulta *******/
+
+.card-query{
+	margin: auto;
+	width: 70%;
+}
+
 
 /*||||||||||||||||||| Footer |||||||||||||||||||||||*/
 

@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\info_medico;
+use App\medico_specialty;
 use Illuminate\Http\Request;
 
-class info_medicoController extends Controller
+class medico_specialtyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,11 +26,7 @@ class info_medicoController extends Controller
 
     }
 
-    public function info_medicoCreate($id)
-    {
 
-        return view('medico.info_medico.create')->with('medico_id',$id);
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -40,31 +36,7 @@ class info_medicoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-          'type'=>'required',
-          'institution'=>'required',
-          'specialty'=>'required',
-          'from'=>'required',
-          'state'=>'required',
-          'until'=>'required',
-          'aditional'=>'nullable',
-        ]);
-
-        if($request->type == 'other'){
-          $request->validate([
-            'other'=>'required'
-          ]);
-
-        }
-
-        $info_medico = new info_medico;
-        $info_medico->fill($request->all());
-        if($request->type == 'other'){
-          $info_medico->type = $request->other;
-        }
-        $info_medico->save();
-
-        return redirect()->route('medico.edit',$request->medico_id)->with('success','Se ha Agregado una nueva Especialidad/Carrera, de forma satisfactoria.');
+        
     }
 
     /**

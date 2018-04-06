@@ -21,17 +21,35 @@
   </div>
 </div>
 
-
-
-
 <!-- Large modal search-->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div id="listSearchAjax" style="padding:30px">
+      <div class="modal-header">
+        <div id="flip">
+          <div class="col-lg-12">
+              <div class="input-group search">
+                <span class="mr-2 white" id="filter"><i class="fas fa-filter fa-2x"></i></span>
+                  <label for="[object Object]"><h5>Buscar Por:</h5></label>
+                  {{Form::select('search',['Centro Medico'=>'Centro Medico','Especialidad'=>'Especialidad',  'Medico'=>'Medico'],null)}}
+                  <input type="text" class="form-control" placeholder="Search for..." id="searchVar">
 
+              <button onclick="search()" type="button" class="ml-2 white" data-toggle="modal" data-target=".bd-example-modal-lg"><span id="filter"><i class="fas fa-search fa-2x"></i></span></button>
+              </div>
+          </div>
+        </div>  
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <a href="#" onclick="search"></a>
+      <div class="modal-body">
+        <div id="listSearchAjax">
+
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
