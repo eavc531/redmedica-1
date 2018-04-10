@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\medico;
 use App\city;
+use App\state;
 use App\promoter;
 use App\User;
 use App\medicalCenter;
@@ -25,11 +26,18 @@ use Illuminate\Http\Request;
 
 class medicoController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function inner_cities_select(Request $request){
+       $cities = city::where('state_id',$request->state_id)->orderBy('name','asc')->pluck('name','id');
+       return $cities;
+     }
+
      public function medico_specialty_create($id)
      {
         $specialty = specialty::orderBy('name','asc')->pluck('name','name');
@@ -232,7 +240,7 @@ class medicoController extends Controller
            'gender'=>'required',
            'email'=>'required|unique:medicos|unique:users',
            'password'=>'required',
-           //'city'=>'required',
+
            //'medicalCenter_id'=>'required',
            //'id_promoter'=>'nullable',
            'phone'=>'required|numeric',
@@ -322,14 +330,15 @@ class medicoController extends Controller
          $social_networks = social_network::where('medico_id', $id)->get();
          $images = photo::where('medico_id', $medico->id)->where('type','image')->get();
 
-         return view('medico.perfil')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carriers',$insurance_carriers);
+         return view('medico.perfil')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carriers',$insurance_carriers)->with('states', $states);
      }
 
     public function edit($id)
     {
         $insurance_carriers = insurance_carrier::where('medico_id',$id)->get();
         $medicalCenter = medicalCenter::orderBy('name','asc')->pluck('name','name');
-        $cities = city::orderBy('name','asc')->pluck('name','name');
+        $cities = city::orderBy('name','asc')->pluck('name','id');
+        $states = state::orderBy('name','asc')->pluck('name','id');
         $medico = medico::find($id);
         $consulting_room = consulting_room::where('medico_id',$medico->id)->get();
         $consultingIsset = consulting_room::where('medico_id',$medico->id)->count();
@@ -338,7 +347,7 @@ class medicoController extends Controller
         $social_networks = social_network::where('medico_id', $id)->get();
         $images = photo::where('medico_id', $medico->id)->where('type','image')->get();
 
-        return view('medico.edit')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carriers',$insurance_carriers);
+        return view('medico.edit')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carriers',$insurance_carriers)->with('states', $states);
     }
 
     /**
@@ -350,13 +359,13 @@ class medicoController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+      // /return $request;
       $request->validate([
          'name'=>'required',
          'lastName'=>'required',
          'gender'=>'required',
-         'city'=>'required',
-         'state'=>'required',
+         'city_id'=>'required',
+         'state_id'=>'required',
          'identification'=>'required',
          //'email'=>'required|unique:medicos|unique:users',
          //'password'=>'required',
@@ -370,7 +379,7 @@ class medicoController extends Controller
       $medico = medico::find($id);
 
       $medico->fill($request->all());
-      $medico->state = 'complete';
+      //$medico->state = 'complete';
       $medico->save();
 
       if($request->ajax()){

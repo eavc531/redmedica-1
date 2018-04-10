@@ -11,18 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\medico::class)->times(100)->create();
+        factory(App\medico::class)->times(50)->create();
         $this->call('specialty_category');
         $this->call('specialty');
-        //  $this->call('eventSeeder');
+        $this->call('statesAndCities');
 
-        DB::table('specialty_categories')->insert([
-       'name'=>'categoria 1',
-       ]);
-
-       DB::table('specialty_categories')->insert([
-      'name'=>'categoria 2',
-      ]);
 
       DB::table('specialties')->insert([
      'name'=>'psicologia',
@@ -210,16 +203,7 @@ class DatabaseSeeder extends Seeder
        'description'=>'edit existing users'
        ]);
 
-        DB::table('cities')->insert([
-      'name'=>'Guanare',
-      ]);
-        DB::table('cities')->insert([
-       'name'=>'Acarigua',
-       ]);
 
-       DB::table('cities')->insert([
-      'name'=>'Barquisimeto',
-      ]);
 
       DB::table('permissions')->insert([
      'name'=>'Editar',

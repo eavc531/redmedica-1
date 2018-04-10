@@ -7,9 +7,7 @@
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/styles.css')}}">
 
-	{{-- <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common-material.min.css" />
-	<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.min.css" />
-	<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.mobile.min.css" /> --}}
+
 	@yield('css')
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -74,14 +72,14 @@
 	</footer>
 
 </body>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.3/js/tether.min.js"></script>
 	<script src="https://use.fontawesome.com/7886bdfbdc.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
-	{{-- <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
-	<script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.timezones.min.js"></script> --}}
+
 
 	<script type="text/javascript" src="{{asset('js/main.js')}}"></script>
 	@yield('scriptJS')

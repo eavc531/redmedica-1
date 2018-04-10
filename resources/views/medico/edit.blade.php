@@ -71,23 +71,23 @@
 </div>
 <div class="row">
   <div class="col-6">
+    <label for="">Estado</label>
     <div class="form-group">
-      <label for="">Sexo</label>
-      {!!Form::select('gender',['Masculino','Femenino'],null,['class'=>'form-control','id'=>'genderMedic'])!!}
+      {!!Form::select('state_id',$states,null,['class'=>'form-control','id'=>'stateMedic'])!!}
     </div>
   </div>
-  <div class="col-6">
-    <label for="">Ciudad</label>
-    <div class="form-group">
-      {!!Form::select('city',$cities,null,['class'=>'form-control','id'=>'cityMedic'])!!}
-    </div>
-  </div>
+	<div class="col-6">
+		<div class="form-group">
+			<label for="">Sexo</label>
+			{!!Form::select('gender',['Masculino','Femenino'],null,['class'=>'form-control','id'=>'genderMedic'])!!}
+		</div>
+	</div>
 </div>
 <div class="row">
   <div class="col-lg-6 col-12">
     <div class="form-group">
-     <label for="">Estado</label>
-     {!!Form::select('state',$cities,null,['class'=>'form-control','id'=>'stateMedic'])!!}
+     <label for="">Ciudad</label>
+     {!!Form::select('city_id',$cities,null,['class'=>'form-control','id'=>'cityMedic'])!!}
    </div>
  </div>
  <div class="col-lg-6 col-12">
@@ -604,6 +604,34 @@
 		list_experience();
   });
 
+		$('#stateMedic').on('change', function() {
+			state_id = $('#stateMedic').val();
+
+			route = "{{route('inner_cities_select')}}";
+			$.ajax({
+				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+				type:'post',
+				url: route,
+				data:{state_id:state_id},
+				success:function(result){
+				$("#cityMedic").empty();
+						$('#cityMedic').append($('<option>', {
+							 value: null,
+							 text: 'Ciudad'
+					 }));
+							 $.each(result,function(key, val){
+								 $('#cityMedic').append($('<option>', {
+                    value: key,
+                    text: val
+                }));
+							 });
+				},
+				error:function(error){
+					console.log(error);
+				},
+			});
+	   })
+
   function list_experience(){
    route = "{{route('medico_experience_list')}}";
    medico_id = $('#medico_id').val();
@@ -854,7 +882,7 @@ function updateMedic(){
 		 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 		 method:'put',
 		 url:route,
-		 data:{name:nameMedic,lastName:lastNameMedic,gender:genderMedic,city:cityMedic,state:stateMedic,phone:phoneMedic,phoneOffice1:phoneOffice1Medic,phoneOffice2:phoneOffice2Medic,identification:identificationMedic},
+		 data:{name:nameMedic,lastName:lastNameMedic,gender:genderMedic,city_id:cityMedic,state_id:stateMedic,phone:phoneMedic,phoneOffice1:phoneOffice1Medic,phoneOffice2:phoneOffice2Medic,identification:identificationMedic},
 		 error:function(error){
 			 $.each(error.responseJSON.errors, function(index, val){
 			 errormsj+='<li>'+val+'</li>';

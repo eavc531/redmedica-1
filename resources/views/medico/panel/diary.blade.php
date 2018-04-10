@@ -345,7 +345,7 @@
             </div>
                       <div class="row my-5">
                           <div class="col-lg-10 col-12 align-items-center">
-                              <h6>¿Dese que se mande un mensaje de confirmación a su paciente con estatus cita por internet??</h6>
+                              <h6>¿Dese que se mande un mensaje de confirmación a su paciente con estatus cita por internet?</h6>
                           </div>
                           <div class="col-lg-2 col-12">
                               <div class="radio-switch">
@@ -605,7 +605,7 @@
         // ],
 
         eventClick: function(event, jsEvent, view){
-          
+
             var start = $.fullCalendar.moment(event.start).format('YYYY-MM-DD');
             var end = $.fullCalendar.moment(event.end).format('YYYY-MM-DD');
             $('#ModalEdit').modal('show');

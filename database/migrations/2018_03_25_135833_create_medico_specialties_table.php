@@ -18,11 +18,12 @@ class CreateMedicoSpecialtiesTable extends Migration
             $table->string('type');
             $table->string('institution');
             $table->string('specialty');
-            $table->string('state');
+
             $table->dateTime('from');
             $table->dateTime('until');
             $table->string('aditional')->nullable();
             $table->string('specialty_category');
+          
             $table->integer('medico_id')->unsigned();
             $table->foreign('medico_id')->references('id')->on('medicos');
             $table->timestamps();

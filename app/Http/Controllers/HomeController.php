@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\User;
 use App\medico;
@@ -10,15 +10,18 @@ use App\specialty;
 use App\medico_specialty;
 use DB;
 use Auth;
+use Geocoder;
+use Illuminate\Pagination\LengthAwarePaginator;
 class HomeController extends Controller
 {
     public function home(){
+      $medicos_json = '';
       if(auth::check()){
         $user = user::find(Auth::user()->id);
-        return view('home.home')->with('user', $user);
+        return view('home.home')->with('user', $user)->with('medicos_json', $medicos_json);
       }
 
-      return view('home.home');
+      return view('home.home')->with('medicos_json', $medicos_json);;
 
     }
 
@@ -77,7 +80,7 @@ class HomeController extends Controller
       if($request->typeSearch == 'Centro Medico'){
         $medicalCenters = medicalCenter::where('name','LIKE','%'.$request->search.'%')->orderBy('name','asc')->paginate(10);
         $medicalCentersCount = medicalCenter::where('name','LIKE','%'.$request->search.'%')->count();
-        
+
         return view('home.home')->with('medicalCenters', $medicalCenters)->with('medicalCentersCount', $medicalCentersCount)->with('searchActive', $searchActive)->with('search', $request->search);
       }
 
@@ -106,64 +109,126 @@ class HomeController extends Controller
 
           return view('home.home')->with('medicos2', $medicos2)->with('medicosCount2', $medicosCount2)->with('searchActive', $searchActive)->with('search', $request->typeSearch);
       }
-      // $users = DB::table('users')
-      //       ->join('contacts', 'users.id', '=', 'contacts.user_id')
-      //       ->join('orders', 'users.id', '=', 'orders.user_id')
-      //       ->select('users.*', 'contacts.phone', 'orders.price')
-      //       ->get();
 
-
-      // $skip = $request->skip;
-      // $take = 2;
-      //
-      // $medicos = medico::select("id","name")->where('name','LIKE','%'.$request->search.'%')->count();
-      // $medicalCenters = medicalCenter::select("id","name")->where('name','LIKE','%'.$request->search.'%')->count();
-      // $specialty = specialty::select("id","name")->where('name','LIKE','%'.$request->search.'%')->count();
-      // $totalCount = $medicos + $medicalCenters + $specialty;
-      //
-      // $totalPag = floor($totalCount / $take);
-      //
-      // //return response()->json($totalPag);
-      //
-      //
-      // $medicos = medico::select("id","name","role")->where('name','LIKE','%'.$request->search.'%');
-      //
-      // $medicalCenters = medicalCenter::select("id","name","role")->where('name','LIKE','%'.$request->search.'%');
-      //
-      // $data = specialty::select("id","name","role")->where('name','LIKE','%'.$request->search.'%')->union($medicos)->union($medicalCenters)->skip($skip)->take($take)->get();
-      //
-      // //return response()->json($take);
-      // return view('home.listSearch')->with('data', $data)->with('take', $take);
     }
+
+
+
+
 
 
     public function tolist2(Request $request){
 
-      $skip = $request->skip;
-      $take = 3;
+      $dist = 20200;
+    $myCoordinates = Geocoder::getCoordinatesForAddress('mexicali,mexico');
 
-      //return response()->json($skip);
+      //$CoordinatesMedic = Geocoder::getCoordinatesForAddress('tijuana,mexico');
 
-      $medicos = medico::select("id","name")->where('name','LIKE','%'.$request->search.'%');
+      $medicos = DB::table('medicos')
+            //->Join('medico_specialties', 'medicos.id', '=', 'medico_specialties.medico_id')
+            ->Join('cities', 'medicos.city_id', '=', 'cities.id')
+            ->Join('states', 'medicos.state_id', '=', 'states.id')
+            ->select('medicos.*','cities.longitud as longitud','cities.latitud as latitud','cities.name as cityName','states.name as stateName')
+            ->get();
 
-      $medicalCenters = medicalCenter::select("id","name")->where('name','LIKE','%'.$request->search.'%');
-
-      $data = specialty::select("id","name")->where('name','LIKE','%'.$request->search.'%')->union($medicos)->union($medicalCenters)->skip($skip)->take($take)->get();
+           //dd($medicos->cityName);
 
 
-      return view('home.listSearch')->with('data', $data)->with('take', $take);
+            $data = [];
+
+            //ordenar array
+
+            foreach ($medicos as $medico) {
+              //Haversine
+
+              $myLat = -115.45;
+              //deg2rad($myCoordinates['lat']);
+              $myLng = 	32.62;
+              //deg2rad($myCoordinates['lng']);
+
+              $medicLat = deg2rad($medico->latitud);
+              $medicLng = deg2rad($medico->longitud);
+
+              $latDelta = $medicLat - $myLat;
+              $lonDelta = $medicLng - $myLng;
+
+              $earthRadius = 6371; //en km
+
+              $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+              cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
+              $distCalculate =  $angle * $earthRadius;
+
+              if($dist > $distCalculate){
+
+                $data[$medico->id] = ['id'=>$medico->id,'name'=>$medico->name,'lastName'=>$medico->lastName,'cityName'=>$medico->cityName,'stateName'=>$medico->stateName,'dist'=>$distCalculate];
+
+              }
+            }
+
+
+            //$array = collect($array)->sortBy('count')->reverse()->toArray();
+
+            //Convertir array a encode jason y poder manipular con javascript
+      //$medicos_json = json_encode($data);
+
+      $currentPage = LengthAwarePaginator::resolveCurrentPage();
+      $col = new Collection($data);
+      $perPage = 5;
+      $currentPageSearchResults = $col->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+      $medicosCerc = new LengthAwarePaginator($currentPageSearchResults, count($col), $perPage);
+
+      $medicosCerc->setPath(route('tolist2'));
+
+      $medicosCercCount = count($medicosCerc);
+
+
+      return view('home.home')->with('medicosCerc', $medicosCerc)->with('data', $data)->with('medicosCercCount', $medicosCercCount)->with('search', $request->typeSearch);
+
     }
 
-    // public function tolist(Request $request){
-    //
-    //   $medicos = medico::where('name','LIKE','%'.$request->search.'%')->get();
-    //
-    //
-    //   $medicalCenters = medicalCenter::where('name','LIKE','%'.$request->search.'%')->get();
-    //
-    //
-    //   return view('home.listSearch')->with('medicos',$medicos)->with('medicalCenters',$medicalCenters);
-    // }
+    public function tolist3(Request $request){
+      $dist = 20000;
+    $myCoordinates = Geocoder::getCoordinatesForAddress('mexicali,mexico');
+    //$CoordinatesMedic = Geocoder::getCoordinatesForAddress('tijuana,mexico');
+
+      $medicos = DB::table('medicos')
+            //->Join('medico_specialties', 'medicos.id', '=', 'medico_specialties.medico_id')
+            ->Join('cities', 'medicos.city_id', '=', 'cities.id')
+            ->Join('states', 'medicos.state_id', '=', 'states.id')
+            ->select('medicos.*','cities.longitud as longitud','cities.latitud as latitud','cities.name as cityName','states.name as stateName')
+            ->get();
+
+            $data = [];
+
+            foreach ($medicos as $medico) {
+              //Haversine
+              $myLat = deg2rad($myCoordinates['lat']);
+              $myLng = deg2rad($myCoordinates['lng']);
+
+
+              $medicLat = deg2rad($medico->latitud);
+              $medicLng = deg2rad($medico->longitud);
+
+              $latDelta = $medicLat - $myLat;
+              $lonDelta = $medicLng - $myLng;
+
+              $earthRadius = 6371; //en km
+
+              $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+              cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
+              $distCalculate =  $angle * $earthRadius;
+
+              if($dist > $distCalculate){
+
+                $data[$medico->id] = ['id'=>$medico->id,'name'=>$medico->name,'lastName'=>$medico->lastName,'cityName'=>$medico->cityName,'stateName'=>$medico->stateName,'dist'=>$distCalculate,'lat'=>$medico->latitud,'lng'=>$medico->longitud];
+
+              }
+            }
+
+            return response()->json($data);
+
+    }
 
     public function prueba(){
 

@@ -16,6 +16,7 @@ route::get('/', function () {
     return redirect()->route('home');
 });
 
+Route::resource('city','cityController');
 
 Route::get('loginRedirect', 'Auth\LoginController@loginRedirect')->name('loginRedirect');
 
@@ -66,6 +67,9 @@ route::resource('consulting_room','consulting_roomController');
 route::get('medico/{id}/info/create','medicoController@medico_specialty_create')->name('medico_specialty_create');
 route::post('medico/specialty/store','medicoController@medico_specialty_store')->name('medico_specialty_store');
 
+route::post('inner/cities/select','medicoController@inner_cities_select')->name('inner_cities_select');
+
+
 route::get('confirm/MedicalCenter/{id}/{code}','medicalCenterController@confirmMedicalCenter')->name('confirmMedicalCenter');
 route::get('confirm/medico/{id}/{code}','medicoController@confirmMedico')->name('confirmMedico');
 
@@ -78,7 +82,9 @@ route::post('resend/mail/confirmation','medicoController@resendMailMedicoConfirm
 
 route::get('list/result/','HomeController@tolist')->name('tolist');
 /////////////////////////////////////////////////////////////////////////////////borar
-route::post('list/result2','HomeController@tolist2')->name('tolist2');
+route::get('list/result2','HomeController@tolist2')->name('tolist2');
+route::get('list/result3','HomeController@tolist3')->name('tolist3');
+
 /////////////////////////////////////////////////////////////////////////////////borrar
 
 route::post('login2','Auth\LoginController@login2')->name('login2');
