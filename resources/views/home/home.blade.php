@@ -10,7 +10,11 @@
 
 @endsection
 @section('content')
-  <h2>TEST</h2>
+  <h2>TEST2</h2>
+  <h2>TEST2</h2>
+  <h2>TEST2</h2>
+  <h2>TEST2</h2>
+  <h2>TEST2</h2>
   @if(!isset(Auth::user()->id))
     <div class="row">
       <div class="col-lg-6 col-md-6 col-12">
