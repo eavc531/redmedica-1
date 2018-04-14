@@ -46,10 +46,10 @@
 								    	{!!Form::select('gender',['Masculino','Femenino'],null,['class'=>'form-control','placeholder'=>'Sexo'])!!}
 								  </div>
 							</div>
-							<div class="col-6">
-								  	<div class="form-group">
-								    	{!!Form::select('city',$cities,null,['class'=>'form-control','placeholder'=>'Ciudad'])!!}
-								  </div>
+							<div class="col-lg-6 col-12">
+								<div class="form-group">
+										 {!!Form::text('phone',null,['class'=>'form-control','placeholder'=>'Teléfono'])!!}
+								</div>
 							</div>
 						</div>
 						<div class="row">
@@ -65,24 +65,8 @@
 								</div>
 						</div>
 
-						{{-- <div class="row">
-							<div class="col-lg-6 col-12">
-								<div class="form-group">
-								   {!!Form::select('medicalCenter_id',$medicalCenter,null,['class'=>'form-control','placeholder'=>'Centro Medico'])!!}
-								</div>
-							</div>
-								<div class="col-lg-6 col-12">
-									<div class="form-group">
-									   {!!Form::text('id_promoter',null,['class'=>'form-control','placeholder'=>'id del Promotor (Opcional)'])!!}
-									 </div>
-								</div>
-							</div> --}}
 						<div class="row">
-							<div class="col-lg-6 col-12">
-								<div class="form-group">
-								     {!!Form::text('phone',null,['class'=>'form-control','placeholder'=>'Teléfono'])!!}
-								</div>
-							</div>
+
 							{{-- <div class="col-lg-6 col-12">
 								<div class="form-group">
 									 {!!Form::text('facebook',null,['class'=>'form-control','placeholder'=>'Facebook'])!!}

@@ -16,8 +16,10 @@ class CreateDaysTable extends Migration
         Schema::create('days', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('month_id')->unsigned();
-            $table->foreign('month_id')->references('id')->on('months');
+            $table->string('hour_ini');
+            $table->string('hour_end');
+            $table->integer('medical_center_id')->unsigned()->nullable();
+            $table->foreign('medical_center_id')->references('id')->on('medical_centers');
             $table->timestamps();
         });
     }
@@ -32,3 +34,8 @@ class CreateDaysTable extends Migration
         Schema::dropIfExists('days');
     }
 }
+
+// $table->increments('id');
+// $table->string('name');
+// $table->integer('month_id')->unsigned();
+// $table->foreign('month_id')->references('id')->on('months');

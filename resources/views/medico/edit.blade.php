@@ -118,6 +118,21 @@
       {!!Form::text('identification',null,['class'=>'form-control','id'=>'identificationMedic'])!!}
     </div>
   </div>
+	<div class="col-lg-6 col-12">
+    <div class="form-group">
+      <label for="">Especialidad</label>
+      {!!Form::select('specialty',$specialties,null,['placeholder'=>'seleccione una Especialidad','class'=>'form-control','id'=>'specialtyMedic'])!!}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 col-12">
+    <div class="form-group">
+      <label for="">sub-Especialidad(Opcional)</label>
+      {!!Form::select('sub_specialty',$specialties,null,['placeholder'=>'seleccione una opción','class'=>'form-control','id'=>'sub_specialtyMedic'])!!}
+    </div>
+  </div>
+
 </div>
 <div class="row">
   <div class="col-12">
@@ -873,7 +888,8 @@ function updateMedic(){
 	phoneOffice1Medic = $('#phoneOffice1Medic').val();
 	phoneOffice2Medic = $('#phoneOffice2Medic').val();
 	identificationMedic = $('#identificationMedic').val();
-
+	specialtyMedic = $('#specialtyMedic').val();
+	sub_specialtyMedic = $('#sub_specialtyMedic').val();
 	errormsj = '';
 
 	route = "{{route('medico.update',$medico->id)}}";
@@ -882,7 +898,7 @@ function updateMedic(){
 		 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 		 method:'put',
 		 url:route,
-		 data:{name:nameMedic,lastName:lastNameMedic,gender:genderMedic,city_id:cityMedic,state_id:stateMedic,phone:phoneMedic,phoneOffice1:phoneOffice1Medic,phoneOffice2:phoneOffice2Medic,identification:identificationMedic},
+		 data:{name:nameMedic,lastName:lastNameMedic,gender:genderMedic,city_id:cityMedic,state_id:stateMedic,phone:phoneMedic,phoneOffice1:phoneOffice1Medic,phoneOffice2:phoneOffice2Medic,identification:identificationMedic,specialty:specialtyMedic,sub_specialty:sub_specialtyMedic},
 		 error:function(error){
 			 $.each(error.responseJSON.errors, function(index, val){
 			 errormsj+='<li>'+val+'</li>';

@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
   $("#show").click(function(){
-    $("#dashboard").fadeToggle(200);
+    // $("#dashboard").fadeToggle(200);
 });
   $("#filter").click(function(){
      $("#panel").slideToggle(200);
@@ -49,7 +49,6 @@ $(document).ready(function () {
 });
 
 
-
 /* Checkbox panel professional */
 
 $('.checkbox-wrapper').on('click', function() {
@@ -64,7 +63,9 @@ $('.checkbox-wrapper').on('click', function() {
 
 })
 
-/* textarea panel profesional add query */
+/* textarea panel profesional general */
+
+/* Add query */
 
 $(document).ready(function(){
     $("#show-textarea").click(function(){
@@ -85,7 +86,6 @@ $(document).ready(function(){
     });
 });
 
-
 $(document).ready(function(){
     $("#show-question7").click(function(){
         $("#test-laboratory").slideDown("fast");
@@ -95,14 +95,77 @@ $(document).ready(function(){
     });
 });
 
-/* register medic step 3*/
+$(document).ready(function(){
+    $("#show-question9").click(function(){
+        $("#diagnosis").slideDown("fast");
+    });
+    $("#show-question8").click(function(){
+        $("#diagnosis").slideUp("fast");
+    });
+});
+
+$(document).ready(function(){
+    $("#show-question2").click(function(){
+        $("#panel-insurance").slideDown("fast");
+    });
+    $("#show-question1").click(function(){
+        $("#panel-insurance").slideUp("fast");
+    });
+});
+
+/* note emergencies */
+
+$(document).ready(function(){
+    $("#open2").click(function(){
+        $("#open01").slideDown("fast");
+    });
+    $("#open1").click(function(){
+        $("#open01").slideUp("fast");
+    });
+});
+
+$(document).ready(function(){
+    $("#open4").click(function(){
+        $("#open02").slideDown("fast");
+    });
+    $("#open3").click(function(){
+        $("#open02").slideUp("fast");
+    });
+});
 
 
 $(document).ready(function(){
-    $("#show-question5").click(function(){
-        $("#panel-insurance").slideDown("fast");
+    $("#open6").click(function(){
+        $("#open03").slideDown("fast");
     });
-    $("#show-question4").click(function(){
-        $("#panel-insurance").slideUp("fast");
+    $("#open5").click(function(){
+        $("#open03").slideUp("fast");
+    });
+});
+
+$(document).ready(function(){
+    $("#open8").click(function(){
+        $("#open04").slideDown("fast");
+    });
+    $("#open7").click(function(){
+        $("#open04").slideUp("fast");
+    });
+});
+
+$(document).ready(function(){
+    $("#open10").click(function(){
+        $("#open05").slideDown("fast");
+    });
+    $("#open9").click(function(){
+        $("#open05").slideUp("fast");
+    });
+});
+
+$(document).ready(function(){
+    $("#open12").click(function(){
+        $("#open06").slideDown("fast");
+    });
+    $("#open11").click(function(){
+        $("#open06").slideUp("fast");
     });
 });

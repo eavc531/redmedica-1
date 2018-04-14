@@ -19,11 +19,12 @@ class medico extends Model
       'phone',
       'facebook',
       'id_promoter',
-      'state',
+      'stateConfirm',
       'showNumber',
       'phoneOffice1',
        'phoneOffice2',
-
+       'specialty',
+       'sub_specialty',
     ];
 
     public function medico_specialty(){

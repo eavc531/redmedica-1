@@ -10,7 +10,7 @@
 }
 
 .hr{
-  border-color: #007bff;
+	border-color: #007bff;
 }
 
 a{
@@ -43,6 +43,10 @@ a:hover, a:active, a:focus{
 	word-wrap: break-word;
 }
 
+ul{
+	list-style: none;
+	padding: 0;
+}
 
 /*** Colors button of dashboard **/
 
@@ -121,11 +125,11 @@ a:hover, a:active, a:focus{
 
 .textarea-green:focus{
 	border: .5px solid green;
-		color: green;
+	color: green;
 }
 .textarea-red:focus{
 	border: .5px solid red;
-		color: red;
+	color: red;
 }
 
 .box-shadox{
@@ -156,8 +160,8 @@ a:hover, a:active, a:focus{
 
 .box-register-table{
 	margin: 4% auto;
-    width: 75%;
-    min-height: 500px;
+	width: 75%;
+	min-height: 500px;
 }
 
 .btn-config-dashboard > span{
@@ -169,25 +173,25 @@ a:hover, a:active, a:focus{
 
 
 .li-config{
-  cursor: default;
-  display: inline-block;
-  font-size: 30px;
-  list-style-type: none;
+	cursor: default;
+	display: inline-block;
+	font-size: 30px;
+	list-style-type: none;
 }
 
 .star,
 .rating:not(.vote-cast):hover .star:hover ~ .star,
 .rating.vote-cast .star.selected ~ .star
 {
-  /* normal state */
-  color: #c1c1c1;
+	/* normal state */
+	color: #c1c1c1;
 }
 
 .rating:hover .star,
 .rating.vote-cast .star
 {
-  /* highlighted state */
-  color: #f9e25c;
+	/* highlighted state */
+	color: #f9e25c;
 }
 
 .margin-footer{
@@ -200,7 +204,7 @@ a:hover, a:active, a:focus{
 .action-button:active
 {
 	transform: translate(0px,5px);
-  -webkit-transform: translate(0px,5px);
+	-webkit-transform: translate(0px,5px);
 } 
 
 /*||||||||||||||||||| Stadistic |||||||||||||||||||||||*/
@@ -221,7 +225,7 @@ a:hover, a:active, a:focus{
 	background-color: #B6D7A8;
 	border: 2px solid #93c47d;
 }
-  
+
 #light-fucsia{
 	background-color: #c27ba0;
 	border: 2px solid #bf4283;
@@ -241,11 +245,11 @@ a:hover, a:active, a:focus{
 	background-color: #60579b;
 	border: 2px solid #3823c4;
 }
-  
- .box-stadistic{
+
+.box-stadistic{
 	border: 2px solid #94bee5;
 	padding: 30px;
- }
+}
 
 .icon-stadistic{
 	font-size: 10em;
@@ -311,10 +315,14 @@ a:hover, a:active, a:focus{
 
 .box-justify{
 	width: 100%;
-    height: 60px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+	height: 60px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.box-mesage{
+	margin-bottom: 30px;
 }
 
 .hide{
@@ -322,17 +330,17 @@ a:hover, a:active, a:focus{
 }
 
 #panel, #flip {
-    padding: 5px;
-    text-align: center;
-    background-color: #a1bc31;
-    -webkit-box-shadow: 1px 1px 1px #000;
--moz-box-shadow: 1px 1px 1px #000;
-box-shadow: 1px 1px 1px #000;
+	padding: 5px;
+	text-align: center;
+	background-color: #a1bc31;
+	-webkit-box-shadow: 1px 1px 1px #000;
+	-moz-box-shadow: 1px 1px 1px #000;
+	box-shadow: 1px 1px 1px #000;
 }
 
 #panel {
-    height: auto;
-    display: none;
+	height: auto;
+	display: none;
 
 }
 
@@ -467,8 +475,8 @@ box-shadow: 1px 1px 1px #000;
 }
 
 .file {
-  visibility: hidden;
-  position: ;
+	visibility: hidden;
+	position: ;
 }
 
 .scroll-table{
@@ -522,27 +530,27 @@ box-shadow: 1px 1px 1px #000;
 
 
 label.filebutton {
-    width:auto;
-    height:auto;
-    overflow:hidden;
-    position:relative;
-    background-color: transparent;
-    cursor: pointer;
+	width:auto;
+	height:auto;
+	overflow:hidden;
+	position:relative;
+	background-color: transparent;
+	cursor: pointer;
 }
 
 label span input {
-    z-index: 999;
-    line-height: 0;
-    font-size: 50px;
-    position: absolute;
-    top: -2px;
-    left: -700px;
-    opacity: 0;
-    filter: alpha(opacity = 0);
-    -ms-filter: "alpha(opacity=0)";
-    margin: 0;
-    padding:0;
-    cursor: pointer;
+	z-index: 999;
+	line-height: 0;
+	font-size: 50px;
+	position: absolute;
+	top: -2px;
+	left: -700px;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	-ms-filter: "alpha(opacity=0)";
+	margin: 0;
+	padding:0;
+	cursor: pointer;
 }
 
 .icon-notification{
@@ -554,7 +562,7 @@ label span input {
 
 .button-panel{
 	word-wrap: break-word;
-	padding: 13px;
+	padding: 5px;
 	max-width: 100%; 
 	color: #0060DF;
 	background-color: #fff;
@@ -585,152 +593,251 @@ label span input {
 /* Checkbox */
 
 .checkbox-wrapper {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  margin-right: 10px;
-  background: url("http://klevismiho.com/checkbox.png") no-repeat bottom;
-  cursor: pointer;
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	margin-right: 10px;
+	background: url("http://klevismiho.com/checkbox.png") no-repeat bottom;
+	cursor: pointer;
 }
 .checkbox-wrapper.checked {
-  background-position: top;
+	background-position: top;
 }
 .checkbox-wrapper input[type="checkbox"] {
-  opacity: 0;
+	opacity: 0;
 }
 
 /* radio switch */
 
 .radio-switch {
-  display: inline-flex;
-  position: relative;
+	display: inline-flex;
+	position: relative;
 }
 
 .radio-switch-field {
-  flex-basis: 50%;
-  position: relative;
+	flex-basis: 50%;
+	position: relative;
 }
 
 .radio-switch-field input {
-  cursor: pointer;
-  margin: 0;
-  position: absolute;
-  opacity: 0;
+	cursor: pointer;
+	margin: 0;
+	position: absolute;
+	opacity: 0;
 }
 
 .radio-switch-field label {
-  color: #747474;
-  cursor: pointer;
-  display: block;
-  line-height: 1;
-  position: relative;
-  text-align: left;  
+	color: #747474;
+	cursor: pointer;
+	display: block;
+	line-height: 1;
+	position: relative;
+	text-align: left;  
 }
 
 .radio-switch-field:first-child {
-  z-index 2;
+	z-index 2;
 }
 
 .radio-switch-field:first-child label {
-  padding-right: 2em;
-  text-align: right;
+	padding-right: 2em;
+	text-align: right;
 }
 
 .radio-switch-field:first-child label::after {
-  background-color: #00C666;
-  border-radius: 1em;
-  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
-  content: "";
-  display: block;
-  height: 100%;
-  left: calc(100% - 1.4em);
-  position: absolute;
-  top: 0;
-  transition: 0.1s ease;
-  width: 2.8em;
-  z-index: 1;
+	background-color: #00C666;
+	border-radius: 1em;
+	box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
+	content: "";
+	display: block;
+	height: 100%;
+	left: calc(100% - 1.4em);
+	position: absolute;
+	top: 0;
+	transition: 0.1s ease;
+	width: 2.8em;
+	z-index: 1;
 }
 
 .radio-switch-field:last-child {
-  z-index: 1;
+	z-index: 1;
 }
 
 .radio-switch-field:last-child label {
-  padding-left: 2em;
+	padding-left: 2em;
 }
 
 .radio-switch-field:last-child label::before {
-  background-color: #fff;
-  border-radius: 1em;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
-  content: "";
-  display: block;
-  height: 1.4em;
-  left: -1.4em;
-  position: absolute;
-  top: -0.22em;
-  transition: 0.08s ease;
-  width: 1.4em;
+	background-color: #fff;
+	border-radius: 1em;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+	content: "";
+	display: block;
+	height: 1.4em;
+	left: -1.4em;
+	position: absolute;
+	top: -0.22em;
+	transition: 0.08s ease;
+	width: 1.4em;
 }
 
 .radio-switch-field:first-child [type="radio"]:checked ~ label::after {
-  background-color: #E6E6E6;
+	background-color: #E6E6E6;
 }
 
 .radio-switch-field:last-child [type="radio"]:checked ~ label {
-  pointer-events: none;
+	pointer-events: none;
 }
 
 .radio-switch-field:last-child [type="radio"]:checked ~ label::before {
-  left: 0;
+	left: 0;
 }
 
 [type="radio"]:checked ~ label {
-  color: #000;
+	color: #000;
 }
 
-/* Shedduler */
-
-
-.k-nav-current > .k-link span + span {
-    max-width: 200px;
-}
-
-/*#team-schedule {
-    background: url('../content/web/scheduler/team-schedule.png') transparent no-repeat;
-    height: 115px;
-    position: relative;
-}
-
-#people {
-    background: url('../content/web/scheduler/scheduler-people.png') no-repeat;
-    width: 345px;
-    height: 115px;
-    position: absolute;
-    right: 0;
-}*/
-#alex {
-    position: absolute;
-    left: 4px;
-    top: 81px;
-}
-#bob {
-    position: absolute;
-    left: 119px;
-    top: 81px;
-}
-#charlie {
-    position: absolute;
-    left: 234px;
-    top: 81px;
-}
 /***** Panel professional - Agregar consulta *******/
 
 .card-query{
 	margin: auto;
 	width: 70%;
 }
+/*||||||||||||||||||| Promotions Professionals |||||||||||||||||||||||*/
 
+.my-6{
+	margin: 5em auto;
+}
+
+.color-card{
+	color: #fff;
+}
+.orange{
+	background-color: #f6b282;
+}
+
+.purple{
+	background-color: #a517ff;
+}
+
+.green{
+	background-color: #009e0f;
+}
+
+.blue{
+	background-color: #A2C4C9;
+}
+
+.font-white{
+	color: #fff;
+}
+
+.card-height{
+	max-height: 420px;
+	overflow-y: hidden;
+}
+
+.card-height:hover{
+	overflow-y: auto;
+}
+
+/** Radio promotions **/
+
+.radio-tile-group {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+}
+.radio-tile-group .input-container {
+	position: relative;
+	height: 12rem;
+	width: 12rem;
+	margin: 0.5rem;
+}
+.radio-tile-group .input-container .radio-button {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	cursor: pointer;
+}
+.radio-tile-group .input-container .radio-tile {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	border: 2px solid #0060DF;
+	border-radius: 5px;
+	padding: 1rem;
+	color: 
+	-webkit-transition: -webkit-transform 300ms ease;
+	transition: -webkit-transform 300ms ease;
+	transition: transform 300ms ease;
+	transition: transform 300ms ease, -webkit-transform 300ms ease;
+}
+.radio-tile-group .input-container .icon i {
+	fill: #079ad9;
+	width: 3rem;
+	height: 3rem;
+	color: #73A84F;
+}
+.radio-tile-group .input-container .radio-tile-label {
+	text-align: center;
+	font-size: 1.5rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	color: #0060DF;
+}
+.radio-tile-label2{
+	color: #73a84f;
+}
+.radio-tile-group .input-container .radio-button:checked + .radio-tile {
+	border-color: #73a84f;
+	-webkit-transform: scale(1.1, 1.1);
+	transform: scale(1.1, 1.1);
+}
+.radio-tile-group .input-container .radio-button:checked + .radio-tile .icon {
+	fill: #0060DF;
+	color: #73a84f;
+}
+.radio-tile-group .input-container .radio-button:checked + .radio-tile .radio-tile-label {
+	color: #73a84f;
+}
+.radio-tile-group .input-container .radio-button:checked + .radio-tile .radio-tile-label2 {
+	color: #0060DF;
+}
+
+/*||||||||||||||||||| Profile Profesional / Medical |||||||||||||||||||||||*/
+
+.box-padding{
+	padding: 2em;
+}
+
+.img-profile-section{
+	max-width: 80%;
+	max-height: 180px;
+
+}
 
 /*||||||||||||||||||| Footer |||||||||||||||||||||||*/
 
@@ -751,7 +858,7 @@ label span input {
 
 @media screen and (min-width: 1501px) and (max-width: 1920px) {
 
-/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
 
 
 	.table-config{
@@ -761,7 +868,7 @@ label span input {
 
 @media screen and (min-width: 1201px) and (max-width: 1500px) {
 
-/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
 
 
 	.center-card-img{
@@ -776,7 +883,7 @@ label span input {
 
 @media screen and (min-width: 993px) and (max-width: 1200px) {
 
-/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
 	.table-config{
 		display: table;
 	}
@@ -784,8 +891,8 @@ label span input {
 
 @media screen and (min-width: 768px) and (max-width: 992px) {
 
-/*||||||||||||||||||| Index |||||||||||||||||||||||*/
-	
+	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+
 	.font-navbar{
 		padding-top: 20px;
 		text-align: center;
@@ -796,13 +903,13 @@ label span input {
 		border: none;
 		box-shadow: none;
 	}
-	
+
 	.navbar-toggleable-md .navbar-nav .dropdown-menu{
 		.position: static;
-	    float: none;
-	    width: auto;
-	    text-align: center;
-	    margin: auto 30%;
+		float: none;
+		width: auto;
+		text-align: center;
+		margin: auto 30%;
 	}
 
 	.section-dashboard{
@@ -820,15 +927,14 @@ label span input {
 
 	.box-dashboard{
 		height: auto;
-	    width: auto;
-	    text-align: left;
-	    margin: auto 26%;
-	    margin-bottom: 100px;
+		width: auto;
+		text-align: left;
+		margin-bottom: 100px;
 	}
 
 	.box-register-table{
 		margin: 4% auto;
-   		width: 100%;
+		width: 100%;
 	}
 
 	/*|||||||||||||||| register step 1 |||||||||||||||||||*/
@@ -841,13 +947,19 @@ label span input {
 		min-height: 0;
 	}
 
+	.card-height{
+		max-height: 500px;
+		overflow-y: auto;
+	}
+
 }
+
 
 
 @media screen and (min-width: 520px) and (max-width: 767px) {
 
-/*||||||||||||||||||| Index |||||||||||||||||||||||*/
-	
+	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+
 	.font-navbar{
 		padding-top: 20px;
 		text-align: center;
@@ -879,24 +991,32 @@ label span input {
 
 	.box-register-table{
 		margin: 4% auto;
-	    width: 90%;
+		width: 90%;
 	}
 	.height-register3{
 		min-height: 0;
+	}
+
+	.card-height{
+		max-height: 400px;
+		overflow-y: auto;
+	}
+
+	.img-profile-section{
+		max-width: 100%;
 	}
 
 }
 
 @media (min-width: 576px){}
-	.modal-dialog1 {
-	    max-width: 680px;
-	    margin: 30px auto;
-	}
+.modal-dialog1 {
+	max-width: 680px;
+	margin: 30px auto;
 }
-@media screen and (min-width: 401px) and (max-width: 520px) {
+@media screen and (min-width: 401px) and (max-width: 519px) {
 
-/*||||||||||||||||||| Index |||||||||||||||||||||||*/
-	
+	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+
 	.font-navbar{
 		padding-top: 20px;
 		text-align: center;
@@ -932,7 +1052,17 @@ label span input {
 
 	.box-register-table{
 		margin: 4% auto;
-	    width: 90%;
+		width: 90%;
+	}
+
+
+	.card-height{
+		max-height: 460px;
+		overflow-y: auto;
+	}
+
+	.img-profile-section{
+		max-width: 100%;
 	}
 }
 
@@ -940,8 +1070,8 @@ label span input {
 
 @media only screen and (max-width: 400px) {
 
-/*||||||||||||||||||| Index |||||||||||||||||||||||*/
-	
+	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+
 	.font-navbar{
 		padding-top: 20px;
 		text-align: center;
@@ -972,10 +1102,26 @@ label span input {
 	}
 	.box-register-table{
 		margin: 4% auto;
-	    width: 90%;
+		width: 90%;
 	}
 
 	.height-register3{
 		min-height: 0;
 	}
+
+	.card-height{
+		max-height: 400px;
+		overflow-y: auto;
+	}
+
+	.img-profile-section{
+		max-width: 100%;
+	}
+
+	 /*||||||||||||||||||| Promotions Professionals |||||||||||||||||||||||*/
+
+	 .my-6{
+	 	margin: 2em auto;
+	 }
+
 }

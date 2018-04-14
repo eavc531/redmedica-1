@@ -21,28 +21,11 @@
 
 
         {!!Form::open(['route'=>'medicalCenter.store','method'=>'POST'])!!}
-          <div class="row mt-2">
-
-            <div class="col-lg-6 col-12">
-              <div class="form-group">
-                {{Form::text('id_medicalCenter',null,['class'=>'form-control','placeholder'=>'id del centro Medico'])}}
-              </div>
-
-            </div>
-            <div class="col-lg-6 col-12">
-              <div class="form-group">
-                {{Form::text('id_promoter',null,['class'=>'form-control','placeholder'=>'id del promotor (Opcional)'])}}
-
-              </div>
-
-            </div>
-            <!-- //////////////////////////////////AGREGAR ID DE CENTRO MEDICO -->
-          </div>
 
           <div class="row">
             <div class="col-lg-6 col-12">
               <div class="form-group">
-                {{Form::text('name',null,['class'=>'form-control','placeholder'=>'Nombre del centro Medico'])}}
+                {{Form::text('name',null,['class'=>'form-control','placeholder'=>'Nombre del Centro Medico'])}}
 
                 </div>
                 <div class="form-group">
@@ -51,10 +34,11 @@
             </div>
             <div class="col-lg-6 col-12">
                 <div class="form-group">
-                  {{Form::text('phone',null,['class'=>'form-control','placeholder'=>'Telefono'])}}
+
+                  {{Form::text('phone_admin',null,['class'=>'form-control','placeholder'=>'Telefono'])}}
                  </div>
                 <div class="form-group">
-                  {{Form::select('city',$cities,null,['class'=>'form-control','placeholder'=>'Ciudad'])}}
+                  {{Form::select('country',$countries,'México',['class'=>'form-control'])}}
                 </div>
             </div>
           </div>

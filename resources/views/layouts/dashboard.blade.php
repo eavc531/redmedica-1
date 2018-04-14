@@ -76,7 +76,7 @@
 							</div>
 							<div class="row p-1">
 								<div class="col-12 nopadding">
-									<a href="{{route('medico.edit', Auth::user()->id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user fa-2"></i><span>Editar Perfil</span></a>
+									<a href="{{route('medico.edit', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user fa-2"></i><span>Editar Perfil</span></a>
 								</div>
 								<div class="col-12 nopadding">
 									<a href="{{route('medico_diary',Auth::user()->id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Panel de control</span></a>

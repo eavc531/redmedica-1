@@ -20,18 +20,30 @@ class CreateMedicalCentersTable extends Migration
             $table->string('activePlan')->nullable();
             $table->string('emailAdmin',60);
             $table->string('nameAdmin');
-            $table->string('phone');
+            $table->string('phone_admin')->nullable();
+            $table->string('phone')->nullable();
             $table->string('phone2')->nullable();
-            $table->string('city');
+            $table->string('city')->nullable();
             $table->string('billingData')->nullable();
             $table->string('meansOfRecords')->nullable() ;
             $table->string('confirmation_code')->nullable();
-            $table->string('confirmation_statuss')->default('false');
+            $table->string('statuss')->nullable();
             $table->integer('id_promoter')->nullable();
             $table->string('plan')->nullable();
             $table->DateTime('activationPlan')->nullable();
             $table->string('role')->default('medical_center');
             $table->string('password')->nullable();
+            $table->string('country')->default('Mexíco');
+            $table->string('email_institution')->nullable();
+            $table->string('sanitary_license')->nullable();
+            $table->string('state')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('colony')->nullable();
+            $table->string('street')->nullable();
+            $table->string('number_ext')->nullable();
+            $table->string('number_int')->nullable();
+
+
             $table->timestamps();
 
         });

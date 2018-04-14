@@ -17,6 +17,18 @@ class DatabaseSeeder extends Seeder
         $this->call('statesAndCities');
 
 
+        DB::table('countries')->insert([
+       'name'=>'México',
+       ]);
+
+       DB::table('countries')->insert([
+      'name'=>'Peru',
+      ]);
+
+      DB::table('countries')->insert([
+     'name'=>'Chile',
+     ]);
+
       DB::table('specialties')->insert([
      'name'=>'psicologia',
      'specialty_category_id'=>1,

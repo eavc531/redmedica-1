@@ -57,6 +57,9 @@ route::get('medic/{id}/consulting_room/create','consulting_roomController@consul
 route::resource('patient','patientController');
 route::resource('medicalCenter','medicalCenterController');
 route::get('data/primordial/{id}/medical_center','medicalCenterController@data_primordial_medical_center')->name('data_primordial_medical_center');
+route::get('data/primordial/{id}/medical_center/address','medicalCenterController@data_primordial_medical_center2')->name('data_primordial_medical_center2');
+
+route::get('medical_center/{id}/panel','medicalCenterController@medical_center_panel')->name('medical_center_panel');
 
 route::resource('photo','photoController');
 route::get('medico/photo/delete/{id}','photoController@photo_delete')->name('photo_delete');
@@ -68,7 +71,8 @@ route::get('medico/{id}/info/create','medicoController@medico_specialty_create')
 route::post('medico/specialty/store','medicoController@medico_specialty_store')->name('medico_specialty_store');
 
 route::post('inner/cities/select','medicoController@inner_cities_select')->name('inner_cities_select');
-
+route::post('inner/cities/select2','medicoController@inner_cities_select2')->name('inner_cities_select2');
+route::post('inner/cities/select3','medicoController@inner_cities_select3')->name('inner_cities_select3');
 
 route::get('confirm/MedicalCenter/{id}/{code}','medicalCenterController@confirmMedicalCenter')->name('confirmMedicalCenter');
 route::get('confirm/medico/{id}/{code}','medicoController@confirmMedico')->name('confirmMedico');
@@ -78,13 +82,28 @@ route::get('confirm/assistant/{id}','assistantController@successRegAssistant')->
 
 route::get('confirm/MedicalCenter/{id}','medicalCenterController@successRegMedicalCenter')->name('successRegMedicalCenter');
 
+route::get('medicalCenter/{id}/edit/data','medicalCenterController@medical_center_edit_data')->name('medical_center_edit_data');
+route::post('medicalCenter/{id}/edit/data/update','medicalCenterController@medical_center_edit_data_update')->name('medical_center_edit_data_update');
+route::get('medicalCenter/{id}/edit/address','medicalCenterController@medical_center_edit_address')->name('medical_center_edit_address');
+route::post('medicalCenter/{id}/update/address','medicalCenterController@medical_center_update_address')->name('medical_center_update_address');
+route::get('medicalCenter/{id}/edit/schedule','medicalCenterController@medical_center_edit_schedule')->name('medical_center_edit_schedule');
+route::post('medicalCenter/{id}/store/schedule','medicalCenterController@medical_center_store_schedule')->name('medical_center_store_schedule');
+route::get('medicalCenter/{id}/delete/schedule','medicalCenterController@medical_center_schedule_delete')->name('medical_center_schedule_delete');
+
+route::get('send_mail/medicalCenter/{id}/code_confirmded','medicalCenterController@resend_mail_medical_center')->name('resend_mail_medical_center');
+route::get('medicalCenter/{id}/profile','medicalCenterController@medicalCenter_profile')->name('medicalCenter_profile');
+
 route::post('resend/mail/confirmation','medicoController@resendMailMedicoConfirm')->name('resendMailMedicoConfirm');
 
 route::get('list/result/','HomeController@tolist')->name('tolist');
 /////////////////////////////////////////////////////////////////////////////////borar
 route::get('list/result2','HomeController@tolist2')->name('tolist2');
-route::get('list/result3','HomeController@tolist3')->name('tolist3');
+route::get('list/result3 ','HomeController@tolist3')->name('tolist3');
 
+route::post('list/specialtyList1','HomeController@specialtyList1')->name('specialtyList1');
+route::post('list/specialtyList2','HomeController@specialtyList2')->name('specialtyList2');
+route::post('list/specialtyList3','HomeController@specialtyList3')->name('specialtyList3');
+route::post('list/specialtyList4','HomeController@specialtyList4')->name('specialtyList4');
 /////////////////////////////////////////////////////////////////////////////////borrar
 
 route::post('login2','Auth\LoginController@login2')->name('login2');
@@ -92,6 +111,7 @@ route::post('login2','Auth\LoginController@login2')->name('login2');
 route::post('logout','Auth\LoginController@logout')->name('logout');
 
 route::get('medical/centers/list','medicalCenterController@MedicalCenterList')->name('MedicalCenterList');
+
 route::get('medicos/list','medicoController@medicosList')->name('medicosList');
 
 

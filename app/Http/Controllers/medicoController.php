@@ -9,7 +9,6 @@ use App\User;
 use App\medicalCenter;
 use App\specialty;
 use App\specialty_category;
-
 use App\photo;
 use App\consulting_room;
 use App\medico_specialty;
@@ -22,11 +21,8 @@ use App\insurance_carrier;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
-
-
 class medicoController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -35,6 +31,26 @@ class medicoController extends Controller
 
      public function inner_cities_select(Request $request){
        $cities = city::where('state_id',$request->state_id)->orderBy('name','asc')->pluck('name','id');
+       return $cities;
+     }
+
+     public function inner_cities_select2(Request $request){
+
+       $cities = city::where('state_id',$request->state_id)->orderBy('name','asc')->pluck('name','name');
+       return $cities;
+     }
+
+     public function inner_cities_select3(Request $request){
+
+       $state = state::where('name', $request->name)->first();
+       $cities = city::where('state_id',$state->id)->orderBy('name','asc')->pluck('name','name');
+       return $cities;
+     }
+
+     public function inner_states_select(Request $request){
+
+       $state = state::where('name', $request->name)->first();
+       $cities = city::where('state_id',$state->id)->orderBy('name','asc')->pluck('name','name');
        return $cities;
      }
 
@@ -226,7 +242,6 @@ class medicoController extends Controller
       }
 
           $user->save();
-
          return redirect()->route('successRegMedico',$user->id)->with('warning', 'No se pudo verificar la autenticacion del usuario,por favor presione el boton "Reenviar Correo de Confirmación" para intentarlo Nuevamente.');
 
      }
@@ -240,7 +255,6 @@ class medicoController extends Controller
            'gender'=>'required',
            'email'=>'required|unique:medicos|unique:users',
            'password'=>'required',
-
            //'medicalCenter_id'=>'required',
            //'id_promoter'=>'nullable',
            'phone'=>'required|numeric',
@@ -251,7 +265,7 @@ class medicoController extends Controller
         $medico = new medico;
         $medico->fill($request->all());
         $medico->password = bcrypt($request->password);
-        $medico->state = 'medium';
+        $medico->stateConfirm = 'medium';
         $medico->save();
 
         $code = str_random(25);
@@ -346,8 +360,9 @@ class medicoController extends Controller
         $medico_specialty = medico_specialty::where('medico_id', $medico->id)->paginate(10);
         $social_networks = social_network::where('medico_id', $id)->get();
         $images = photo::where('medico_id', $medico->id)->where('type','image')->get();
+        $specialties = specialty::orderBy('name','asc')->pluck('name','name');
 
-        return view('medico.edit')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carriers',$insurance_carriers)->with('states', $states);
+        return view('medico.edit')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carriers',$insurance_carriers)->with('states', $states)->with('specialties', $specialties);
     }
 
     /**
@@ -367,6 +382,8 @@ class medicoController extends Controller
          'city_id'=>'required',
          'state_id'=>'required',
          'identification'=>'required',
+         'specialty'=>'required',
+         'sub_specialty'=>'required',
          //'email'=>'required|unique:medicos|unique:users',
          //'password'=>'required',
          //'medicalCenter_id'=>'required',
@@ -377,9 +394,9 @@ class medicoController extends Controller
 
       ]);
       $medico = medico::find($id);
-
       $medico->fill($request->all());
       //$medico->state = 'complete';
+
       $medico->save();
 
       if($request->ajax()){
