@@ -1,0 +1,481 @@
+.nopadding{
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.nomargin{
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+.box-register{
+	overflow-x: hidden;
+}
+
+.btn-config-green{
+	background-color: #799600;
+	border-color: #799600; 
+	color: #fff !important;
+}
+
+.btn-config-blue{
+	background-color: #0060df;
+	border-color: #0060df;
+	color: #fff !important;
+}
+
+.btn-config-dashboard{
+	background-color: #B7D065;
+	border-color: #B7D065;
+	color: #fff !important;
+	border-radius: 0;
+	font-size: 20px;
+	text-align: left;
+}
+
+.btn-config-dashboard:hover{
+	background-color: #799600;
+	border-color: #799600;
+	color: #000;
+}
+
+.form-control{
+	border: .5px solid #0060df;
+}
+
+.box-shadox{
+	box-shadow: 1px 1px 1px #000;
+}
+
+.btn-config-login{
+	color:#fff;
+	background-color: #B7D065;
+	border-color: #B7D065;
+}
+
+.btn-config-login:hover{
+	background-color: #799600;
+	border-color: #799600;
+	color: #fff;
+}
+
+.font-navbar:hover, .font-navbar:focus{
+	color: #799600;
+	text-decoration: none;
+}
+
+.thead-color{
+	background-color: #0060df;
+	color: #fff;
+}
+/*||||||||||||||||||| Modal |||||||||||||||||||||||*/
+
+.modal-checked{
+	color: #565656; 
+	font-size: 18px;
+}
+
+.registro-text{
+	font-size: 1.2em;
+}
+/*||||||||||||||||||| Navbar |||||||||||||||||||||||*/
+
+.img-navbar{
+	width: auto;
+	height: auto;
+	max-width: 230px;
+	max-height: 130px;
+}
+
+.navbar-config{
+	border-bottom: .3px solid #0060DF;
+	box-shadow: 0 1px 1px #0060DF;
+}
+
+.font-navbar{
+	color: #a1bc31;
+	font-size: 24px;
+	margin-left: 30px;
+	text-shadow: .5px .5px .5px solid #000;
+}
+
+.position-img-navbar{
+	position: absolute;
+	right: 1%;
+	top: 0%;
+}
+
+.navbar-head{
+	padding: auto 15px;
+}
+
+/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+
+.box-justify{
+	width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.hide{
+	display: none;
+}
+
+#panel, #flip {
+    padding: 5px;
+    text-align: center;
+    background-color: #a1bc31;
+    -webkit-box-shadow: 1px 1px 1px #000;
+-moz-box-shadow: 1px 1px 1px #000;
+box-shadow: 1px 1px 1px #000;
+}
+
+#panel {
+    height: auto;
+    display: none;
+
+}
+
+.font-title-index{
+	margin-top: .8em;
+	color: #0060df;
+	text-shadow: 1px 1px 1px solid #000; 
+}
+
+.white{
+	color: #fff;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+/* search */
+
+.search{
+	border-radius: 20px !important;
+	border: none;
+}
+
+.box-filter{
+	background-color: #fbfcf4;
+}
+
+.img-dashboard{
+	width: 100%;
+	height: 50px;
+}
+
+.img-icon{
+	font-size: 20px;
+}
+
+/**** box img  ****/
+
+.box-img{
+	border: 2px solid #a1bc31;
+	padding: 5px;
+	opacity: .8;
+
+}
+
+.box-img:hover{
+	border: 2px solid #0060df;
+	animation: 2s;
+	opacity: 1;
+}
+
+.box-index{
+	min-height: 450px;
+}
+
+.center-card-img{
+	margin: 10% auto;
+}
+
+
+
+/*||||||||||||||||||| Dashboard |||||||||||||||||||||||*/
+
+
+.section-dashboard{
+	margin-top: 50px;
+}
+
+.box-dashboard{
+	height: auto;
+	width: 100%;
+	text-align: left;
+}
+
+.font-dashboard{
+	font-size: 20px;
+	word-wrap: break-word;
+	text-align: left;
+}
+
+
+/*||||||||||||||||||| Register |||||||||||||||||||||||*/
+
+.font-title{
+	color: #799600;
+	font-weight: 550;
+}
+
+.box-register{
+	margin: 4% auto;
+	width: 60%;
+	min-height: 600px;
+}
+
+/**** register step 2 ***/
+
+.active-account{
+	font-size: 30px;
+	color: #799600;
+}
+
+
+
+/**** Register step 3 ***/
+
+
+.link-photo{
+	vertical-align: bottom;
+}
+
+.box-form{
+	border: 1px solid #ccc;
+	padding: 10px;
+}
+
+.center-label{
+	margin-top: 6.5px;
+}
+
+.height-register3{
+	min-height: 68px;
+}
+
+.edit-file{
+	background-color: #0060df;
+	border: none;
+	color: #fff;
+}
+
+.font-title-blue{
+	color:#0060df;
+	text-align: left;
+}
+
+.file {
+  visibility: hidden;
+  position: absolute;
+}
+
+/*||||||||||||||||||| Footer |||||||||||||||||||||||*/
+
+.section-footer{
+	background-color: #0060DF;
+}
+
+.buttons-footer{
+	height: 50px;
+	width: 50px;
+}
+
+.font-footer{
+	color:#fff;
+}
+
+@media screen and (min-width: 1201px) and (max-width: 1500px) {
+
+/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+
+	.box-index{
+		min-height: 550px;
+	}
+
+	.center-card-img{
+		margin: 10% auto;
+	}
+}
+
+
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+
+/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+
+/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+	
+	.font-navbar{
+		padding-top: 20px;
+		text-align: center;
+		margin-left: 0;
+	}
+
+	.navbar-config{
+		border: none;
+		box-shadow: none;
+	}
+	
+	.navbar-toggleable-md .navbar-nav .dropdown-menu{
+		.position: static;
+	    float: none;
+	    width: auto;
+	    text-align: center;
+	    margin: auto 30%;
+	}
+
+	.section-dashboard{
+		margin-top: 0;
+	}
+
+	.box-img{
+		margin-top: 30px;
+	}
+
+	.box-index  .my-5{
+		margin-top: 10px !important;
+		margin-bottom: 30px !important;
+	}
+
+	.box-dashboard{
+		height: auto;
+	    width: auto;
+	    text-align: left;
+	    margin: auto 26%;
+	}
+
+	/*|||||||||||||||| register step 1 |||||||||||||||||||*/
+
+	.box-register{
+		width: 100%;
+	}
+
+	.height-register3{
+		min-height: 0;
+	}
+
+}
+
+
+@media screen and (min-width: 520px) and (max-width: 767px) {
+
+/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+	
+	.font-navbar{
+		padding-top: 20px;
+		text-align: center;
+		margin-left: 0;
+	}
+
+	.navbar-config{
+		border: none;
+		box-shadow: none;
+	}
+	.section-dashboard{
+		margin-top: 0;
+	}
+
+	.box-img{
+		margin-top: 30px;
+	}
+
+	.box-index  .my-5{
+		margin-top: 10px !important;
+		margin-bottom: 30px !important;
+	}
+
+	/*|||||||||||||||| register step 1 |||||||||||||||||||*/
+
+	.box-register{
+		width: 100%;
+	}
+	.height-register3{
+		min-height: 0;
+	}
+
+}
+
+
+@media screen and (min-width: 401px) and (max-width: 520px) {
+
+/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+	
+	.font-navbar{
+		padding-top: 20px;
+		text-align: center;
+		margin-left: 0;
+	}
+
+	.navbar-config{
+		border: none;
+		box-shadow: none;
+	}
+	.section-dashboard{
+		margin-top: 0;
+	}
+
+	.box-img{
+		margin-top: 30px;
+	}
+
+	.box-index  .my-5{
+		margin-top: 10px !important;
+		margin-bottom: 30px !important;
+	}
+
+	/*|||||||||||||||| register step 1 |||||||||||||||||||*/
+
+	.box-register{
+		width: 100%;
+	}
+
+		.height-register3{
+		min-height: 0;
+	}
+}
+
+
+
+@media only screen and (max-width: 400px) {
+
+/*||||||||||||||||||| Index |||||||||||||||||||||||*/
+	
+	.font-navbar{
+		padding-top: 20px;
+		text-align: center;
+		margin-left: 0;
+	}
+
+	.navbar-config{
+		border: none;
+		box-shadow: none;
+	}
+	.section-dashboard{
+		margin-top: 0;
+	}
+
+	.box-img{
+		margin-top: 30px;
+	}
+
+	.box-index  .my-5{
+		margin-top: 10px !important;
+		margin-bottom: 30px !important;
+	}
+
+	/*|||||||||||||||| register step 1 |||||||||||||||||||*/
+
+	.box-register{
+		width: 100%;
+	}
+
+	.height-register3{
+		min-height: 0;
+	}
+}
