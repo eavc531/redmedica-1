@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-  <section class="section-dashboard">
+  <section class="box-register">
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-2">
@@ -79,6 +79,42 @@
         </div>
       </div>
       <hr>
+      {{-- section mapa --}}
+
+
+
+      <div class="row my-4">
+        <div class="col-12">
+          <h4 class="font-title-blue text-center">Ubicacion en el mapa</h4>
+        </div>
+        <p class="text-justify">La Ubicación exacta permite que el usuario pueda ubicar su Centro Medico, o institución con mayor facilidad, a travez de las busquedas de filtros, en el menu principal</p>
+
+        <p class="text-justify">Cuando añade los datos de Dirección, automaticamente el sistema ubicara esta direccion en el mapa sin embargo, muchas veces no suele ser preciso, debido a que la dirección registrada,no concuerda con la base de datos de google maps, esto se puede corregir manualmente.</p>
+
+        <p><strong>Ubicar dirección Manualmente.</strong></p>
+
+        <p class="text-justify">acceda al mapa a continuacion, realize la busqueda rellenado el campo 'direccion/ciudad/pais' y/o arrastre el marcador al punto de la dirección deseada, luego presione el boton "Guardar Ubicacion"</p>
+      </div>
+      <div class="m-2">
+        <div class="form-inline">
+            <input type="text" name="" value="" id="address">
+            <button onclick="searchInMap()" type="button" name="button">Buscar</button>
+        </div>
+
+      </div>
+      <div class="mt-3">
+        {{-- //div que muestra el mapa --}}
+        <div class="m-1" id="map" style="height:300px;width:auto">
+
+        </div>
+        <button id="store_coordinates"type="button" name="button" onclick="store_coordinates()" disabled>Guardar Ubicacion </button>
+        <button type="button" name="button" onclick="show_map()">Restablecer Marcador</button>
+        <input type="hidden" name="latitudSave" value="" id="latitudSave">
+        <input type="hidden" name="longitudSave" value="" id="longitudSave">
+      </div>
+      </div>
+
+      <hr>
       <div class="row my-4">
         <div class="col-12">
           <h4 class="font-title-blue text-center">Horario de atención</h4>
@@ -100,11 +136,101 @@
           <tbody>
             <tr>
               <td>
-                {{-- @foreach ($lunes as $day)
-                  {{$day->hour_ini}}
-                          a
-                  {{$day->hour_end}}
-                @endforeach --}}
+                @foreach ($lunes as $day)
+                  <ul>
+                    <li>
+                      {{$day->hour_ini}}
+                              a
+                      {{$day->hour_end}}
+
+                    </li>
+
+                      <hr>
+                  </ul>
+                @endforeach
+              </td>
+              <td>
+                @foreach ($martes as $day)
+                  <ul>
+                    <li>
+                      {{$day->hour_ini}}
+                              a
+                      {{$day->hour_end}}
+
+                    </li>
+
+                      <hr>
+                  </ul>
+                @endforeach
+              </td>
+              <td>
+                @foreach ($miercoles as $day)
+                  <ul>
+                    <li>
+                      {{$day->hour_ini}}
+                              a
+                      {{$day->hour_end}}
+
+                    </li>
+
+                      <hr>
+                  </ul>
+                @endforeach
+              </td>
+              <td>
+                @foreach ($jueves as $day)
+                  <ul>
+                    <li>
+                      {{$day->hour_ini}}
+                              a
+                      {{$day->hour_end}}
+
+                    </li>
+
+                      <hr>
+                  </ul>
+                @endforeach
+              </td>
+              <td>
+                @foreach ($viernes as $day)
+                  <ul>
+                    <li>
+                      {{$day->hour_ini}}
+                              a
+                      {{$day->hour_end}}
+
+                    </li>
+
+                      <hr>
+                  </ul>
+                @endforeach
+              </td>
+              <td>
+                @foreach ($sabado as $day)
+                  <ul>
+                    <li>
+                      {{$day->hour_ini}}
+                              a
+                      {{$day->hour_end}}
+
+                    </li>
+
+                      <hr>
+                  </ul>
+                @endforeach
+              </td>
+              <td>
+                @foreach ($domingo as $day)
+                  <ul>
+                    <li>
+                      {{$day->hour_ini}}
+                              a
+                      {{$day->hour_end}}
+
+                    </li>
+                      <hr>
+                  </ul>
+                @endforeach
               </td>
             </tr>
           </tbody>
@@ -126,16 +252,20 @@
        <div class="col-12">
          <h4 class="font-title-blue text-center">Descripción</h4>
        </div>
+
      </div>
      <div class="row mb-3">
       <div class="col-lg-8 col-12 m-lg-auto ">
-        <input type="text" class="form-control" placeholder="Detalle de breve descripción del centro medico y/o hospital">
+
+        <div id="div_descripion">
+
+        </div>
       </div>
     </div>
     <hr>
     <div class="row my-3">
       <div class="col-12 mb-1">
-       <h4 class="font-title-blue text-center">Especialides</h4>
+       <h4 class="font-title-blue text-center">Especialidades</h4>
      </div>
    </div>
    <div class="row">
@@ -169,30 +299,34 @@
   </div>
   </div>
   <div class="row">
-  <div class="col-lg-9 col-12 m-auto">
-    <form class="form-inline">
+  <div class=" m-auto">
+    {{-- <form class="form-inline">
       <input class="form-control w-100 col-lg-10 col-12" type="search" placeholder="Search" aria-label="Buscar">
       <button class="btn btn-outline-primary my-2 my-sm-2 col-lg-2 col-12" type="submit">Buscar</button>
-    </form>
-    <ul class="list-group mt-3">
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Agregar medico nuevo a la red afiliado a este centro
-        <button class="btn badge badge-danger"><i class="fas fa-ban fa-2x"></i></button>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Agregar medico nuevo a la red afiliado a este centro
-        <button class="btn badge badge-danger"><i class="fas fa-ban fa-2x"></i></button>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Agregar medico nuevo a la red afiliado a este centro
-        <button class="btn badge badge-danger"><i class="fas fa-ban fa-2x"></i></button>
-      </li>
-    </ul>
+    </form> --}}
+    <table class="table table-bordered">
+      <thead>
+          <th>Cedula</th>
+          <th>Nombre Completo</th>
+          <th>correo</th>
+          <th>Especialidad</th>
+      </thead>
+      @foreach ($medicos as $medico)
+        <tbody>
+            <td>{{$medico->identification}}</td>
+            <td>{{$medico->name}} {{$medico->lastName}}</td>
+            <td>{{$medico->email}}</td>
+            <td>{{$medico->specialty}}</td>
+        </tbody>
+      @endforeach
+
+    </table>
   </div>
   </div>
   <div class="row my-3">
   <div class="col-12 text-right">
-   <a href="" data-toggle="modal" data-target="#modal-service2" class="btn btn-success"><i class="fas fa-plus"></i>Agregar</a>
+    <a href="{{route('medical_center_manage_medicos',$medicalCenter->id)}}" data-target="#modal-service2" class="btn btn-primary">Administrar</a>
+   <a href="{{route('medical_center_manage_medicos',$medicalCenter->id)}}" data-target="#modal-service2" class="btn btn-success ">Agregar</a>
    <hr>
   </div>
   </div>
@@ -319,59 +453,23 @@
   <div class="row my-3">
   <div class="col-lg-9 col-12 m-auto">
     <div class="custom-control custom-radio custom-control-inline">
-      <input type="radio" id="show-question1" name="customRadioInline1" class="custom-control-input">
+      <input type="radio" id="show-question1" name="customRadioInline1">
       <label class="custom-control-label" for="show-question1">Solo pacientes privados</label>
     </div>
     <div class="custom-control custom-radio custom-control-inline">
-      <input type="radio" id="show-question2" name="customRadioInline1" class="custom-control-input">
+      <input type="radio" id="show-question2" name="customRadioInline1">
       <label class="custom-control-label" for="show-question2">Pacientes por aseguradoras, convenios y privados</label>
     </div>
-    <div class="card border-primary p-3 mt-3" id="panel-insurance" style="display: none;">
+    <div class="card border-primary p-3 mt-3" id="panel-insurance" style="display:none;">
+      <a href="{{route('create_add_insurrances',$medicalCenter->id)}}" class="btn btn-success btn-block">Agregar Aseguradoras</a>
       <div class="row">
-        <div class="col-6">
-         <div class="custom-control custom-radio">
-          <input type="radio" id="customRadio11" name="customRadio" class="custom-control-input">
-          <label class="custom-control-label" for="customRadio11">AXA</label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input type="radio" id="customRadio12" name="customRadio" class="custom-control-input">
-          <label class="custom-control-label" for="customRadio12">Met Life</label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input type="radio" id="customRadio13" name="customRadio" class="custom-control-input">
-          <label class="custom-control-label" for="customRadio13">Seguros monterrey</label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-          <label class="custom-control-label" for="customRadio2">Gnp Grupo Provincial</label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input type="radio" id="customRadio14" name="customRadio" class="custom-control-input">
-          <label class="custom-control-label" for="customRadio14">Mapfre Seguros Tepeyac</label>
-        </div>
+
       </div>
-      <div class="col-6">
-        <div class="custom-control custom-radio">
-         <input type="radio" id="customRadio16" name="customRadio" class="custom-control-input">
-         <label class="custom-control-label" for="customRadio16">ING</label>
-       </div>
-       <div class="custom-control custom-radio">
-         <input type="radio" id="customRadio17" name="customRadio" class="custom-control-input">
-         <label class="custom-control-label" for="customRadio17">Seguros Atlas</label>
-       </div>
-       <div class="custom-control custom-radio">
-         <input type="radio" id="customRadio18" name="customRadio" class="custom-control-input">
-         <label class="custom-control-label" for="customRadio18">Alianz</label>
-       </div>
-       <div class="custom-control custom-radio">
-         <input type="radio" id="customRadio19" name="customRadio" class="custom-control-input">
-         <label class="custom-control-label" for="customRadio19">Zurich</label>
-       </div>
-     </div>
+
    </div>
    <hr>
    <div class="text-center">
-     <a href="" class="btn btn-success" data-toggle="modal" data-target="#modal-insurance"><i class="fas fa-plus mr-2"></i>Agregar otro seguro</a>
+     {{-- <a href="" class="btn btn-success" data-toggle="modal" data-target="#modal-insurance"><i class="fas fa-plus mr-2"></i>Agregar otro seguro</a> --}}
    </div>
   </div>
   </div>
@@ -571,4 +669,208 @@
   </div>
 
 
+  {{-- //modal description --}}
+  <div class="modal fade" id="modal-service2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+       {{-- alert error  --}}
+       <div id="alert_error_service" class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none;margin:10px">
+        <p id="text_error_service"></p>
+      </div>
+
+      <div class="modal-body">
+       <div class="row">
+
+        <div class="col-12 text-center">
+         <h4>Descripción del Centro Médico</h4>
+       </div>
+
+       <div class="col-12 mt-3">
+
+         {!!Form::text('description',null,['class'=>'form-control','id'=>'input_description'])!!}
+         {{-- {!!Form::hidden('medicalCenter_id',$medicalCenter->id,['class'=>'form-control','id'=>'medicalCenter_id'])!!} --}}
+
+       </div>
+
+     </div>
+     <div class="row mt-3">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6">
+            <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Cancelar</button>
+          </div>
+          <div class="col-6">
+            <button onclick="store_description()" name="button" class="btn btn-block btn-primary">Guardar</button>
+          </div>
+        </div>
+
+     </div>
+   </div>
+  </div>
+  </div>
+  </div>
+  </div>
+@endsection
+
+@section('scriptJS')
+  <script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY"></script>
+
+  <script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
+  <script type="text/javascript">
+
+    // function show_insurance(){
+    //   $('#panel-insurance').show();
+    // }
+
+
+    $('document').ready(function(){
+      show_description();
+      show_map();
+
+    });
+
+    function show_map(){
+      $('#store_coordinates').attr('disabled', true);
+      lat = '{{$medicalCenter->latitud}}';
+      lng = '{{$medicalCenter->longitud}}';
+      var map = new GMaps({
+        el: '#map',
+        lat: lat,
+        lng: lng,
+        zoom: 5,
+      });
+      map.addMarker({
+        lat: lat,
+        lng: lng,
+        title: 'Tu Ubicacion',
+        icon: "{{asset('img/marker-icon.png')}}",
+        draggable: true,
+           dragend: function(event) {
+             var lat = event.latLng.lat();
+             var lng = event.latLng.lng();
+             $('#latitudSave').val(lat);
+             $('#longitudSave').val(lng);
+             $('#store_coordinates').attr('disabled', false);
+
+           },
+
+    });//fin marker
+    }
+
+      function searchInMap(){
+        var map = new GMaps({
+          el: '#map',
+          zoom: 5,
+
+        });
+        $('#store_coordinates').attr('disabled', false);
+
+        GMaps.geocode({
+        address: $('#address').val(),
+        callback: function(results, status) {
+          if (status == 'OK') {
+            var latlng = results[0].geometry.location;
+            var lat = latlng.lat();
+            var lng = latlng.lng();
+            $('#latitudSave').val(lat);
+            $('#longitudSave').val(lng);
+            map.  setCenter(latlng.lat(), latlng.lng());
+            map.addMarker({
+              lat: latlng.lat(),
+              lng: latlng.lng(),
+
+              title: 'Tu Ubicacion',
+              icon: "{{asset('img/marker-icon.png')}}",
+              draggable: true,
+                 dragend: function(event) {
+                     var lat = event.latLng.lat();
+                     var lng = event.latLng.lng();
+                     $('#latitudSave').val(lat);
+                     $('#longitudSave').val(lng);
+                     $('#store_coordinates').attr('disabled', false);
+                 },
+
+                 // infoWindow: {
+                 //     content: content
+                 // }
+          });//fin marker
+          }
+        }
+      });
+    }//fin searchInMap
+
+    function store_coordinates(){
+      route = '{{route('medicalCenter_store_coordinates',$medicalCenter->id)}}';
+      latitud = $('#latitudSave').val();
+      longitud = $('#longitudSave').val();
+
+        $.ajax({
+           headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+           type:'post',
+           url:route,
+           data:{latitud:latitud,longitud:longitud},
+           error:function(error){
+            console.log(error);
+          },
+          success:function(result){
+            console.log(result);
+            // //$('#input_descripion').val(result);
+            // $('#div_descripion').html(result);
+            // decription = $('#description_text').html();
+            // $('#input_description').val(decription);
+          }
+        });
+    }
+
+
+    function show_description(){
+      route = '{{route('medicalCenter_description_show',$medicalCenter->id)}}';
+      $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url:route,
+       // data:{},
+       error:function(error){
+
+        console.log(error);
+      },
+      success:function(result){
+        console.log(result);
+        //$('#input_descripion').val(result);
+        $('#div_descripion').html(result);
+        decription = $('#description_text').html();
+        $('#input_description').val(decription);
+      }
+    });
+
+    }
+  function store_description(){
+
+    description = $('#input_description').val();
+    //medicalCenter_id = 'xxssd';
+    route = "{{route('medicalCenter_description_update',$medicalCenter->id)}}";
+    errormsj = '';
+    $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url:route,
+     data:{description:description},
+     error:function(error){
+      $.each(error.responseJSON.errors, function(index, val){
+        errormsj+='<li>'+val+'</li>';
+      });
+      $('#text_error_service').html('<ul>'+errormsj+'</ul>');
+      $('#alert_error_service').fadeIn();
+      console.log(errormsj);
+    },
+    success:function(result){
+      console.log(result);
+      $('#modal-service2').modal('toggle');
+      show_description();
+    }
+  });
+
+  }
+  </script>
 @endsection

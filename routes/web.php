@@ -16,6 +16,7 @@ route::get('/', function () {
     return redirect()->route('home');
 });
 
+
 Route::resource('city','cityController');
 
 Route::get('loginRedirect', 'Auth\LoginController@loginRedirect')->name('loginRedirect');
@@ -56,12 +57,22 @@ route::get('medic/{id}/consulting_room/create','consulting_roomController@consul
 
 route::resource('patient','patientController');
 route::resource('medicalCenter','medicalCenterController');
+
+
+route::get('medicalCenter/{id}/create/add/insurrances','medicalCenterController@create_add_insurrances')->name('create_add_insurrances');
+route::post('medicalCenter/{id}/store/insurrances','medicalCenterController@medicalCenter_store_insurrances')->name('medicalCenter_store_insurrances');
+route::get('medicalCenter/insurance/{id}/delete','medicalCenterController@delete_insurance')->name('delete_insurance');
+
+
 route::get('data/primordial/{id}/medical_center','medicalCenterController@data_primordial_medical_center')->name('data_primordial_medical_center');
 route::get('data/primordial/{id}/medical_center/address','medicalCenterController@data_primordial_medical_center2')->name('data_primordial_medical_center2');
 
 route::get('medical_center/{id}/panel','medicalCenterController@medical_center_panel')->name('medical_center_panel');
 
 route::resource('photo','photoController');
+
+route::get('medico/{id}/map/show','HomeController@detail_medic_map')->name('detail_medic_map');
+
 route::get('medico/photo/delete/{id}','photoController@photo_delete')->name('photo_delete');
 route::post('image/medico/store','photoController@image_store')->name('image_store');
 
@@ -82,10 +93,24 @@ route::get('confirm/assistant/{id}','assistantController@successRegAssistant')->
 
 route::get('confirm/MedicalCenter/{id}','medicalCenterController@successRegMedicalCenter')->name('successRegMedicalCenter');
 
+route::post('medicalCenter/{id}/description','medicalCenterController@medicalCenter_description_show')->name('medicalCenter_description_show');
+route::post('medicalCenter/{id}/description/update','medicalCenterController@medicalCenter_description_update')->name('medicalCenter_description_update');
+
+route::get('medicalCenter/{id}/manage/medicos','medicalCenterController@medical_center_manage_medicos')->name('medical_center_manage_medicos');
+route::get('medicalCenter/{id}/search/medico','medicalCenterController@search_medico_medical_center')->name('search_medico_medical_center');
+
 route::get('medicalCenter/{id}/edit/data','medicalCenterController@medical_center_edit_data')->name('medical_center_edit_data');
 route::post('medicalCenter/{id}/edit/data/update','medicalCenterController@medical_center_edit_data_update')->name('medical_center_edit_data_update');
+route::post('medicalCenter/add/medico','medicalCenterController@medical_center_add_medico')->name('medical_center_add_medico');
+
 route::get('medicalCenter/{id}/edit/address','medicalCenterController@medical_center_edit_address')->name('medical_center_edit_address');
+
+route::get('medico/{id}/edit/address','medicoController@medico_edit_address')->name('medico_edit_address');
+
+
 route::post('medicalCenter/{id}/update/address','medicalCenterController@medical_center_update_address')->name('medical_center_update_address');
+route::post('medico/{id}/update/address','medicoController@medico_update_address')->name('medico_update_address');
+
 route::get('medicalCenter/{id}/edit/schedule','medicalCenterController@medical_center_edit_schedule')->name('medical_center_edit_schedule');
 route::post('medicalCenter/{id}/store/schedule','medicalCenterController@medical_center_store_schedule')->name('medical_center_store_schedule');
 route::get('medicalCenter/{id}/delete/schedule','medicalCenterController@medical_center_schedule_delete')->name('medical_center_schedule_delete');
@@ -98,13 +123,14 @@ route::post('resend/mail/confirmation','medicoController@resendMailMedicoConfirm
 route::get('list/result/','HomeController@tolist')->name('tolist');
 /////////////////////////////////////////////////////////////////////////////////borar
 route::get('list/result2','HomeController@tolist2')->name('tolist2');
-route::get('list/result3 ','HomeController@tolist3')->name('tolist3');
+route::post('ajax/map','HomeController@ajax_map')->name('ajax_map');
 
 route::post('list/specialtyList1','HomeController@specialtyList1')->name('specialtyList1');
 route::post('list/specialtyList2','HomeController@specialtyList2')->name('specialtyList2');
 route::post('list/specialtyList3','HomeController@specialtyList3')->name('specialtyList3');
 route::post('list/specialtyList4','HomeController@specialtyList4')->name('specialtyList4');
 /////////////////////////////////////////////////////////////////////////////////borrar
+route::post('map/medicalCenter','HomeController@map_medical_center_name')->name('map_medical_center_name');
 
 route::post('login2','Auth\LoginController@login2')->name('login2');
 
@@ -149,3 +175,5 @@ route::get('permissions/{id}/store/{id2}/','PermissionSetController@PermissionSe
 
 route::get('clients/promoter/{id}','promotersController@clientsPromoter')->name('clientsPromoter');
 //sroute::get('edit/price/{id}/plan','plansController@PermissionSet')->name('editPrice');
+route::post('medicalCenter/{id}/coordinates/store','medicalCenterController@medicalCenter_store_coordinates')->name('medicalCenter_store_coordinates');
+route::post('medico/{id}/coordinates/store','medicoController@medico_store_coordinates')->name('medico_store_coordinates');

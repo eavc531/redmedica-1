@@ -26,7 +26,6 @@
             <div class="col-lg-6 col-12">
               <div class="form-group">
                 {{Form::text('name',null,['class'=>'form-control','placeholder'=>'Nombre del Centro Medico'])}}
-
                 </div>
                 <div class="form-group">
                   {{Form::text('nameAdmin',null,['class'=>'form-control','placeholder'=>'Nombre del Administrador'])}}

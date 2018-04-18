@@ -42,20 +42,17 @@
                     {!!Form::select('mins_end',['00'=>'00','15'=>'15','30'=>'30','45'=>'45'],null,['class'=>'form-control','id'=>'minsEndUp'])!!}
                   </div>
                     </div>
-                    
+
                     <div class="form-group mt-3" >
                         <input type="submit" name="" value="Guardar" class="btn btn-config-green">
+                        <a href="{{route('medicalCenter.edit',$medicalCenter->id)}}" class="btn btn-primary">Cancelar</a>
                     </div>
 
                     {!!Form::close()!!}
               </div>
             </div>
           </div>
-
-
         </div>
-
-
       </div>
             <div class=" mt-3">
               <table class="table table-bordered">

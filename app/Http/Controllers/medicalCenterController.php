@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\country;
 use App\user;
 use Illuminate\Http\Request;
@@ -12,7 +11,13 @@ use App\state;
 use App\city;
 use App\Role;
 use App\day;
-
+use App\medico;
+use App\Http\Controllers\HomeController;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Geocoder;
+use App\insurrance_show;
+use App\insurance_carrier;
 class medicalCenterController extends Controller
 {
   /**
@@ -25,6 +30,89 @@ class medicalCenterController extends Controller
     // $this->Middleware('medicalCenterConfirm',['only'=>['edit']]);
 
   }
+    public function create_add_insurrances(Request $request,$id){
+      $insurrance_show = insurrance_show::orderBy('name','asc')->get();
+      $insurances = insurance_carrier::where('medical_center_id',$id)->get();
+      return view('medicalCenter.create_add_insurrances')->with('insurrance_show', $insurrance_show)->with('insurances', $insurances);
+    }
+
+    public function medicalCenter_store_insurrances(Request $request,$id){
+      $request->validate([
+        'name'=>'required|unique:insurance_carriers'
+      ]);
+
+      $insurance = new insurance_carrier;
+      $insurance->name = $request->name;
+      $insurance->medical_center_id = $id;
+      $insurance->save();
+
+      return back()->with('success', 'Aseguradora agregada con exito');
+    }
+
+    public function medical_center_add_medico(Request $request){
+      //$medicalCenter = medicalCenter::find($request->medicalCenter_id);
+
+      $medico = medico::find($request->medico_id);
+      //$medico->latitud = $medicalCenter->latitud;
+      //$medico->longitud = $medicalCenter->longitud;
+      $medico->medicalCenter_id = $request->medicalCenter_id;
+      $medico->save();
+
+      return redirect()->route('medical_center_manage_medicos',$request->medicalCenter_id)->with('success', 'El medico: '.$medico->name.' '.$medico->lastName.' ha sido agregado a este Centro Médico de forma Exitosa');
+    }
+
+    public function search_medico_medical_center(Request $request,$id){
+
+    $medicos = medico::where('medicalCenter_id', $id)->get();
+    $medicosSearch = medico::where('name','LIKE','%'.$request->search.'%')
+    ->orWhere('lastName','LIKE','%'.$request->search.'%')
+    ->orWhere('identification','LIKE','%'.$request->search.'%')->get();
+    // $medicosSearchCount = medico::where('name','LIKE','%'.$request->search.'%')
+    // ->orWhere('lastName','LIKE','%'.$request->search.'%')
+    // ->orWhere('identification','LIKE','%'.$request->search.'%')->count();
+
+    $data = [];
+      foreach ($medicosSearch as $medico) {
+        if($medico->medicalCenter_id == Null){
+          $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'city'=>$medico->city,];
+        }
+
+      }
+    //  dd($data);
+      $currentPage = LengthAwarePaginator::resolveCurrentPage();
+      $col = new Collection($data);
+      $perPage = 4;
+      $currentPageSearchResults = $col->slice(($currentPage - 1) * $perPage, $perPage)->all();
+      $medicosSearch = new LengthAwarePaginator($currentPageSearchResults, count($col), $perPage);
+      $medicosSearch->setPath(route('search_medico_medical_center',$id));
+      $medicosSearchCount = $medicosSearch->count();
+
+    //  dd($medicosSearch);
+
+    return view('medicalCenter.medical_center_manage_medicos')->with('medicosSearch', $medicosSearch)->with('medicosSearchCount', $medicosSearchCount)->with('medicos', $medicos);
+  }
+
+  public function medical_center_manage_medicos($id){
+    $medicos = medico::where('medicalCenter_id', $id)->orderBy('name','asc')->paginate(10);
+    return view('medicalCenter.medical_center_manage_medicos')->with('medicos', $medicos);
+  }
+
+    public function medicalCenter_description_update(Request $request,$id){
+      $request->validate([
+        'description'=>'required|string|max:255'
+      ]);
+      $medicalCenter = medicalCenter::find($id);
+
+      $medicalCenter->description = $request->description;
+      $medicalCenter->save();
+      return response()->json('ok');
+    }
+
+    public function medicalCenter_description_show($id){
+      $medicalCenter = medicalCenter::find($id);
+      return view('medicalCenter.view_AJAX.description_medicalCenter')->with('medicalCenter', $medicalCenter);
+      //return response()->json($medicalCenter->description);
+    }
 
   public function medical_center_edit_schedule($id){
     $medicalCenter = medicalCenter::find($id);
@@ -44,7 +132,7 @@ class medicalCenterController extends Controller
 
     $day = day::find($id);
     $day->delete();
-  
+
     return back()->with('danger', 'se a eliminado horas de la columna: '.$day->name);
   }
   public function medical_center_store_schedule(Request $request,$id){
@@ -72,6 +160,7 @@ class medicalCenterController extends Controller
   }
 
   public function medical_center_update_address(Request $request,$id){
+
       $request->validate([
         'country'=>'required',
         'state'=>'required',
@@ -82,6 +171,14 @@ class medicalCenterController extends Controller
         'number_ext'=>'required',
       ]);
 
+        // $Coordinates =
+        //  Geocoder::getCoordinatesForAddress($request->number_ext,$request->street,$request->colony,$request->city,$request->state,$request->country);
+
+
+         $Coordinates = Geocoder::getCoordinatesForAddress($request->country.','.$request->city.','.$request->colony.','.$request->street.','.$request->number_ext);
+
+
+
         $medicalCenter = medicalCenter::find($id);
         $medicalCenter->country = $request->country;
         $medicalCenter->state = $request->state;
@@ -91,6 +188,8 @@ class medicalCenterController extends Controller
         $medicalCenter->street = $request->street;
         $medicalCenter->number_ext = $request->number_ext;
         $medicalCenter->number_int = $request->number_int;
+        $medicalCenter->longitud = $Coordinates['lng'];
+        $medicalCenter->latitud = $Coordinates['lat'];
         $medicalCenter->save();
 
 
@@ -283,9 +382,19 @@ class medicalCenterController extends Controller
      */
     public function edit($id)
     {
-      $medicalCenter = medicalCenter::find($id);
+      $medicos = medico::where('medicalCenter_id', $id)->get();
 
-      return view('medicalCenter.edit')->with('medicalCenter', $medicalCenter);
+      // /dd($medicos);
+      $medicalCenter = medicalCenter::find($id);
+      $lunes = day::where('name', 'lunes')->orderBy('hour_ini','asc')->get();
+      $martes = day::where('name', 'martes')->orderBy('hour_ini','asc')->get();
+      $miercoles = day::where('name', 'miercoles')->orderBy('hour_ini','asc')->get();
+      $jueves = day::where('name', 'jueves')->orderBy('hour_ini','asc')->get();
+      $viernes = day::where('name', 'viernes')->orderBy('hour_ini','asc')->get();
+      $sabado = day::where('name', 'sabado')->orderBy('hour_ini','asc')->get();
+      $domingo = day::where('name', 'domingo')->orderBy('hour_ini','asc')->get();
+
+      return view('medicalCenter.edit')->with('medicalCenter', $medicalCenter)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('medicos', $medicos);
 
     }
 
@@ -349,4 +458,24 @@ class medicalCenterController extends Controller
     {
         //
     }
+
+    public function delete_insurance(Request $request,$id)
+    {
+      $insurance_carrier = insurance_carrier::find($id);
+      $name = $insurance_carrier->name;
+      $insurance_carrier->delete();
+
+      return back()->with('danger', 'La aseguradora: '.$name.' ha sido eliminada.');
+    }
+    public function medicalCenter_store_coordinates(Request $request,$id)
+    {
+      $medicalCenter = medicalCenter::find($id);
+      $medicalCenter->longitud = $request->longitud;
+      $medicalCenter->latitud = $request->latitud;
+      $medicalCenter->save();
+
+      return response()->json('ok');
+
+    }
+
 }

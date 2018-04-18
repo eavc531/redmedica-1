@@ -172,11 +172,74 @@
 			 {!!Form::close()!!}
 	 </div>
 <hr>
+
+<div class="row my-4">
+	<div class="col-12">
+		<h4 class="font-title-blue text-center">Dirección de Trabajo Principal</h4>
+	</div>
+</div>
+<div class="row text-left">
+	<div class="col-6">
+		<ul>
+			<li><strong>Pais:</strong> {{$medico->country}}</li>
+			<li><strong>Estado:</strong> {{$medico->state}}</li>
+			<li><strong>Ciudad:</strong> {{$medico->city}}</li>
+			<li><strong>Codigo Postal:</strong> {{$medico->postal_code}}</li>
+		</ul>
+	</div>
+	<div class="col-6">
+		<ul>
+			<li><strong>Colonia:</strong>
+				{{$medico->colony}}
+			</li>
+				<li><strong>Calle/av:</strong>{{$medico->street}}</li>
+			<li><strong>Numero Externo:</strong> {{$medico->number_ext}}</li>
+			<li><strong>Numero Interno:</strong> {{$medico->number_int}}</li>
+		</ul>
+
+		<a class="btn btn-success btn-block"href="{{route('medico_edit_address',$medico->id)}}">Editar</a>
+	</div>
+</div>
+<hr>
+{{-- section mapa --}}
+
+
+
+<div class="row my-4">
+	<div class="col-12">
+		<h4 class="font-title-blue text-center">Ubicacion en el mapa</h4>
+	</div>
+	<p class="text-justify">La Ubicación exacta permite que el usuario pueda ubicar su Centro Medico, o institución con mayor facilidad, a travez de las busquedas de filtros, en el menu principal</p>
+
+	<p class="text-justify">Cuando añade los datos de Dirección, automaticamente el sistema ubicara esta direccion en el mapa sin embargo, muchas veces no suele ser preciso, debido a que la dirección registrada,no concuerda con la base de datos de google maps, esto se puede corregir manualmente.</p>
+
+	<p><strong>Ubicar dirección Manualmente.</strong></p>
+
+	<p class="text-justify">acceda al mapa a continuacion, realize la busqueda rellenado el campo 'direccion/ciudad/pais' y/o arrastre el marcador al punto de la dirección deseada, luego presione el boton "Guardar Ubicacion"</p>
+</div>
+<div class="m-2">
+	<div class="form-inline">
+			<input type="text" name="" value="" id="address">
+			<button onclick="searchInMap()" type="button" name="button">Buscar</button>
+	</div>
+
+</div>
+<div class="mt-3">
+	{{-- //div que muestra el mapa --}}
+	<div class="m-1" id="map" style="height:300px;width:auto">
+
+	</div>
+	<button id="store_coordinates"type="button" name="button" onclick="store_coordinates()" disabled>Guardar Ubicacion</button>
+	<button type="button" name="button" onclick="show_map()">Restablecer Marcador</button>
+	<input type="hidden" name="latitudSave" value="" id="latitudSave">
+	<input type="hidden" name="longitudSave" value="" id="longitudSave">
+</div>
+</div>
 <hr>
 <div class="row">
   <div class="col-12">
     <h4 class="font-title-blue text-center">Consultorios</h4>
-    <hr>
+
   </div>
 </div>
 <div class="row">
@@ -611,6 +674,9 @@
 @endsection
 
 @section('scriptJS')
+	<script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY"></script>
+
+  <script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
@@ -922,6 +988,107 @@ function updateMedic(){
 function cerrar(){
 	$('#alert_error_update').fadeOut();
 	$('#alert_success_update').fadeOut();
+}
+
+
+//mapa
+$('document').ready(function(){
+	show_map();
+
+});
+
+function show_map(){
+	$('#store_coordinates').attr('disabled', false);
+	lat = '{{$medico->latitud}}';
+	lng = '{{$medico->longitud}}';
+	var map = new GMaps({
+		el: '#map',
+		lat: lat,
+		lng: lng,
+		zoom: 5,
+	});
+	map.addMarker({
+		lat: lat,
+		lng: lng,
+		title: 'Tu Ubicacion',
+		icon: "{{asset('img/marker-icon.png')}}",
+		draggable: true,
+			 dragend: function(event) {
+				 var lat = event.latLng.lat();
+				 var lng = event.latLng.lng();
+				 $('#latitudSave').val(lat);
+				 $('#longitudSave').val(lng);
+				  $('#store_coordinates').attr('disabled', false);
+
+			 },
+
+});//fin marker
+}
+
+	function searchInMap(){
+		$('#store_coordinates').attr('disabled', false);
+		var map = new GMaps({
+			el: '#map',
+			zoom: 5,
+
+		});
+
+		GMaps.geocode({
+		address: $('#address').val(),
+		callback: function(results, status) {
+			if (status == 'OK') {
+				var latlng = results[0].geometry.location;
+				var lat = latlng.lat();
+				var lng = latlng.lng();
+				$('#latitudSave').val(lat);
+				$('#longitudSave').val(lng);
+				map.  setCenter(latlng.lat(), latlng.lng());
+				map.addMarker({
+					lat: latlng.lat(),
+					lng: latlng.lng(),
+
+					title: 'Tu Ubicacion',
+					icon: "{{asset('img/marker-icon.png')}}",
+					draggable: true,
+						 dragend: function(event) {
+								 var lat = event.latLng.lat();
+								 var lng = event.latLng.lng();
+								 $('#latitudSave').val(lat);
+								 $('#longitudSave').val(lng);
+								  $('#store_coordinates').attr('disabled', false);
+						 },
+
+						 // infoWindow: {
+						 //     content: content
+						 // }
+			});//fin marker
+			}
+		}
+	});
+}//fin searchInMap
+
+function store_coordinates(){
+	route = '{{route('medico_store_coordinates',$medico->id)}}';
+	latitud = $('#latitudSave').val();
+	longitud = $('#longitudSave').val();
+
+		$.ajax({
+			 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			 type:'post',
+			 url:route,
+			 data:{latitud:latitud,longitud:longitud},
+			 error:function(error){
+				console.log(error);
+			},
+			success:function(result){
+
+				console.log(result);
+				// //$('#input_descripion').val(result);
+				// $('#div_descripion').html(result);
+				// decription = $('#description_text').html();
+				// $('#input_description').val(decription);
+			}
+		});
 }
 </script>
 

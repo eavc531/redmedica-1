@@ -42,8 +42,9 @@ class CreateMedicalCentersTable extends Migration
             $table->string('street')->nullable();
             $table->string('number_ext')->nullable();
             $table->string('number_int')->nullable();
-
-
+            $table->string('description')->nullable();
+            $table->string('longitud')->nullable();
+            $table->string('latitud')->nullable();
             $table->timestamps();
 
         });

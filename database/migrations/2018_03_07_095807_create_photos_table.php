@@ -18,6 +18,8 @@ class CreatePhotosTable extends Migration
             $table->string('name');
             $table->string('path');
             $table->string('type')->nullable();
+            $table->integer('medicalCenter_id')->unsigned()->nullable();
+            $table->foreign('medicalCenter_id')->references('id')->on('medical_centers');
 
             $table->integer('medico_id')->unsigned()->nullable();
             $table->foreign('medico_id')->references('id')->on('medicos');

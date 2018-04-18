@@ -18,6 +18,7 @@ use App\medico_experience;
 use App\social_network;
 use App\Role;
 use App\insurance_carrier;
+use Geocoder;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
@@ -29,19 +30,70 @@ class medicoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     public function medico_edit_address($id){
+       $medico = medico::find($id);
+       $cities = city::orderBy('name','asc')->pluck('name','name');
+       $states = state::orderBy('name','asc')->pluck('name','name');
+        return view('medico.edit_address')->with('medico', $medico)->with('cities', $cities)->with('states', $states);
+     }
+
+     public function medico_update_address(Request $request,$id){
+
+         $request->validate([
+           'country'=>'required',
+           'state'=>'required',
+           'city'=>'required',
+           'postal_code'=>'required',
+           'colony'=>'required',
+           'street'=>'required',
+           'number_ext'=>'required',
+         ]);
+
+          if($request->city == 'opciones'){
+            return back()->with('warning', 'El campo ciudad es requerido');
+          }
+           // $Coordinates =
+           //  Geocoder::getCoordinatesForAddress($request->number_ext,$request->street,$request->colony,$request->city,$request->state,$request->country);
+
+            $Coordinates = Geocoder::getCoordinatesForAddress($request->country.','.$request->city.','.$request->colony.','.$request->street.','.$request->number_ext);
+
+           $state = state::where('name',$request->state)->first();
+
+           $city = city::where('name',$request->city)->first();
+
+           $medico = medico::find($id);
+           $medico->country = $request->country;
+           $medico->state = $request->state;
+           $medico->city = $request->city;
+           $medico->state_id = $state->id;
+           $medico->city_id = $city->id;
+
+           $medico->postal_code = $request->postal_code;
+           $medico->colony = $request->colony;
+           $medico->street = $request->street;
+           $medico->number_ext = $request->number_ext;
+           $medico->number_int = $request->number_int;
+           $medico->longitud = $Coordinates['lng'];
+           $medico->latitud = $Coordinates['lat'];
+           $medico->save();
+
+
+        return redirect()->route('medico.edit',$medico->id)->with('medico', $medico)->with('success','Se han actualziado datos de la Dirección de su trabajo principal');
+     }
+
+
+
      public function inner_cities_select(Request $request){
        $cities = city::where('state_id',$request->state_id)->orderBy('name','asc')->pluck('name','id');
        return $cities;
      }
 
      public function inner_cities_select2(Request $request){
-
        $cities = city::where('state_id',$request->state_id)->orderBy('name','asc')->pluck('name','name');
        return $cities;
      }
 
      public function inner_cities_select3(Request $request){
-
        $state = state::where('name', $request->name)->first();
        $cities = city::where('state_id',$state->id)->orderBy('name','asc')->pluck('name','name');
        return $cities;
@@ -393,8 +445,12 @@ class medicoController extends Controller
          //'facebook'=>'required',
 
       ]);
+      $city = city::find($request->city_id);
+
       $medico = medico::find($id);
       $medico->fill($request->all());
+      $medico->latitud = $city->latitud;
+      $medico->longitud = $medico->longitud;
       //$medico->state = 'complete';
 
       $medico->save();
@@ -417,5 +473,16 @@ class medicoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function medico_store_coordinates(Request $request,$id)
+    {
+      $medico = medico::find($id);
+      $medico->longitud = $request->longitud;
+      $medico->latitud = $request->latitud;
+      $medico->save();
+
+      return response()->json('ok');
+
     }
 }

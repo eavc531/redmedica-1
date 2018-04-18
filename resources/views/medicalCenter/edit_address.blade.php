@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="box-register">
+<section class="box">
   <div class="row">
 <div class="row">
   <div class="col-12 mb-3">
@@ -60,7 +60,7 @@
   <div class="col-lg-3 col-12">
     <div class="form-group row">
       <label for="" class="col-lg-7 col-12 col-form-label">Numero Interno</label>
-      {{Form::text('number_int',null,['class'=>'form-control'])}}
+      {{Form::text('number_int',null,['class'=>'form-control','id'=>'input2'])}}
     </div>
   </div>
 </div>
@@ -73,14 +73,49 @@
   </div>
 </div>
 {!!Form::close()!!}
+
+    <div class="mt-4">
+      <input type="text" name="" value="" id="input">
+      <button type="button" name="button" id="find">test</button>
+      <div class="mt-3" id="my_input" style="height:400px;width:600px">
+
+      </div>
+    </div>
+
+
 </div>
 </div>
 </section>
+
+
+
+
+
+</div>
+
 @endsection
 
 @section('scriptJS')
 
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDh9hTFPYHnnfVtoHSXysAdzQjmxKuZd3s"></script>
+  <script src="{{asset('geocoder_autocomplete\jquery.geocomplete.js')}}"></script>
 <script type="text/javascript">
+
+$(document).ready(function(){
+
+
+  $("#input").geocomplete({
+    map:"#my_input"
+  });
+
+});
+
+$("#find").click(function(){
+  $("input").trigger("geocode");
+});
+
+
+/////////////////////////////
 
 $('#state').on('change', function() {
 
