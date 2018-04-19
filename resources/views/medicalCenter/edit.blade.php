@@ -256,7 +256,7 @@
      </div>
      <div class="row mb-3">
       <div class="col-lg-8 col-12 m-lg-auto ">
-
+        <a href="" data-toggle="modal" data-target="#modal-service2" class="btn btn-success"><i class="fas fa-plus"></i>Agregar</a>
         <div id="div_descripion">
 
         </div>
@@ -270,26 +270,14 @@
    </div>
    <div class="row">
     <div class="col-lg-9 col-12 m-auto">
-      <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          Cras justo odio
-          <button class="btn badge badge-danger"><i class="fas fa-ban fa-2x"></i></button>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          Dapibus ac facilisis in
-          <button class="btn badge badge-danger"><i class="fas fa-ban fa-2x"></i></button>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          Morbi leo risus
-          <button class="btn badge badge-danger"><i class="fas fa-ban fa-2x"></i></button>
-        </li>
-      </ul>
+      <div class="" id="div_list_specialty">
+
+      </div>
     </div>
   </div>
-
   <div class="row my-3">
     <div class="col-12 text-right">
-     <a href="" data-toggle="modal" data-target="#modal-service2" class="btn btn-success"><i class="fas fa-plus"></i>Agregar</a>
+     <button onclick="modal_specialty()" class="btn btn-success"><i class="fas fa-plus"></i>Agregar</button>
      <hr>
    </div>
   </div>
@@ -304,6 +292,8 @@
       <input class="form-control w-100 col-lg-10 col-12" type="search" placeholder="Search" aria-label="Buscar">
       <button class="btn btn-outline-primary my-2 my-sm-2 col-lg-2 col-12" type="submit">Buscar</button>
     </form> --}}
+    {{-- @if ($medicos->count() > 0)
+
     <table class="table table-bordered">
       <thead>
           <th>Cedula</th>
@@ -311,6 +301,8 @@
           <th>correo</th>
           <th>Especialidad</th>
       </thead>
+
+
       @foreach ($medicos as $medico)
         <tbody>
             <td>{{$medico->identification}}</td>
@@ -321,12 +313,13 @@
       @endforeach
 
     </table>
+    @endif --}}
   </div>
   </div>
   <div class="row my-3">
   <div class="col-12 text-right">
-    <a href="{{route('medical_center_manage_medicos',$medicalCenter->id)}}" data-target="#modal-service2" class="btn btn-primary">Administrar</a>
-   <a href="{{route('medical_center_manage_medicos',$medicalCenter->id)}}" data-target="#modal-service2" class="btn btn-success ">Agregar</a>
+
+   <a href="{{route('medical_center_manage_medicos',$medicalCenter->id)}}" data-target="#modal-service2" class="btn btn-success ">Ver/Administrar</a>
    <hr>
   </div>
   </div>
@@ -338,98 +331,100 @@
    <hr>
   </div>
   </div>
-  <div class="row">
-  <div class="col-12">
+
+    <div id="div_list_experience" style="text-align:justify">
+
+    </div>
+    <div class="row my-3">
+    <div class="col-12 text-right">
+
+     <button onclick="modal_experience()" class="btn btn-success " type="button">Agregar</button>
+     <hr>
+    </div>
+    </div>
     <div class="row">
-      <div class="col-lg-12">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Ingresa aqui el nombre del trastorno o enfermedad en la que tengas mas experiencia o por el que te busquen mas.">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Ingresa aqui el nombre del trastorno o enfermedad en la que tengas mas experiencia o por el que te busquen mas.">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Ingresa aqui el nombre del trastorno o enfermedad en la que tengas mas experiencia o por el que te busquen mas.">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-12 text-center">
-    <button class="btn btn-success">Guardar</button>
-  </div>
-  </div>
-  <hr>
-  <div class="row">
-  <div class="col-12">
-   <h4 id="imgs" class="font-title-blue text-center">Imagenes o videos</h4>
-  </div>
-  </div>
-  <div class="row">
-  <div class="col-lg-6 col-md-6 col-12">
-    <div class="form-group">
-      <input type="file" name="img[]" class="file">
-      <div class="input-group col-xs-12">
-        <span class="btn btn-config-blue"><i class="fas fa-images"></i></span>
-        <input type="text" class="form-control input-lg" disabled placeholder="Upload Image">
-        <span class="input-group-btn">
-          <button class="browse btn btn-config-blue input-lg" type="button"> Agrega una imagen</button>
-        </span>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-6 col-md-6 col-12">
-    <div class="form-group">
-      <input type="file" name="img[]" class="file">
-      <div class="input-group col-xs-12">
-        <span class="btn btn-config-blue"><i class="fas fa-video"></i></span>
-        <input type="text" class="form-control input-lg" disabled placeholder="Upload Video">
-        <span class="input-group-btn">
-          <button class="browse btn btn-config-blue input-lg" type="button"> Agrega un video</button>
-        </span>
-      </div>
-    </div>
-  </div>
-  <!--   <div class="col-12">
-   <div class="form-group">
-     <div class="row" id="">
+      <div class="col-12">
+       <h4 id="imgs" class="font-title-blue text-center">Imagenes</h4>
 
+     </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+       <div class="form-group">
+         @include('medico.alert2.alert2')
+         <div class="row" id="">
+          @foreach ($images as $image)
+          {{-- div que encierra cada imagen --}}
+          <div class="col my-2">
+            <img src="{{asset($image->path)}}" width="auto" height="80px" alt="">
+            <a onclick="return confirm('¿Esta seguro de eliminar esta Imagen?')"href="{{route('photo_delete',$image->id)}}">x</a>
+          </div>
+          @endforeach
+        </div>
 
-      <div class="col my-2">
-        <img src="" width="auto" height="80px" alt="">
-        <a onclick="return confirm('¿Esta seguro de eliminar esta Imagen?')">x</a>
+        {!!Form::open(['route'=>'image_store_medical_center','method'=>'POST','files'=>true])!!}
+        {!!Form::hidden('medicalCenter',$medicalCenter->id)!!}
+        {!!Form::hidden('email',$medicalCenter->email)!!}
+        {!!Form::hidden('medicalCenter_id',$medicalCenter->id)!!}
+        <div class="form-group col-6">
+          <input type="file" name="image" class="file">
+          <div class="input-group col-xs-12">
+            <span class="btn btn-config-blue"><i class="fas fa-images"></i></span>
+            <input type="text" class="form-control input-lg" disabled placeholder="Imagen">
+            <span class="input-group-btn">
+              <button class="browse btn btn-config-blue input-lg" type="button"> Agrega una imagen</button>
+            </span>
+          </div>
+        </div>
+        {!!Form::submit('Subir Imagen',['class'=>'btn btn-success'])!!}
+        {!!Form::close()!!}
       </div>
+    </div>
     </div>
     <hr>
-  </div>
-  </div> -->
-  </div>
-  <hr>
+
   <div class="row my-3">
   <div class="col-12">
    <h4 class="font-title-blue text-center">Mis redes sociales</h4>
   </div>
   </div>
+
   <div class="row">
-  <div class="col-lg-3 col-md-4 col-12">
-    <div class="form-group">
-      <select name="" class="form-control" id="">
-        <option value="">Facebook</option>
-        <option value="">Twitter</option>
-        <option value="">Google+</option>
-      </select>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-lg-3 col-12">
+          <div class="form-group">
+            {!!Form::select('name',['Facebook'=>'Facebook','Twiter'=>'Twiter','Instagram'=>'Instagram'],null,['class'=>'form-control','placeholder'=>'Red Social','id'=>'name_social'])!!}
+          </div>
+        </div>
+        <div class="col-lg-7 col-12">
+          <div class="form-group">
+            {!!Form::text('link',null,['class'=>'form-control','placeholder'=>'Ingrese la Dirección Url del perfil de su Red Social','id'=>'link_social'])!!}
+            {!!Form::hidden('medicalCenter_id',$medicalCenter->id,['id'=>'medicalCenter_id'])!!}
+          </div>
+        </div>
+        <div class="col-lg-2 col-12">
+          <div class="form-group">
+            <button onclick="storeSocial()" type="button" name="button" class="btn btn-block btn-success">Agregar</button>
+          </div>
+        </div>
+
+        {{-- alert error  --}}
+        <div id="alert_error_s" class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none">
+          <p id="text_error_s"></p>
+        </div>
+
+        {{-- {!! $errors->first('name','<span class="help-block">:message</span>') !!} --}}
+      </div>
+
+      {{-- BOTONES QUE SE MUESTRAN CON AJAX DESDE LISTA-Social --}}
+      <div id="list_social_ajax">
+
+      </div>
+
     </div>
   </div>
-  <div class="col-lg-7 col-md-4 col-12">
-    <div class="form-group">
-     <input type="text" class="form-control" placeholder="Agrega Url de tu red social">
-   </div>
-  </div>
-  <div class="col-lg-2 col-md-4 col-12">
-  <div class="form-group">
-    <button onclick="storeSocial()" type="button" name="button" class="btn btn-block btn-success">Agregar</button>
-  </div>
-  </div>
-  </div>
+
   <div class="row">
   <div class="col-lg-4 col-12">
     <div class="list-group" id="list-tab" role="tablist">
@@ -486,231 +481,7 @@
   </section>
 
 
-  <!-- Modal note medic -->
-  <div class="modal fade bd-example-modal-lg" id="add-pad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title font-title text-center" id="exampleModalLabel">Configura las que utilices</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row align-self-center">
-          <div class="col-6">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck2">
-              <label class="custom-control-label" for="customCheck2">Altura</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck3">
-              <label class="custom-control-label" for="customCheck3">Peso</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck4">
-              <label class="custom-control-label" for="customCheck4">Teperatura</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck5">
-              <label class="custom-control-label" for="customCheck5">Frecuencia cardiaca</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck6">
-              <label class="custom-control-label" for="customCheck6">Frecuencia respiratoria</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck7">
-              <label class="custom-control-label" for="customCheck7">Oxigenación</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck8">
-              <label class="custom-control-label" for="customCheck8">Indice de masa corporal</label>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck9">
-              <label class="custom-control-label" for="customCheck9">Perimetro cefalico</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck10">
-              <label class="custom-control-label" for="customCheck10">Porcentaje de masa muscular</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck11">
-              <label class="custom-control-label" for="customCheck11">Cintura</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck12">
-              <label class="custom-control-label" for="customCheck12">Cadera</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck13">
-              <label class="custom-control-label" for="customCheck13">Pierna</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck14">
-              <label class="custom-control-label" for="customCheck14">Brazo</label>
-            </div>
-          </div>
-          <hr>
-        </div>
-        <div class="row mt-3">
-          <div class="col-8">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Escriba aquí si quiere agregar mas">
-            </div>
-          </div>
-          <div class="col-4">
-            <a href="" class="btn btn-primary"><i class="fas fa-plus"></i></a>
-            <a href="" class="btn btn-danger"><i class="fas fa-ban"></i></a>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-config-green" data-dismiss="modal">Atras</button>
-        <button type="button" class="btn btn-config-blue">Agregar</button>
-      </div>
-    </div>
-  </div>
-  </div>
-  <!-- Modal test-laboratory-->
-  <div class="modal fade bd-example-modal-lg" id="test-laboratory2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title font-title text-center" id="exampleModalLabel">Configura las que utilices</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row align-self-center">
-          <div class="col-6">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck15">
-              <label class="custom-control-label" for="customCheck15">Altura</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck16">
-              <label class="custom-control-label" for="customCheck16">Peso</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck17">
-              <label class="custom-control-label" for="customCheck17">Teperatura</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck18">
-              <label class="custom-control-label" for="customCheck18">Frecuencia cardiaca</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck19">
-              <label class="custom-control-label" for="customCheck19">Frecuencia respiratoria</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck20">
-              <label class="custom-control-label" for="customCheck20">Oxigenación</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck21">
-              <label class="custom-control-label" for="customCheck21">Indice de masa corporal</label>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck22">
-              <label class="custom-control-label" for="customCheck22">Perimetro cefalico</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck23">
-              <label class="custom-control-label" for="customCheck23">Porcentaje de masa muscular</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck24">
-              <label class="custom-control-label" for="customCheck24">Cadera</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck25">
-              <label class="custom-control-label" for="customCheck25">Pierna</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck26">
-              <label class="custom-control-label" for="customCheck26">Brazo</label>
-            </div>
-          </div>
-          <hr>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-12">
-            <a href="">Mis parametros de monitoreo</a>
-          </div>
-          <div class="col-lg-6 col-12">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Nombre de mis parametros de laboratorio">
-            </div>
-          </div>
-          <div class="col-lg-3 col-6">
-            <input type="text" class="form-control" placeholder="Abreviatura">
-          </div>
-          <div class="col-lg-3 col-6">
-            <a href="" class="btn btn-primary"><i class="fas fa-plus"></i></a>
-            <a href="" class="btn btn-danger"><i class="fas fa-ban"></i></a>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-config-green" data-dismiss="modal">Atras</button>
-        <button type="button" class="btn btn-config-blue">Agregar</button>
-      </div>
-    </div>
-  </div>
-  </div>
-
-
-  {{-- //modal description --}}
-  <div class="modal fade" id="modal-service2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-
-       {{-- alert error  --}}
-       <div id="alert_error_service" class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none;margin:10px">
-        <p id="text_error_service"></p>
-      </div>
-
-      <div class="modal-body">
-       <div class="row">
-
-        <div class="col-12 text-center">
-         <h4>Descripción del Centro Médico</h4>
-       </div>
-
-       <div class="col-12 mt-3">
-
-         {!!Form::text('description',null,['class'=>'form-control','id'=>'input_description'])!!}
-         {{-- {!!Form::hidden('medicalCenter_id',$medicalCenter->id,['class'=>'form-control','id'=>'medicalCenter_id'])!!} --}}
-
-       </div>
-
-     </div>
-     <div class="row mt-3">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-6">
-            <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Cancelar</button>
-          </div>
-          <div class="col-6">
-            <button onclick="store_description()" name="button" class="btn btn-block btn-primary">Guardar</button>
-          </div>
-        </div>
-
-     </div>
-   </div>
-  </div>
-  </div>
-  </div>
-  </div>
+  @include('medicalCenter/modal_edit/modals')
 @endsection
 
 @section('scriptJS')
@@ -727,7 +498,9 @@
     $('document').ready(function(){
       show_description();
       show_map();
-
+      medicalCenter_list_specialty();
+      medicalCenter_list_experience();
+      list_social();
     });
 
     function show_map(){
@@ -866,11 +639,250 @@
     },
     success:function(result){
       console.log(result);
+      $('#input_description').val('');
       $('#modal-service2').modal('toggle');
       show_description();
     }
   });
 
+}
+
+function medicalCenter_list_specialty(){
+
+ route = "{{route('medicalCenter_list_specialty',$medicalCenter->id)}}";
+ medicalCenter_id = '{{$medicalCenter->id}}';
+
+ $.ajax({
+   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+   type:'post',
+   url: route,
+   data:{medicalCenter_id:medicalCenter_id},
+   success:function(result){
+     console.log(result);
+     $('#div_list_specialty').empty().html(result);
+   },
+   error:function(error){
+     console.log(error);
+   },
+ });
+}
+
+function medicalCenter_list_experience(){
+
+ route = "{{route('medicalCenter_list_experience',$medicalCenter->id)}}";
+ medicalCenter_id = '{{$medicalCenter->id}}';
+
+ $.ajax({
+   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+   type:'post',
+   url: route,
+   data:{medicalCenter_id:medicalCenter_id},
+   success:function(result){
+     console.log(result);
+     $('#div_list_experience').empty().html(result);
+   },
+   error:function(error){
+     console.log(error);
+   },
+ });
+}
+
+  function medical_center_experience_store(){
+      name = $('#input_experience').val();
+      //medicalCenter_id = 'xxssd';
+      route = "{{route('medical_center_experience_store',$medicalCenter->id)}}";
+      errormsj = '';
+      $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url:route,
+       data:{name:name},
+       error:function(error){
+        $.each(error.responseJSON.errors, function(index, val){
+          errormsj+='<li>'+val+'</li>';
+        });
+        $('#text_error_experience').html('<ul>'+errormsj+'</ul>');
+        $('#alert_error_experience').fadeIn();
+        console.log(errormsj);
+      },
+      success:function(result){
+        console.log(result);
+        $('#input_experience').val('');
+        $('#modal_experience').modal('toggle');
+        medicalCenter_list_experience();
+      }
+    });
   }
+
+  function medical_center_specialty_store(){
+
+    name = $('#input_specialty').val();
+    //medicalCenter_id = 'xxssd';
+    route = "{{route('medical_center_specialty_store',$medicalCenter->id)}}";
+    errormsj = '';
+    $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url:route,
+     data:{name:name},
+     error:function(error){
+      $.each(error.responseJSON.errors, function(index, val){
+        errormsj+='<li>'+val+'</li>';
+      });
+      $('#text_error_specialty').html('<ul>'+errormsj+'</ul>');
+      $('#alert_error_specialty').fadeIn();
+      console.log(errormsj);
+    },
+    success:function(result){
+      console.log(result);
+      $('#input_specialty').val('');
+      $('#modal-specialty').modal('toggle');
+      medicalCenter_list_specialty();
+    }
+  });
+
+  }
+
+    function medical_experience_delete(id){
+      pre = confirm('¿Esta segur@ de Eliminar esta Especialidad?');
+      if(pre == false){
+        return;
+      }
+      route = "{{route('medical_experience_delete')}}";
+      id = id;
+      errormsj = '';
+      $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url:route,
+       data:{id:id},
+       error:function(error){
+        console.log(error);
+      },
+      success:function(result){
+        console.log(result);
+        medicalCenter_list_experience();
+      }
+    });
+    }
+
+    function medical_specialty_delete(id){
+      pre = confirm('¿Esta segur@ de Eliminar esta Especialidad?');
+      if(pre == false){
+        return;
+      }
+      route = "{{route('medical_specialty_delete')}}";
+      id = id;
+      errormsj = '';
+      $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url:route,
+       data:{id:id},
+       error:function(error){
+        console.log(error);
+      },
+      success:function(result){
+        console.log(result);
+        medicalCenter_list_specialty();
+      }
+    });
+    }
+
+    function modal_specialty(){
+      $('#modal-specialty').modal('toggle');
+      $('#modal-specialty').on('shown.bs.modal', function() {
+          $('#input_specialty').focus();
+        });
+
+    }
+    function modal_experience(){
+      $('#modal_experience').modal('toggle');
+      $('#modal_experience').on('shown.bs.modal', function() {
+          $('#input_experience').focus();
+        });
+
+    }
+
+    function storeSocial(){
+      medicalCenter_id = $('#medicalCenter_id').val();
+      name = $('#name_social').val();
+      link = $('#link_social').val();
+      route = "{{route('medicalCenter_social_store')}}";
+      errormsj = '';
+
+      $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type:'post',
+        url:route,
+        data:{name:name,link:link,medicalCenter_id:medicalCenter_id},
+        error:function(error){
+         $.each(error.responseJSON.errors, function(index, val){
+           errormsj+='<li>'+val+'</li>';
+         });
+         $('#text_error_s').html('<ul>'+errormsj+'</ul>');
+         $('#alert_error_s').fadeIn();
+         console.log(errormsj);
+       },
+       success:function(result){
+         console.log(result);
+         $('#alert_error_s').fadeOut();
+         name = $('#name_social').val('');
+         link = $('#link_social').val('');
+         list_social();
+       }
+     });
+    }
+
+    function list_social(){
+     route = "{{route('medicalCenter_social_list')}}";
+
+     medicalCenter_id = '{{$medicalCenter->id}}';
+
+     $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url: route,
+       data:{medicalCenter_id:medicalCenter_id},
+       success:function(result){
+         $('#list_social_ajax').empty().html(result);
+         console.log(result);
+
+       },
+       error:function(error){
+         console.log(error);
+       },
+     });
+   }
+
+   function social_network_delete(social_id){
+     id = social_id;
+     errormsj = '';
+     question = confirm('¿Esta seguro de Borrar esta Red Social?');
+     if(question == false){
+      exit();
+    }
+    route = "{{route('borrar_social')}}";
+    $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     method:'post',
+     url:route,
+     data:{id:id},
+     error:function(error){
+      $.each(error.responseJSON.errors, function(index, val){
+        errormsj+='<li>'+val+'</li>';
+      });
+      $('#text_error_s').html('<ul>'+errormsj+'</ul>');
+      $('#alert_error_s').fadeIn();
+      console.log(errormsj);
+    },
+    success:function(result){
+      console.log(result);
+      list_social();
+
+    },
+   });
+
+   }
   </script>
 @endsection

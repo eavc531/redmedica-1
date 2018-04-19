@@ -412,7 +412,7 @@
                 <div class="box-img">
                   {{Form::open(['route'=>'specialtyList3','method'=>'post'])}}
                   {{Form::hidden('typeSearch','Terapeutas y Nutricion')}}
-                  <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-11.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+                  <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-09.jpg')}}" alt="" width="100%" class="img-responsive"></button>
                   {{Form::close()}}
                 </div>
               </div>

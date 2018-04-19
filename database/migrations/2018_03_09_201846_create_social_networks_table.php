@@ -18,9 +18,11 @@ class CreateSocialNetworksTable extends Migration
             $table->string('name');
             $table->string('name_user')->nullable();
             $table->string('link');
-            $table->integer('medico_id')->unsigned();
+            $table->integer('medico_id')->unsigned()->nullable();
             $table->foreign('medico_id')->references('id')->on('medicos');
-            
+            $table->integer('medicalCenter_id')->unsigned()->nullable();
+            $table->foreign('medicalCenter_id')->references('id')->on('medical_centers');
+
             $table->timestamps();
         });
     }

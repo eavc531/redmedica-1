@@ -32,6 +32,8 @@ class LoginController extends Controller
           Auth::logout();
           return redirect()->route('successRegMedicalCenter',$medical_center->id);
         }
+      }else{
+        return redirect()->route('home');
       }
 
     }

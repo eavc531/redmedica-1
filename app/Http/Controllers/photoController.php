@@ -57,7 +57,7 @@ class photoController extends Controller
         }
 
         $namePhoto = $nameP.'.'.$extension;
-        $pathSave = 'users/'.$request->email.'/photos';
+        $pathSave = 'img/users/'.$request->identification.'/photos';
 
         $photo = new photo;
         $photo->name = $nameP;
@@ -99,7 +99,7 @@ class photoController extends Controller
           }
 
           $namePhoto = $nameP.'.'.$extension;
-          $pathSave = 'users/'.$request->email.'/photos';
+          $pathSave = 'img/users/'.$request->identification.'/photos';
 
           $photo = new photo;
           $photo->name = $nameP;
@@ -119,6 +119,88 @@ class photoController extends Controller
 
     }
 
+
+    public function photo_perfil_medical_store(Request $request)
+    {
+        $request->validate([
+          'image'=>'image|required'
+        ]);
+
+        $extension = $request->file('image')->getClientOriginalExtension();
+        //$photoCount = photo::where('medicalCenter_id',$request->medicalCenter_id)->count();
+
+        $photoCount = photo::where('medicalCenter_id',$request->medicalCenter_id)->orderBy('id','desc')->count();
+        $photos = photo::where('medicalCenter_id',$request->medicalCenter_id)->orderBy('id','desc')->first();
+
+        if($photoCount == 0){
+          $nameP = 1;
+        }else{
+          $nameP = $photos->id + 1;
+        }
+
+        $namePhoto = $nameP.'.'.$extension;
+        $pathSave = 'img/medicalCenter/'.$request->identification.'/photos';
+
+        $photo = new photo;
+        $photo->name = $nameP;
+        $photo->path = $pathSave.'/'.$namePhoto;
+        $photo->type = 'perfil';
+        $photo->medicalCenter_id = $request->medicalCenter_id;
+        $photo->save();
+
+        $request->file('image')->move($pathSave,$namePhoto);
+
+        return back()->with('success', 'Nueva imagen de Perfil establecida');
+    }
+
+    public function image_store_medical_center(Request $request)
+    {
+
+      if(empty($request->file('image'))){
+        return back()->with('warning2', 'Debes seleccionar una Imagen');
+
+      }
+
+      $extension = $request->file('image')->getClientOriginalExtension();
+
+        if($extension == 'jpg' or $extension == 'jpeg' or $extension == 'png'){
+
+          $photoCount = photo::where('medicalCenter_id',$request->medicalCenter_id)->count();
+          $photoImageCount = photo::where('medicalCenter_id',$request->medicalCenter_id)->where('type','image')->count();
+
+          if($photoImageCount >= 8){
+            return back()->with('warning2', 'Has excedido el numero de Imagenes que es posible almacenar en tu Cuenta.');
+          }
+          $photos = photo::where('medicalCenter_id',$request->medicalCenter_id)->orderBy('id','desc')->first();
+
+
+          if($photoCount == 0){
+            $nameP = 1;
+          }else{
+            $nameP = $photos->id + 1;
+          }
+
+          $namePhoto = $nameP.'.'.$extension;
+          $pathSave = 'img/medicalCenter/'.$request->identification.'/photos';
+
+          $photo = new photo;
+          $photo->name = $nameP;
+          $photo->path = $pathSave.'/'.$namePhoto;
+
+          $photo->medicalCenter_id = $request->medicalCenter_id;
+          $photo->type = 'image';
+          $photo->save();
+
+          $request->file('image')->move($pathSave,$namePhoto);
+
+          return back()->with('success2', 'Imagen Guardada Con Exito');
+        }else{
+          return back()->with('warning2', 'Imposible Subir Imagen, imagen o archivo no compatible');
+
+        }
+
+
+    }
     /**
      * Display the specified resource.
      *
@@ -171,6 +253,20 @@ class photoController extends Controller
          return back()->with('danger2','Imagen Eliminada con Exito');
        }else{
          dd('El archivo no existe.');
+       }
+     }
+
+     public function photo_medical_delete($id)
+     {
+       $photo = photo::find($id);
+       $photo->delete();
+
+       if(\File::exists(public_path($photo->path))){
+         \File::delete(public_path($photo->path));
+
+         return back()->with('danger2','Imagen Eliminada con Exito');
+       }else{
+         return back()->with('danger2','El archivo no existe.');
        }
      }
 

@@ -12,12 +12,18 @@ use App\city;
 use App\Role;
 use App\day;
 use App\medico;
+use App\medical_center_specialty;
 use App\Http\Controllers\HomeController;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Geocoder;
 use App\insurrance_show;
 use App\insurance_carrier;
+use App\medical_center_experience;
+use App\photo;
+use App\social_network;
+
+use Illuminate\Validation\Rule;
 class medicalCenterController extends Controller
 {
   /**
@@ -30,6 +36,47 @@ class medicalCenterController extends Controller
     // $this->Middleware('medicalCenterConfirm',['only'=>['edit']]);
 
   }
+
+  public function medical_center_experience_store(Request $request,$id){
+    $request->validate([
+      'name'=>['required', Rule::unique('medical_center_experiences')->where('medicalCenter_id',$id)],
+    ]);
+
+    $medical_center_experience = new medical_center_experience;
+    $medical_center_experience->name = $request->name;
+    $medical_center_experience->medicalCenter_id = $id;
+    $medical_center_experience->save();
+    return response()->json('ok');
+
+  }
+
+  public function medicalCenter_list_experience($id){
+    $experiences =  medical_center_experience::where('medicalCenter_id',$id)->get();
+
+    return view('medicalCenter.view_AJAX.experience_list')->with('experiences', $experiences);
+  }
+
+  public function medicalCenter_list_specialty($id){
+    $specialties =  medical_center_specialty::where('medicalCenter_id',$id)->get();
+
+    return view('medicalCenter.view_AJAX.specialty_list')->with('specialties', $specialties);
+  }
+
+  public function medical_center_specialty_store(Request $request,$id){
+    $request->validate([
+      'name'=>['required', Rule::unique('medical_center_specialties')->where('medicalCenter_id',$id)],
+
+    ]);
+
+
+    $medical_center_specialty = new medical_center_specialty;
+    $medical_center_specialty->name = $request->name;
+    $medical_center_specialty->medicalCenter_id = $id;
+    $medical_center_specialty->save();
+
+    return response()->json('ok');
+  }
+
     public function create_add_insurrances(Request $request,$id){
       $insurrance_show = insurrance_show::orderBy('name','asc')->get();
       $insurances = insurance_carrier::where('medical_center_id',$id)->get();
@@ -51,7 +98,6 @@ class medicalCenterController extends Controller
 
     public function medical_center_add_medico(Request $request){
       //$medicalCenter = medicalCenter::find($request->medicalCenter_id);
-
       $medico = medico::find($request->medico_id);
       //$medico->latitud = $medicalCenter->latitud;
       //$medico->longitud = $medicalCenter->longitud;
@@ -60,6 +106,34 @@ class medicalCenterController extends Controller
 
       return redirect()->route('medical_center_manage_medicos',$request->medicalCenter_id)->with('success', 'El medico: '.$medico->name.' '.$medico->lastName.' ha sido agregado a este Centro Médico de forma Exitosa');
     }
+
+    public function search_medico_belong_medical_center(Request $request,$id){
+
+
+    $medicos = medico::where('name','LIKE','%'.$request->search.'%')
+    ->orWhere('lastName','LIKE','%'.$request->search.'%')
+    ->orWhere('identification','LIKE','%'.$request->search.'%')->get();
+    // $medicosSearchCount = medico::where('name','LIKE','%'.$request->search.'%')
+    // ->orWhere('lastName','LIKE','%'.$request->search.'%')
+    // ->orWhere('identification','LIKE','%'.$request->search.'%')->count();
+
+    $data = [];
+      foreach ($medicos as $medico) {
+        if($medico->medicalCenter_id == $id){
+          $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'city'=>$medico->city,'email'=>$medico->email,'phone'=>$medico->phone];
+        }
+
+      }
+    //dd($data);
+      $currentPage = LengthAwarePaginator::resolveCurrentPage();
+      $col = new Collection($data);
+      $perPage = 4;
+      $currentPageSearchResults = $col->slice(($currentPage - 1) * $perPage, $perPage)->all();
+      $medicos = new LengthAwarePaginator($currentPageSearchResults, count($col), $perPage);
+      $medicos->setPath(route('search_medico_medical_center',$id));
+
+    return view('medicalCenter.medical_center_manage_medicos')->with('medicos', $medicos);
+  }
 
     public function search_medico_medical_center(Request $request,$id){
 
@@ -74,11 +148,11 @@ class medicalCenterController extends Controller
     $data = [];
       foreach ($medicosSearch as $medico) {
         if($medico->medicalCenter_id == Null){
-          $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'city'=>$medico->city,];
+          $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'city'=>$medico->city,'email'=>$medico->email,'phone'=>$medico->phone];
         }
 
       }
-    //  dd($data);
+    //dd($data);
       $currentPage = LengthAwarePaginator::resolveCurrentPage();
       $col = new Collection($data);
       $perPage = 4;
@@ -86,8 +160,6 @@ class medicalCenterController extends Controller
       $medicosSearch = new LengthAwarePaginator($currentPageSearchResults, count($col), $perPage);
       $medicosSearch->setPath(route('search_medico_medical_center',$id));
       $medicosSearchCount = $medicosSearch->count();
-
-    //  dd($medicosSearch);
 
     return view('medicalCenter.medical_center_manage_medicos')->with('medicosSearch', $medicosSearch)->with('medicosSearchCount', $medicosSearchCount)->with('medicos', $medicos);
   }
@@ -382,6 +454,9 @@ class medicalCenterController extends Controller
      */
     public function edit($id)
     {
+
+      $images = photo::where('medicalCenter_id',$id)->get();
+
       $medicos = medico::where('medicalCenter_id', $id)->get();
 
       // /dd($medicos);
@@ -394,7 +469,8 @@ class medicalCenterController extends Controller
       $sabado = day::where('name', 'sabado')->orderBy('hour_ini','asc')->get();
       $domingo = day::where('name', 'domingo')->orderBy('hour_ini','asc')->get();
 
-      return view('medicalCenter.edit')->with('medicalCenter', $medicalCenter)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('medicos', $medicos);
+
+      return view('medicalCenter.edit')->with('medicalCenter', $medicalCenter)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('medicos', $medicos)->with('images',$images);
 
     }
 
@@ -476,6 +552,42 @@ class medicalCenterController extends Controller
 
       return response()->json('ok');
 
+    }
+
+    public function medical_specialty_delete(Request $request){
+      $specialties =  medical_center_specialty::find($request->id);
+      $specialties->delete();
+      return response()->json('ok');
+
+    }
+
+    public function medical_experience_delete(Request $request){
+      $specialties =  medical_center_experience::find($request->id);
+      $specialties->delete();
+      return response()->json('ok');
+
+    }
+
+    public function medicalCenter_social_store(Request $request)
+    {
+
+        $request->validate([
+          'name'=>'required|'.Rule::unique('social_networks')->where('medicalCenter_id',$request->medicalCenter_id),
+          'link'=>'required'
+        ]);
+
+        $social_network = new social_network;
+        $social_network->name = $request->name;
+        $social_network->link = $request->link;
+        $social_network->medicalCenter_id = $request->medicalCenter_id;
+        $social_network->save();
+
+        return response()->json('ok');
+    }
+
+    public function medicalCenter_social_list(Request $request){
+        $social_networks = social_network::where('medicalCenter_id', $request->medicalCenter_id)->get();
+        return view('medicalCenter.view_AJAX.list_social')->with('social_networks', $social_networks);
     }
 
 }

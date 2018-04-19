@@ -155,6 +155,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 
         public function tolist2(Request $request){
+          if($request->typeSearch == Null){
+            return back();
+          }
           if($request->typeSearch2 == 'Medicos de la Institucion'){
               $medicos = medico::where('medicalCenter_id',$request->medicalCenter_id)->get();
               $data = HomeController::create_array_medicos($medicos);
@@ -488,7 +491,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
       public function specialtyList1(Request $request){
         $specialties = specialty::where('specialty_category_id',1)->orderBy('name','asc')->get();
         $specialtiesCount = specialty::where('specialty_category_id',1)->count();
-        $category = $request->typeSearch;
+        $category = 'Médicos y Especialistas';
 
         return view('home.home')->with('specialties', $specialties)->with('specialtiesCount', $specialtiesCount)->with('category', $category)->with('states', $this->states)->with('cities',$this->cities);
       }
@@ -496,21 +499,21 @@ use Illuminate\Pagination\LengthAwarePaginator;
       public function specialtyList2(Request $request){
         $specialties = specialty::where('specialty_category_id',2)->orderBy('name','asc')->get();
         $specialtiesCount = specialty::where('specialty_category_id',2)->count();
-        $category = $request->typeSearch;
+        $category = 'Dentistas';
         return view('home.home')->with('specialties', $specialties)->with('specialtiesCount', $specialtiesCount)->with('category', $category)->with('states', $this->states)->with('cities',$this->cities);
       }
 
       public function specialtyList3(Request $request){
         $specialties = specialty::where('specialty_category_id',3)->orderBy('name','asc')->get();
         $specialtiesCount = specialty::where('specialty_category_id',3)->count();
-        $category = $request->typeSearch;
+        $category = 'Medicina Alternativa';
         return view('home.home')->with('specialties', $specialties)->with('specialtiesCount', $specialtiesCount)->with('category', $category)->with('states', $this->states)->with('cities',$this->cities);
       }
 
       public function specialtyList4(Request $request){
         $specialties = specialty::where('specialty_category_id',4)->orderBy('name','asc')->get();
         $specialtiesCount = specialty::where('specialty_category_id',4)->count();
-        $category = $request->typeSearch;
+        $category = 'Terapeutas y Nutricion';
         return view('home.home')->with('specialties', $specialties)->with('specialtiesCount', $specialtiesCount)->with('category', $category)->with('states', $this->states)->with('cities',$this->cities);
       }
 

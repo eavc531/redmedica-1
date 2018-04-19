@@ -29,10 +29,12 @@
               </div>
               <div class="border-panel-blue my-1">
                 <div class="col-12 box-control-panel ">
-                  <a href="" id="blue">
+                  <button style="cursor:pointer;background:white" onclick="newConsultation()" id="blue">
                     <i class="fas fa-plus"></i>
                     <h5>Nueva consulta</h5>
-                  </a>
+                  </button>
+
+
                 </div>
                 <hr>
                 <div class="col-12 box-control-panel text-center">
@@ -69,19 +71,19 @@
                 <div class="col-12">
                   <div class="row">
                     <div class="col-12 box-control-panel text-center">
-                      <a href="">
+                      <a style="cursor:pointer;" onclick="medicalAppointment()">
                         <img src="{{asset('img/botones-medicossi-26.png')}}" alt="">
                         <h5>Agrega nueva cita</h5>
                       </a>
                     </div>
-                    <div class="col-12">
+                    {{-- <div class="col-12">
                       <div class="col-lg-12 col-12 mt-2">
                         <button type="submit" class="btn-config-blue btn btn-block" data-toggle="modal" data-target="#modal-end-consult">Termino de consulta</button>
                       </div>
                       <div class="col-lg-12 col-12 mt-2">
                         <button type="submit" class="btn-config-green btn btn-block">Nuevo recordatorio</button>
                       </div>
-                    </div>
+                    </div> --}}
                   </div>
                 </div>
                 <hr>
@@ -138,6 +140,7 @@
                     <a href="#" onclick="calendario()"><img src="{{asset('img/botones-medicossi-26.png')}}" alt=""></a>
                   </div>
                   <div class="col-lg-4 col-6">
+
                     <img src="{{asset('img/botones-medicossi-27.png')}}" alt="">
                   </div>
                   <div class="col-lg-4 mt-3 col-12">
@@ -210,7 +213,7 @@
             <hr>
             <div id="example">
 {{-- //////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT --}}
-              @if(Session::Has('success2'))
+              {{-- @if(Session::Has('success2'))
                   <div class="div-alert" style="padding:20px" id="alert-success2">
                     <div class="alert alert-success alert-dismissible" role="alert" style="">
                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -227,7 +230,7 @@
                     </script>
                   @endsection
 
-               @endif
+               @endif --}}
 
 {{-- ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR --}}
 
@@ -345,7 +348,7 @@
             </div>
                       <div class="row my-5">
                           <div class="col-lg-10 col-12 align-items-center">
-                              <h6>¿Dese que se mande un mensaje de confirmación a su paciente con estatus cita por internet?</h6>
+                              <h6>¿Dese que se mande un mensaje de confirmación a su paciente con estatus cita por internet??</h6>
                           </div>
                           <div class="col-lg-2 col-12">
                               <div class="radio-switch">
@@ -438,16 +441,35 @@
         {!!Form::open(['route'=>'medico_diary.store','method'=>'POST'])!!}
         {!!Form::hidden('medico_id',$medico->id)!!}
         <div class="form-group">
+          <label for="">Tipo de Evento</label>
+          {!!Form::select('eventType',['Cita Medica'=>'Cita Médica','Cita Medica Importante'=>'Cita Médica Importante','Consulta Medica'=>'Consulta Médica','Consulta Medica Importante'=>'Consulta Médica Importante','Recordatorio'=>'Recordatorio'],null,['class'=>'form-control','id'=>'eventType'])!!}
+        </div>
+        <div class="form-group">
           <label for="">Titulo</label>
           {!!Form::text('title',null,['class'=>'form-control','id'=>'title'])!!}
         </div>
         <div class="form-group">
-          <label for="">Tipo de Evento</label>
-          {!!Form::select('eventType',['Normal'=>'Normal','Importante'=>'Importante','Recordatorio'=>'Recordatorio'],null,['class'=>'form-control','id'=>'title'])!!}
+          <label for="">Descripción (Opcional)</label>
+          {!!Form::text('description',null,['class'=>'form-control','id'=>'description'])!!}
         </div>
+
         <div class="form-group">
-          <label for="">Fecha de inicio</label>
-          {!!Form::date('date_start',null,['class'=>'form-control','id'=>'date_start'])!!}
+          <label for="">Precio:</label>
+          {!!Form::number('price',null,['class'=>'form-control','id'=>'price'])!!}
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-6">
+              <label for="">Inicio</label>
+              {!!Form::date('date_start',null,['class'=>'form-control','id'=>'date_start'])!!}
+            </div>
+            <div class="col-6">
+              <label for="">Culminación (Opcional)</label>
+              {!!Form::date('date_End',null,['class'=>'form-control','id'=>'date_End'])!!}
+            </div>
+          </div>
+
         </div>
         <div class="form-group">
           <div class="form-inline">
@@ -456,15 +478,14 @@
               {!!Form::select('minsStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsStart'])!!}
             </div>
         </div>
-        <div class="form-group">
-          <label for="">Fecha de Culminación (Opcional)</label>
-          {!!Form::date('date_End',null,['class'=>'form-control','id'=>'date_start'])!!}
-        </div>
+
+
+
         <div class="form-group">
           <div class="form-inline">
           <label for="">Hora de Culminación (Opcional)</label>
-            {!!Form::select('hourEnd',['--'=>'--','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'date_start'])!!}
-              {!!Form::select('minsEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'date_start'])!!}
+            {!!Form::select('hourEnd',['--'=>'--','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourEnd'])!!}
+              {!!Form::select('minsEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsEnd'])!!}
             </div>
         </div>
 
@@ -477,7 +498,6 @@
     </div>
     </div>
   </div>
-
 
   <!-- /////////Modal EDITARRRR-Modal EDITARRRR-Modal EDITARRRR-///////////////////Modal EDITARRRR-->
   <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="text-align:justify">
@@ -494,16 +514,37 @@
           {!!Form::hidden('medico_id',$medico->id)!!}
           {!!Form::hidden('event_id',null,['id'=>'event_id'])!!}
           <div class="form-group">
+            <label for="">Tipo de Evento</label>
+            {!!Form::select('eventType',['Cita Medica'=>'Cita Médica','Cita Medica Importante'=>'Cita Médica Importante','Consulta Medica'=>'Consulta Médica','Consulta Medica Importante'=>'Consulta Médica Importante','Recordatorio'=>'Recordatorio'],null,['class'=>'form-control','id'=>'title'])!!}
+          </div>
+          <div class="form-group">
             <label for="">Titulo</label>
             {!!Form::text('title',null,['class'=>'form-control','id'=>'titleUp'])!!}
           </div>
           <div class="form-group">
-            <label for="">Tipo de Evento</label>
-            {!!Form::select('eventType',['Normal'=>'Normal','Importante'=>'Importante','Recordatorio'=>'Recordatorio'],null,['class'=>'form-control','id'=>'eventTypeUp'])!!}
+            <label for="">Descripción</label>
+            {!!Form::text('description',null,['class'=>'form-control','id'=>'descriptionUp'])!!}
           </div>
           <div class="form-group">
-            <label for="">Fecha de inicio</label>
-            {!!Form::date('date_start',null,['class'=>'form-control','id'=>'dateStartUp'])!!}
+            <label for="">Precio:</label>
+            {!!Form::number('price',null,['class'=>'form-control','id'=>'priceUp'])!!}
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-6">
+                <label for="">Fecha de inicio</label>
+                {!!Form::date('date_start',null,['class'=>'form-control','id'=>'dateStartUp'])!!}
+              </div>
+              <div class="col-6">
+                <label for="">Culminación (Opcional)</label>
+                {!!Form::date('date_End',null,['class'=>'form-control','id'=>'date_End'])!!}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+
           </div>
           <div class="form-group">
             <div class="form-inline">
@@ -512,14 +553,11 @@
                 {!!Form::select('minsStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsStartUp'])!!}
               </div>
           </div>
-          <div class="form-group">
-            <label for="">Fecha de Culminación (Opcional)</label>
-            {!!Form::date('date_End',null,['class'=>'form-control','id'=>'dateEndUp'])!!}
-          </div>
+
           <div class="form-group">
             <div class="form-inline">
             <label for="">Hora de Culminación (Opcional): </label>
-              {!!Form::select('hourEnd',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourEndUp'])!!}
+              {!!Form::select('hourEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourEndUp'])!!}
                 {!!Form::select('minsEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsEndUp'])!!}
               </div>
           </div>
@@ -580,14 +618,20 @@
         eventLimit: true, // allow "more" link when too many events
         selectable: true, //permite seleccionar campos
         selectHelper: true, //permite agregar nuevos eventos
-
-
+        slotLabelFormat: [
+          'MMMM YYYY', // top level of text
+          'h(:mm)a'        // lower level of text
+        ],
         select:function(start,end){
          start = moment(start);
+         end = moment(end);
 
          $('#hourStart').val(start.format('HH'));
          $('#minsStart').val(start.format('mm'));
          $('#date_start').val(start.format('YYYY-MM-DD'));
+         $('#date_End').val(end.format('YYYY-MM-DD'));
+         $('#minsEnd').val(end.format('mm'));
+         $('#hourEnd').val(end.format('HH'));
          $('#ModalCreate').modal('show');
         },
 
@@ -608,8 +652,10 @@
 
             var start = $.fullCalendar.moment(event.start).format('YYYY-MM-DD');
             var end = $.fullCalendar.moment(event.end).format('YYYY-MM-DD');
-            $('#ModalEdit').modal('show');
+
+            $('#priceUp').val(event.price);
             $('#titleUp').val(event.title);
+            $('#descriptionUp').val(event.description);
             $('#eventTypeUp').val(event.eventType);
             $('#dateStartUp').val(start);
             $('#hourStartUp').val(event.hourStart);
@@ -619,22 +665,25 @@
             $('#minsEndUp').val(event.minsEnd);
             $('#event_id').val(event.id);
             $('#event_id_destroy').val(event.id);
-
+            $('#ModalEdit').modal('show');
         },
-
         //       businessHours:
         // {
         //         start: '6:00',
         //         end: '12:00',
         //         dow: [3],
         // }
-
       });
-
-
-
   });
 
+      function newConsultation(){
+        $('#eventType').val('Consulta Medica');
+        $('#ModalCreate').modal('show');
+      }
+      function medicalAppointment(){
+        $('#eventType').val('Cita Medica');
+        $('#ModalCreate').modal('show');
+      }
 
     // desactivar botones
     // ,

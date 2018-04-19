@@ -370,7 +370,7 @@
 </div>
 <div class="roww">
   <div class="col-12">
-    <h4 class="font-title-blue text-center mb-3">Experiencia en transtornos mentales</h4>
+    <h4 class="font-title-blue text-center mb-3">Experiencia en transtornos o enfermedades</h4>
   </div>
 </div>
 <div id="medico_experience_ajax" style="text-align:justify">
@@ -387,7 +387,7 @@
 <hr>
 <div class="row">
   <div class="col-12">
-   <h4 id="imgs" class="font-title-blue text-center">Agrega videos y fotos</h4>
+   <h4 id="imgs" class="font-title-blue text-center">Imagenes</h4>
    <hr>
  </div>
 </div>
@@ -408,7 +408,7 @@
     {!!Form::open(['route'=>'image_store','method'=>'POST','files'=>true])!!}
     {!!Form::file('image')!!}
     {!!Form::hidden('medico_id',$medico->id)!!}
-    {!!Form::hidden('email',$medico->email)!!}
+    {!!Form::hidden('email',$medico->indentification)!!}
     {!!Form::submit('Subir Imagen',['class'=>'btn btn-success'])!!}
     {!!Form::close()!!}
   </div>
