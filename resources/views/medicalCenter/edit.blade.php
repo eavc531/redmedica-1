@@ -4,8 +4,6 @@
   <section class="box-register">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-2">
-        </div>
         <div class="col-lg-8 col-12 box-mesage">
           <div class="container">
 
@@ -287,34 +285,7 @@
   </div>
   </div>
   <div class="row">
-  <div class=" m-auto">
-    {{-- <form class="form-inline">
-      <input class="form-control w-100 col-lg-10 col-12" type="search" placeholder="Search" aria-label="Buscar">
-      <button class="btn btn-outline-primary my-2 my-sm-2 col-lg-2 col-12" type="submit">Buscar</button>
-    </form> --}}
-    {{-- @if ($medicos->count() > 0)
 
-    <table class="table table-bordered">
-      <thead>
-          <th>Cedula</th>
-          <th>Nombre Completo</th>
-          <th>correo</th>
-          <th>Especialidad</th>
-      </thead>
-
-
-      @foreach ($medicos as $medico)
-        <tbody>
-            <td>{{$medico->identification}}</td>
-            <td>{{$medico->name}} {{$medico->lastName}}</td>
-            <td>{{$medico->email}}</td>
-            <td>{{$medico->specialty}}</td>
-        </tbody>
-      @endforeach
-
-    </table>
-    @endif --}}
-  </div>
   </div>
   <div class="row my-3">
   <div class="col-12 text-right">

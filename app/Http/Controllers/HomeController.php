@@ -153,7 +153,63 @@ use Illuminate\Pagination\LengthAwarePaginator;
           return $medicosCerc;
         }
 
+        public function tolist3(Request $request){
+          if($request->typeSearch == 'Especialidad Medica' or $request->typeSearch2 == 'Especialidad Medica'){
+          //**Especialidad medica x ciudad**/
 
+            if($request->city != null){
+              if($request->city != 'ciudad'){
+                $medicos = DB::table('medicos')
+                //->Join('medico_specialties', 'medicos.id', '=', 'medico_specialties.medico_id')
+                ->Join('cities', 'medicos.city_id', '=', 'cities.id')
+                ->Join('states', 'medicos.state_id', '=', 'states.id')
+                ->select('medicos.*')
+                ->where('medicos.specialty','=',$request->search)
+                ->Where('cities.name','=',$request->city)
+                ->get();
+
+                  $data = HomeController::create_array_medicos($medicos);
+                  $currentPage = LengthAwarePaginator::resolveCurrentPage();
+                  $medicosCerc = HomeController::paginate_custom($data,$currentPage);
+                  $medicosCercCount = count($medicosCerc);
+
+                  return view('home.home')->with('medicosCerc', $medicosCerc)->with('data', $data)->with('medicosCercCount', $medicosCercCount)->with('search', $request->search)->with('currentPage', $currentPage)->with('states', $this->states)->with('cities',$this->cities)->with('typeSearch2', $request->typeSearch2);
+              }
+            }
+
+            //especialidad por Estado
+            if($request->state != null){
+                $medicos = DB::table('medicos')
+                //->Join('medico_specialties', 'medicos.id', '=', 'medico_specialties.medico_id')
+                //->Join('cities', 'medicos.city_id', '=', 'cities.id')
+                //->Join('states', 'medicos.state_id', '=', 'states.id')
+                ->select('medicos.*')
+                ->where('medicos.specialty','=',$request->search)
+                ->Where('medicos.state','=',$request->state)
+                ->get();
+                  $data = HomeController::create_array_medicos($medicos);
+                  $currentPage = LengthAwarePaginator::resolveCurrentPage();
+                  $medicosCerc = HomeController::paginate_custom($data,$currentPage);
+                  $medicosCercCount = count($medicosCerc);
+                  return view('home.home')->with('medicosCerc', $medicosCerc)->with('data', $data)->with('medicosCercCount', $medicosCercCount)->with('search', $request->search)->with('currentPage', $currentPage)->with('states', $this->states)->with('cities',$this->cities)->with('typeSearch2', $request->typeSearch2);
+            }
+            //**Especialidad medica por distancia**///
+            $medicos = DB::table('medicos')
+            //->Join('medico_specialties', 'medicos.id', '=', 'medico_specialties.medico_id')
+            ->Join('cities', 'medicos.city_id', '=', 'cities.id')
+            ->Join('states', 'medicos.state_id', '=', 'states.id')
+            ->select('medicos.*')
+            ->where('medicos.specialty','=',$request->search)
+            ->get();
+          $data = HomeController::calculate_dist_to_array($medicos,$dist);
+          $currentPage = LengthAwarePaginator::resolveCurrentPage();
+          $medicosCerc = HomeController::paginate_custom($data,$currentPage);
+          $medicosCercCount = count($medicosCerc);
+
+          return view('home.home')->with('medicosCerc', $medicosCerc)->with('data', $data)->with('medicosCercCount', $medicosCercCount)->with('search', $request->search)->with('currentPage', $currentPage)->with('states', $this->states)->with('cities',$this->cities)->with('typeSearch2', $request->typeSearch2);
+        }
+
+        }
         public function tolist2(Request $request){
           if($request->typeSearch == Null){
             return back();

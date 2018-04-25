@@ -26,12 +26,12 @@
           <div class="row">
             <div class="col-lg-6 col-12">
               <div class="form-group">
-                  <label for="">Nombre de la Institución o Centro Medico</label>
+                  <label for="">Nombre dform-title e la Institución o Centro Medico</label>
                 {{Form::text('name',null,['class'=>'form-control','placeholder'=>'Nombre del Centro Medico'])}}
 
                 </div>
                 <div class="form-group">
-                    <label for="">Nombre del Administrador</label>
+                    <label for="">Nombre dform-title el Administrador</label>
                   {{Form::text('nameAdmin',null,['class'=>'form-control','placeholder'=>'Nombre del Administrador'])}}
                 </div>
 
@@ -41,12 +41,12 @@
 
                 <div class="form-group">
                     <div class="form-group">
-                      <label for="">Email de la institución (opcional)</label>
+                      <label for="">Email dform-title e la institución (opcional)</label>
                       {{Form::text('email_institution',null,['class'=>'form-control'])}}
                     </div>
                 </div>
                 <div class="form-group">
-                  <label for="">Teléfono del Administrador</label>
+                  <label for="">Teléfono dform-title el Administrador</label>
                   {{Form::text('phone_admin',null,['class'=>'form-control'])}}
                  </div>
             </div>
@@ -55,13 +55,13 @@
           <div class="row">
             <div class="col-lg-6 col-sm-6 col-12">
               <div class="form-group">
-                <label for="">Licencia sanitaria</label>
+                <label for="">Licencia sform-title anitaria</label>
                 {{Form::text('sanitary_license',null,['class'=>'form-control'])}}
               </div>
             </div>
             <div class="col-lg-6 col-sm-6 col-12">
               <div class="form-group">
-                <label for="">Id del Centro Medico</label>
+                <label for="">Id dform-title el Centro Medico</label>
                 {{Form::text('id_medicalCenter',null,['class'=>'form-control'])}}
               </div>
             </div>
@@ -69,44 +69,44 @@
           <div class="row mb-3">
             <div class="col-lg-6 col-sm-6 col-12">
               <div class="form-group">
-                <label for="">Telefono de Oficina 1</label>
+                <label for="">Telefono dform-title e Oficina 1</label>
                 {{Form::text('phone',null,['class'=>'form-control'])}}
               </div>
             </div>
             <div class="col-lg-6 col-sm-6 col-12">
               <div class="form-group">
-                <label for="">Telefono de Oficina 2</label>
+                <label for="">Telefono dform-title e Oficina 2</label>
                 {{Form::text('phone2',null,['class'=>'form-control'])}}
               </div>
             </div>
           </div>
 
 
-            <label for="" class="m-3"><strong>Dirección de la Institución o Centro Médico</strong></label>
+            <label for="" class="form-title m-3"><strong>Dirección de la Institución o Centro Médico</strong></label>
 
 
           <div class="row my-3">
             <div class="col-lg-3 col-12">
               <div class="form-group row">
-                <label for="" class="col-4 col-form-label">Pais</label>
+                <label for="" class="form-title col-4 col-form-label">Pais</label>
                {{Form::select('country',['Mexíco'=>'Mexíco'],null,['class'=>'form-control'])}}
               </div>
             </div>
             <div class="col-lg-3 col-12">
               <div class="form-group row">
-                <label for="" class="col-4 col-form-label">Estado</label>
+                <label for="" class="form-title col-4 col-form-label">Estado</label>
                 {{Form::select('state',$states,null,['class'=>'form-control','id'=>'state','placeholder'=>'opciones'])}}
               </div>
             </div>
             <div class="col-lg-3 col-12">
               <div class="form-group row">
-                <label for="" class="col-4 col-form-label">Ciudad</label>
+                <label for="" class="form-title col-4 col-form-label">Ciudad</label>
                 {{Form::select('city',$cities,null,['class'=>'form-control','id'=>'city','placeholder'=>'opciones'])}}
               </div>
             </div>
             <div class="col-lg-3 col-12">
               <div class="form-group row">
-                <label for="" class="col-4 col-form-label" >Codigo Postal</label>
+                <label for="" class="form-title col-4 col-form-label" >Codigo Postal</label>
                 {{Form::number('postal_code',null,['class'=>'form-control'])}}
               </div>
             </div>
@@ -114,7 +114,7 @@
           <div class="row mt-2">
             <div class="col-lg-3 col-12">
               <div class="form-group row">
-                <label for="" class="col-4 col-form-label" >Colonia</label>
+                <label for="" class="form-title col-4 col-form-label" >Colonia</label>
                 {{Form::text('colony',null,['class'=>'form-control'])}}
               </div>
             </div>
@@ -127,13 +127,13 @@
             </div>
             <div class="col-lg-3 col-12">
               <div class="form-group row">
-                <label for="" class="col-lg-7 col-12 col-form-label">Numero Externo</label>
+                <label for="" class="form-title col-lg-7 col-12 col-form-label">Numero Externo</label>
                  {{Form::text('number_ext',null,['class'=>'form-control'])}}
               </div>
             </div>
             <div class="col-lg-3 col-12">
               <div class="form-group row">
-                <label for="" class="col-lg-7 col-12 col-form-label">Numero Interno</label>
+                <label for="" class="form-title col-lg-7 col-12 col-form-label">Numero Interno</label>
                 {{Form::text('number_int',null,['class'=>'form-control'])}}
               </div>
             </div>

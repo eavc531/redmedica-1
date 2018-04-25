@@ -1,10 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-	<h3>Datos del Profesional: {{$medico->name}} {{$medico->lastName}}</h3>
-
+<div class="row">
+  <div class="col-12">
+    <h2 class="font-title text-center">Perfil Profesional Médico</h2>
+  </div>
+</div>
+<div class="col-12">
+  <h4 class="font-title-blue">Datos del Profesional: {{$medico->name}} {{$medico->lastName}}</h4>
+</div>
 @if(Session::Has('successComplete'))
-<div class="div-alert" style="padding:20px">
+<div class="div-alert" style="padding:20px; max-width: 100%;">
  <div class="alert alert-success alert-dismissible" role="alert">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <div class="row mt-4">
@@ -33,9 +39,11 @@
 
   </div>
   <div class="row mt-3">
-   <div class="col-lg-6 col-12">
+   <div class="col-lg-7 col-12">
     @isset($photo)
-    <img src="{{asset($photo->path)}}" width="120px" height="80px" alt="" id="img">
+    <div class="cont-img my-2">
+      <img src="{{asset($photo->path)}}" class="prof-img" alt="" id="img">
+    </div>
     @endisset
 
     {!!Form::open(['route'=>'photo.store','method'=>'POST','files'=>true])!!}
@@ -45,7 +53,7 @@
     {!!Form::submit('Subir')!!}
     {!!Form::close()!!}
   </div>
-  <div class="col-lg-6 col-12">
+  <div class="col-lg-5 col-12">
     <label for="">Barra de progreso</label>
     <div class="progress">
       <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 25%; vertical-align: center;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -53,8 +61,37 @@
   </div>
 </div>
 <hr>
-{!!Form::model($medico,['route'=>['medico.update',$medico],'method'=>'PUT','id'=>'person'])!!}
 
+<!-- <div class="m-2">
+  <div class="row my-2">
+    <div class="col-12">
+      <h4 class="font-title-blue text-center">Datos personales:</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <ul>
+        <li><b>Nombre</b>:</li>
+        <li><b>Apellidos</b>:</li>
+        <li><b>Estado</b>:</li>
+        <li><b>Sexo</b>:</li>
+      </ul>
+    </div>
+    <div class="col-6">
+      <ul>
+        <li><b>Ciudad</b>:</li>
+        <li><b>Telefono celular:</b></li>
+        <li><b>Telefono de oficina 1:</b></li>
+        <li><b>Telefono de oficina 2:</b></li>
+      </ul>
+        <a href="#" class="btn btn-block btn-success">Editar</a>
+    </div>
+  </div>
+</div>
+<hr> -->
+
+
+{!!Form::model($medico,['route'=>['medico.update',$medico],'method'=>'PUT','id'=>'person'])!!}
 <div class="row">
   <div class="col-lg-6 col-12">
     <div class="form-group">
@@ -76,12 +113,12 @@
       {!!Form::select('state_id',$states,null,['class'=>'form-control','id'=>'stateMedic'])!!}
     </div>
   </div>
-	<div class="col-6">
-		<div class="form-group">
-			<label for="">Sexo</label>
-			{!!Form::select('gender',['Masculino','Femenino'],null,['class'=>'form-control','id'=>'genderMedic'])!!}
-		</div>
-	</div>
+  <div class="col-6">
+    <div class="form-group">
+     <label for="">Sexo</label>
+     {!!Form::select('gender',['Masculino','Femenino'],null,['class'=>'form-control','id'=>'genderMedic'])!!}
+   </div>
+ </div>
 </div>
 <div class="row">
   <div class="col-lg-6 col-12">
@@ -118,7 +155,7 @@
       {!!Form::text('identification',null,['class'=>'form-control','id'=>'identificationMedic'])!!}
     </div>
   </div>
-	<div class="col-lg-6 col-12">
+  <div class="col-lg-6 col-12">
     <div class="form-group">
       <label for="">Especialidad</label>
       {!!Form::select('specialty',$specialties,null,['placeholder'=>'seleccione una Especialidad','class'=>'form-control','id'=>'specialtyMedic'])!!}
@@ -156,8 +193,8 @@
 </div>
 {{--/////////////////////// ALERTS --}}
 <div id="alert_error_update" class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none">
-		<button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
-	<p id="text_error_medic"></p>
+  <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
+  <p id="text_error_medic"></p>
 </div>
 
 <div id="alert_success_update" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none">
@@ -165,40 +202,40 @@
  <p id="text_success_service"></p>
 </div>
 
-		 <div class="row">
-			 <div class="col-6">
-				 <button onclick="updateMedic()" type="button" name="button" class="btn btn-primary btn-block">Guardar Cambios</button>
-			 </div>
-			 {!!Form::close()!!}
-	 </div>
+<div class="row">
+  <div class="col-6">
+   <button onclick="updateMedic()" type="button" name="button" class="btn btn-primary btn-block">Guardar Cambios</button>
+ </div>
+ {!!Form::close()!!}
+</div>
 <hr>
 
 <div class="row my-4">
-	<div class="col-12">
-		<h4 class="font-title-blue text-center">Dirección de Trabajo Principal</h4>
-	</div>
+  <div class="col-12">
+    <h4 class="font-title-blue text-center">Dirección de Trabajo Principal</h4>
+  </div>
 </div>
 <div class="row text-left">
-	<div class="col-6">
-		<ul>
-			<li><strong>Pais:</strong> {{$medico->country}}</li>
-			<li><strong>Estado:</strong> {{$medico->state}}</li>
-			<li><strong>Ciudad:</strong> {{$medico->city}}</li>
-			<li><strong>Codigo Postal:</strong> {{$medico->postal_code}}</li>
-		</ul>
-	</div>
-	<div class="col-6">
-		<ul>
-			<li><strong>Colonia:</strong>
-				{{$medico->colony}}
-			</li>
-				<li><strong>Calle/av:</strong>{{$medico->street}}</li>
-			<li><strong>Numero Externo:</strong> {{$medico->number_ext}}</li>
-			<li><strong>Numero Interno:</strong> {{$medico->number_int}}</li>
-		</ul>
+  <div class="col-6">
+    <ul>
+      <li><strong>Pais:</strong> {{$medico->country}}</li>
+      <li><strong>Estado:</strong> {{$medico->state}}</li>
+      <li><strong>Ciudad:</strong> {{$medico->city}}</li>
+      <li><strong>Codigo Postal:</strong> {{$medico->postal_code}}</li>
+    </ul>
+  </div>
+  <div class="col-6">
+    <ul>
+      <li><strong>Colonia:</strong>
+        {{$medico->colony}}
+      </li>
+      <li><strong>Calle/av:</strong>{{$medico->street}}</li>
+      <li><strong>Numero Externo:</strong> {{$medico->number_ext}}</li>
+      <li><strong>Numero Interno:</strong> {{$medico->number_int}}</li>
+    </ul>
 
-		<a class="btn btn-success btn-block"href="{{route('medico_edit_address',$medico->id)}}">Editar</a>
-	</div>
+    <a class="btn btn-success btn-block"href="{{route('medico_edit_address',$medico->id)}}">Editar</a>
+  </div>
 </div>
 <hr>
 {{-- section mapa --}}
@@ -206,33 +243,33 @@
 
 
 <div class="row my-4">
-	<div class="col-12">
-		<h4 class="font-title-blue text-center">Ubicacion en el mapa</h4>
-	</div>
-	<p class="text-justify">La Ubicación exacta permite que el usuario pueda ubicar su Centro Medico, o institución con mayor facilidad, a travez de las busquedas de filtros, en el menu principal</p>
+  <div class="col-12">
+    <h4 class="font-title-blue text-center">Ubicacion en el mapa</h4>
+  </div>
+  <p class="text-justify">La Ubicación exacta permite que el usuario pueda ubicar su Centro Medico, o institución con mayor facilidad, a travez de las busquedas de filtros, en el menu principal</p>
 
-	<p class="text-justify">Cuando añade los datos de Dirección, automaticamente el sistema ubicara esta direccion en el mapa sin embargo, muchas veces no suele ser preciso, debido a que la dirección registrada,no concuerda con la base de datos de google maps, esto se puede corregir manualmente.</p>
+  <p class="text-justify">Cuando añade los datos de Dirección, automaticamente el sistema ubicara esta direccion en el mapa sin embargo, muchas veces no suele ser preciso, debido a que la dirección registrada,no concuerda con la base de datos de google maps, esto se puede corregir manualmente.</p>
 
-	<p><strong>Ubicar dirección Manualmente.</strong></p>
+  <p><strong>Ubicar dirección Manualmente.</strong></p>
 
-	<p class="text-justify">acceda al mapa a continuacion, realize la busqueda rellenado el campo 'direccion/ciudad/pais' y/o arrastre el marcador al punto de la dirección deseada, luego presione el boton "Guardar Ubicacion"</p>
+  <p class="text-justify">acceda al mapa a continuacion, realize la busqueda rellenado el campo 'direccion/ciudad/pais' y/o arrastre el marcador al punto de la dirección deseada, luego presione el boton "Guardar Ubicacion"</p>
 </div>
 <div class="m-2">
-	<div class="form-inline">
-			<input type="text" name="" value="" id="address">
-			<button onclick="searchInMap()" type="button" name="button">Buscar</button>
-	</div>
+  <div class="form-inline">
+   <input type="text" name="" value="" class="form-control" id="address">
+   <button onclick="searchInMap()" type="button" class="btn btn-primary" name="button">Buscar</button>
+ </div>
 
 </div>
 <div class="mt-3">
-	{{-- //div que muestra el mapa --}}
-	<div class="m-1" id="map" style="height:300px;width:auto">
+  {{-- //div que muestra el mapa --}}
+  <div class="m-1" id="map" style="height:300px;width:auto">
 
-	</div>
-	<button id="store_coordinates"type="button" name="button" onclick="store_coordinates()" disabled>Guardar Ubicacion</button>
-	<button type="button" name="button" onclick="show_map()">Restablecer Marcador</button>
-	<input type="hidden" name="latitudSave" value="" id="latitudSave">
-	<input type="hidden" name="longitudSave" value="" id="longitudSave">
+  </div>
+  <button id="store_coordinates" type="button" name="button" class="btn btn-primary" onclick="store_coordinates()" disabled>Guardar Ubicacion</button>
+  <button type="button" name="button"  class="btn btn-primary" onclick="show_map()">Restablecer Marcador</button>
+  <input type="hidden" name="latitudSave" value="" id="latitudSave">
+  <input type="hidden" name="longitudSave" value="" id="longitudSave">
 </div>
 </div>
 <hr>
@@ -387,8 +424,7 @@
 <hr>
 <div class="row">
   <div class="col-12">
-   <h4 id="imgs" class="font-title-blue text-center">Imagenes</h4>
-   <hr>
+   <h4 id="imgs" class="font-title-blue text-center">Agrega videos y fotos</h4>
  </div>
 </div>
 <div class="row">
@@ -408,8 +444,8 @@
     {!!Form::open(['route'=>'image_store','method'=>'POST','files'=>true])!!}
     {!!Form::file('image')!!}
     {!!Form::hidden('medico_id',$medico->id)!!}
-    {!!Form::hidden('email',$medico->indentification)!!}
-    {!!Form::submit('Subir Imagen',['class'=>'btn btn-success'])!!}
+    {!!Form::hidden('email',$medico->email)!!}
+    {!!Form::submit('Subir imagen o video',['class'=>'btn btn-success'])!!}
     {!!Form::close()!!}
   </div>
 </div>
@@ -474,7 +510,7 @@
     <div class="col-lg-8 col-12 m-auto">
       <div class="custom-control custom-radio custom-control-inline">
         {{-- <input type="radio" id="show-question4" name="customRadioInline1" class="custom-control-input"> --}}
-				{{Form::radio('aseguradora1')}}
+        <!--        {{Form::radio('aseguradora1')}} -->
         <label class="custom-control-label" for="show-question4">Solo pacientes privados</label>
       </div>
       <div class="custom-control custom-radio custom-control-inline">
@@ -482,87 +518,87 @@
         <label class="custom-control-label" for="show-question5">Pacientes por aseguradoras, convenios y privados</label>
       </div>
       <div class="card border-primary p-3 mt-3" id="panel-insurance" style="display: none;">
-				<div class="row">
-					<div class="col-6">
-						<div class="custom-control custom-radio">
-             <input type="radio" id="customRadio11" name="customRadio" class="custom-control-input">
-             <label class="custom-control-label" for="customRadio11">AXA</label>
-           </div>
-					</div>
-						<div class="col-6">
+        <div class="row">
+         <div class="col-6">
+          <div class="custom-control custom-radio">
+           <input type="radio" id="customRadio11" name="customRadio" class="custom-control-input">
+           <label class="custom-control-label" for="customRadio11">AXA</label>
+         </div>
+       </div>
+       <div class="col-6">
 
-					<div class="custom-control custom-radio">
-            <input type="radio" id="customRadio12" name="customRadio" class="custom-control-input">
-            <label class="custom-control-label" for="customRadio12">Met Life</label>
-          </div>
+         <div class="custom-control custom-radio">
+          <input type="radio" id="customRadio12" name="customRadio" class="custom-control-input">
+          <label class="custom-control-label" for="customRadio12">Met Life</label>
+        </div>
 
-				</div>
-				<div class="col-6">
-					<div class="custom-control custom-radio">
-						<input type="radio" id="customRadio13" name="customRadio" class="custom-control-input">
-						<label class="custom-control-label" for="customRadio13">Seguros monterrey</label>
-					</div>
+      </div>
+      <div class="col-6">
+       <div class="custom-control custom-radio">
+        <input type="radio" id="customRadio13" name="customRadio" class="custom-control-input">
+        <label class="custom-control-label" for="customRadio13">Seguros monterrey</label>
+      </div>
 
 
-		   </div>
-			 <div class="col-6">
-				 <div class="custom-control custom-radio">
-					 <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-					 <label class="custom-control-label" for="customRadio2">Gnp Grupo Provincial</label>
-				 </div>
-			</div>
-				<div class="col-6">
-					<div class="custom-control custom-radio">
-						<input type="radio" id="customRadio14" name="customRadio" class="custom-control-input">
-						<label class="custom-control-label" for="customRadio14">Mapfre Seguros Tepeyac</label>
-					</div>
-				</div>
-				<div class="col-6">
-					<div class="custom-control custom-radio">
-           <input type="radio" id="customRadio16" name="customRadio" class="custom-control-input">
-           <label class="custom-control-label" for="customRadio16">ING</label>
-					</div>
-				</div>
-				<div class="col-6">
-					<div class="custom-control custom-radio">
-						<input type="radio" id="customRadio17" name="customRadio" class="custom-control-input">
-						<label class="custom-control-label" for="customRadio17">Seguros Atlas</label>
-					</div>
-				</div>
-				<div class="col-6">
-					<div class="custom-control custom-radio">
-						<input type="radio" id="customRadio18" name="customRadio" class="custom-control-input">
-						<label class="custom-control-label" for="customRadio18">Alianz</label>
-					</div>
-				</div>
-				<div class="col-6">
-					<div class="custom-control custom-radio">
-						<input type="radio" id="customRadio19" name="customRadio" class="custom-control-input">
-						<label class="custom-control-label" for="customRadio19">Zurich</label>
-					</div>
-				</div>
-				@foreach ($insurance_carriers as $insurance_carrier)
-					<div class="col-6">
-						<div class="custom-control custom-radio">
-							{{Form::radio($insurance_carrier)}}<label for="">{{$insurance_carrier}}</label>
-							<label class="custom-control-label" for="customRadio19">Zurich</label>
-						</div>
-					</div>
-
-				@endforeach
-			</div>
-
-     <hr>
-     <div class="text-center">
-       <a href="" class="btn btn-success" data-toggle="modal" data-target="#modal-insurance"><i class="fas fa-plus mr-2"></i>Agregar otro seguro</a>
-     </div>
-   </div>
+    </div>
+    <div class="col-6">
+     <div class="custom-control custom-radio">
+      <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+      <label class="custom-control-label" for="customRadio2">Gnp Grupo Provincial</label>
+    </div>
+  </div>
+  <div class="col-6">
+   <div class="custom-control custom-radio">
+    <input type="radio" id="customRadio14" name="customRadio" class="custom-control-input">
+    <label class="custom-control-label" for="customRadio14">Mapfre Seguros Tepeyac</label>
+  </div>
+</div>
+<div class="col-6">
+ <div class="custom-control custom-radio">
+   <input type="radio" id="customRadio16" name="customRadio" class="custom-control-input">
+   <label class="custom-control-label" for="customRadio16">ING</label>
  </div>
+</div>
+<div class="col-6">
+ <div class="custom-control custom-radio">
+  <input type="radio" id="customRadio17" name="customRadio" class="custom-control-input">
+  <label class="custom-control-label" for="customRadio17">Seguros Atlas</label>
+</div>
+</div>
+<div class="col-6">
+ <div class="custom-control custom-radio">
+  <input type="radio" id="customRadio18" name="customRadio" class="custom-control-input">
+  <label class="custom-control-label" for="customRadio18">Alianz</label>
+</div>
+</div>
+<div class="col-6">
+ <div class="custom-control custom-radio">
+  <input type="radio" id="customRadio19" name="customRadio" class="custom-control-input">
+  <label class="custom-control-label" for="customRadio19">Zurich</label>
+</div>
+</div>
+@foreach ($insurance_carriers as $insurance_carrier)
+<div class="col-6">
+  <div class="custom-control custom-radio">
+   {{Form::radio($insurance_carrier)}}<label for="">{{$insurance_carrier}}</label>
+   <label class="custom-control-label" for="customRadio19">Zurich</label>
+ </div>
+</div>
+
+@endforeach
+</div>
+
+<hr>
+<div class="text-center">
+ <a href="" class="btn btn-success" data-toggle="modal" data-target="#modal-insurance"><i class="fas fa-plus mr-2"></i>Agregar otro seguro</a>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="row my-2">
   <div class="col-12 text-center">
-		<a href="{{route('medico_diary',$medico->id)}}" class="btn btn-primary">Ir a Panel de Control</a>
+    <a href="{{route('medico_diary',$medico->id)}}" class="btn btn-primary">Ir a Panel de Control</a>
 
   </div>
 </div>
@@ -674,44 +710,44 @@
 @endsection
 
 @section('scriptJS')
-	<script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY"></script>
+<script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY"></script>
 
-  <script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
+<script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
 <script type="text/javascript">
 
-	$(document).ready(function() {
-		list_social();
-		list_service();
-		list_experience();
+  $(document).ready(function() {
+    list_social();
+    list_service();
+    list_experience();
   });
 
-		$('#stateMedic').on('change', function() {
-			state_id = $('#stateMedic').val();
+  $('#stateMedic').on('change', function() {
+   state_id = $('#stateMedic').val();
 
-			route = "{{route('inner_cities_select')}}";
-			$.ajax({
-				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-				type:'post',
-				url: route,
-				data:{state_id:state_id},
-				success:function(result){
-				$("#cityMedic").empty();
-						$('#cityMedic').append($('<option>', {
-							 value: null,
-							 text: 'Ciudad'
-					 }));
-							 $.each(result,function(key, val){
-								 $('#cityMedic').append($('<option>', {
-                    value: key,
-                    text: val
-                }));
-							 });
-				},
-				error:function(error){
-					console.log(error);
-				},
-			});
-	   })
+   route = "{{route('inner_cities_select')}}";
+   $.ajax({
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    type:'post',
+    url: route,
+    data:{state_id:state_id},
+    success:function(result){
+      $("#cityMedic").empty();
+      $('#cityMedic').append($('<option>', {
+        value: null,
+        text: 'Ciudad'
+      }));
+      $.each(result,function(key, val){
+       $('#cityMedic').append($('<option>', {
+        value: key,
+        text: val
+      }));
+     });
+    },
+    error:function(error){
+     console.log(error);
+   },
+ });
+ })
 
   function list_experience(){
    route = "{{route('medico_experience_list')}}";
@@ -891,11 +927,11 @@ function social_network_delete(social_id){
 }
 
 function service_medico_store(){
-	name = $('#name_service').val();
-	medico_id = $('#medico_id').val();
-	route = "{{route('service_medico_store')}}";
-	errormsj = '';
-	$.ajax({
+  name = $('#name_service').val();
+  medico_id = $('#medico_id').val();
+  route = "{{route('service_medico_store')}}";
+  errormsj = '';
+  $.ajax({
    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
    type:'post',
    url:route,
@@ -918,11 +954,11 @@ function service_medico_store(){
 }
 
 function service_medico_experience(){
-	name = $('#name_experience').val();
-	medico_id = $('#medico_id').val();
-	route = "{{route('medico_experience_store')}}";
-	errormsj = '';
-	$.ajax({
+  name = $('#name_experience').val();
+  medico_id = $('#medico_id').val();
+  route = "{{route('medico_experience_store')}}";
+  errormsj = '';
+  $.ajax({
    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
    type:'post',
    url:route,
@@ -945,150 +981,150 @@ function service_medico_experience(){
 }
 
 function updateMedic(){
-	nameMedic =  $('#nameMedic').val();
-	lastNameMedic = $('#lastNameMedic').val();
-	genderMedic = $('#genderMedic').val();
-	cityMedic = $('#cityMedic').val();
-	stateMedic = $('#stateMedic').val();
-	phoneMedic = $('#phoneMedic').val();
-	phoneOffice1Medic = $('#phoneOffice1Medic').val();
-	phoneOffice2Medic = $('#phoneOffice2Medic').val();
-	identificationMedic = $('#identificationMedic').val();
-	specialtyMedic = $('#specialtyMedic').val();
-	sub_specialtyMedic = $('#sub_specialtyMedic').val();
-	errormsj = '';
+  nameMedic =  $('#nameMedic').val();
+  lastNameMedic = $('#lastNameMedic').val();
+  genderMedic = $('#genderMedic').val();
+  cityMedic = $('#cityMedic').val();
+  stateMedic = $('#stateMedic').val();
+  phoneMedic = $('#phoneMedic').val();
+  phoneOffice1Medic = $('#phoneOffice1Medic').val();
+  phoneOffice2Medic = $('#phoneOffice2Medic').val();
+  identificationMedic = $('#identificationMedic').val();
+  specialtyMedic = $('#specialtyMedic').val();
+  sub_specialtyMedic = $('#sub_specialtyMedic').val();
+  errormsj = '';
 
-	route = "{{route('medico.update',$medico->id)}}";
+  route = "{{route('medico.update',$medico->id)}}";
 
-	$.ajax({
-		 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-		 method:'put',
-		 url:route,
-		 data:{name:nameMedic,lastName:lastNameMedic,gender:genderMedic,city_id:cityMedic,state_id:stateMedic,phone:phoneMedic,phoneOffice1:phoneOffice1Medic,phoneOffice2:phoneOffice2Medic,identification:identificationMedic,specialty:specialtyMedic,sub_specialty:sub_specialtyMedic},
-		 error:function(error){
-			 $.each(error.responseJSON.errors, function(index, val){
-			 errormsj+='<li>'+val+'</li>';
-			 });
-			 $('#alert_success_update').fadeOut();
-			 $('#text_error_medic').html('<ul>'+errormsj+'</ul>');
-			 $('#alert_error_update').fadeIn();
-			 console.log(errormsj);
-			 },
-		 success:function(result){
-				console.log(result);
-				$('#alert_error_update').fadeOut();
-				$('#text_success_service').html('Cambios Guardados con Exito');
-				$('#alert_success_update').fadeIn();
+  $.ajax({
+   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+   method:'put',
+   url:route,
+   data:{name:nameMedic,lastName:lastNameMedic,gender:genderMedic,city_id:cityMedic,state_id:stateMedic,phone:phoneMedic,phoneOffice1:phoneOffice1Medic,phoneOffice2:phoneOffice2Medic,identification:identificationMedic,specialty:specialtyMedic,sub_specialty:sub_specialtyMedic},
+   error:function(error){
+    $.each(error.responseJSON.errors, function(index, val){
+      errormsj+='<li>'+val+'</li>';
+    });
+    $('#alert_success_update').fadeOut();
+    $('#text_error_medic').html('<ul>'+errormsj+'</ul>');
+    $('#alert_error_update').fadeIn();
+    console.log(errormsj);
+  },
+  success:function(result){
+    console.log(result);
+    $('#alert_error_update').fadeOut();
+    $('#text_success_service').html('Cambios Guardados con Exito');
+    $('#alert_success_update').fadeIn();
 
-		 }
-	});
+  }
+});
 
 }
 
 function cerrar(){
-	$('#alert_error_update').fadeOut();
-	$('#alert_success_update').fadeOut();
+  $('#alert_error_update').fadeOut();
+  $('#alert_success_update').fadeOut();
 }
 
 
 //mapa
 $('document').ready(function(){
-	show_map();
+  show_map();
 
 });
 
 function show_map(){
-	$('#store_coordinates').attr('disabled', false);
-	lat = '{{$medico->latitud}}';
-	lng = '{{$medico->longitud}}';
-	var map = new GMaps({
-		el: '#map',
-		lat: lat,
-		lng: lng,
-		zoom: 5,
-	});
-	map.addMarker({
-		lat: lat,
-		lng: lng,
-		title: 'Tu Ubicacion',
-		icon: "{{asset('img/marker-icon.png')}}",
-		draggable: true,
-			 dragend: function(event) {
-				 var lat = event.latLng.lat();
-				 var lng = event.latLng.lng();
-				 $('#latitudSave').val(lat);
-				 $('#longitudSave').val(lng);
-				  $('#store_coordinates').attr('disabled', false);
+  $('#store_coordinates').attr('disabled', false);
+  lat = '{{$medico->latitud}}';
+  lng = '{{$medico->longitud}}';
+  var map = new GMaps({
+    el: '#map',
+    lat: lat,
+    lng: lng,
+    zoom: 5,
+  });
+  map.addMarker({
+    lat: lat,
+    lng: lng,
+    title: 'Tu Ubicacion',
+    icon: "{{asset('img/marker-icon.png')}}",
+    draggable: true,
+    dragend: function(event) {
+     var lat = event.latLng.lat();
+     var lng = event.latLng.lng();
+     $('#latitudSave').val(lat);
+     $('#longitudSave').val(lng);
+     $('#store_coordinates').attr('disabled', false);
 
-			 },
+   },
 
 });//fin marker
 }
 
-	function searchInMap(){
-		$('#store_coordinates').attr('disabled', false);
-		var map = new GMaps({
-			el: '#map',
-			zoom: 5,
+function searchInMap(){
+  $('#store_coordinates').attr('disabled', false);
+  var map = new GMaps({
+   el: '#map',
+   zoom: 5,
 
-		});
+ });
 
-		GMaps.geocode({
-		address: $('#address').val(),
-		callback: function(results, status) {
-			if (status == 'OK') {
-				var latlng = results[0].geometry.location;
-				var lat = latlng.lat();
-				var lng = latlng.lng();
-				$('#latitudSave').val(lat);
-				$('#longitudSave').val(lng);
-				map.  setCenter(latlng.lat(), latlng.lng());
-				map.addMarker({
-					lat: latlng.lat(),
-					lng: latlng.lng(),
+  GMaps.geocode({
+    address: $('#address').val(),
+    callback: function(results, status) {
+     if (status == 'OK') {
+      var latlng = results[0].geometry.location;
+      var lat = latlng.lat();
+      var lng = latlng.lng();
+      $('#latitudSave').val(lat);
+      $('#longitudSave').val(lng);
+      map.  setCenter(latlng.lat(), latlng.lng());
+      map.addMarker({
+       lat: latlng.lat(),
+       lng: latlng.lng(),
 
-					title: 'Tu Ubicacion',
-					icon: "{{asset('img/marker-icon.png')}}",
-					draggable: true,
-						 dragend: function(event) {
-								 var lat = event.latLng.lat();
-								 var lng = event.latLng.lng();
-								 $('#latitudSave').val(lat);
-								 $('#longitudSave').val(lng);
-								  $('#store_coordinates').attr('disabled', false);
-						 },
+       title: 'Tu Ubicacion',
+       icon: "{{asset('img/marker-icon.png')}}",
+       draggable: true,
+       dragend: function(event) {
+         var lat = event.latLng.lat();
+         var lng = event.latLng.lng();
+         $('#latitudSave').val(lat);
+         $('#longitudSave').val(lng);
+         $('#store_coordinates').attr('disabled', false);
+       },
 
-						 // infoWindow: {
-						 //     content: content
-						 // }
-			});//fin marker
-			}
-		}
-	});
+             // infoWindow: {
+             //     content: content
+             // }
+      });//fin marker
+    }
+  }
+});
 }//fin searchInMap
 
 function store_coordinates(){
-	route = '{{route('medico_store_coordinates',$medico->id)}}';
-	latitud = $('#latitudSave').val();
-	longitud = $('#longitudSave').val();
+  route = '{{route('medico_store_coordinates',$medico->id)}}';
+  latitud = $('#latitudSave').val();
+  longitud = $('#longitudSave').val();
 
-		$.ajax({
-			 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			 type:'post',
-			 url:route,
-			 data:{latitud:latitud,longitud:longitud},
-			 error:function(error){
-				console.log(error);
-			},
-			success:function(result){
+  $.ajax({
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    type:'post',
+    url:route,
+    data:{latitud:latitud,longitud:longitud},
+    error:function(error){
+      console.log(error);
+    },
+    success:function(result){
 
-				console.log(result);
-				// //$('#input_descripion').val(result);
-				// $('#div_descripion').html(result);
-				// decription = $('#description_text').html();
-				// $('#input_description').val(decription);
-			}
-		});
+      console.log(result);
+        // //$('#input_descripion').val(result);
+        // $('#div_descripion').html(result);
+        // decription = $('#description_text').html();
+        // $('#input_description').val(decription);
+      }
+    });
 }
 </script>
 

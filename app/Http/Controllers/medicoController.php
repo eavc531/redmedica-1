@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\medico;
+use App\country;
 use App\city;
 use App\state;
 use App\promoter;
@@ -62,6 +63,13 @@ class medicoController extends Controller
            $city = city::where('name',$request->city)->first();
 
            $medico = medico::find($id);
+           if($medico->stateConfirm != 'data_primordial_complete'){
+             return redirect()->route('data_primordial_medico',$id)->with('warning', 'Debes rellenar los siguietnes Datos para Poder acceder a otros paneles de tu cuenta.');
+           }
+
+
+
+
            $medico->country = $request->country;
            $medico->state = $request->state;
            $medico->city = $request->city;
@@ -78,7 +86,13 @@ class medicoController extends Controller
            $medico->save();
 
 
-        return redirect()->route('medico.edit',$medico->id)->with('medico', $medico)->with('success','Se han actualziado datos de la Dirección de su trabajo principal');
+           if($medico->stateConfirm == 'data_primordial_complete'){
+             $medico->stateConfirm = 'complete';
+             $medico->save();
+             return redirect()->route('medico.edit',$id)->with('successComplete');
+           }
+
+        return redirect()->route('medico.edit',$medico->id)->with('medico', $medico)->with('success','Se ha actualizado la Dirección de su sitio de trabajo');
      }
 
 
@@ -148,9 +162,10 @@ class medicoController extends Controller
      public function data_primordial_medico($id){
 
        $medico = medico::find($id);
-       $cities = city::all()->pluck('name','name');
-
-      return view('medico.data_primordial_medico')->with('medico', $medico)->with('cities', $cities);
+       $cities = city::orderBy('name','asc')->pluck('name','id');
+       $states = state::orderBy('name','asc')->pluck('name','id');
+        $specialties = specialty::orderBy('name','asc')->pluck('name','id');
+      return view('medico.data_primordial_medico',compact('medico','cities','states','specialties'));
      }
 
     public function medico_service_list(Request $request){
@@ -259,12 +274,12 @@ class medicoController extends Controller
      */
     public function create()
     {
-      $cities = city::orderBy('name','asc')->pluck('name','name');
-      $promoters = promoter::orderBy('id_promoter','asc')->pluck('id_promoter','id_promoter');
-      $medicalCenter = medicalCenter::orderBy('name','asc')->pluck('name','id');
-      $specialties = specialty::orderBy('name','asc')->pluck('name','id');
 
-      return view('medico.create')->with('medicalCenter',$medicalCenter)->with('cities',$cities)->with('promoters', $promoters);
+
+      $countries = country::orderBy('name','asc')->pluck('name','name');
+      $specialties = specialty::orderBy('name','asc')->pluck('name','name');
+
+      return view('medico.create',compact('countries','specialties'));
     }
 
     /**
@@ -305,6 +320,8 @@ class medicoController extends Controller
            'name'=>'required',
            'lastName'=>'required',
            'gender'=>'required',
+           'specialty'=>'required'
+           'country'=>'required'
            'email'=>'required|unique:medicos|unique:users',
            'password'=>'required',
            //'medicalCenter_id'=>'required',
@@ -431,8 +448,8 @@ class medicoController extends Controller
          'name'=>'required',
          'lastName'=>'required',
          'gender'=>'required',
-         'city_id'=>'required',
-         'state_id'=>'required',
+         // 'city_id'=>'required',
+         // 'state_id'=>'required',
          'identification'=>'required',
          'specialty'=>'required',
          'sub_specialty'=>'required',
@@ -449,19 +466,24 @@ class medicoController extends Controller
 
       $medico = medico::find($id);
       $medico->fill($request->all());
-      $medico->latitud = $city->latitud;
-      $medico->longitud = $medico->longitud;
+
+      // $medico->latitud = $city->latitud;
+      // $medico->longitud = $medico->longitud;
       //$medico->state = 'complete';
 
-      $medico->save();
 
-      if($request->ajax()){
-          return response()->json('ok');
+
+      if($medico->stateConfirm == 'complete'){
+        $medico->save();
+          return redirect()->route('medico.edit',$id)->with('success','Sus datos han sido actualizados con exito');
       }else{
-          return redirect()->route('medico.edit',$id)->with('successComplete', 'valusse');
+        $medico->stateConfirm = 'complete';
+        $medico->save();
+          return redirect()->route('medico_edit_address',$id)->with('success', 'Sus datos han sido actualizados con exito, por Favor Agregue su dirección de trabajo.');
+          // return redirect()->route('medico.edit',$id)->with('successComplete', 'valusse');
       }
 
-
+      // if($medico->stateConfirm == 'mailConfirmed')
     }
 
     /**

@@ -28,15 +28,22 @@ route::get('medico/{id}/perfil','medicoController@medico_perfil')->name('medico_
 
 route::resource('medico_diary','medico_diaryController');
 
+
+route::post('compare/hours/{id}','medico_diaryController@compare_hours')->name('compare_hours');
+
 route::get('medico/{id}/diary/events','medico_diaryController@medico_diary_events')->name('medico_diary_events');
+route::post('medico/{id}/diary/events2','medico_diaryController@medico_diary_events2')->name('medico_diary_events2');
+
 route::get('medico/{id}/business/hours','medico_diaryController@medico_business_hours')->name('medico_business_hours');
 
 route::post('medico/business/hours/edit','medico_diaryController@medico_business_hours_update')->name('medico_business_hours_update');
+route::post('delete/event','medico_diaryController@delete_event')->name('delete_event');
 
+Route::post('medico/update/event', 'medico_diaryController@update_event')->name('update_event');
 Route::get('medico/{id}/panel/diary', 'medico_diaryController@medico_diary')->name('medico_diary');
 Route::get('medico/{id}/panel/schedule', 'medico_diaryController@medico_schedule')->name('medico_schedule');
 
-route::post('medico/schedule/store','medico_diaryController@medico_schedule_store')->name('medico_schedule_store');
+route::post('medico/{id}/schedule/store','medico_diaryController@medico_schedule_store')->name('medico_schedule_store');
 
 Route::get('medico/{id}/diary/fullscreen', 'medico_diaryController@medico_diary_fullscreen')->name('medico_diary_fullscreen');
 
@@ -55,7 +62,7 @@ route::post('medicalCenter/social/store','medicalCenterController@medicalCenter_
 route::post('borrar_social','medicoController@borrar_social')->name('borrar_social');
 
 
-route::get('data/primordial/{id}/medico','medicoController@data_primordial_medico')->name('data_primordial_medico');
+route::get('medico/{id}/data/primordial/','medicoController@data_primordial_medico')->name('data_primordial_medico');
 
 route::get('medic/{id}/consulting_room/create','consulting_roomController@consulting_room_create')->name('consulting_room_create');
 
@@ -76,7 +83,7 @@ route::post('medicalCenter/{id}/store/insurrances','medicalCenterController@medi
 route::get('medicalCenter/insurance/{id}/delete','medicalCenterController@delete_insurance')->name('delete_insurance');
 
 
-route::get('data/primordial/{id}/medical_center','medicalCenterController@data_primordial_medical_center')->name('data_primordial_medical_center');
+route::get('medicalCenter/{id}/data/primordial/','medicalCenterController@data_primordial_medical_center')->name('data_primordial_medical_center');
 route::get('data/primordial/{id}/medical_center/address','medicalCenterController@data_primordial_medical_center2')->name('data_primordial_medical_center2');
 
 route::get('medical_center/{id}/panel','medicalCenterController@medical_center_panel')->name('medical_center_panel');
@@ -131,7 +138,11 @@ route::post('medicalCenter/{id}/update/address','medicalCenterController@medical
 route::post('medico/{id}/update/address','medicoController@medico_update_address')->name('medico_update_address');
 
 route::get('medicalCenter/{id}/edit/schedule','medicalCenterController@medical_center_edit_schedule')->name('medical_center_edit_schedule');
+
 route::post('medicalCenter/{id}/store/schedule','medicalCenterController@medical_center_store_schedule')->name('medical_center_store_schedule');
+
+
+route::get('medico/{id}/delete/schedule','medico_diaryController@medico_schedule_delete')->name('medico_schedule_delete');
 route::get('medicalCenter/{id}/delete/schedule','medicalCenterController@medical_center_schedule_delete')->name('medical_center_schedule_delete');
 
 route::get('send_mail/medicalCenter/{id}/code_confirmded','medicalCenterController@resend_mail_medical_center')->name('resend_mail_medical_center');
@@ -142,6 +153,8 @@ route::post('resend/mail/confirmation','medicoController@resendMailMedicoConfirm
 route::get('list/result/','HomeController@tolist')->name('tolist');
 /////////////////////////////////////////////////////////////////////////////////borar
 route::get('list/result2','HomeController@tolist2')->name('tolist2');
+
+route::get('list/result3','HomeController@tolist3')->name('tolist3');
 route::post('ajax/map','HomeController@ajax_map')->name('ajax_map');
 
 route::post('list/specialtyList1','HomeController@specialtyList1')->name('specialtyList1');

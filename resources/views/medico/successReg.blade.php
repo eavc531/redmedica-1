@@ -24,20 +24,19 @@
 
               <p><b>Ya eres un miembre de la mejor red de médicos y profesionales de la salud</b>.</p>
               <p>Solo falta que ingreses a tu cuenta de correo para que actives tu cuenta.</p><a href="{{route('home')}}">Ir a Inicio</a>
+
+
             </div>
-
-            <div class="col-12">
-
-
+            <div class="col-lg-12 col-12 mt-3">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="">
-             Reenviar Correo de Confirmación
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+               Reenviar Correo de Confirmación
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
 </section>
 
 @include('medico.modalresendMailConfirm')

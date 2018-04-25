@@ -15,21 +15,25 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('title');
+          $table->string('title')->nullable();
+          $table->string('description')->nullable();
           $table->string('start');
           $table->string('end')->nullable();
           $table->string('eventType')->nullable();
           $table->datetime('dateStart')->nullable();
           $table->datetime('dateEnd')->nullable();
-          $table->string('hourStart');
-          $table->string('hourEnd');
-          $table->string('minsStart');
-          $table->string('minsEnd');
-          $table->string('color',7)->nullable();
+          // $table->string('hourStart');
+          // $table->string('hourEnd');
+          // $table->string('minsStart');
+          // $table->string('minsEnd');
+          $table->string('color')->nullable();
           $table->string('rendering')->nullable();
           $table->string('dow')->nullable();
+          $table->biginteger('price')->nullable();
           $table->integer('medico_id')->unsigned()->nullable();
           $table->foreign('medico_id')->references('id')->on('medicos');
+          $table->string('state')->default('Pendiente');
+          
           $table->timestamps();
         });
     }

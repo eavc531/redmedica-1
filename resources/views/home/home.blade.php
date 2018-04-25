@@ -1,35 +1,35 @@
 @extends('layouts.app')
 
 @section('css')
-  <style media="screen">
-  .widthDiv{
-    width: 1000px;
-    height: 800px;
-  }
+<style media="screen">
+.widthDiv{
+  width: 1000px;
+  height: 800px;
+}
   /* a{
      cursor: pointer;
-  } */
-  </style>
+     } */
+   </style>
 
-@endsection
-@section('content')
+   @endsection
+   @section('content')
 
-  @if(!isset(Auth::user()->id))
-    <div class="row">
-      <div class="col-lg-6 col-md-6 col-12">
-        <h5 class="font-title-index">¿Ya eres un profesional registrado?</h5>
-      </div>
-      <div class="col-lg-6 col-md-6 col-12 pull-right">
-        <div class="row">
-          <div class="col-lg-6 col-md-6 col-12 p-1">
-            <a href="" data-toggle="modal" data-target="#modal-register"><img class="box-shadox" src="{{asset('img/botones-medicossi-18.png')}}"></a>
-          </div>
-          <div class="col-lg-6 col-md-6 col-12 p-1">
-            <a href="" data-toggle="modal" data-target="#modal-login"><img class="box-shadox" src="{{asset('img/botones-medicossi-20.png')}}"></a>
-          </div>
+   @if(!isset(Auth::user()->id))
+   <div class="row">
+    <div class="col-lg-6 col-md-6 col-12">
+      <h5 class="font-title-index">¿Ya eres un profesional registrado?</h5>
+    </div>
+    <div class="col-lg-6 col-md-6 col-12 pull-right">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-12 p-1">
+          <a href="" data-toggle="modal" data-target="#modal-register"><img class="box-shadox" src="{{asset('img/botones-medicossi-18.png')}}"></a>
+        </div>
+        <div class="col-lg-6 col-md-6 col-12 p-1">
+          <a href="" data-toggle="modal" data-target="#modal-login"><img class="box-shadox" src="{{asset('img/botones-medicossi-20.png')}}"></a>
         </div>
       </div>
     </div>
+  </div>
   @endif
   <div class="row box-index mt-4">
     <div class="col-12">
@@ -56,47 +56,47 @@
             <div class="col-4">
               <div class="col-12 mt-3">
                 <div class="form-group">
-                    <p><strong>Filtrar por:</strong></p>
+                  <p><strong>Filtrar por:</strong></p>
 
-                    {{Form::radio('points')}}
-                    <label class="custom-control-description">Puntaje de los usuarios</label>
+                  {{Form::radio('points')}}
+                  <label class="custom-control-description">Puntaje de los usuarios</label>
                 </div>
               </div>
             </div>
             <div class="col-8">
               <div class="col-12 mt-3">
 
-                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-                      <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Ubicación</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Distancia</a>
-                      </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Ubicación</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Distancia</a>
+                  </li>
 
-                    </ul>
+                </ul>
 
-                    <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row mt-3">
-                          <div class="form-group col-6">
-                          {!!Form::select('state',$states,request()->state,['class'=>'form-control','id'=>'stateMedic','placeholder'=>'estado'])!!}
-                          </div>
-                          <div class="form-group col-6">
-                            {!!Form::select('city',$cities,request()->city,['class'=>'form-control','id'=>'cityMedic','placeholder'=>'ciudad'])!!}
-                          </div>
-                        </div>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row mt-3">
+                      <div class="form-group col-6">
+                        {!!Form::select('state',$states,request()->state,['class'=>'form-control','id'=>'stateMedic','placeholder'=>'estado'])!!}
+                      </div>
+                      <div class="form-group col-6">
+                        {!!Form::select('city',$cities,request()->city,['class'=>'form-control','id'=>'cityMedic','placeholder'=>'ciudad'])!!}
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="form-group mt-3">
+                      <div class="col-6 mt2-">
+                        {{Form::select('dist',[50=>'50 Km',100=>'100 Km',200=>'200 Km',400=>'400 Km',800=>'800 Km',1000=>'1000 Km',2000=>'2000 Km',10000=>'10000 Km'],null,['class'=>'form-control','id'=>'dist','placeholder'=>'seleccione una opcion'])}}
 
                       </div>
-                      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="form-group mt-3">
-                          <div class="col-6 mt2-">
-                          {{Form::select('dist',[50=>'50 Km',100=>'100 Km',200=>'200 Km',400=>'400 Km',800=>'800 Km',1000=>'1000 Km',2000=>'2000 Km',10000=>'10000 Km'],null,['class'=>'form-control','id'=>'dist','placeholder'=>'seleccione una opcion'])}}
-
-                          </div>
-                        </div>
                     </div>
+                  </div>
                 </div>
                 {{Form::close()}}
               </div>
@@ -107,29 +107,29 @@
       <div class="text-justify mt-3">
         {{-- //PANTALLA ESPECIALIDADES POR CATEGORIA//PANTALLA ESPECIALIDADES POR CATEGORIA --}}
         @if(isset($specialtiesCount) and $specialtiesCount != 0)
-          <div class="card">
-            <div class="card-header">
-              Especialidades de la Categoria: {{$category}}
-              <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
-            </div>
-            <div class="card-body">
-              @foreach ($specialties as $specialty)
-                <div class="float-left p-3">
-                  {{Form::open(['route'=>'tolist2','method'=>'get'])}}
-                  {{Form::hidden('search',$specialty->name)}}
-
-                  {{Form::hidden('typeSearch2','Especialidad Medica')}}
-                  <button type="submit" class="btn-link"><strong>{{$specialty->name}}</strong></button>
-                  {{Form::close()}}
-                </div>
-              @endforeach
-            </div>
-
+        <div class="card">
+          <div class="card-header">
+            Especialidades de la Categoria: {{$category}}
+            <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
           </div>
+          <div class="card-body">
+            @foreach ($specialties as $specialty)
+            <div class="float-left p-3">
+              {{Form::open(['route'=>'home','method'=>'get'])}}
+              {{Form::hidden('search',$specialty->name)}}
+
+              {{Form::hidden('typeSearch2','Especialidad Medica')}}
+              <button type="submit" class="btn-primary btn-link" style="cursor: pointer"><strong>{{$specialty->name}}</strong></button>
+              {{Form::close()}}
+            </div>
+            @endforeach
+          </div>
+
+        </div>
         @endif
 
         {{-- //FIN PANTALLA ESPECIALIDADES POR CATEGORIA --}}
-          @if(isset($medicalCenterCount) and $medicalCenterCount != 0)
+        @if(isset($medicalCenterCount) and $medicalCenterCount != 0)
         <div class="row">
           <div class="col-12 content-profile">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -137,14 +137,14 @@
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home2" role="tab" aria-controls="home" aria-selected="true">Centros Médicos</a>
               </li>
               <li class="nav-item">
-                    <a onclick="show_map2()" class="nav-link" id="profile-tab" data-toggle="tab" href="" role="tab" aria-controls="profile" aria-selected="false">Mapa</a>
+                <a onclick="show_map2()" class="nav-link" id="profile-tab" data-toggle="tab" href="" role="tab" aria-controls="profile" aria-selected="false">Mapa</a>
               </li>
 
             </ul>
 
             <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab">
-              <input type="hidden" name="" value="{{$medicalCenterCount}}" id="medicalCenterCount">
+              <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab">
+                <input type="hidden" name="" value="{{$medicalCenterCount}}" id="medicalCenterCount">
                 <div class="card-header">
                   <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
                   <input type="hidden" name="" value="{{$distRequest = request()->get('dist')}}">
@@ -155,102 +155,102 @@
                   <h5>Filtros:</h5>
 
                   @isset($typeSearch)
-                    <p>Tipo de Busqueda: <strong>{{$typeSearch}}</strong></p>
+                  <p>Tipo de Busqueda: <strong>{{$typeSearch}}</strong></p>
                   @endisset
                   @isset($search)
-                    <p>Nombre: <strong>{{$search}}</strong></p>
+                  <p>Nombre: <strong>{{$search}}</strong></p>
                   @endisset
 
                   @isset($distRequest)
-                    <p>Diametro: <strong>{{request()->get('dist')}} Km</strong></p>
+                  <p>Diametro: <strong>{{request()->get('dist')}} Km</strong></p>
                   @endisset
                   @if(isset($requestCity) and request()->get('city') != 'ciudad')
-                    <p>Ciudad: <strong>{{request()->get('city')}}</strong></p>
+                  <p>Ciudad: <strong>{{request()->get('city')}}</strong></p>
                   @endif
                   @if(!isset($requestCity) or $requestCity == 'ciudad')
-                    @isset($requestState)
-                      <p>Estado: <strong>{{request()->get('state')}}<strong></p>
+                  @isset($requestState)
+                  <p>Estado: <strong>{{request()->get('state')}}<strong></p>
                     @endisset
-                  @endif
-                </div>
-            @foreach ($medicalCenter as $mc)
-
-            <hr>
-            <div class="row">
-              <div class="col-8 m-auto col-sm-3 col-lg-3">
-                <picture>
-                  <source srcset="" type="image/svg+xml">
-                    <img src="{{asset('img/botones-medicossi-01.png')}}" class="img-fluid img-thumbnail" alt="...">
-                  </picture>
-                </div>
-                <div class="col-12 col-sm-5 col-lg-5">
-                 <div class="card-body p-2">
-                  <h5 class="card-title title-edit">{{$mc['name']}}</h5>
-                  <a href="{{route('medicalCenter.edit',$mc['id'])}}" class="outstanding mr-2">Ver Perfil</a><span></span>
-                  <div class="star-profile">
-                    <ul class="rating mt-1">
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                    </ul>
+                    @endif
                   </div>
-                  <div class="row mt-3 align-self-end">
-                    <div class="col-12">
-                      <a href=""><p class="card-text"><i class="fas fa-map-marker-alt mr-1"></i><b>{{$mc['state']}},{{$mc['city']}}</b> </a></p>
+                  @foreach ($medicalCenter as $mc)
+
+                  <hr>
+                  <div class="row">
+                    <div class="col-8 m-auto col-sm-3 col-lg-3">
+                      <picture>
+                        <source srcset="" type="image/svg+xml">
+                          <img src="{{asset('img/botones-medicossi-01.png')}}" class="img-fluid img-thumbnail" alt="...">
+                        </picture>
+                      </div>
+                      <div class="col-12 col-sm-5 col-lg-5">
+                       <div class="card-body p-2">
+                        <h5 class="card-title title-edit">{{$mc['name']}}</h5>
+                        <a href="{{route('medicalCenter.edit',$mc['id'])}}" class="outstanding mr-2">Ver Perfil</a><span></span>
+                        <div class="star-profile">
+                          <ul class="rating mt-1">
+                            <li class="star container-franchise__star li-config">&starf;</li>
+                            <li class="star container-franchise__star li-config">&starf;</li>
+                            <li class="star container-franchise__star li-config">&starf;</li>
+                            <li class="star container-franchise__star li-config">&starf;</li>
+                            <li class="star container-franchise__star li-config">&starf;</li>
+                          </ul>
+                        </div>
+                        <div class="row mt-3 align-self-end">
+                          <div class="col-12">
+                            <a href=""><p class="card-text"><i class="fas fa-map-marker-alt mr-1"></i><b>{{$mc['state']}},{{$mc['city']}}</b> </a></p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4 col-lg-4 p-4">
-                <div class="form-group">
-                  {{-- <label for="">Primeras visitas:<b class="price">600MXN</b></label> --}}
-                </div>
-                <div class="form-group">
-                  {{Form::open(['route'=>'tolist2','method'=>'get'])}}
-                  {{Form::hidden('typeSearch2','Medicos de la Institucion')}}
-                  {{Form::hidden('search',null)}}
-                  {{Form::hidden('medicalCenter_id',$mc['id'])}}
-                  {{Form::submit('test')}}
+                    <div class="col-12 col-sm-4 col-lg-4 p-4">
+                      <div class="form-group">
+                        {{-- <label for="">Primeras visitas:<b class="price">600MXN</b></label> --}}
+                      </div>
+                      <div class="form-group">
+                        {{Form::open(['route'=>'tolist2','method'=>'get'])}}
+                        {{Form::hidden('typeSearch2','Medicos de la Institucion')}}
+                        {{Form::hidden('search',null)}}
+                        {{Form::hidden('medicalCenter_id',$mc['id'])}}
+                        {{Form::submit('test', ['class' => 'btn btn-primary'])}}
 
-                  {{Form::close()}}
+                        {{Form::close()}}
 
 
-                  {{-- <a href="{{route('medicos_of_the_medical_center',$mc['id'])}}" class="btn-icon"><i class="fas fa-user-md"></i> Ver Profesionales Médicos</a> --}}
-                </div>
-                <div class="form-group">
-                 <a href="" class="btn-icon"><i class="fa fa-phone mr-2"></i>Ver Teléfonos</a>
+                        {{-- <a href="{{route('medicos_of_the_medical_center',$mc['id'])}}" class="btn-icon"><i class="fas fa-user-md"></i> Ver Profesionales Médicos</a> --}}
+                      </div>
+                      <div class="form-group">
+                       <a href="" class="btn-icon"><i class="fa fa-phone mr-2"></i>Ver Teléfonos</a>
+                     </div>
+                   </div>
+                 </div>
+                 <hr>
+                 @endforeach
+                 <div class="card-footer">
+                   {{$medicalCenter->appends(Request::all())->links()}}
+                 </div>
                </div>
+
+
+               <div class="tab-pane fade" id="mapa2" role="tabpanel" aria-labelledby="profile-tab">
+                 <div id="map" class="mb-4 p-4">
+
+                 </div>
+               </div>
+
              </div>
            </div>
-           <hr>
-         @endforeach
-           <div class="card-footer">
-             {{$medicalCenter->appends(Request::all())->links()}}
-           </div>
-       </div>
-
-
-       <div class="tab-pane fade" id="mapa2" role="tabpanel" aria-labelledby="profile-tab">
-         <div id="map" class="mb-4 p-4">
-
          </div>
-       </div>
+         @elseif(isset($medicalCenterCount) and $medicalCenterCount == 0)
 
-       </div>
-      </div>
-      </div>
-      @elseif(isset($medicalCenterCount) and $medicalCenterCount == 0)
-
-      <div class="card">
-        <div class="card-body">
-          <h5>No se Encontraron Resultados para la Busqueda</h5>
-          <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+         <div class="card">
+          <div class="card-body">
+            <h5>No se Encontraron Resultados para la Busqueda</h5>
+            <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+          </div>
         </div>
-      </div>
-    @endif
-    {{-- FIn CENTROS MEDICOS   FIn CENTROS MEDICOS  --}}
+        @endif
+        {{-- FIn CENTROS MEDICOS   FIn CENTROS MEDICOS  --}}
 
         @if(isset($medicosCercCount) and $medicosCercCount != 0)
         <div class="row">
@@ -260,7 +260,7 @@
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home2" role="tab" aria-controls="home" aria-selected="true">Médicos</a>
               </li>
               <li class="nav-item">
-                    <a onclick="show_map2()" class="nav-link" id="profile-tab" data-toggle="tab" href="" role="tab" aria-controls="profile" aria-selected="false">Mapa</a>
+                <a onclick="show_map2()" class="nav-link" id="profile-tab" data-toggle="tab" href="" role="tab" aria-controls="profile" aria-selected="false">Mapa</a>
               </li>
 
             </ul>
@@ -268,277 +268,275 @@
 
             <div class="tab-content" id="myTabContent">
 
-            <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab">
+              <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab">
 
                <input type="hidden" name="" value="{{$medicosCercCount}}" id="medicosCercCount">
 
-                 <div class="card-header">
-                   <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
-                   <input type="hidden" name="" value="{{$distRequest = request()->get('dist')}}">
-                   <input type="hidden" name="" value="{{$typeSearch = request()->get('typeSearch')}}">
-                   <input type="hidden" name="" value="{{$requestCity = request()->get('city')}}" id="cityRequest">
-                   <input type="hidden" name="" value="{{$requestState = request()->get('state')}}"id="stateRequest">
+               <div class="card-header">
+                 <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+                 <input type="hidden" name="" value="{{$distRequest = request()->get('dist')}}">
+                 <input type="hidden" name="" value="{{$typeSearch = request()->get('typeSearch')}}">
+                 <input type="hidden" name="" value="{{$requestCity = request()->get('city')}}" id="cityRequest">
+                 <input type="hidden" name="" value="{{$requestState = request()->get('state')}}"id="stateRequest">
 
-                   @isset($typeSearch)
-                     <p>Tipo de Busqueda: <strong>{{$typeSearch}}</strong></p>
-                   @endisset
-                   @isset($search)
-                     <p>Nombre: <strong>{{$search}}</strong></p>
-                   @endisset
+                 @isset($typeSearch)
+                 <p>Tipo de Busqueda: <strong>{{$typeSearch}}</strong></p>
+                 @endisset
+                 @isset($search)
+                 <p>Nombre: <strong>{{$search}}</strong></p>
+                 @endisset
 
-                   @isset($distRequest)
-                     <p>Diametro: <strong>{{request()->get('dist')}} Km</strong></p>
+                 @isset($distRequest)
+                 <p>Diametro: <strong>{{request()->get('dist')}} Km</strong></p>
+                 @endisset
+                 @if(isset($requestCity) and request()->get('city') != 'ciudad')
+                 <p>Ciudad: <strong>{{request()->get('city')}}</strong></p>
+                 @endif
+                 @if(!isset($requestCity) or $requestCity == 'ciudad')
+                 @isset($requestState)
+                 <p>Estado: <strong>{{request()->get('state')}}<strong></p>
                    @endisset
-                   @if(isset($requestCity) and request()->get('city') != 'ciudad')
-                     <p>Ciudad: <strong>{{request()->get('city')}}</strong></p>
-                   @endif
-                   @if(!isset($requestCity) or $requestCity == 'ciudad')
-                     @isset($requestState)
-                       <p>Estado: <strong>{{request()->get('state')}}<strong></p>
-                     @endisset
                    @endif
 
 
                  </div>
-             @foreach ($medicosCerc as $medico )
+                 @foreach ($medicosCerc as $medico )
 
-            <hr>
-            <div class="row">
-              <div class="col-8 m-auto col-sm-3 col-lg-3">
-                <picture >
-                  <source srcset="" type="image/svg+xml">
-                    @isset($medico['image'])
-                      <img src="{{asset($medico['image'])}}" class="img-fluid img-thumbnail" alt="..." >
-                    @else
-                      <img src="{{asset('img/profile.png')}}" class="img-fluid img-thumbnail" alt="...">
-                    @endisset
-
-                  </picture>
-                </div>
-                <div class="col-12 col-sm-5 col-lg-5">
-                 <div class="card-body p-2">
-                  <h5 class="card-title title-edit">{{$medico['name']}}</h5>
-                  <p>Cédula: {{$medico['identification']}}</p>
-                  <span>Especialidad:</span> <a href="#" class="outstanding mr-2"> {{$medico['specialty']}}</a>
-                  <div class="star-profile">
-                    <ul class="rating mt-1">
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                      <li class="star container-franchise__star li-config">&starf;</li>
-                    </ul>
+                 <hr>
+                 <div class="row">
+                  <div class="col-8 m-auto col-sm-3 col-lg-3">
+                    <div class="cont-img">
+                      @isset($medico['image'])
+                      <img src="{{asset($medico['image'])}}" class="prof-img img-thumbnail" alt="..." >
+                      @else
+                      <img src="{{asset('img/profile.png')}}" class="prof-img img-thumbnail" alt="...">
+                      @endisset
+                    </div>
                   </div>
-                  <div class="row mt-3 align-self-end">
-                    <div class="col-12">
-                      <a href="{{route('detail_medic_map',$medico['id'])}}" class="btn btn-primary btn-sm text-white"><p class="card-text"><i class="fas fa-map-marker-alt mr-1"></i><b>{{$medico['state']}},{{$medico['city']}}</b></p></a>
+                  <div class="col-12 col-sm-5 col-lg-5">
+                   <div class="card-body p-2">
+                    <h5 class="card-title title-edit">{{$medico['name']}}</h5>
+                    <p>Cédula: {{$medico['identification']}}</p>
+                    <span>Especialidad:</span> <a href="#" class="outstanding mr-2"> {{$medico['specialty']}}</a>
+                    <div class="star-profile">
+                      <ul class="rating mt-1">
+                        <li class="star container-franchise__star li-config">&starf;</li>
+                        <li class="star container-franchise__star li-config">&starf;</li>
+                        <li class="star container-franchise__star li-config">&starf;</li>
+                        <li class="star container-franchise__star li-config">&starf;</li>
+                        <li class="star container-franchise__star li-config">&starf;</li>
+                      </ul>
+                    </div>
+                    <div class="row mt-3 align-self-end">
+                      <div class="col-12">
+                        <a href="{{route('detail_medic_map',$medico['id'])}}" class="btn btn-primary btn-sm text-white"><p class="card-text"><i class="fas fa-map-marker-alt mr-1"></i><b>{{$medico['state']}},{{$medico['city']}}</b></p></a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-12 col-sm-4 col-lg-4 p-4">
-                <div class="form-group">
-                  {{-- <label for="">Primeras visitas:<b class="price">600MXN</b></label> --}}
-                  <a class="btn btn-success" href="{{route('medico.edit',$medico['id'])}}">Perfil</a>
-                </div>
-                <div class="form-group">
-                  <a href="" class="btn-icon"><i class="fa fa-envelope-open mr-2"></i>Agendar cita</a>
-                </div>
-                <div class="form-group">
-                 <a href="" class="btn-icon"><i class="fa fa-phone mr-2"></i>Ver Telefono</a>
-               </div>
-               @isset($medico['dist'])
+                <div class="col-12 col-sm-4 col-lg-4 p-4">
+                  <div class="form-group">
+                    {{-- <label for="">Primeras visitas:<b class="price">600MXN</b></label> --}}
+                    <a class="" href="{{route('medico.edit',$medico['id'])}}"><i class="fas fa-cogs mr-2"></i>Ver perfíl</a>
+                  </div>
+                  <div class="form-group">
+                    <a href="" class="btn-icon"><i class="fa fa-envelope-open mr-2"></i>Agendar cita</a>
+                  </div>
+                  <div class="form-group">
+                   <a href="" class="btn-icon"><i class="fa fa-phone mr-2"></i>Ver Telefono</a>
+                 </div>
+                 @isset($medico['dist'])
                  <div class="form-group">
                   <p>Distancia: {{$medico['dist']}}</p>
                 </div>
-               @endisset
+                @endisset
 
-             </div>
-           </div>
-           <hr>
-         @endforeach
-           <div class="card-footer">
+              </div>
+            </div>
+            <hr>
+            @endforeach
+            <div class="card-footer">
              {{$medicosCerc->appends(Request::all())->links()}}
            </div>
-       </div>
+         </div>
 
-       <div class="tab-pane fade" id="mapa2" role="tabpanel" aria-labelledby="profile-tab">
-         <div id="map" class="mb-4 p-4">
+         <div class="tab-pane fade" id="mapa2" role="tabpanel" aria-labelledby="profile-tab">
+           <div id="map" class="mb-4 p-4">
 
+           </div>
          </div>
        </div>
-       </div>
-      </div>
-      </div>
-    @elseif(isset($medicosCercCount) and $medicosCercCount == 0)
+     </div>
+   </div>
+   @elseif(isset($medicosCercCount) and $medicosCercCount == 0)
 
-      <div class="card">
-        <div class="card-body">
-          <h5>No se Encontraron Resultados para la Busqueda</h5>
-          <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+   <div class="card">
+    <div class="card-body">
+      <h5>No se Encontraron Resultados para la Busqueda</h5>
+      <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+    </div>
+  </div>
+  @endif
+  {{-- ////////// --}}
+
+  {{-- //map-fin  //map-fin  //map-fin  //map-fin  //map-fin --}}
+  <div class="row my-5">
+    <div class="col-6 col-lg">
+      <div class="box-img">
+        {{Form::open(['route'=>'tolist2','method'=>'get'])}}
+        {{Form::hidden('typeSearch','Centro Medico')}}
+        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-01.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+        {{Form::close()}}
+
+      </div>
+    </div>
+    <div class="col-6 col-lg">
+      <div class="box-img">
+        {{Form::open(['route'=>'specialtyList1','method'=>'post'])}}
+        {{Form::hidden('typeSearch','Medicos y Especialistas')}}
+        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-05.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+        {{Form::close()}}
+      </div>
+    </div>
+    <div class="col-6 col-lg">
+      <div class="box-img">
+        {{Form::open(['route'=>'specialtyList2','method'=>'post'])}}
+        {{Form::hidden('typeSearch','Dentistas')}}
+        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-03.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+        {{Form::close()}}
+      </div>
+    </div>
+    <div class="col-6 col-lg">
+      <div class="box-img">
+        {{Form::open(['route'=>'specialtyList3','method'=>'post'])}}
+        {{Form::hidden('typeSearch','Terapeutas y Nutricion')}}
+        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-11.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+        {{Form::close()}}
+      </div>
+    </div>
+    <div class="col-6 col-lg">
+      <div class="box-img">
+        {{Form::open(['route'=>'specialtyList4','method'=>'post'])}}
+        {{Form::hidden('typeSearch','Medicina Alternativa')}}
+        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-11.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+        {{Form::close()}}
+
+      </div>
+    </div>
+  </div>
+
+</div>
+{{-- // --}}
+</div>
+<div class="row mt-3">
+</div>
+<!-- Modal Login-->
+<div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="alert alert-warning" role="alert" id="alert" style="display:none;margin:10px; ">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div id="text-alert">
         </div>
       </div>
-    @endif
-{{-- ////////// --}}
+      <div class="alert alert-success" role="alert" id="alert-success-confirm" style="display:none;margin:10px; ">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div >
+          <h5>Bienvenid@</h5>
+          <p id="text-success-confirm"></p>
+        </div>
+      </div>
+      <div class="modal-header">
 
-            {{-- //map-fin  //map-fin  //map-fin  //map-fin  //map-fin --}}
-            <div class="row my-5">
-              <div class="col-6 col-lg">
-                <div class="box-img">
-                  {{Form::model(Request::only(['typeSearch','search']),['route'=>'tolist2','method'=>'get'])}}
-                  {{Form::hidden('typeSearch','Centro Medico')}}
-                  <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-01.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-                  {{Form::close()}}
-
-                </div>
-              </div>
-              <div class="col-6 col-lg">
-                <div class="box-img">
-                  {{Form::open(['route'=>'specialtyList1','method'=>'post'])}}
-                    {{Form::hidden('typeSearch','Medicos y Especialistas')}}
-                    <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-05.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-                    {{Form::close()}}
-                </div>
-              </div>
-              <div class="col-6 col-lg">
-                <div class="box-img">
-                  {{Form::open(['route'=>'specialtyList2','method'=>'post'])}}
-                  {{Form::hidden('typeSearch','Dentistas')}}
-                  <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-03.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-                  {{Form::close()}}
-                </div>
-              </div>
-              <div class="col-6 col-lg">
-                <div class="box-img">
-                  {{Form::open(['route'=>'specialtyList3','method'=>'post'])}}
-                  {{Form::hidden('typeSearch','Terapeutas y Nutricion')}}
-                  <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-09.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-                  {{Form::close()}}
-                </div>
-              </div>
-              <div class="col-6 col-lg">
-                <div class="box-img">
-                  {{Form::open(['route'=>'specialtyList4','method'=>'post'])}}
-                  {{Form::hidden('typeSearch','Medicina Alternativa')}}
-                  <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-11.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-                  {{Form::close()}}
-
-                </div>
-              </div>
-            </div>
-
+        <h5 class="modal-title" id="exampleModalLongTitle">Ingresar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img width="100%" height="100%" src="{{asset('img/Medicossi-Marca original-01.png')}}">
           </div>
-          {{-- // --}}
         </div>
+        <div class="row">
+          <div class="col-12">
+            <a href="#" class="btn btn-config-blue btn-block" style="background-color: #4267b2;">Conectarse con facebook</a>
+          </div>
+        </div>
+
         <div class="row mt-3">
-        </div>
-        <!-- Modal Login-->
-        <div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="alert alert-warning" role="alert" id="alert" style="display:none;margin:10px; ">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <div id="text-alert">
-                </div>
-              </div>
-              <div class="alert alert-success" role="alert" id="alert-success-confirm" style="display:none;margin:10px; ">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <div >
-                  <h5>Bienvenid@</h5>
-                  <p id="text-success-confirm"></p>
-                </div>
-              </div>
-              <div class="modal-header">
-
-                <h5 class="modal-title" id="exampleModalLongTitle">Ingresar</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-12">
-                    <img width="100%" height="100%" src="{{asset('img/Medicossi-Marca original-01.png')}}">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <a href="#" class="btn btn-config-blue btn-block" style="background-color: #4267b2;">Conectarse con facebook</a>
-                  </div>
-                </div>
-
-                <div class="row mt-3">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="email" name="email">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-group">
-                      <input type="password" class="form-control" id="passwordLogin" aria-describedby="emailHelp" placeholder="password" name="password">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
-                        <input type="checkbox" class="custom-control-input">
-                        <span class="custom-control-indicator"></span>
-                        <span class="custom-control-description">Recordar contraseña</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <button class="btn btn-config-blue btn-block" onclick="login()">Iniciar sesión</button>
-                  </div>
-                  <div class="col-12">
-                    <a href="#" class=" btn btn-config-green btn-block mt-2">Olvido su contraseña</a>
-                  </div>
-                </div>
-              </div>
+          <div class="col-12">
+            <div class="form-group">
+              <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="email" name="email">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <input type="password" class="form-control" id="passwordLogin" aria-describedby="emailHelp" placeholder="password" name="password">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                <input type="checkbox" class="custom-control-input">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Recordar contraseña</span>
+              </label>
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-config-blue btn-block" onclick="login()">Iniciar sesión</button>
+          </div>
+          <div class="col-12">
+            <a href="#" class=" btn btn-config-green btn-block mt-2">Olvido su contraseña</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        @isset($currentPage)
-            <input type="hidden" name="" value="{{$currentPage}}" id="numberPageNow">
-        @endisset
-        @isset($specialtiesCount)
-          <input type="hidden" name="" value="{{$specialtiesCount}}" id="specialtiesCount">
-        @endisset
-        @isset($typeSearch2)
-        <input type="hidden" name="" value="{{$typeSearch2 = request()->get('typeSearch2')}}" id="typeSearch2">
-        @endisset
-        @isset($typeSearch2)
-        <input type="hidden" name="" value="{{$medicalCenter_id = request()->get('medicalCenter_id')}}" id="medicalCenter_id">
-        @endisset
-        {{-- @isset(request()->get('typeSearch'))
-        <input type="hidden" name="" value="{{$typeSearch = request()->get('typeSearch')}}" id="typeSearch2">
-        @endisset --}}
-        @include('home.modals')
+@isset($currentPage)
+<input type="hidden" name="" value="{{$currentPage}}" id="numberPageNow">
+@endisset
+@isset($specialtiesCount)
+<input type="hidden" name="" value="{{$specialtiesCount}}" id="specialtiesCount">
+@endisset
+@isset($typeSearch2)
+<input type="hidden" name="" value="{{$typeSearch2 = request()->get('typeSearch2')}}" id="typeSearch2">
+@endisset
+@isset($typeSearch2)
+<input type="hidden" name="" value="{{$medicalCenter_id = request()->get('medicalCenter_id')}}" id="medicalCenter_id">
+@endisset
+{{-- @isset(request()->get('typeSearch'))
+<input type="hidden" name="" value="{{$typeSearch = request()->get('typeSearch')}}" id="typeSearch2">
+@endisset --}}
+@include('home.modals')
 
-        @section('scriptJS')
-          @if(Session::Has('confirmMedico'))
+@section('scriptJS')
+@if(Session::Has('confirmMedico'))
 
 
-            <script type="text/javascript">
-            $(document).ready(function(){
-              $('#modal-login').modal('show');
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#modal-login').modal('show');
 
-              $('#text-success-confirm').html('Su Cuenta ha sido Confirmada con exito, ya es posible iniciar sesión con sus Credenciales');
-              $('#alert-success-confirm').fadeIn();
-            });
-          </script>
-        @endif
+    $('#text-success-confirm').html('Su Cuenta ha sido Confirmada con exito, ya es posible iniciar sesión con sus Credenciales');
+    $('#alert-success-confirm').fadeIn();
+  });
+</script>
+@endif
 
-        {{-- <script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY&callback=initMap"></script> --}}
-        <script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY"></script>
-        <script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
-        <script type="text/javascript">
+{{-- <script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY&callback=initMap"></script> --}}
+<script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY"></script>
+<script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
+<script type="text/javascript">
         // function conocerEvento(e) {
-        // 	if(!e) var e = window.event;
-        // 		 console.log(e.type);
+        //  if(!e) var e = window.event;
+        //     console.log(e.type);
         // }
 
 
@@ -547,11 +545,11 @@
         if(typeof typeSearch2 !== "undefined"){
           $('#typeSearch').val('Especialidad Medica');
         }
-         specialtiesCount = $('#specialtiesCount').val();
+        specialtiesCount = $('#specialtiesCount').val();
         if(typeof specialtiesCount !== "undefined"){
           $('#typeSearch').val('Especialidad Medica');
         }
-          medicosCercCount = $('#medicosCercCount').val();
+        medicosCercCount = $('#medicosCercCount').val();
 
           // if(typeof medicosCercCount !== "undefined"){
           //   $("#map").addClass("widthDiv");
@@ -566,59 +564,59 @@
           // }
 
           function geolocation(){
-              if (!navigator.geolocation){
-                alert('La Geolocalozación no es compatible con en este navegador');
-                return;
-              }
+            if (!navigator.geolocation){
+              alert('La Geolocalozación no es compatible con en este navegador');
+              return;
+            }
 
-              function success(position) {
-                latitude = position.coords.latitude;
-                $('#lat').val(latitude);
-                longitude = position.coords.longitude;
-                $('#lng').val(longitude);
-              };
+            function success(position) {
+              latitude = position.coords.latitude;
+              $('#lat').val(latitude);
+              longitude = position.coords.longitude;
+              $('#lng').val(longitude);
+            };
 
-              function error() {
-                alert("Error, hubo un problema al recuperar su ubicación, por favor recargue la pagina e intente nuevamente");
-              };
-              navigator.geolocation.getCurrentPosition(success, error);
-        }
+            function error() {
+              alert("Error, hubo un problema al recuperar su ubicación, por favor recargue la pagina e intente nuevamente");
+            };
+            navigator.geolocation.getCurrentPosition(success, error);
+          }
 
-        $('.radioDist').click(function(){
+          $('.radioDist').click(function(){
             geolocation();
-        });
+          });
 
-        function login(){
-          route = "{{route('login2')}}";
-          email = $('#emailLogin').val();
-          password = $('#passwordLogin').val();
-          $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type:'post',
-            url: route,
-            data:{email:email,password:password},
-            success:function(result){
-              if(result == 'true'){
-                location.reload();
-                window.location.href = '{{route("loginRedirect")}}';
-              }else{
-                $('#text-alert').html('Email o Contraseña Invalida');
+          function login(){
+            route = "{{route('login2')}}";
+            email = $('#emailLogin').val();
+            password = $('#passwordLogin').val();
+            $.ajax({
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              type:'post',
+              url: route,
+              data:{email:email,password:password},
+              success:function(result){
+                if(result == 'true'){
+                  location.reload();
+                  window.location.href = '{{route("loginRedirect")}}';
+                }else{
+                  $('#text-alert').html('Email o Contraseña Invalida');
+                  $('#alert').fadeIn();
+                }
+              },
+              error:function(result){
+                errores ='';
+                $.each(result.responseJSON.errors, function( index, value ) {
+                  errores += '<li>'+value+'</li>';
+                });
+                console.log(errores);
+                $('#text-alert').html(errores);
                 $('#alert').fadeIn();
-              }
-            },
-            error:function(result){
-              errores ='';
-              $.each(result.responseJSON.errors, function( index, value ) {
-                errores += '<li>'+value+'</li>';
-              });
-              console.log(errores);
-              $('#text-alert').html(errores);
-              $('#alert').fadeIn();
               // $error += '<li>result.message</li>';
               //  console.log(result.message);
             }
           });
-        }
+          }
 
         //Esto me permitio MOSTRAR EL MAPA DIRECTAMENTE EN LA EPSTAÑA
 
@@ -655,7 +653,7 @@
             success:function(result){
               console.log(result);
               //alert('map_medical_center_name');
-                var lat = 32.6245389;
+              var lat = 32.6245389;
                 //$('#lat').val();
                 var lng = -115.4522623;
                 //$('#lng').val();
@@ -672,47 +670,47 @@
                   title: 'Tu',
                   //icon: "{{asset('img/marker-icon.png')}}",
                   draggable: true,
-                     dragend: function(event) {
-                         var lat = event.latLng.lat();
-                         var lng = event.latLng.lng();
-                     },
+                  dragend: function(event) {
+                   var lat = event.latLng.lat();
+                   var lng = event.latLng.lng();
+                 },
               });//fin marker
-              $.each(result, function(index,value){
+                $.each(result, function(index,value){
 
-                number = number + 1;
-                if(number == 1){
-                icon = "{{asset('img/markers/marker_green1.png')}}";
-                }else if(number == 2){
-                icon = "{{asset('img/markers/marker_green2.png')}}";
-              }else if(number == 3){
-                icon = "{{asset('img/markers/marker_green3.png')}}";
-              }else if(number == 4){
-                icon = "{{asset('img/markers/marker_green4.png')}}";
-              }else if(number == 5){
-                icon = "{{asset('img/markers/marker_green5.png')}}";
-              }else if(number == 6){
-                icon = "{{asset('img/markers/marker_green6.png')}}";
-              }else if(number == 7){
-                icon = "{{asset('img/markers/marker_green7.png')}}";
-              }else if(number == 8){
-                icon = "{{asset('img/markers/marker_green8.png')}}";
-              }else if(number == 9){
-                icon = "{{asset('img/markers/marker_green9.png')}}";
-              }else if(number == 10){
-                icon = "{{asset('img/markers/marker_green10.png')}}";
-              }
-
-                map.addMarker({
-                  lat: value.latitud,
-                  lng: value.longitud,
-                  title: value.name,
-                  icon: icon,
-                  click: function(e) {
-                    alert(value.name);
+                  number = number + 1;
+                  if(number == 1){
+                    icon = "{{asset('img/markers/marker_green1.png')}}";
+                  }else if(number == 2){
+                    icon = "{{asset('img/markers/marker_green2.png')}}";
+                  }else if(number == 3){
+                    icon = "{{asset('img/markers/marker_green3.png')}}";
+                  }else if(number == 4){
+                    icon = "{{asset('img/markers/marker_green4.png')}}";
+                  }else if(number == 5){
+                    icon = "{{asset('img/markers/marker_green5.png')}}";
+                  }else if(number == 6){
+                    icon = "{{asset('img/markers/marker_green6.png')}}";
+                  }else if(number == 7){
+                    icon = "{{asset('img/markers/marker_green7.png')}}";
+                  }else if(number == 8){
+                    icon = "{{asset('img/markers/marker_green8.png')}}";
+                  }else if(number == 9){
+                    icon = "{{asset('img/markers/marker_green9.png')}}";
+                  }else if(number == 10){
+                    icon = "{{asset('img/markers/marker_green10.png')}}";
                   }
+
+                  map.addMarker({
+                    lat: value.latitud,
+                    lng: value.longitud,
+                    title: value.name,
+                    icon: icon,
+                    click: function(e) {
+                      alert(value.name);
+                    }
               });//fin marker
 
-              });
+                });
             },//fin success
 
             error:function(error){
@@ -723,34 +721,34 @@
 
 
         $('#stateMedic').on('change', function() {
-    			state_id = $('#stateMedic').val();
-           $('#dist').val(null);
-    			route = "{{route('inner_cities_select3')}}";
+         state_id = $('#stateMedic').val();
+         $('#dist').val(null);
+         route = "{{route('inner_cities_select3')}}";
 
-    			$.ajax({
-    				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-    				type:'post',
-    				url: route,
-    				data:{name:state_id},
-    				success:function(result){
+         $.ajax({
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          type:'post',
+          url: route,
+          data:{name:state_id},
+          success:function(result){
             //  console.log(result);
-    				$("#cityMedic").empty();
+            $("#cityMedic").empty();
             $('#cityMedic').append($('<option>', {
-               value: null,
-               text: 'ciudad'
+             value: null,
+             text: 'ciudad'
            }));
-						 $.each(result,function(key, val){
-							 $('#cityMedic').append($('<option>', {
-                  value: val,
-                  text: val
+            $.each(result,function(key, val){
+              $('#cityMedic').append($('<option>', {
+                value: val,
+                text: val
               }));
-						 });
-    				},
-    				error:function(error){
-    					console.log(error);
-    				},
-    			});
-    	   })
+            });
+          },
+          error:function(error){
+           console.log(error);
+         },
+       });
+       })
 
          //selec dist unselect city and state
          $('#dist').on('change', function() {
@@ -762,8 +760,15 @@
          $('#cityMedic').on('change', function() {
            $('#dist').val(null);
          });
-      </script>
 
-    @endsection
 
-  @endsection
+
+         function enviarForm(result){
+            $('typeSearch').val(result);
+
+         }
+       </script>
+
+       @endsection
+
+       @endsection

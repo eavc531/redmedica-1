@@ -25,6 +25,7 @@
             <i class="fa fa-check-square mt-1 mr-2 modal-checked" ></i>
             <p>Encontrarán la ubicación de tu núcleo de diagnóstico o centro médico a través de geolocalización</p>
           </div>
+          <div id="demo" class="collapse">
           <div class="d-flex justify-content-start reg-p">
             <i class="fa fa-check-square mt-1 mr-2 modal-checked" ></i>
             <p>Podrán tener tus colaboradores sus expedientes clínicos organizados de manera cronológica, completos e inter consultas por si necesitaran compartir</p>
@@ -53,6 +54,8 @@
             <i class="fa fa-check-square mt-1 mr-2 modal-checked" ></i>
             <p>Soporte telefónico y en linea</p>
           </div>
+        </div>
+          <button class="btn-block btn btn-primary" style="width:25%;" data-toggle="collapse" data-target="#demo" style="float:right: ">Ver Más</button>
         </div>
       </div>
     </div>

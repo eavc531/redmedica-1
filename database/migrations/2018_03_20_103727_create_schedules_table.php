@@ -21,10 +21,10 @@ class CreateSchedulesTable extends Migration
           $table->string('eventType')->nullable();
           $table->datetime('dateStart')->nullable();
           $table->datetime('dateEnd')->nullable();
-          $table->string('hourStart');
-          $table->string('hourEnd');
-          $table->string('minsStart');
-          $table->string('minsEnd');
+          $table->string('hourStart')->nullable();
+          $table->string('hourEnd')->nullable();
+          $table->string('minsStart')->nullable();
+          $table->string('minsEnd')->nullable();
           $table->string('color',7)->nullable();
           $table->string('rendering')->nullable();
           $table->string('dow')->nullable();
