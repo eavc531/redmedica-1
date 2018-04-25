@@ -60,7 +60,7 @@
 				</div>
 				<div class="col-lg-6 col-12">
 					<div class="form-group">
-						{!!Form::select('country',$countries,'México',['class'=>'form-control'])!!}
+						{!!Form::select('country',$countries,'México',['class'=>'form-control','placeholder'=>'Pais'])!!}
 					</div>
 				</div>
 			</div>
@@ -92,8 +92,8 @@
 						<a href="" class="btn btn-primary" data-toggle="modal" data-target="#terms">Leer términos y condiciones</a>
 					</div>
 					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" id="customCheck1">
-						<label class="custom-control-label" for="customCheck1">Al seleccionar este recuadro e leído y estoy de acuerdo con las políticas de la plataforma asi como el aviso de privacidad para el uso de mis datos personales</label>
+						<input name="terminos" type="checkbox" value="1">
+						<label for="customCheck1">Al seleccionar este recuadro e leído y estoy de acuerdo con las políticas de la plataforma asi como el aviso de privacidad para el uso de mis datos personales</label>
 					</div>
 				</div>
 			</div>
@@ -127,7 +127,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					<button type="button" class="btn btn-primary">Guardar</button>
+					<button type="button" class="btn btn-primary">Aceptar</button>
 				</div>
 			</div>
 		</div>

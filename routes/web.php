@@ -56,7 +56,7 @@ route::post('medicoBorrar','medicoController@medicoBorrar')->name('medicoBorrar'
 route::post('medico/experience/delete','medicoController@medico_experience_delete')->name('medico_experience_delete');
 route::post('medico/service/store','medicoController@service_medico_store')->name('service_medico_store');
 route::post('medic/experience/store','medicoController@medico_experience_store')->name('medico_experience_store');
-route::post('medic/social_network/store','medicaController@medico_social_network_store')->name('medico_social_network_store');
+route::post('medic/social_network/store','medicoController@medico_social_network_store')->name('medico_social_network_store');
 
 route::post('medicalCenter/social/store','medicalCenterController@medicalCenter_social_store')->name('medicalCenter_social_store');
 route::post('borrar_social','medicoController@borrar_social')->name('borrar_social');

@@ -30,7 +30,7 @@
          </div>
        </div>
 
-       
+
        <div class="row my-3">
          <div class="col-lg-3 col-12">
            <div class="form-group row">
@@ -44,17 +44,18 @@
              {{Form::select('state',$states,null,['class'=>'form-control'])}}
            </div>
          </div>
-         <div class="col-lg-3 col-12">
-           <div class="form-group row">
-             <label for="" class="col-4 col-form-label">Ciudad</label>
-             {{Form::select('state',$cities,null,['class'=>'form-control'])}}
-           </div>
+
+       </div>
+       <div class="col-lg-3 col-12">
+         <div class="form-group row">
+           <label for="" class="col-4 col-form-label">Ciudad</label>
+           {{Form::select('state',$cities,null,['class'=>'form-control'])}}
          </div>
-         <div class="col-lg-3 col-12">
-           <div class="form-group row">
-             <label for="" class="col-4 col-form-label" >Codigo Postal</label>
-             {{Form::number('postal_code',null,['class'=>'form-control'])}}
-           </div>
+       </div>
+       <div class="col-lg-3 col-12">
+         <div class="form-group row">
+           <label for="" class="col-4 col-form-label" >Codigo Postal</label>
+           {{Form::number('postal_code',null,['class'=>'form-control'])}}
          </div>
        </div>
        <div class="row mt-2">

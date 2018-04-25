@@ -25,6 +25,7 @@ class medico extends Model
        'phoneOffice2',
        'specialty',
        'sub_specialty',
+       'country',
     ];
 
     public function medico_specialty(){

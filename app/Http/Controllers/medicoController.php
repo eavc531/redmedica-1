@@ -51,7 +51,7 @@ class medicoController extends Controller
          ]);
 
           if($request->city == 'opciones'){
-            return back()->with('warning', 'El campo ciudad es requerido');
+            return back()->with('warning', 'El campo ciudad es requerido')->withInput();
           }
            // $Coordinates =
            //  Geocoder::getCoordinatesForAddress($request->number_ext,$request->street,$request->colony,$request->city,$request->state,$request->country);
@@ -63,7 +63,7 @@ class medicoController extends Controller
            $city = city::where('name',$request->city)->first();
 
            $medico = medico::find($id);
-           if($medico->stateConfirm != 'data_primordial_complete'){
+           if($medico->stateConfirm != 'data_primordial_complete' and $medico->stateConfirm != 'complete'){
              return redirect()->route('data_primordial_medico',$id)->with('warning', 'Debes rellenar los siguietnes Datos para Poder acceder a otros paneles de tu cuenta.');
            }
 
@@ -164,7 +164,7 @@ class medicoController extends Controller
        $medico = medico::find($id);
        $cities = city::orderBy('name','asc')->pluck('name','id');
        $states = state::orderBy('name','asc')->pluck('name','id');
-        $specialties = specialty::orderBy('name','asc')->pluck('name','id');
+        $specialties = specialty::orderBy('name','asc')->pluck('name','name');
       return view('medico.data_primordial_medico',compact('medico','cities','states','specialties'));
      }
 
@@ -299,9 +299,10 @@ class medicoController extends Controller
           $user->confirmation_code = $code;
           $user->confirmed = 'medium';
           $user->save();
-          $medico = medico::find($user->medico_id)->first();
 
-          $medico->state = 'medium';
+          $medico = medico::find($user->medico_id);
+
+          $medico->stateConfirm = 'medium';
           $medico->save();
 
           return redirect()->route('home')->with('confirmMedico', 'confirmMedico');
@@ -315,13 +316,16 @@ class medicoController extends Controller
 
     public function store(Request $request)
     {
+      if($request->terminos == Null){
+        return back()->with('warning', 'Debes Aceptar los Términos y Condiciones, para poder continuar.')->withInput();
+      }
         $request->validate([
            //'identification'=>'required|unique:medicos',
            'name'=>'required',
            'lastName'=>'required',
            'gender'=>'required',
-           'specialty'=>'required'
-           'country'=>'required'
+           'specialty'=>'required',
+           'country'=>'required',
            'email'=>'required|unique:medicos|unique:users',
            'password'=>'required',
            //'medicalCenter_id'=>'required',
@@ -331,10 +335,12 @@ class medicoController extends Controller
 
         ]);
 
+
+
         $medico = new medico;
         $medico->fill($request->all());
         $medico->password = bcrypt($request->password);
-        $medico->stateConfirm = 'medium';
+        $medico->stateConfirm = 'porConfirmar';
         $medico->save();
 
         $code = str_random(25);
@@ -452,7 +458,7 @@ class medicoController extends Controller
          // 'state_id'=>'required',
          'identification'=>'required',
          'specialty'=>'required',
-         'sub_specialty'=>'required',
+         //'sub_specialty'=>'required',
          //'email'=>'required|unique:medicos|unique:users',
          //'password'=>'required',
          //'medicalCenter_id'=>'required',
@@ -477,7 +483,7 @@ class medicoController extends Controller
         $medico->save();
           return redirect()->route('medico.edit',$id)->with('success','Sus datos han sido actualizados con exito');
       }else{
-        $medico->stateConfirm = 'complete';
+        $medico->stateConfirm = 'data_primordial_complete';
         $medico->save();
           return redirect()->route('medico_edit_address',$id)->with('success', 'Sus datos han sido actualizados con exito, por Favor Agregue su dirección de trabajo.');
           // return redirect()->route('medico.edit',$id)->with('successComplete', 'valusse');

@@ -211,9 +211,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
         }
         public function tolist2(Request $request){
-          if($request->typeSearch == Null){
-            return back();
-          }
+
+
           if($request->typeSearch2 == 'Medicos de la Institucion'){
               $medicos = medico::where('medicalCenter_id',$request->medicalCenter_id)->get();
               $data = HomeController::create_array_medicos($medicos);
@@ -460,6 +459,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
           return view('home.home')->with('medicosCerc', $medicosCerc)->with('data', $data)->with('medicosCercCount', $medicosCercCount)->with('search', $request->search)->with('currentPage', $currentPage)->with('typeSearchSpecialty', $typeSearchSpecialty)->with('states', $this->states)->with('cities',$this->cities);
         //fin NOMBRE/CEDULA MEDIC
           }
+
+
+          if($request->typeSearch == Null or $request->typeSearch2 == Null){
+            return redirect()->route('home');
+          }
+
       }
 //<<<<<//
       public function map_medical_center_name(Request $request){

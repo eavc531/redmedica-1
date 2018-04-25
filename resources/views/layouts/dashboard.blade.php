@@ -79,7 +79,10 @@
 									<a href="{{route('medico.edit', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user fa-2"></i><span>Editar Perfil</span></a>
 								</div>
 								<div class="col-12 nopadding">
-									<a href="{{route('medico_diary',Auth::user()->id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Panel de control</span></a>
+									<a href="{{route('medico_diary',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Panel de control</span></a>
+								</div>
+                <div class="col-12 nopadding">
+									<a href="{{route('medico_schedule',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Editar Horario</span></a>
 								</div>
 							</div>
 							<div class="row px-1">

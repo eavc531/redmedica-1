@@ -22,7 +22,7 @@
 </div>
 </div>
 @endif
-<p>La información que se registra en su cuenta,le permite ser ubicado con mayor facilidad por sus clientes a travez del sistema, ademas le permite brindar, una mejor descripción de su profesión.</p>
+{{-- <p>La información que se registra en su cuenta,le permite ser ubicado con mayor facilidad por sus clientes a travez del sistema, ademas le permite brindar, una mejor descripción de su profesión.</p> --}}
 
 <section class="box-register">
   <div class="container">
@@ -44,6 +44,10 @@
     <div class="cont-img my-2">
       <img src="{{asset($photo->path)}}" class="prof-img" alt="" id="img">
     </div>
+    @else
+      <div class="cont-img my-2">
+        <img src="{{asset('img/profile.png')}}" class="prof-img" alt="" id="img">
+      </div>
     @endisset
 
     {!!Form::open(['route'=>'photo.store','method'=>'POST','files'=>true])!!}
@@ -53,16 +57,16 @@
     {!!Form::submit('Subir')!!}
     {!!Form::close()!!}
   </div>
-  <div class="col-lg-5 col-12">
+  {{-- <div class="col-lg-5 col-12">
     <label for="">Barra de progreso</label>
     <div class="progress">
       <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 25%; vertical-align: center;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
-  </div>
+  </div> --}}
 </div>
 <hr>
 
-<!-- <div class="m-2">
+<div class="m-2">
   <div class="row my-2">
     <div class="col-12">
       <h4 class="font-title-blue text-center">Datos personales:</h4>
@@ -71,144 +75,30 @@
   <div class="row">
     <div class="col-6">
       <ul>
-        <li><b>Nombre</b>:</li>
-        <li><b>Apellidos</b>:</li>
-        <li><b>Estado</b>:</li>
-        <li><b>Sexo</b>:</li>
+        <li><b>Nombres</b>:{{$medico->name}}</li>
+        <li><b>Apellidos</b>:{{$medico->lastName}}</li>
+        <li><b>Cedula</b>:{{$medico->identification}}</li>
+        <li><b>Sexo</b>:{{$medico->gender}}</li>
+
       </ul>
     </div>
     <div class="col-6">
       <ul>
-        <li><b>Ciudad</b>:</li>
-        <li><b>Telefono celular:</b></li>
-        <li><b>Telefono de oficina 1:</b></li>
-        <li><b>Telefono de oficina 2:</b></li>
+        <li><b>Especialidad:</b>{{$medico->specialty}}</li>
+        @if ($medico->showNumber == 'si')
+          <li><b>Telefono celular</b>: {{$medico->phone}}</li>
+        @endif
+
+        <li><b>Telefono de oficina 1:{{$medico->phone1}}</b></li>
+        <li><b>Telefono de oficina 2:{{$medico->phone2}}</b></li>
+        <li><b>Mostrar Numero Personal:</b>{{$medico->showNumber}}</li>
       </ul>
-        <a href="#" class="btn btn-block btn-success">Editar</a>
+        <a href="{{route('data_primordial_medico',$medico->id)}}" class="btn btn-block btn-success">Editar</a>
     </div>
   </div>
-</div>
-<hr> -->
-
-
-{!!Form::model($medico,['route'=>['medico.update',$medico],'method'=>'PUT','id'=>'person'])!!}
-<div class="row">
-  <div class="col-lg-6 col-12">
-    <div class="form-group">
-      <label for="">Nombres</label>
-      {!!Form::text('name',null,['class'=>'form-control','placeholder'=>'Nombre','id'=>'nameMedic'])!!}
-    </div>
-  </div>
-  <div class="col-lg-6 col-12">
-    <div class="form-group">
-      <label for="">Apellidos</label>
-      {!!Form::text('lastName',null,['class'=>'form-control','placeholder'=>'Apellido','id'=>'lastNameMedic'])!!}
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-6">
-    <label for="">Estado</label>
-    <div class="form-group">
-      {!!Form::select('state_id',$states,null,['class'=>'form-control','id'=>'stateMedic'])!!}
-    </div>
-  </div>
-  <div class="col-6">
-    <div class="form-group">
-     <label for="">Sexo</label>
-     {!!Form::select('gender',['Masculino','Femenino'],null,['class'=>'form-control','id'=>'genderMedic'])!!}
-   </div>
- </div>
-</div>
-<div class="row">
-  <div class="col-lg-6 col-12">
-    <div class="form-group">
-     <label for="">Ciudad</label>
-     {!!Form::select('city_id',$cities,null,['class'=>'form-control','id'=>'cityMedic'])!!}
-   </div>
- </div>
- <div class="col-lg-6 col-12">
-  <div class="form-group">
-   <label for="">Teléfono celular</label>
-   {!!Form::number('phone',null,['class'=>'form-control','id'=>'phoneMedic'])!!}
- </div>
-</div>
-</div>
-<div class="row">
-  <div class="col-lg-6 col-12">
-    <div class="form-group">
-     <label for="">Teléfono de Oficina 1</label>
-     {!!Form::number('phoneOffice1',null,['class'=>'form-control','id'=>'phoneOffice1Medic'])!!}
-   </div>
- </div>
- <div class="col-lg-6 col-12">
-  <div class="form-group">
-    <label for="">Teléfono de Oficina 2</label>
-    {!!Form::number('phoneOffice2',null,['class'=>'form-control','id'=>'phoneOffice2Medic'])!!}
-  </div>
-</div>
-</div>
-<div class="row">
-  <div class="col-lg-6 col-12">
-    <div class="form-group">
-      <label for="">Cedula</label>
-      {!!Form::text('identification',null,['class'=>'form-control','id'=>'identificationMedic'])!!}
-    </div>
-  </div>
-  <div class="col-lg-6 col-12">
-    <div class="form-group">
-      <label for="">Especialidad</label>
-      {!!Form::select('specialty',$specialties,null,['placeholder'=>'seleccione una Especialidad','class'=>'form-control','id'=>'specialtyMedic'])!!}
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-lg-6 col-12">
-    <div class="form-group">
-      <label for="">sub-Especialidad(Opcional)</label>
-      {!!Form::select('sub_specialty',$specialties,null,['placeholder'=>'seleccione una opción','class'=>'form-control','id'=>'sub_specialtyMedic'])!!}
-    </div>
-  </div>
-
-</div>
-<div class="row">
-  <div class="col-12">
-    <div class="form-group">
-      <div class="row">
-        <div class="col-8">
-          <p for="">¿Desea que su numero celular aparezca visible en formatos e información a pacientes?</p>
-        </div>
-        <div class="col-4">
-         {{Form::select('showNumber',['si'=>'Si','no'=>'No'],null,['class'=>'form-control'])}}
-       </div>
-     </div>
-   </div>
- </div>
-</div>
-<div class="row">
-  <div class="col-lg-6 col-12">
-    {{-- <button type="submit" name="button" class="btn btn-primary btn-block">Guardar Cambios</button>
-    <button onclick="updateMedic()" type="button" name="button">test</button> --}}
-  </div>
-</div>
-{{--/////////////////////// ALERTS --}}
-<div id="alert_error_update" class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none">
-  <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
-  <p id="text_error_medic"></p>
-</div>
-
-<div id="alert_success_update" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none">
- <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
- <p id="text_success_service"></p>
-</div>
-
-<div class="row">
-  <div class="col-6">
-   <button onclick="updateMedic()" type="button" name="button" class="btn btn-primary btn-block">Guardar Cambios</button>
- </div>
- {!!Form::close()!!}
 </div>
 <hr>
+
 
 <div class="row my-4">
   <div class="col-12">
@@ -424,7 +314,7 @@
 <hr>
 <div class="row">
   <div class="col-12">
-   <h4 id="imgs" class="font-title-blue text-center">Agrega videos y fotos</h4>
+   <h4 id="imgs" class="font-title-blue text-center">Imagenes</h4>
  </div>
 </div>
 <div class="row">

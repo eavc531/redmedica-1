@@ -3,7 +3,7 @@
 @section('css')
 <style media="screen">
 .widthDiv{
-  width: 1000px;
+  width: 900px;
   height: 800px;
 }
   /* a{
@@ -115,7 +115,7 @@
           <div class="card-body">
             @foreach ($specialties as $specialty)
             <div class="float-left p-3">
-              {{Form::open(['route'=>'home','method'=>'get'])}}
+              {{Form::open(['route'=>'tolist2','method'=>'get'])}}
               {{Form::hidden('search',$specialty->name)}}
 
               {{Form::hidden('typeSearch2','Especialidad Medica')}}
@@ -380,50 +380,53 @@
   {{-- ////////// --}}
 
   {{-- //map-fin  //map-fin  //map-fin  //map-fin  //map-fin --}}
-  <div class="row my-5">
-    <div class="col-6 col-lg">
-      <div class="box-img">
-        {{Form::open(['route'=>'tolist2','method'=>'get'])}}
-        {{Form::hidden('typeSearch','Centro Medico')}}
-        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-01.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-        {{Form::close()}}
 
-      </div>
-    </div>
-    <div class="col-6 col-lg">
-      <div class="box-img">
-        {{Form::open(['route'=>'specialtyList1','method'=>'post'])}}
-        {{Form::hidden('typeSearch','Medicos y Especialistas')}}
-        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-05.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-        {{Form::close()}}
-      </div>
-    </div>
-    <div class="col-6 col-lg">
-      <div class="box-img">
-        {{Form::open(['route'=>'specialtyList2','method'=>'post'])}}
-        {{Form::hidden('typeSearch','Dentistas')}}
-        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-03.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-        {{Form::close()}}
-      </div>
-    </div>
-    <div class="col-6 col-lg">
-      <div class="box-img">
-        {{Form::open(['route'=>'specialtyList3','method'=>'post'])}}
-        {{Form::hidden('typeSearch','Terapeutas y Nutricion')}}
-        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-11.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-        {{Form::close()}}
-      </div>
-    </div>
-    <div class="col-6 col-lg">
-      <div class="box-img">
-        {{Form::open(['route'=>'specialtyList4','method'=>'post'])}}
-        {{Form::hidden('typeSearch','Medicina Alternativa')}}
-        <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-11.jpg')}}" alt="" width="100%" class="img-responsive"></button>
-        {{Form::close()}}
+  @if(!isset($medicosCercCount) and !isset($medicalCenterCount))
+    <div class="row my-5">
+      <div class="col-6 col-lg">
+        <div class="box-img">
+          {{Form::open(['route'=>'tolist2','method'=>'get'])}}
+          {{Form::hidden('typeSearch','Centro Medico')}}
+          <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-01.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+          {{Form::close()}}
 
+        </div>
+      </div>
+      <div class="col-6 col-lg">
+        <div class="box-img">
+          {{Form::open(['route'=>'specialtyList1','method'=>'post'])}}
+          {{Form::hidden('typeSearch','Medicos y Especialistas')}}
+          <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-05.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+          {{Form::close()}}
+        </div>
+      </div>
+      <div class="col-6 col-lg">
+        <div class="box-img">
+          {{Form::open(['route'=>'specialtyList2','method'=>'post'])}}
+          {{Form::hidden('typeSearch','Dentistas')}}
+          <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-03.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+          {{Form::close()}}
+        </div>
+      </div>
+      <div class="col-6 col-lg">
+        <div class="box-img">
+          {{Form::open(['route'=>'specialtyList3','method'=>'post'])}}
+          {{Form::hidden('typeSearch','Terapeutas y Nutricion')}}
+          <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-10.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+          {{Form::close()}}
+        </div>
+      </div>
+      <div class="col-6 col-lg">
+        <div class="box-img">
+          {{Form::open(['route'=>'specialtyList4','method'=>'post'])}}
+          {{Form::hidden('typeSearch','Medicina Alternativa')}}
+          <button type="submit" class="ml-2 white"><img src="{{asset('img/botones-medicossi-11.jpg')}}" alt="" width="100%" class="img-responsive"></button>
+          {{Form::close()}}
+
+        </div>
       </div>
     </div>
-  </div>
+  @endif
 
 </div>
 {{-- // --}}

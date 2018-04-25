@@ -5,8 +5,10 @@
     <div class="register">
       <div class="row">
         <div class="col-12">
-            <h5 class="font-title-blue">Bienevenido: {{$medico->name}} {{$medico->lastName}}</h5>
-            <p>Por Favor rellene los datos a continuación, requeridos para poder gestionar correctamente todas las funciones de nuestro  sistema.</p>
+            @if ($medico->stateConfirm == 'medium')
+              <h5 class="font-title-blue">Bienevenido: {{$medico->name}} {{$medico->lastName}}</h5>
+              <p>Por Favor rellene los datos a continuación, requeridos para poder gestionar correctamente todas las funciones de nuestro  sistema.</p>
+            @endif
 
         </div>
       </div>
@@ -73,10 +75,10 @@
       </div>
       <div class="row">
         <div class="col-lg-6 col-12">
-          <div class="form-group">
+          {{-- <div class="form-group">
             <label for="" class="font-title">sub-Especialidad</label>
             {!!Form::select('sub_specialty',['sub-especialty1'=>'sub-especialty1','sub-especialty2'=>'sub-especialty2'],null,['placeholder'=>'seleccione una opción','class'=>'form-control','id'=>'sub_specialtyMedic'])!!}
-          </div>
+          </div> --}}
         </div>
 
       </div>
@@ -112,8 +114,15 @@
       </div>
 
       		 <div class="row">
+             <div class="col-6">
+               @if($medico->stateConfirm == 'complete')
+
+                 <a href="{{route('medico.edit',$medico->id)}}" class="btn btn-primary btn-block">Cancelar</a>
+
+               @endif
+             </div>
       			 <div class="col-6">
-      				 <button type="submit" name="button" class="btn btn-primary btn-block">Guardar Cambios</button>
+      				 <button type="submit" name="button" class="btn btn-config-green btn-block">Guardar Cambios</button>
       			 </div>
       			 {!!Form::close()!!}
       	 </div>

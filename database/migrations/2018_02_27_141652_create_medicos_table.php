@@ -38,7 +38,6 @@ class CreateMedicosTable extends Migration
             $table->foreign('city_id')->references('id')->on('cities');
             $table->integer('state_id')->unsigned()->nullable();
             $table->foreign('state_id')->references('id')->on('states');
-
             $table->string('postal_code')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();

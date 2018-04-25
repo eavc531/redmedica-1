@@ -64,9 +64,11 @@
     </div>
   </div>
   <div class="row">
+    @if($medico->stateConfirm == 'complete')
     <div class="col-lg-6 col-12 mt-2">
       <a href="{{route('medico.edit',$medico->id)}}" class="btn btn-primary btn-block">Cancelar</a>
     </div>
+    @endif
     <div class="col-lg-6 col-12 mt-2">
       <button type="submit" class="btn-config-green btn btn-block">Guardar</button>
     </div>
