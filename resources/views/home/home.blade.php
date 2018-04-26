@@ -307,7 +307,7 @@
                   <div class="col-8 m-auto col-sm-3 col-lg-3">
                     <div class="cont-img">
                       @isset($medico['image'])
-                      <img src="{{asset($medico['image'])}}" class="prof-img img-thumbnail" alt="..." >
+                      <img src="{{asset($medico['photo'])}}" class="prof-img img-thumbnail" alt="..." >
                       @else
                       <img src="{{asset('img/profile.png')}}" class="prof-img img-thumbnail" alt="...">
                       @endisset

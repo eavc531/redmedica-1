@@ -54,8 +54,8 @@ class medico_diaryController extends Controller
        $domingo = event::where('medico_id',$id)->where('title','domingo')->orderBy('end','asc')->get();
 
        // event::max('');
-       $countEvent = event::where('medico_id',$id)->where('eventType','horario')->max('end');
-       if($countEvent != 0){
+       $countEventSchedule = event::where('medico_id',$id)->where('eventType','horario')->max('end');
+       if($countEventSchedule != 0){
 
          $lunes1 = event::where('medico_id',$id)->where('title','lunes')->max('end');
          $martes1 = event::where('medico_id',$id)->where('title','martes')->orderBy('end','asc')->max('end');
@@ -131,13 +131,13 @@ class medico_diaryController extends Controller
 
          $days_hide = ['lunes'=>$lunes3,'martes'=>$martes3,'miercoles'=>$miercoles3,'jueves'=>$jueves3,'viernes'=>$viernes3,'sabado'=>$sabado3,'domingo'=>$domingo3];
 
-         return view('medico.panel.diary')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide);
+         return view('medico.panel.diary')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide)->with('countEventSchedule', $countEventSchedule);
 
        }
 
 
 
-       return view('medico.panel.diary')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo);
+       return view('medico.panel.diary')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('countEventSchedule', $countEventSchedule);
 
 
 

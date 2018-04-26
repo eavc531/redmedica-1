@@ -189,9 +189,15 @@
 
           @endif
 
+
+
           {{-- ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR --}}
+          {{-- IF SHOW CALENDAR --}}
+          @if($countEventSchedule != 0)
 
           <div id='calendar' style=""></div>
+
+
           {{-- ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR --}}
 
 
@@ -360,81 +366,20 @@
             </div>
           </div>
           </div>
-          <!-- <table class="table table-bordered" style="text-align:left">
-            <thead>
-              <th>Lunes</th>
-              <th>Martes</th>
-              <th>Miércoles</th>
-              <th>Jueves</th>
-              <th>Viernes</th>
-              <th>Sábado</th>
-              <th>Domingo</th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <ul style="list-style:none">
-                    @foreach ($lunes as $l)
-                    <li>{{$l->start}} a {{$l->end}}</li>
-                    @endforeach
-                  </ul>
-                </td>
-                <td>
-                  <ul style="list-style:none">
-                    @foreach ($martes as $l)
-                    <li>{{$l->start}} a {{$l->end}}</li>
-                    @endforeach
-                  </ul>
-                </td>
-                <td>
-                  <ul style="list-style:none">
-                    @foreach ($miercoles as $l)
-                    <li>{{$l->start}} a {{$l->end}}</li>
-                    @endforeach
-                  </ul>
-                </td>
-                <td>
-                  <ul style="list-style:none">
-                    @foreach ($jueves as $l)
-                    <li>{{$l->start}} a {{$l->end}}</li>
-                    @endforeach
-                  </ul>
-                </td>
-                <td>
-                  <ul style="list-style:none">
-                    @foreach ($viernes as $l)
-                    <li>{{$l->start}} a {{$l->end}}</li>
-                    @endforeach
-                  </ul>
-                </td>
-                <td>
-                  <ul style="list-style:none">
-                    @foreach ($sabado as $l)
-                    <li>{{$l->start}} a {{$l->end}}</li>
-                    @endforeach
-                  </ul>
-                </td>
-                <ul style="list-style:none">
-                  @foreach ($domingo as $l)
-                  <li>{{$l->start}} a {{$l->end}}</li>
-                  @endforeach
-                </ul>
-                <td>
-
-                </td>
-              </tr>
-            </tbody>
-          </table> -->
-
-  <!--            <div id="team-schedule">
-                <div id="people">
-                  <input checked type="checkbox" id="alex" aria-label="Alex" value="1">
-                  <input checked type="checkbox" id="bob" aria-label="Bob" value="2">
-                  <input type="checkbox" id="charlie" aria-label="Charlie" value="3">
-                </div>
-              </div> -->
-              {{-- <div id="scheduler"></div> --}}
+        @else
+          <div class="card mt-5 mb-5">
+            <div class="card-header">
+              <h4>Bienevenido al Panel de Control</h4>
             </div>
+            <div class="card-body">
+              <h5>Para poder ver el Calendario y todas sus fucniones debe Otorgar un Horario de Trabajo</h5>
+              <a href="{{route('medico_schedule',$medico->id)}}" class="btn btn-primary">Otorgar un Horario de Trabajo</a>
+            </div>
+          </div>
+        @endif
+        {{-- IF SHOW CALENDAR --}}
+            </div>
+
             <div class="row">
               <div class="col-lg-10 col-12 align-items-center">
                 <h6>¿Dese que se mande un mensaje de recordatorio a su paciente con estatus de cita confirmada?</h6>
@@ -506,8 +451,8 @@
               <span>{{$medico->email}}</span>
             </div>
             <div class="col-12 border-panel-green text-center my-1">
-              <a href="{{route('medico_schedule',$medico->id)}}">
-                <span class="font-title ">Otorgar horario de consulta</span>
+              <a class="btn btn-block btn-config-green" href="{{route('medico_schedule',$medico->id)}}">
+                Otorgar horario de consulta
               </a>
             </div>
             <div class="border-panel-blue my-1">
@@ -585,9 +530,11 @@
 
 
                   <div class="col-lg-6">
-
+                    @if($countEventSchedule != 0)
                     <button onclick="store_event()"type="button" class="btn btn-config-blue">Guardar</button>
-
+                    @else
+                    <button onclick=""type="button" class="btn btn-config-blue" disabled>Guardar</button>
+                    @endif
                     {{-- <button type="submit" class="btn btn-config-blue">Guardar</button> --}}
                   </div>
                   <div class="col-lg-6">
@@ -689,7 +636,8 @@
   </div>
 
 {{-- <button onclick="filtrar()" type="button" name="button">Filtrar</button> --}}
-
+<input type="text" name="" value="" id="input1">
+  <button onclick="parpadeo()" type="button" name="button">testttttt</button>
 @isset($days_hide)
 <input id="lunes" type="hidden" name="" value="{{$days_hide['lunes']}}">
 <input id="martes" type="hidden" name="" value="{{$days_hide['martes']}}">
@@ -819,7 +767,7 @@
              $('#date_end3').val(end.format('YYYY-MM-DD'));
              $('#minsEnd2').val(end.format('mm'));
              $('#hourEnd2').val(end.format('HH'));
-
+             parpadeo();
            }
          }
        });
@@ -829,6 +777,7 @@
         },
 
         events:"{{route('medico_diary_events',$medico->id)}}",
+
         eventClick: function(event, jsEvent, view){
             var start = $.fullCalendar.moment(event.start).format('YYYY-MM-DD');
             var end = $.fullCalendar.moment(event.end).format('YYYY-MM-DD');
@@ -1258,6 +1207,25 @@ function  PendientePorCobrar(){
         });
 
     }
+
+
+    function parpadeo(){
+
+        $("#hourStart2").fadeTo(200, .2)
+        .fadeTo(200, 1).fadeTo(200, .2).fadeTo(200, 1);
+        $("#minsStart2").fadeTo(200, .2)
+        .fadeTo(200, 1).fadeTo(200, .2).fadeTo(200, 1);
+        $("#date_start2").fadeTo(200, .2)
+        .fadeTo(200, 1).fadeTo(200, .2).fadeTo(200, 1);
+        $("#date_end3").fadeTo(200, .2)
+        .fadeTo(200, 1).fadeTo(200, .2).fadeTo(200, 1);
+        $("#minsEnd2").fadeTo(200, .2)
+        .fadeTo(200, 1).fadeTo(200, .2).fadeTo(200, 1);
+        $("#hourEnd2").fadeTo(200, .2)
+        .fadeTo(200, 1).fadeTo(200, .2).fadeTo(200, 1);
+    }
+
+
 
   </script>
 
