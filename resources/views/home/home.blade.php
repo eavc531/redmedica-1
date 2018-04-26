@@ -245,8 +245,37 @@
 
          <div class="card">
           <div class="card-body">
-            <h5>No se Encontraron Resultados para la Busqueda</h5>
             <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+            <h5>No se Encontraron Resultados para la Busqueda</h5>
+            <div class="card-body">
+
+              <input type="hidden" name="" value="{{$distRequest = request()->get('dist')}}">
+              <input type="hidden" name="" value="{{$typeSearch = request()->get('typeSearch')}}">
+              <input type="hidden" name="" value="{{$requestCity = request()->get('city')}}">
+              <input type="hidden" name="" value="{{$requestState = request()->get('state')}}">
+              <h4>Busqueda de Centro Medico: {{$search}}</h4>
+              <h5>Filtros:</h5>
+
+              @isset($typeSearch)
+              <p>Tipo de Busqueda: <strong>{{$typeSearch}}</strong></p>
+              @endisset
+              @isset($search)
+              <p>Nombre: <strong>{{$search}}</strong></p>
+              @endisset
+
+              @isset($distRequest)
+              <p>Diametro: <strong>{{request()->get('dist')}} Km</strong></p>
+              @endisset
+              @if(isset($requestCity) and request()->get('city') != 'ciudad')
+              <p>Ciudad: <strong>{{request()->get('city')}}</strong></p>
+              @endif
+              @if(!isset($requestCity) or $requestCity == 'ciudad')
+              @isset($requestState)
+              <p>Estado: <strong>{{request()->get('state')}}<strong></p>
+                @endisset
+                @endif
+              </div>
+
           </div>
         </div>
         @endif
@@ -307,7 +336,7 @@
                   <div class="col-8 m-auto col-sm-3 col-lg-3">
                     <div class="cont-img">
                       @isset($medico['image'])
-                      <img src="{{asset($medico['photo'])}}" class="prof-img img-thumbnail" alt="..." >
+                      <img src="{{asset($medico['image'])}}" class="prof-img img-thumbnail" alt="..." >
                       @else
                       <img src="{{asset('img/profile.png')}}" class="prof-img img-thumbnail" alt="...">
                       @endisset
@@ -372,8 +401,36 @@
 
    <div class="card">
     <div class="card-body">
-      <h5>No se Encontraron Resultados para la Busqueda</h5>
       <a href="{{route('home')}}" class="close"><span aria-hidden="true">&times;</span></a>
+      <h5>No se Encontraron Resultados para la Busqueda</h5>
+      <div class="card-body">
+
+        <input type="hidden" name="" value="{{$distRequest = request()->get('dist')}}">
+        <input type="hidden" name="" value="{{$typeSearch = request()->get('typeSearch')}}">
+        <input type="hidden" name="" value="{{$requestCity = request()->get('city')}}">
+        <input type="hidden" name="" value="{{$requestState = request()->get('state')}}">
+        <h4>Busqueda de Centro Medico: {{$search}}</h4>
+        <h5>Filtros:</h5>
+
+        @isset($typeSearch)
+        <p>Tipo de Busqueda: <strong>{{$typeSearch}}</strong></p>
+        @endisset
+        @isset($search)
+        <p>Nombre: <strong>{{$search}}</strong></p>
+        @endisset
+
+        @isset($distRequest)
+        <p>Diametro: <strong>{{request()->get('dist')}} Km</strong></p>
+        @endisset
+        @if(isset($requestCity) and request()->get('city') != 'ciudad')
+        <p>Ciudad: <strong>{{request()->get('city')}}</strong></p>
+        @endif
+        @if(!isset($requestCity) or $requestCity == 'ciudad')
+        @isset($requestState)
+        <p>Estado: <strong>{{request()->get('state')}}<strong></p>
+          @endisset
+          @endif
+        </div>
     </div>
   </div>
   @endif

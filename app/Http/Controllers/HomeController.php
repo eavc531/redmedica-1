@@ -65,7 +65,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
             if($dist > $distCalculate or $dist == Null){
               $consulting_room = consulting_room::where('medico_id',$medico->id)->get()->toArray();
-              $photo = photo::where('medico_id',$medico->id)->first();
+              $photo = photo::where('medico_id',$medico->id)->where('type', 'perfil')->first();
               if($photo == Null){
                 $image = Null;
               }else{
@@ -108,7 +108,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 
               if($dist > $distCalculate or $dist == Null){
-                $photo = photo::where('medicalCenter_id',$medico->id)->first();
+                $photo = photo::where('medicalCenter_id',$medico->id)->where('type', 'perfil')->first();
                 if($photo == Null){
                   $image = Null;
                 }else{
@@ -130,7 +130,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
           $data = [];
           foreach ($medicos as $medico) {
           $consulting_room = consulting_room::where('medico_id',$medico->id)->get()->toArray();
-          $photo = photo::where('medico_id',$medico->id)->first();
+          $photo = photo::where('medico_id',$medico->id)->where('type', 'perfil')->first();
           if($photo == Null){
             $image = Null;
           }else{
@@ -265,7 +265,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
             //dd($medicalCenter);
             $data = [];
             foreach ($medicalCenter as $mc) {
-              $photo = photo::where('medicalCenter_id',$mc->id)->first();
+              $photo = photo::where('medicalCenter_id',$mc->id)->where('type', 'perfil')->first();
               if($photo == Null){
                 $image = Null;
               }else{
@@ -368,7 +368,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
                 if($medico->city == $request->city){
                   $consulting_room = consulting_room::where('medico_id',$medico->id)->get()->toArray();
-                  $photo = photo::where('medicalCenter_id',$medicoc->id)->first();
+                  $photo = photo::where('medicalCenter_id',$medico->id)->where('type', 'perfil')->first();
                   if($photo == Null){
                     $image = Null;
                   }else{
@@ -400,7 +400,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
                 foreach ($medicos as $medico) {
                   if($medico->state == $request->state){
                     $consulting_room = consulting_room::where('medico_id',$medico->id)->get()->toArray();
-                    $photo = photo::where('medicalCenter_id',$medicoc->id)->first();
+                    $photo = photo::where('medicalCenter_id',$medico->id)->where('type', 'perfil')->first();
                     if($photo == Null){
                       $image = Null;
                     }else{
@@ -426,6 +426,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
                 ->select('medicos.*')
                 ->where('medicos.name','LIKE','%'.$request->search.'%')
                 ->orWhere('medicos.lastName','LIKE','%'.$request->search.'%')
+                ->orWhere('medicos.identification','LIKE','%'.$request->search.'%')
                 ->get();
 
               $data = HomeController::calculate_dist_to_array($medicos,$dist);
@@ -448,6 +449,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
             ->select('medicos.*')
             ->where('medicos.name','LIKE','%'.$request->search.'%')
             ->orWhere('medicos.lastName','LIKE','%'.$request->search.'%')
+            ->orWhere('medicos.identification','LIKE','%'.$request->search.'%')
             ->get();
 
           $data = HomeController::create_array_medicos($medicos,$dist);
@@ -478,7 +480,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
           //dd($medicalCenter);
           $data = [];
           foreach ($medicalCenter as $mc) {
-            $photo = photo::where('medicalCenter_id',$mc->id)->first();
+            $photo = photo::where('medicalCenter_id',$mc->id)->where('type', 'perfil')->first();
             if($photo == Null){
               $image = Null;
             }else{
@@ -762,6 +764,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
               ->select('medicos.*')
               ->where('medicos.name','LIKE','%'.$request->search.'%')
               ->orWhere('medicos.lastName','LIKE','%'.$request->search.'%')
+              ->orWhere('medicos.identification','LIKE','%'.$request->search.'%')
               ->get();
 
             $data = HomeController::calculate_dist_to_array($medicos,$dist);
@@ -778,6 +781,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
           ->select('medicos.*')
           ->where('medicos.name','LIKE','%'.$request->search.'%')
           ->orWhere('medicos.lastName','LIKE','%'.$request->search.'%')
+          ->orWhere('medicos.identification','LIKE','%'.$request->search.'%')
           ->get();
 
 

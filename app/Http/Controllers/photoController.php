@@ -44,6 +44,11 @@ class photoController extends Controller
         $photoCount = photo::where('medico_id',$request->medico_id)->orderBy('id','desc')->count();
         $photos = photo::where('medico_id',$request->medico_id)->orderBy('id','desc')->first();
 
+        $photos1 = photo::where('medico_id',$request->medico_id)->where('type','perfil')->orderBy('id','desc')->first();
+        if($photos1 != Null){
+          $photos1->delete();
+        }
+
         // if(!is_null($photos)){
         //   $photoNow = photo::where('type', 'perfil')->first();
         //   $photoNow->type = 'nada';
@@ -57,7 +62,7 @@ class photoController extends Controller
         }
 
         $namePhoto = $nameP.'.'.$extension;
-        $pathSave = 'img/users/'.$request->identification.'/photos';
+        $pathSave = 'img/users/'.$request->medico_id.'/photos';
 
         $photo = new photo;
         $photo->name = $nameP;
