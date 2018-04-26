@@ -145,7 +145,7 @@ DB::table('specialties')->insert([
 'specialty_category_id'=>4,
 ]);
 
-DB::table('Specialties')->insert([
+DB::table('specialties')->insert([
 'name'=>'Sexologos',
 'specialty_category_id'=>4,
 ]);

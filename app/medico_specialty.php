@@ -10,7 +10,6 @@ class medico_specialty extends Model
     'type',
     'institution',
     'specialty',
-    'state',
     'from',
     'until',
     'aditional',

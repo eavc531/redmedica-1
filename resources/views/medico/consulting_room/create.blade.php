@@ -48,9 +48,9 @@
       </div>
     </div>
     <div class="form-group row">
-      <label for="example-text-input" class="col-3 col-form-label">Nombre del Consultorio (Opcional)</label>
+      <label for="example-text-input" class="col-3 col-form-label">Nombre Comercial (Opcional)</label>
       <div class="col-8">
-        {!!Form::text('tradeName',null,['class'=>'form-control'])!!}
+        {!!Form::text('name',null,['class'=>'form-control'])!!}
       </div>
     </div>
     <div class="form-group row">

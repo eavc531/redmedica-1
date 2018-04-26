@@ -21,13 +21,7 @@
 				</div>
 			</div>
 			{!!Form::open(['route'=>'medico.store','method'=>'POST'])!!}
-			{{-- <div class="row mt-2">
-				<div class="col-lg-12 col-12">
-					<div class="form-group">
-						{!!Form::text('identification',null,['class'=>'form-control','placeholder'=>'Cedula'])!!}
-					</div>
-				</div>
-			</div> --}}
+
 			<div class="row">
 				<div class="col-lg-6 col-12">
 					<div class="form-group">
@@ -43,7 +37,7 @@
 			<div class="row">
 				<div class="col-6">
 					<div class="form-group">
-						{!!Form::select('gender',['Masculino','Femenino'],null,['class'=>'form-control','placeholder'=>'Sexo'])!!}
+						{!!Form::select('gender',['Masculino'=>'Masculino','Femenino'=>'Femenino'],null,['class'=>'form-control','placeholder'=>'Sexo'])!!}
 					</div>
 				</div>
 				<div class="col-lg-6 col-12">
@@ -79,11 +73,6 @@
 
 			<div class="row">
 
-				{{-- <div class="col-lg-6 col-12">
-					<div class="form-group">
-						{!!Form::text('facebook',null,['class'=>'form-control','placeholder'=>'Facebook'])!!}
-					</div>
-				</div> --}}
 			</div>
 
 			<div class="row">
@@ -92,7 +81,7 @@
 						<a href="" class="btn btn-primary" data-toggle="modal" data-target="#terms">Leer términos y condiciones</a>
 					</div>
 					<div class="custom-control custom-checkbox">
-						<input name="terminos" type="checkbox" value="1">
+						{{Form::checkbox('terminos',null)}}
 						<label for="customCheck1">Al seleccionar este recuadro e leído y estoy de acuerdo con las políticas de la plataforma asi como el aviso de privacidad para el uso de mis datos personales</label>
 					</div>
 				</div>
@@ -127,7 +116,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					<button type="button" class="btn btn-primary">Aceptar</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
 				</div>
 			</div>
 		</div>

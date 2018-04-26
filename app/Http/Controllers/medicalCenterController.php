@@ -283,7 +283,7 @@ class medicalCenterController extends Controller
       'phone_admin'=>'required',
       'sanitary_license'=>'required',
       'id_medicalCenter'=>'required',
-      'phone'=>'required',
+      //'phone'=>'required',
       //'phone2'=>'required',
 
     ]);
@@ -394,6 +394,9 @@ class medicalCenterController extends Controller
           'country'=>'required',
         ]);
 
+        if($request->terminos == Null){
+          return back()->with('warning', 'Debes Aceptar los Términos y Condiciones, para poder continuar.')->withInput();
+        }
         $code = str_random(25);
         $medicalCenter = new medicalCenter;
         $medicalCenter->fill($request->all());

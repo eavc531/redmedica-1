@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\medico::class)->times(50)->create();
+        factory(App\medico::class)->times(6)->create();
         $this->call('specialty_category');
         $this->call('specialty');
         $this->call('statesAndCities');

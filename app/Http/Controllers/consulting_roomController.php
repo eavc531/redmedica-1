@@ -51,7 +51,7 @@ class consulting_roomController extends Controller
         'passwordUnique'=> 'nullable',
 
       ]);
-
+      
       $consulting_room = new consulting_room;
 
         if($request->type == 'other'){
@@ -67,7 +67,7 @@ class consulting_roomController extends Controller
         }
         $consulting_room->save();
 
-        return back()->with('success', 'Nuevo Consultorio agregado de forma satisfactoria');
+        return redirect()->route('medico.edit',$request->medico_id)->with('success3', 'Nuevo Consultorio agregado de forma satisfactoria');
 
     }
 

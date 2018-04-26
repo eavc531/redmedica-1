@@ -212,7 +212,7 @@
                         {{Form::hidden('typeSearch2','Medicos de la Institucion')}}
                         {{Form::hidden('search',null)}}
                         {{Form::hidden('medicalCenter_id',$mc['id'])}}
-                        {{Form::submit('test', ['class' => 'btn btn-primary'])}}
+                        {{Form::submit('Médicos', ['class' => 'btn btn-primary'])}}
 
                         {{Form::close()}}
 

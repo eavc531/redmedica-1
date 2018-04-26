@@ -6,9 +6,6 @@
     <h2 class="font-title text-center">Perfil Profesional Médico</h2>
   </div>
 </div>
-<div class="col-12">
-  <h4 class="font-title-blue">Datos del Profesional: {{$medico->name}} {{$medico->lastName}}</h4>
-</div>
 @if(Session::Has('successComplete'))
 <div class="div-alert" style="padding:20px; max-width: 100%;">
  <div class="alert alert-success alert-dismissible" role="alert">
@@ -18,10 +15,15 @@
     {{-- <h5 class="text-center font-title">Ya eres miembro de la mejor red de médicos y profesionales de la salud</h5> --}}
   </div>
 </div>
-<h5>Le invitamos a ingresar los siguientes datos(Opcional), para poder brindar la mayor información posible a sus clientes. </h5>
+<h5>Registro Completado. Le invitamos a completar de forma (opcional),los datos de su perfil, para poder brindar la mayor información a sus clientes. </h5>
 </div>
 </div>
 @endif
+
+<div class="col-12">
+  <h4 class="font-title-blue">Datos del Profesional: {{$medico->name}} {{$medico->lastName}}</h4>
+</div>
+
 {{-- <p>La información que se registra en su cuenta,le permite ser ubicado con mayor facilidad por sus clientes a travez del sistema, ademas le permite brindar, una mejor descripción de su profesión.</p> --}}
 
 <section class="box-register">
@@ -40,7 +42,8 @@
   </div>
   <div class="row mt-3">
    <div class="col-lg-7 col-12">
-    @isset($photo)
+
+    @isset($photo->path)
     <div class="cont-img my-2">
       <img src="{{asset($photo->path)}}" class="prof-img" alt="" id="img">
     </div>
@@ -165,8 +168,25 @@
 <hr>
 <div class="row">
   <div class="col-12">
-    <h4 class="font-title-blue text-center">Consultorios</h4>
+    <h4 class="font-title-blue text-center" id="consul">Consultorios</h4>
+    {{-- @if(Session::Has('success3'))
+        <div class="div-alert" style="padding:20px">
+          <div class="alert alert-success alert-dismissible" role="alert" style="">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+             {{Session::get('success3')}}
+          </div>
+        </div>
+        @section('scriptJS')
+          <script type="text/javascript">
 
+
+          var new_position = $('#consul').offset();
+          window.scrollTo(new_position.left,new_position.top);
+
+          </script>
+        @endsection
+
+     @endif --}}
   </div>
 </div>
 <div class="row">
@@ -179,12 +199,13 @@
         <th>Numero Int.</th>
         <th>Ciudad</th>
         <th>Estado</th>
-        <th>Clave Unica</th>
+
         <th>Dirección</th>
       </thead>
       <tbody>
         @foreach ($consulting_rooms as $consulting_room)
         <tr>
+          
           @isset($consulting_room->name)
           <td>{{$consulting_room->name}}</td>
           @else
@@ -206,11 +227,11 @@
 
           <td>{{$consulting_room->city}}</td>
           <td>{{$consulting_room->state}}</td>
-          @isset($consulting_room->passwordUnique)
+          {{-- @isset($consulting_room->passwordUnique)
           <td>{{$consulting_room->passwordUnique}}</td>
           @else
           <td style="color:rgb(173, 173, 173)">N.P.</td>
-          @endisset
+          @endisset --}}
           <td>{{$consulting_room->addres}}</td>
         </tr>
       </tbody>
@@ -291,7 +312,7 @@
 
 <div class="row my-3">
   <div class="col-12 text-right">
-   <a href="" data-toggle="modal" data-target="#modal-service2" class="btn btn-success">Agregar servicio</a>
+   <button onclick="modal_service2()" class="btn btn-success">Agregar servicio</button>
    <hr>
  </div>
 </div>
@@ -306,7 +327,7 @@
 <div class="row my-3">
   <div class="col-lg-12 col-12 text-right">
     <div class="form-group">
-      <a href="" data-toggle="modal" data-target="#modal-experience" class="btn btn-success">Agregar Experiencia</a>
+      <button onclick="modal_experience()" type="button" href="" class="btn btn-success">Agregar Experiencia</button>
     </div>
   </div>
 </div>
@@ -324,6 +345,7 @@
      <div class="row" id="">
       @foreach ($images as $image)
       {{-- div que encierra cada imagen --}}
+
       <div class="col my-2">
         <img src="{{asset($image->path)}}" width="auto" height="80px" alt="">
         <a onclick="return confirm('¿Esta seguro de eliminar esta Imagen?')"href="{{route('photo_delete',$image->id)}}">x</a>
@@ -335,7 +357,7 @@
     {!!Form::file('image')!!}
     {!!Form::hidden('medico_id',$medico->id)!!}
     {!!Form::hidden('email',$medico->email)!!}
-    {!!Form::submit('Subir imagen o video',['class'=>'btn btn-success'])!!}
+    {!!Form::submit('Subir imagen',['class'=>'btn btn-success'])!!}
     {!!Form::close()!!}
   </div>
 </div>
@@ -579,7 +601,7 @@
      <div class="col-12 mt-3">
 
 
-       {!!Form::text('name',null,['class'=>'form-control','id'=>'name_service'])!!}
+       {!!Form::text('name',null,['class'=>'form-control','id'=>'input_service'])!!}
        {!!Form::hidden('medico_id',$medico->id,['class'=>'form-control','id'=>'medico_id'])!!}
 
      </div>
@@ -610,6 +632,23 @@
     list_service();
     list_experience();
   });
+
+  function modal_service2(){
+    $('#modal-service2').modal('toggle');
+    $('#modal-service2').on('shown.bs.modal', function() {
+      $('#input_service').val('');
+      $('#input_service').focus();
+    });
+  }
+
+  function modal_experience(){
+    $('#modal-experience').modal('toggle');
+    $('#modal-experience').on('shown.bs.modal', function() {
+      $('#name_experience').val('');
+      $('#name_experience').focus();
+    });
+  }
+
 
   $('#stateMedic').on('change', function() {
    state_id = $('#stateMedic').val();
@@ -817,7 +856,7 @@ function social_network_delete(social_id){
 }
 
 function service_medico_store(){
-  name = $('#name_service').val();
+  name = $('#input_service').val();
   medico_id = $('#medico_id').val();
   route = "{{route('service_medico_store')}}";
   errormsj = '';

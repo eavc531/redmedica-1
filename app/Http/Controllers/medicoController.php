@@ -89,7 +89,7 @@ class medicoController extends Controller
            if($medico->stateConfirm == 'data_primordial_complete'){
              $medico->stateConfirm = 'complete';
              $medico->save();
-             return redirect()->route('medico.edit',$id)->with('successComplete');
+             return redirect()->route('medico.edit',$id)->with('successComplete','nada');
            }
 
         return redirect()->route('medico.edit',$medico->id)->with('medico', $medico)->with('success','Se ha actualizado la Dirección de su sitio de trabajo');
@@ -132,7 +132,7 @@ class medicoController extends Controller
          'institution'=>'required',
          'specialty'=>'required',
          'from'=>'required',
-         'state'=>'required',
+
          'until'=>'required',
          'aditional'=>'nullable',
        ]);
@@ -316,9 +316,7 @@ class medicoController extends Controller
 
     public function store(Request $request)
     {
-      if($request->terminos == Null){
-        return back()->with('warning', 'Debes Aceptar los Términos y Condiciones, para poder continuar.')->withInput();
-      }
+
         $request->validate([
            //'identification'=>'required|unique:medicos',
            'name'=>'required',
@@ -335,7 +333,9 @@ class medicoController extends Controller
 
         ]);
 
-
+        if($request->terminos == Null){
+          return back()->with('warning', 'Debes Aceptar los Términos y Condiciones, para poder continuar.')->withInput();
+        }
 
         $medico = new medico;
         $medico->fill($request->all());
@@ -363,14 +363,16 @@ class medicoController extends Controller
 
       });
 
-         return redirect()->route('successRegMedico',$user->id)->with('user', $user);
+         return redirect()->route('successRegMedico',$medico->id)->with('user', $user)->with('medico', $medico);
 
     }
 
     public function successRegMedico($id)
     {
-      $user = User::find($id);
-        return view('medico.successReg')->with('user', $user);
+      $medico = medico::find($id);
+      $user = User::where('medico_id',$id)->get();
+
+        return view('medico.successReg')->with('user', $user)->with('medico', $medico);
     }
 
     public function resendMailMedicoConfirm(Request $request){

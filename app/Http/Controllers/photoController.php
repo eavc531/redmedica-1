@@ -99,7 +99,7 @@ class photoController extends Controller
           }
 
           $namePhoto = $nameP.'.'.$extension;
-          $pathSave = 'img/users/'.$request->identification.'/photos';
+          $pathSave = 'img/users/'.$request->medico_id.'/photos';
 
           $photo = new photo;
           $photo->name = $nameP;

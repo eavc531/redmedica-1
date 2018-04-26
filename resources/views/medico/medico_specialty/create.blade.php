@@ -48,13 +48,13 @@
         </div>
     </div>
 
-    <div class="form-group row">
+    {{-- <div class="form-group row">
       <label for="example-text-input" class="col-3 col-form-label">Estado del Estudio</label>
       <div class="col-8">
         {!!Form::select('state',['Culminado'=>'Culminado','En Curso'=>'En Curso'],null,['class'=>'form-control','placeholder'=>'Seleccione una opción'])!!}
 
         </div>
-    </div>
+    </div> --}}
 
     <div class="form-group row">
       <label for="example-datetime-local-input" class="col-3 col-form-label">Periodo en que lo curso</label>
