@@ -162,6 +162,9 @@ return [
          Collective\Html\HtmlServiceProvider::class,
          Zizaco\Entrust\EntrustServiceProvider::class,
          Spatie\Geocoder\GeocoderServiceProvider::class,
+         Stevebauman\Location\LocationServiceProvider::class,
+         Midnite81\GeoLocation\GeoLocationServiceProvider::class,
+         //este ultimo verificar su uso
     ],
 
     /*
@@ -214,6 +217,9 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Geocoder' => Spatie\Geocoder\Facades\Geocoder::class,
+        'Location' => Stevebauman\Location\Facades\Location::class,
+        'GeoLocation' => Midnite81\GeoLocation\Facades\GeoLocation::class,
+        //revisar est ult
     ],
 
 ];

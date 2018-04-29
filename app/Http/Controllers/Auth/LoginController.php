@@ -35,6 +35,8 @@ class LoginController extends Controller
           Auth::logout();
           return redirect()->route('successRegMedicalCenter',$medical_center->id);
         }
+      }elseif(Auth::user()->role == 'Administrador'){
+          return redirect()->route('home')->with('success', 'value');
       }else{
         Auth::logout();
 

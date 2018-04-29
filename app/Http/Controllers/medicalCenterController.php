@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\country;
-use App\user;
+use App\User;
 use Illuminate\Http\Request;
 use App\medicalCenter;
 use Mail;
@@ -188,13 +188,13 @@ class medicalCenterController extends Controller
 
   public function medical_center_edit_schedule($id){
     $medicalCenter = medicalCenter::find($id);
-    $lunes = day::where('name', 'lunes')->orderBy('hour_ini','asc')->get();
-    $martes = day::where('name', 'martes')->orderBy('hour_ini','asc')->get();
-    $miercoles = day::where('name', 'miercoles')->orderBy('hour_ini','asc')->get();
-    $jueves = day::where('name', 'jueves')->orderBy('hour_ini','asc')->get();
-    $viernes = day::where('name', 'viernes')->orderBy('hour_ini','asc')->get();
-    $sabado = day::where('name', 'sabado')->orderBy('hour_ini','asc')->get();
-    $domingo = day::where('name', 'domingo')->orderBy('hour_ini','asc')->get();
+    $lunes = day::where('medical_center_id', $id)->where('name', 'lunes')->orderBy('hour_ini','asc')->get();
+    $martes = day::where('medical_center_id', $id)->where('name', 'martes')->orderBy('hour_ini','asc')->get();
+    $miercoles = day::where('medical_center_id', $id)->where('name', 'miercoles')->orderBy('hour_ini','asc')->get();
+    $jueves = day::where('medical_center_id', $id)->where('name', 'jueves')->orderBy('hour_ini','asc')->get();
+    $viernes = day::where('medical_center_id', $id)->where('name', 'viernes')->orderBy('hour_ini','asc')->get();
+    $sabado = day::where('medical_center_id', $id)->where('name', 'sabado')->orderBy('hour_ini','asc')->get();
+    $domingo = day::where('medical_center_id', $id)->where('name', 'domingo')->orderBy('hour_ini','asc')->get();
 
        return view('medicalCenter.edit_schedule')->with('medicalCenter', $medicalCenter)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo);
   }
@@ -219,6 +219,7 @@ class medicalCenterController extends Controller
       $day->name = $request->day;
       $day->hour_ini = $request->hour_start.':'.$request->mins_start;
       $day->hour_end = $request->hour_end.':'.$request->mins_end;
+      $day->medical_center_id = $id;
       $day->save();
 
       return back()->with('success', 'Se a han agregado nuevas horas al dia: '.$request->day);
@@ -427,7 +428,7 @@ class medicalCenterController extends Controller
 
     public function successRegMedicalCenter($id){
       $medicalCenter = medicalCenter::find($id);
-      return view('medicalCenter.successReg')->with('medicalCenter',$medicalCenter);
+      return view('medicalCenter.successreg')->with('medicalCenter',$medicalCenter);
     }
 
     public function resend_mail_medical_center($id){
@@ -463,14 +464,15 @@ class medicalCenterController extends Controller
       $medicos = medico::where('medicalCenter_id', $id)->get();
 
       // /dd($medicos);
+
       $medicalCenter = medicalCenter::find($id);
-      $lunes = day::where('name', 'lunes')->orderBy('hour_ini','asc')->get();
-      $martes = day::where('name', 'martes')->orderBy('hour_ini','asc')->get();
-      $miercoles = day::where('name', 'miercoles')->orderBy('hour_ini','asc')->get();
-      $jueves = day::where('name', 'jueves')->orderBy('hour_ini','asc')->get();
-      $viernes = day::where('name', 'viernes')->orderBy('hour_ini','asc')->get();
-      $sabado = day::where('name', 'sabado')->orderBy('hour_ini','asc')->get();
-      $domingo = day::where('name', 'domingo')->orderBy('hour_ini','asc')->get();
+      $lunes = day::where('medical_center_id', $id)->where('name', 'lunes')->orderBy('hour_ini','asc')->get();
+      $martes = day::where('medical_center_id', $id)->where('name', 'martes')->orderBy('hour_ini','asc')->get();
+      $miercoles = day::where('medical_center_id', $id)->where('name', 'miercoles')->orderBy('hour_ini','asc')->get();
+      $jueves = day::where('medical_center_id', $id)->where('name', 'jueves')->orderBy('hour_ini','asc')->get();
+      $viernes = day::where('medical_center_id', $id)->where('name', 'viernes')->orderBy('hour_ini','asc')->get();
+      $sabado = day::where('medical_center_id', $id)->where('name', 'sabado')->orderBy('hour_ini','asc')->get();
+      $domingo = day::where('medical_center_id', $id)->where('name', 'domingo')->orderBy('hour_ini','asc')->get();
 
 
       return view('medicalCenter.edit')->with('medicalCenter', $medicalCenter)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('medicos', $medicos)->with('images',$images);

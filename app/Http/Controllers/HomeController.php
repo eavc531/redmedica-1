@@ -13,9 +13,11 @@ use App\state;
 use App\city;
 use App\consulting_room;
 use App\photo;
+
 use Illuminate\Pagination\LengthAwarePaginator;
       class HomeController extends Controller
       {
+
 
         public function __construct(){
           $states = state::orderby('name','asc')->pluck('name','name');
@@ -25,6 +27,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
         }
         public function home(){
+          
           // $myCoordinates = Geocoder::getCoordinatesForAddress('calle paez,1404');
           // dd($myCoordinates);
           $medicos_json = '';
@@ -38,17 +41,17 @@ use Illuminate\Pagination\LengthAwarePaginator;
         }
 
 
-        public function calculate_dist_to_array($medicos,$dist){
+        public function calculate_dist_to_array($medicos,$dist,$lat,$lng){
           $data = [];
           //ordenar array
 
           foreach ($medicos as $medico){
             //Haversine
 
-            $myLat = deg2rad(32.62);
+            $myLat = deg2rad($lat);
             //$myLat = deg2rad($myCoordinates['lat']);
 
-            $myLng = deg2rad(-115.4522623);
+            $myLng = deg2rad($lng);
             //$myLng = deg2rad($myCoordinates['lng']);
 
             $medicLat = deg2rad($medico->latitud);
@@ -80,17 +83,17 @@ use Illuminate\Pagination\LengthAwarePaginator;
           return $data;
         }
 
-        public function calculate_dist_to_array_medicalCenter($medicalCenter,$dist){
+        public function calculate_dist_to_array_medicalCenter($medicalCenter,$dist,$lat,$lng){
           $data = [];
           //ordenar array
 
           foreach ($medicalCenter as $medico) {
             //Haversine
 
-            $myLat = deg2rad(32.62);
+            $myLat = deg2rad($lat);
             //$myLat = deg2rad($myCoordinates['lat']);
 
-            $myLng = deg2rad(-115.4522623);
+            $myLng = deg2rad($lng);
             //$myLng = deg2rad($myCoordinates['lng']);
 
             $medicLat = deg2rad($medico->latitud);
@@ -212,6 +215,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
         }
         public function tolist2(Request $request){
 
+          $lat = $request->latitud;
+          $lng = $request->longitud;
+
+
+          $dist = $request->dist;
 
           if($request->typeSearch2 == 'Medicos de la Institucion'){
               $medicos = medico::where('medicalCenter_id',$request->medicalCenter_id)->get();
@@ -224,12 +232,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
               return view('home.home')->with('medicosCerc', $medicosCerc)->with('medicosCercCount', $medicosCercCount)->with('currentPage', $currentPage)->with('states', $this->states)->with('cities',$this->cities)->with('search', 'Medicos de la institucion')->with('typeSearch2', $request->typeSearch2);
           }
           //Centro Medico por nombre
-          $dist = $request->dist;
           //Centro Medico DISTANCIA
           if($request->typeSearch == 'Centro Medico'){
               if($dist != null){
                 $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->get();
-                $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist);
+                $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist,$lat,$lng);
                 $currentPage = LengthAwarePaginator::resolveCurrentPage();
                 $medicalCenter = HomeController::paginate_custom($data,$currentPage);
                 $medicalCenterCount = count($medicalCenter);
@@ -240,7 +247,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
               if($request->city != null and $request->city != 'ciudad'){
                 $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->Where('city',$request->city)
                 ->get();
-                $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist);
+                $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist,$lat,$lng);
                 $currentPage = LengthAwarePaginator::resolveCurrentPage();
                 $medicalCenter = HomeController::paginate_custom($data,$currentPage);
                 $medicalCenterCount = count($medicalCenter);
@@ -252,7 +259,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
                 $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->Where('state',$request->state)
                 ->get();
-                $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist);
+                $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist,$lat,$lng);
                 $currentPage = LengthAwarePaginator::resolveCurrentPage();
                 $medicalCenter = HomeController::paginate_custom($data,$currentPage);
                 $medicalCenterCount = count($medicalCenter);
@@ -340,7 +347,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
             ->select('medicos.*')
             ->where('medicos.specialty','=',$request->search)
             ->get();
-          $data = HomeController::calculate_dist_to_array($medicos,$dist);
+          $data = HomeController::calculate_dist_to_array($medicos,$dist,$lat,$lng);
           $currentPage = LengthAwarePaginator::resolveCurrentPage();
           $medicosCerc = HomeController::paginate_custom($data,$currentPage);
           $medicosCercCount = count($medicosCerc);
@@ -429,7 +436,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
                 ->orWhere('medicos.identification','LIKE','%'.$request->search.'%')
                 ->get();
 
-              $data = HomeController::calculate_dist_to_array($medicos,$dist);
+              $data = HomeController::calculate_dist_to_array($medicos,$dist,$lat,$lng);
               //$data = collect($data)->sortBy('dist')->toArray();
 
               $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -452,7 +459,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
             ->orWhere('medicos.identification','LIKE','%'.$request->search.'%')
             ->get();
 
-          $data = HomeController::create_array_medicos($medicos,$dist);
+          $data = HomeController::create_array_medicos($medicos,$dist,$lat,$lng);
           //$data = collect($data)->sortBy('dist')->toArray();
           $currentPage = LengthAwarePaginator::resolveCurrentPage();
           $medicosCerc = HomeController::paginate_custom($data,$currentPage);
@@ -469,86 +476,86 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
       }
 //<<<<<//
-      public function map_medical_center_name(Request $request){
-        $numberPageNow = ($request->numberPageNow * 4) -4;
-        $dist = $request->dist;
-
-        //Centro Medico por nombre
-        if($request->typeSearch == 'Centro Medico'){
-          $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->get();
-          $medicalCenterCount = medicalCenter::where('name','LIKE','%'.$request->search.'%')->count();
-          //dd($medicalCenter);
-          $data = [];
-          foreach ($medicalCenter as $mc) {
-            $photo = photo::where('medicalCenter_id',$mc->id)->where('type', 'perfil')->first();
-            if($photo == Null){
-              $image = Null;
-            }else{
-              $image = $photo->path;
-            }
-          $data[$mc->id] = ['id'=>$mc->id,'identification'=>$medico->identification,'name'=>$mc->name,'city'=>$mc->city,'state'=>$mc->state,'longitud'=>$mc->longitud,'latitud'=>$mc->latitud,'image'=>$image];
-          }
-
-          $data = array_slice($data,$numberPageNow, 4);
-          return response()->json($data);
-        }
-
-
-        //$myCoordinates = Geocoder::getCoordinatesForAddress('mexicali,mexico');
-
-        //$CoordinatesMedic = Geocoder::getCoordinatesForAddress('tijuana,mexico');
-
-        $medicos = DB::table('medicos')
-        //->Join('medico_specialties', 'medicos.id', '=', 'medico_specialties.medico_id')
-        ->Join('cities', 'medicos.city_id', '=', 'cities.id')
-        ->Join('states', 'medicos.state_id', '=', 'states.id')
-        ->select('medicos.*','cities.longitud as longitud','cities.latitud as latitud','cities.name as cityName','states.name as stateName')
-        ->where('medicos.name','LIKE','%'.$request->search.'%')
-        ->orWhere('medicos.lastName','LIKE','%'.$request->search.'%')
-        ->get();
-
-        //dd($medicos->cityName);
-
-
-        $data = [];
-
-        //ordenar array
-
-        foreach ($medicos as $medico) {
-          //Haversine
-
-
-          $myLat = deg2rad(32.62);
-          //$myLat = deg2rad($myCoordinates['lat']);
-
-          $myLng = deg2rad(-115.4522623);
-          //$myLng = deg2rad($myCoordinates['lng']);
-
-          $medicLat = deg2rad($medico->latitud);
-          $medicLng = deg2rad($medico->longitud);
-
-          $latDelta = $medicLat - $myLat;
-          $lonDelta = $medicLng - $myLng;
-
-          $earthRadius = 6371; //en km
-
-          $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-          cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
-          $distCalculate =  $angle * $earthRadius;
-
-
-          if($dist > $distCalculate){
-
-            $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'cityName'=>$medico->cityName,'stateName'=>$medico->stateName,'dist'=>$distCalculate,'lng'=>$medico->longitud,'lat'=>$medico->latitud];
-
-          }
-        }
-
-        $data = collect($data)->sortBy('dist')->toArray();
-        $data = array_slice($data,$numberPageNow, 4);
-        return response()->json($data);
-
-      }
+      // public function map_medical_center_name(Request $request){
+      //   $numberPageNow = ($request->numberPageNow * 4) -4;
+      //   $dist = $request->dist;
+      //
+      //   //Centro Medico por nombre
+      //   if($request->typeSearch == 'Centro Medico'){
+      //     $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->get();
+      //     $medicalCenterCount = medicalCenter::where('name','LIKE','%'.$request->search.'%')->count();
+      //     //dd($medicalCenter);
+      //     $data = [];
+      //     foreach ($medicalCenter as $mc) {
+      //       $photo = photo::where('medicalCenter_id',$mc->id)->where('type', 'perfil')->first();
+      //       if($photo == Null){
+      //         $image = Null;
+      //       }else{
+      //         $image = $photo->path;
+      //       }
+      //     $data[$mc->id] = ['id'=>$mc->id,'identification'=>$medico->identification,'name'=>$mc->name,'city'=>$mc->city,'state'=>$mc->state,'longitud'=>$mc->longitud,'latitud'=>$mc->latitud,'image'=>$image];
+      //     }
+      //
+      //     $data = array_slice($data,$numberPageNow, 4);
+      //     return response()->json($data);
+      //   }
+      //
+      //
+      //   //$myCoordinates = Geocoder::getCoordinatesForAddress('mexicali,mexico');
+      //
+      //   //$CoordinatesMedic = Geocoder::getCoordinatesForAddress('tijuana,mexico');
+      //
+      //   $medicos = DB::table('medicos')
+      //   //->Join('medico_specialties', 'medicos.id', '=', 'medico_specialties.medico_id')
+      //   ->Join('cities', 'medicos.city_id', '=', 'cities.id')
+      //   ->Join('states', 'medicos.state_id', '=', 'states.id')
+      //   ->select('medicos.*','cities.longitud as longitud','cities.latitud as latitud','cities.name as cityName','states.name as stateName')
+      //   ->where('medicos.name','LIKE','%'.$request->search.'%')
+      //   ->orWhere('medicos.lastName','LIKE','%'.$request->search.'%')
+      //   ->get();
+      //
+      //   //dd($medicos->cityName);
+      //
+      //
+      //   $data = [];
+      //
+      //   //ordenar array
+      //
+      //   foreach ($medicos as $medico) {
+      //     //Haversine
+      //
+      //
+      //     $myLat = deg2rad(32.62);
+      //     //$myLat = deg2rad($myCoordinates['lat']);
+      //
+      //     $myLng = deg2rad(-115.4522623);
+      //     //$myLng = deg2rad($myCoordinates['lng']);
+      //
+      //     $medicLat = deg2rad($medico->latitud);
+      //     $medicLng = deg2rad($medico->longitud);
+      //
+      //     $latDelta = $medicLat - $myLat;
+      //     $lonDelta = $medicLng - $myLng;
+      //
+      //     $earthRadius = 6371; //en km
+      //
+      //     $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+      //     cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
+      //     $distCalculate =  $angle * $earthRadius;
+      //
+      //
+      //     if($dist > $distCalculate){
+      //
+      //       $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'cityName'=>$medico->cityName,'stateName'=>$medico->stateName,'dist'=>$distCalculate,'lng'=>$medico->longitud,'lat'=>$medico->latitud];
+      //
+      //     }
+      //   }
+      //
+      //   $data = collect($data)->sortBy('dist')->toArray();
+      //   $data = array_slice($data,$numberPageNow, 4);
+      //   return response()->json($data);
+      //
+      // }
 
 
       public function specialtyList1(Request $request){
@@ -593,6 +600,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 
       public function ajax_map(Request $request){
+        $lat = $request->latitud;
+        $lng = $request->longitud;
 
         $numberPageNow = ($request->numberPageNow * 4) -4;
         $dist = $request->dist;
@@ -609,14 +618,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
         if($request->typeSearch == 'Centro Medico'){
             if($dist != null){
               $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->get();
-              $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist);
+              $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist,$lat,$lng);
               $data = array_slice($data,$numberPageNow, 4);
               return response()->json($data);
             }
             if($request->city != null and $request->city != 'ciudad'){
               $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->Where('city',$request->city)
               ->get();
-              $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist);
+              $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist,$lat,$lng);
               $data = array_slice($data,$numberPageNow, 4);
               return response()->json($data);
             }
@@ -625,7 +634,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
               $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->Where('state',$request->state)
               ->get();
-              $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist);
+              $data = HomeController::calculate_dist_to_array_medicalCenter($medicalCenter,$dist,$lat,$lng);
               $data = array_slice($data,$numberPageNow, 4);
               return response()->json($data);
             }
@@ -698,7 +707,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
           ->where('medicos.specialty','=',$request->search)
           ->get();
 
-        $data = HomeController::calculate_dist_to_array($medicos,$dist);
+        $data = HomeController::calculate_dist_to_array($medicos,$dist,$lat,$lng);
         $data = array_slice($data,$numberPageNow, 4);
         return response()->json($data);
       }
@@ -767,7 +776,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
               ->orWhere('medicos.identification','LIKE','%'.$request->search.'%')
               ->get();
 
-            $data = HomeController::calculate_dist_to_array($medicos,$dist);
+            $data = HomeController::calculate_dist_to_array($medicos,$dist,$lat,$lng);
             $data = array_slice($data,$numberPageNow, 4);
             return response()->json($data);
           //fin NOMBRE/CEDULA MEDIC

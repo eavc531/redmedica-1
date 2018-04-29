@@ -14,6 +14,8 @@
    @endsection
    @section('content')
 
+    
+
    @if(!isset(Auth::user()->id))
    <div class="row">
     <div class="col-lg-6 col-md-6 col-12">
@@ -40,8 +42,8 @@
             <span class="mr-2 white" id="filter"><i class="fas fa-filter fa-2x" data-toggle="tooltip" data-placement="top" title="Busqueda Avanzada"></i></span>
             {{Form::select('typeSearch',['Centro Medico'=>'Nombre del Centro Médico','Especialidad Medica'=>'Especialidad Médica','Nombre/Cedula del Medico'=>'Nombre/Cedula del Medico',],null,['placeholder'=>'Buscar Por:','id'=>'typeSearch'])}}
             {{Form::text('search',null,['class'=>'form-control','placeholder'=>'Ingresar termino de Busqueda','id'=>'search'])}}
-            <input type="hidden" name="lat" value="" id="lat" id="lat">
-            <input type="hidden" name="lng" value="" id="lng" id="lng">
+            <input type="hidden" name="lat" value="" id="lat">
+            <input type="hidden" name="lng" value="" id="lng">
             {{-- {{Form::hidden('city',null,['id'=>'city'])}}
             {{Form::hidden('state',null,['id'=>'state'])}} --}}
             <button type="submit" class="ml-2 white"><span id="filter"><i class="fas fa-search fa-2x"></i></span></button>
@@ -92,7 +94,7 @@
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="form-group mt-3">
                       <div class="col-6 mt2-">
-                        {{Form::select('dist',[50=>'50 Km',100=>'100 Km',200=>'200 Km',400=>'400 Km',800=>'800 Km',1000=>'1000 Km',2000=>'2000 Km',10000=>'10000 Km'],null,['class'=>'form-control','id'=>'dist','placeholder'=>'seleccione una opcion'])}}
+                        {{Form::select('dist',[50=>'50 Km',100=>'100 Km',200=>'200 Km',400=>'400 Km',800=>'800 Km',1000=>'1000 Km',2000=>'2000 Km',10000=>'10000 Km',15000=>'15000 Km',50000=>'50000 Km'],null,['class'=>'form-control','id'=>'dist','placeholder'=>'seleccione una opcion'])}}
 
                       </div>
                     </div>
@@ -114,12 +116,14 @@
           </div>
           <div class="card-body">
             @foreach ($specialties as $specialty)
+
             <div class="float-left p-3">
+
               {{Form::open(['route'=>'tolist2','method'=>'get'])}}
               {{Form::hidden('search',$specialty->name)}}
 
               {{Form::hidden('typeSearch2','Especialidad Medica')}}
-              <button type="submit" class="btn-primary btn-link" style="cursor: pointer"><strong>{{$specialty->name}}</strong></button>
+              <button onclick="geolocation2()" type="submit" class="btn-primary btn-link" style="cursor: pointer"><strong>{{$specialty->name}}</strong></button>
               {{Form::close()}}
             </div>
             @endforeach
@@ -598,7 +602,10 @@
         //  if(!e) var e = window.event;
         //     console.log(e.type);
         // }
-
+        // $(document).ready(function(){
+        //   geolocation();
+        //
+        // });
 
         typeSearch2 =$('#typeSearch2').val();
 
@@ -623,28 +630,7 @@
           //   map();
           // }
 
-          function geolocation(){
-            if (!navigator.geolocation){
-              alert('La Geolocalozación no es compatible con en este navegador');
-              return;
-            }
 
-            function success(position) {
-              latitude = position.coords.latitude;
-              $('#lat').val(latitude);
-              longitude = position.coords.longitude;
-              $('#lng').val(longitude);
-            };
-
-            function error() {
-              alert("Error, hubo un problema al recuperar su ubicación, por favor recargue la pagina e intente nuevamente");
-            };
-            navigator.geolocation.getCurrentPosition(success, error);
-          }
-
-          $('.radioDist').click(function(){
-            geolocation();
-          });
 
           function login(){
             route = "{{route('login2')}}";
@@ -712,15 +698,11 @@
             data:{search:search,typeSearch:typeSearch,typeSearch2:typeSearch2,lat:lat,lng:lng,city:city,state:state,dist:dist,numberPageNow:numberPageNow,medicalCenter_id:medicalCenter_id},
             success:function(result){
               console.log(result);
-              //alert('map_medical_center_name');
-              var lat = 32.6245389;
-                //$('#lat').val();
-                var lng = -115.4522623;
-                //$('#lng').val();
+
                 var map = new GMaps({
                   el: '#map',
-                  lat: 22.9905958,
-                  lng: -107.781031,
+                  lat: lat,
+                  lng: lng,
                   zoom: 5,
                 });
 
@@ -827,6 +809,53 @@
             $('typeSearch').val(result);
 
          }
+
+         // function geolocation(){
+         //   if (!navigator.geolocation){
+         //     alert('La Geolocalozación no es compatible con en este navegador');
+         //     return;
+         //   }
+         //
+         //   function success(position) {
+         //     latitude = position.coords.latitude;
+         //     $('#lat').val(latitude);
+         //
+         //
+         //
+         //     longitude = position.coords.longitude;
+         //     $('#lng').val(longitude);
+         //
+         //   };
+         //
+         //   function error() {
+         //     alert("Error, hubo un problema al recuperar su ubicación, por favor recargue la pagina e intente nuevamente");
+         //   };
+         //   navigator.geolocation.getCurrentPosition(success, error);
+         // }
+
+
+         GMaps.geolocate({
+           success: function(position) {
+             $('#lat').val(position.coords.latitude);
+             $('#lng').val(position.coords.longitude);
+             vari = $('#lat').val();
+
+           },
+           error: function(error) {
+             alert('Geolocation failed: '+error.message);
+
+           },
+           not_supported: function() {
+             alert("Your browser does not support geolocation");
+           },
+           // always: function() {
+           //
+           // }
+         });
+
+
+
+
        </script>
 
        @endsection
