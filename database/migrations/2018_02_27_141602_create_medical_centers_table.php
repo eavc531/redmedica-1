@@ -45,6 +45,10 @@ class CreateMedicalCentersTable extends Migration
             $table->string('description')->nullable();
             $table->string('longitud')->nullable();
             $table->string('latitud')->nullable();
+            $table->string('stateAccount')->default('Desactivada');
+            $table->integer('promoter_id')->unsigned()->nullable();
+            $table->foreign('promoter_id')->references('id')->on('promoters');
+
             $table->timestamps();
 
         });

@@ -37,4 +37,7 @@ class medicalCenter extends Model
      'number_int',
    ];
 
+   public function scopeSearchMedical($query, $search){
+     return $query->where('name','LIKE','%'.$search.'%');
+  }
 }

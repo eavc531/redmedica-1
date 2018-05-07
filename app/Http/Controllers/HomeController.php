@@ -13,11 +13,10 @@ use App\state;
 use App\city;
 use App\consulting_room;
 use App\photo;
-
 use Illuminate\Pagination\LengthAwarePaginator;
+
       class HomeController extends Controller
       {
-
 
         public function __construct(){
           $states = state::orderby('name','asc')->pluck('name','name');
@@ -27,7 +26,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
         }
         public function home(){
-          
+
           // $myCoordinates = Geocoder::getCoordinatesForAddress('calle paez,1404');
           // dd($myCoordinates);
           $medicos_json = '';

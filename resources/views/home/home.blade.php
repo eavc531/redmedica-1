@@ -14,7 +14,7 @@
    @endsection
    @section('content')
 
-    
+
 
    @if(!isset(Auth::user()->id))
    <div class="row">
@@ -373,7 +373,11 @@
                     <a class="" href="{{route('medico.edit',$medico['id'])}}"><i class="fas fa-cogs mr-2"></i>Ver perfíl</a>
                   </div>
                   <div class="form-group">
-                    <a href="" class="btn-icon"><i class="fa fa-envelope-open mr-2"></i>Agendar cita</a>
+                    @if(Auth::check() and Auth::user()->role == 'Paciente')
+                    <a href="{{route('stipulate_appointment',$medico['id'])}}" class="btn"><i class="fa fa-envelope-open mr-2"></i>Agendar citas</a>
+                    @else
+                    <button onclick="return verifySession()" class="btn"><i class="fa fa-envelope-open mr-2"></i>Agendar cita</button>
+                    @endif
                   </div>
                   <div class="form-group">
                    <a href="" class="btn-icon"><i class="fa fa-phone mr-2"></i>Ver Telefono</a>
@@ -540,6 +544,7 @@
               <input type="password" class="form-control" id="passwordLogin" aria-describedby="emailHelp" placeholder="password" name="password">
             </div>
           </div>
+          {{Form::hidden('solicitud_cita',null,['id'=>'solicitud_cita'])}}
           <div class="col-12">
             <div class="form-group">
               <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
@@ -563,6 +568,40 @@
   </div>
 </div>
 
+
+
+
+<!-- Modal-verify-patient -->
+<div class="modal fade" id="modal_verify_patient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-white">
+        <h5 class="modal-title" id="exampleModalLabel">Debes Iniciar Session como paciente para poder agendar Citas</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <div class="row">
+          <div class="col-6">
+            <p>Crear una cuenta para Pacientes</p>
+            <a href="{{route('patient_register_view')}}" class="btn btn-success">Crear Cuenta</a>
+          </div>
+          <div class="col-6">
+            <p>¿Ya tienes cuenta de Pacientes?</p>
+            <button id="call_modal_login" type="button" name="button" class="btn btn-primary" >Iniciar Session</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 @isset($currentPage)
 <input type="hidden" name="" value="{{$currentPage}}" id="numberPageNow">
 @endisset
@@ -643,7 +682,7 @@
               data:{email:email,password:password},
               success:function(result){
                 if(result == 'true'){
-                  location.reload();
+                  //location.reload();
                   window.location.href = '{{route("loginRedirect")}}';
                 }else{
                   $('#text-alert').html('Email o Contraseña Invalida');
@@ -854,8 +893,35 @@
          });
 
 
+         function verifySession(){
+           route = "{{route('verifySession')}}";
 
+           $.ajax({
+             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+             type:'post',
+             url: route,
+             // data:{verifySession:verifySession},
+             success:function(result){
+               if(result == 'session_of'){
+                 $('#modal_verify_patient').modal('show');
+                 return;
+                 // $('#text-alert').html('Debes Iniciar session como Paciente para poder agendar cita.');
+                 // $('#alert').fadeIn();
+               }else if(result == 'no_patient'){
+                 $('#modal_verify_patient').modal('show');
+                 return;
+               }
+             },
+             error:function(result){
+               console.log(result);
+           }
+         });
+         }
 
+         $('#call_modal_login').click(function(){
+           $('#modal_verify_patient').modal('hide');
+            $('#modal-login').modal('show');
+         });
        </script>
 
        @endsection

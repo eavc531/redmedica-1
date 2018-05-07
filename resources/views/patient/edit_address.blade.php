@@ -3,11 +3,21 @@
 @section('content')
 <section class="box">
   <div class="row">
-    <div class="col-12 mb-3">
-      <h2 class="text-center font-title">Editar Datos de Centro Médico</h2>
+    <div class="col-12 text-right">
+      <div class="btn-group " role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary">1</button>
+        <button type="button" class="btn btn-secondary">2</button>
+        <button type="button" class="btn btn-config-blue">3</button>
+      </div>
     </div>
   </div>
-  {!!Form::model($medico,['route'=>['medico_update_address',$medico],'method'=>'update'])!!}
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h2 class="text-center font-title">Dirección de Paciente</h2>
+    </div>
+  </div>
+  {{$patient->mame}}
+  {!!Form::model($patient,['route'=>['patient_store_address',$patient],'method'=>'update'])!!}
 
   <div class="col-lg-11 m-lg-auto col-12">
     <div class="row mt-3">
@@ -25,14 +35,15 @@
       </div>
       <div class="col-lg-6 col-12">
         <div class="form-group">
-          <label for="">Ciudad</label>
-          {{Form::select('city',$cities,null,['class'=>'form-control','id'=>'city','placeholder'=>'opciones'])}}
+          <label for="" >Codigo Postal</label>
+          {{Form::number('postal_code',null,['class'=>'form-control'])}}
         </div>
       </div>
       <div class="col-lg-6 col-12">
         <div class="form-group">
-          <label for="" >Codigo Postal</label>
-          {{Form::number('postal_code',null,['class'=>'form-control'])}}
+          <label for="">Ciudad</label>
+          {{Form::select('city',$cities,null,['class'=>'form-control','id'=>'city','placeholder'=>'opciones'])}}
+
         </div>
       </div>
     </div>
@@ -64,11 +75,11 @@
     </div>
   </div>
   <div class="row">
-    @if($medico->stateConfirm == 'complete')
+    {{-- @if($patient->stateConfirm == 'complete')
     <div class="col-lg-6 col-12 mt-2">
-      <a href="{{route('medico.edit',$medico->id)}}" class="btn btn-primary btn-block">Cancelar</a>
+      <a href="{{route('patient.edit',$patient->id)}}" class="btn btn-primary btn-block">Cancelar</a>
     </div>
-    @endif
+    @endif --}}
     <div class="col-lg-6 col-12 mt-2">
       <button type="submit" class="btn-config-green btn btn-block">Guardar</button>
     </div>
@@ -100,8 +111,23 @@
 
 @section('scriptJS')
 
-
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDh9hTFPYHnnfVtoHSXysAdzQjmxKuZd3s"></script>
+<script src="{{asset('geocoder_autocomplete\jquery.geocomplete.js')}}"></script>
 <script type="text/javascript">
+
+  $(document).ready(function(){
+
+
+    $("#input").geocomplete({
+      map:"#my_input"
+    });
+
+  });
+
+  $("#find").click(function(){
+    $("input").trigger("geocode");
+  });
+
 
 /////////////////////////////
 

@@ -33,8 +33,9 @@ class medico extends Model
     }
 
     public function scopeSearchMedico($query, $search){
-      return $query->where('name','LIKE','%'.$search.'%');
+      return $query->where('name','LIKE','%'.$search.'%')->orWhere('lastName','%'.$search.'%');
    }
+
 
 
 }

@@ -24,6 +24,18 @@ class CreatePatientsTable extends Migration
             $table->string('email');
             $table->string('dateActivation')->nullable();
             $table->string('status')->default('disabled');
+            $table->string('confirmation_code')->nullable();
+            $table->string('stateConfirm')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
+            $table->string('colony')->nullable();
+            $table->string('street')->nullable();
+            $table->string('number_ext')->nullable();
+            $table->string('number_int')->nullable();
+            $table->string('latitud')->nullable();
+            $table->string('longitud')->nullable();
             $table->timestamps();
         });
     }

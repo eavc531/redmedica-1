@@ -48,7 +48,9 @@ class CreateMedicosTable extends Migration
             $table->string('number_int')->nullable();
             $table->string('latitud')->nullable();
             $table->string('longitud')->nullable();
-
+            $table->string('stateAccount')->default('Desactivada');
+            $table->integer('promoter_id')->unsigned()->nullable();
+            $table->foreign('promoter_id')->references('id')->on('promoters');
             $table->timestamps();
         });
     }

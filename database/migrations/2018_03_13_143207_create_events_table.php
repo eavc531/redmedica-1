@@ -19,21 +19,23 @@ class CreateEventsTable extends Migration
           $table->string('description')->nullable();
           $table->string('start');
           $table->string('end')->nullable();
+          $table->string('hour_start')->nullable();
+          $table->string('hour_end')->nullable();
           $table->string('eventType')->nullable();
           $table->datetime('dateStart')->nullable();
           $table->datetime('dateEnd')->nullable();
-          // $table->string('hourStart');
-          // $table->string('hourEnd');
-          // $table->string('minsStart');
-          // $table->string('minsEnd');
           $table->string('color')->nullable();
           $table->string('rendering')->nullable();
           $table->string('dow')->nullable();
           $table->biginteger('price')->nullable();
           $table->integer('medico_id')->unsigned()->nullable();
           $table->foreign('medico_id')->references('id')->on('medicos');
+          $table->integer('patient_id')->unsigned()->nullable();
+          $table->foreign('patient_id')->references('id')->on('patients');
           $table->string('state')->default('Pendiente');
-          
+          $table->integer('score')->nullable();
+          $table->string('calification')->nullable();
+          $table->string('comentary')->nullable();
           $table->timestamps();
         });
     }

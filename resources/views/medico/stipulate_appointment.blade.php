@@ -9,7 +9,6 @@
 
 @endsection
 {{-- ///////////////////////////////////////////////////////CONTENIDO//////////////////// --}}
-
 @section('content')
 
   <div class="container-fluid">
@@ -18,60 +17,32 @@
         <div class="register">
           <div class="row">
             <div class="col-12">
-              <h2 class="text-center font-title">Profesionales</h2>
-              <hr>
+              <h2 class="text-center font-title">Agendar Cita con El profesional: {{$medico->name}} {{$medico->lastName}}</h2>
+							  <h3 class="text-center">Especialidad: {{$medico->specialty}}</h3>
             </div>
           </div>
-          <div class="row justify-content-center mb-2">
-            <div class="col-8 -auto">
-              <div class="row">
-                <div class="col-lg-4 col-6">
-                  <a href="#" onclick="calendario()"><img src="{{asset('img/botones-medicossi-26.png')}}" alt=""></a>
-                </div>
-                <div class="col-lg-4 col-6">
-                  <img src="{{asset('img/botones-medicossi-27.png')}}" alt="">
-                </div>
-                <div class="col-lg-4 mt-3 col-12">
-                  <a href=""><img src="{{asset('img/botones-medicossi-32.png')}}" alt=""></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 col-12">
-            </div>
-            </div>
           </div>
           <hr>
+					<h5>Agendar Cita</h5>
+					<p>Las Horas disponibles de este médico, estan marcadas en el calendario como color naranja:  <div class="" style="width:30px;height:30px;background:#f9da7f">	</div></p>
+					<p>seleccione horas disponibles y rellene los campos del formulario, a continuación presione el boton agendar cita, y listo ya habra agendado una cita con el Médico: {{$medico->name}} {{$medico->lastName}}</p>
+
+
         @include('medico.includes.alert_calendar')
         @include('medico.includes.card_edit')
           <hr>
           <div class="" id="example">
             {{-- //////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT --}}
-            @if(Session::Has('success2'))
-            <div class="div-alert" style="padding:20px" id="alert-success2">
-              <div class="alert alert-success alert-dismissible" role="alert" style="">
-               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-               {{Session::get('success2')}}
-             </div>
-           </div>
-           @section('scriptJS')
-           <script type="text/javascript">
+					<div id="alert_success_1" class="alert alert-success alert-dismissible fade show text-left" role="alert" style="display:none">
+					  <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
+					  <p id="text_success_1" style="font-size:12px"></p>
+						<a href="{{route('home')}}" class="btn btn-outline-primary">volver a inicio</a>
 
-
-            var new_position = $('#calendar').offset();
-            window.scrollTo(new_position.left,new_position.top);
-
-          </script>
-          @endsection
-
-          @endif
-
-
-
+						<a class="btn btn-outline-success" href="{{route('patient_appointments',Auth::user()->patient->id)}}">Tus Citas Pendientes</a>
+					</div>
           {{-- ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR --}}
           {{-- IF SHOW CALENDAR --}}
-          @if($countEventSchedule != 0)
+
 
           <div id='calendar' style=""></div>
 
@@ -111,215 +82,11 @@
             </div>
 
 
-          <div class="card mt-5 mb-5" >
-
-
-
-          <div class="row">
-            <div class="col-12 text-center">
-              <h4 class="font-title-blue text-center mt-3">Horario de trabajo</h4>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead>
-                      <tr>
-                        <th>Lunes</th>
-                        <th>Martes</th>
-                        <th>Miercoles</th>
-                        <th>Jueves</th>
-                        <th>Viernes</th>
-                        <th>Sabado</th>
-                        <th>Domingo</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        @foreach ($lunes as $day)
-                          <ul>
-                            <li>
-                              {{$day->start}}
-                                      a
-                              {{$day->end}}
-
-                            </li>
-                              <hr>
-                          </ul>
-                        @endforeach
-                      </td>
-                      <td>
-                        @foreach ($martes as $day)
-                          <ul>
-                            <li>
-                              {{$day->start}}
-                                      a
-                              {{$day->end}}
-
-                            </li>
-
-                              <hr>
-                          </ul>
-                        @endforeach
-                      </td>
-                      <td>
-                        @foreach ($miercoles as $day)
-                          <ul>
-                            <li>
-                              {{$day->start}}
-                                      a
-                              {{$day->end}}
-
-
-                              <hr>
-                          </ul>
-                        @endforeach
-                      </td>
-                      <td>
-                        @foreach ($jueves as $day)
-                          <ul>
-                            <li>
-                              {{$day->start}}
-                                      a
-                              {{$day->end}}
-
-
-                              <hr>
-                          </ul>
-                        @endforeach
-                      </td>
-                      <td>
-                        @foreach ($viernes as $day)
-                          <ul>
-                            <li>
-                              {{$day->start}}
-                                      a
-                              {{$day->end}}
-
-                            </li>
-
-                              <hr>
-                          </ul>
-                        @endforeach
-                      </td>
-                      <td>
-                        @foreach ($sabado as $day)
-                          <ul>
-                            <li>
-                              {{$day->start}}
-                                      a
-                              {{$day->end}}
-
-                            </li>
-
-                              <hr>
-                          </ul>
-                        @endforeach
-                      </td>
-                      <td>
-                        @foreach ($domingo as $day)
-                          <ul>
-                            <li>
-                              {{$day->start}}
-                                      a
-                              {{$day->end}}
-
-                            </li>
-                              <hr>
-                          </ul>
-                        @endforeach
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-
-                  </tfoot>
-                </table>
-                <div class="card-footer text-right">
-                  <a href="{{route('medico_schedule',$medico->id)}}" class="btn btn-success ">Editar</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          </div>
-        @else
-          <div class="card mt-5 mb-5">
-            <div class="card-header">
-              <h4>Bienevenido al Panel de Control</h4>
-            </div>
-            <div class="card-body">
-              <h5>Para poder ver el Calendario y todas sus fucniones debe Otorgar un Horario de Trabajo</h5>
-              <a href="{{route('medico_schedule',$medico->id)}}" class="btn btn-primary">Otorgar un Horario de Trabajo</a>
-            </div>
-          </div>
-        @endif
         {{-- IF SHOW CALENDAR --}}
             </div>
 
-            <div class="row">
-              <div class="col-lg-10 col-12 align-items-center">
-                <h6>¿Dese que se mande un mensaje de recordatorio a su paciente con estatus de cita confirmada?</h6>
-              </div>
-              <div class="col-lg-2 col-12">
-                <div class="radio-switch">
-                  <div class="radio-switch-field">
-                    <input id="switch-off" type="radio" name="radio-switch" value="off" checked>
-                    <label for="switch-off">No</label>
-                  </div>
-                  <div class="radio-switch-field">
-                    <input id="switch-on" type="radio" name="radio-switch" value="on">
-                    <label for="switch-on">Si</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12" id="open-check" style="display: none;">
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
-                  <label class="custom-control-label" for="customRadioInline1">Una hora antes</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
-                  <label class="custom-control-label" for="customRadioInline2">5 horas antes</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input">
-                  <label class="custom-control-label" for="customRadioInline3">1 dia antes</label>
-                </div>
-              </div>
-            </div>
-            <div class="row my-5">
-              <div class="col-lg-10 col-12 align-items-center">
-                <h6>¿Dese que se mande un mensaje de confirmación a su paciente con estatus cita por internet?</h6>
-              </div>
-              <div class="col-lg-2 col-12">
-                <div class="radio-switch">
-                  <div class="radio-switch-field">
-                    <input id="switch-off1" type="radio" name="radio-switch1" value="off" checked>
-                    <label for="switch-off1">No</label>
-                  </div>
-                  <div class="radio-switch-field">
-                    <input id="switch-on1" type="radio" name="radio-switch1" value="on">
-                    <label for="switch-on1">Si</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12" id="open-check1" style="display: none;">
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline5" name="customRadioInline2" class="custom-control-input">
-                  <label class="custom-control-label" for="customRadioInline5">En cuanto se confirme su espacio</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline6" name="customRadioInline2" class="custom-control-input">
-                  <label class="custom-control-label" for="customRadioInline6">5 horas antes</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline7" name="customRadioInline2" class="custom-control-input">
-                  <label class="custom-control-label" for="customRadioInline7">1 dia antes</label>
-                </div>
-              </div>
-            </div>
+
+
           </div>
         <div class="col-12 col-lg-3">
           <div id="dashboard">
@@ -336,15 +103,15 @@
             <div class="border-panel-blue my-1">
               <div class="form-group text-center">
                 <div class="form-group" style="margin-top:35px">
-                  <label for="" class="label-title ">Crear consulta</label>
+                  <label for="" class="label-title ">Agendar Cita</label>
                 </div>
 
-                  {!!Form::open(['route'=>'medico_diary.store','method'=>'POST'])!!}
-                <input class="form-control my-2" type="text" placeholder="Titulo" id="title2">
 
-                {!!Form::select('eventType',['Cita Medica'=>'Cita Médica','Cita Medica Importante'=>'Cita Médica Importante','Consulta Medica'=>'Consulta Médica','Consulta Medica Importante'=>'Consulta Médica Importante','Recordatorio'=>'Recordatorio','Cita por Internet'=>'Cita por Internet'],'Consulta Medica',['class'=>'form-control','id'=>'eventType2'])!!}
-                <input class="form-control my-2" type="text" placeholder="Descripción (Opcional)" id="description2">
-                <input class="form-control my-2" type="text" placeholder="precio (Opcional)" id="price2">
+                {{-- <input class="form-control my-2" type="text" placeholder="Titulo" id="title2"> --}}
+
+                {!!Form::select('eventType',['Ambulatoria'=>'Ambulatoria','Externa o a Domicilio'=>'Externa o a Domicilio','Urgencias'=>'Urgencias','Cita por Internet'=>'Cita por Internet'],null,['class'=>'form-control','id'=>'eventType2','placeholder'=>'Tipo de Cita'])!!}
+                <input class="form-control my-2" type="text" placeholder="Mensaje" id="description2">
+                {{-- <input class="form-control my-2" type="text" placeholder="precio (Opcional)" id="price2"> --}}
                 <div class="row">
                   <div class="col-4 font-title">
                     inicio:
@@ -367,16 +134,7 @@
                   </div>
 
                 </div>
-                <label for="" class="mt-2 font-title">Datos de Culminacion(opcional)</label>
-                <div class="row">
-                  <div class="col-4">
-                    fecha:
-                  </div>
-                    <div class="col-8">
-
-                       {!!Form::date('date_end',null,['class'=>'form-control','id'=>'date_end3'])!!}
-                    </div>
-                </div>
+                <label for="" class="mt-2 font-title">Culminacion</label>
                 <div class="row mt-1">
 
                   <div class="col-3">
@@ -589,7 +347,7 @@
 
     // function calendario(){
           $('#calendar').fullCalendar({
-
+            height: 550,
             customButtons: {
             myCustomButton: {
             text: 'Pantalla Completa',
@@ -683,12 +441,9 @@
             $('#alert_success_up1').fadeOut();
             // $('#ModalEdit').modal('show');
         },
-        eventRender: function (event, element, view) {
-
-
-
-          element.find('.fc-title').append('<div class="hr-line-solid-no-margin"></div><span style="font-size: 10px">'+event.eventType+'</span><span style="font-size: 10px"><p style="font-size: 10px">'+event.description+'</p></span>');
-        },
+        // eventRender: function (event, element, view) {
+        //   element.find('.fc-title')
+        // },
         //       businessHours:
         // {
         //         start: '6:00',
@@ -745,6 +500,8 @@
       $('#alert_error_up1').fadeOut();
       $('#alert_success_up1').fadeOut();
       $('#alert_danger_up1').fadeOut();
+      $('#alert_success_1').fadeOut();
+
 
     }
 
@@ -782,31 +539,23 @@
 
 
     function store_event(){
-
-      title = $('#title2').val();
       eventType = $('#eventType2').val();
       description = $('#description2').val();
-      price = $('#price2').val();
       date_start = $('#date_start2').val();
       hourStart = $('#hourStart2').val();
       minsStart = $('#minsStart2').val();
-      startFormatHour = $('#startFormatHour3').val();
       dateEnd = $('#date_end3').val();
       hourEnd = $('#hourEnd2').val();
       minsEnd = $('#minsEnd2').val();
-      endFormatHour = $('#endFormatHour2').val();
 
-      medico_id = "{{$medico->id}}";
-
-
-
-      route = "{{route('medico_diary.store')}}";
+			medico_id = "{{$medico->id}}";
+      route = "{{route('appointment_store')}}";
       errormsj = '';
       $.ajax({
        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
        type:'post',
        url:route,
-       data:{title:title,eventType:eventType,description:description,price:price,date_start:date_start,hourStart:hourStart,minsStart:minsStart,startFormatHour:startFormatHour,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,endFormatHour:endFormatHour,medico_id:medico_id},
+       data:{eventType:eventType,description:description,date_start:date_start,hourStart:hourStart,minsStart:minsStart,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,medico_id:medico_id},
        error:function(error){
          console.log(error);
         $.each(error.responseJSON.errors, function(index, val){
@@ -819,6 +568,7 @@
         console.log(errormsj);
       },
       success:function(result){
+				console.log(result);
         if(result == 'fuera del horario'){
           $('#text_error').html('Imposible crear evento fuera del horario establecido');
           $('#alert_error').fadeIn();
@@ -830,6 +580,8 @@
           $('#alert_error').fadeOut();
           $('#calendar').fullCalendar('removeEvents');
           $('#calendar').fullCalendar('refetchEvents');
+					$('#text_success_1').html(result);
+					$('#alert_success_1').fadeIn();
         }
 
       }

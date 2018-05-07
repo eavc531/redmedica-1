@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call('statesAndCities');
         $this->call('insurrance_show');
 
+      
+
         DB::table('countries')->insert([
        'name'=>'México',
        ]);

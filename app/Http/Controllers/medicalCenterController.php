@@ -402,6 +402,7 @@ class medicalCenterController extends Controller
         $medicalCenter = new medicalCenter;
         $medicalCenter->fill($request->all());
         $medicalCenter->confirmation_code = $code;
+        $medicalCenter->id_promoter = $request->id_promoter;
         $medicalCenter->save();
 
         $user = new User;
@@ -418,11 +419,13 @@ class medicalCenterController extends Controller
         $user->attachRole($role);
         Mail::send('mails.confirmMedicalCenter',['medicalCenter'=>$medicalCenter,'code'=>$code], function($msj) use ($medicalCenter){
            $msj->subject('Médicos Si');
-           $msj->to('eavc53189@gmail.com');
-           // $msj->to($medicalCenter->emailAdmin);
+           //$msj->to($medicalCenter->emailAdmin);
+           $msj->to($medicalCenter->emailAdmin);
 
          });
-
+         // if($request->id_promoter != Null){
+         //   return redirect()->route('list_client',$request->id_promoter);
+         // }
         return redirect()->route('successRegMedicalCenter',$medicalCenter->id);
     }
 

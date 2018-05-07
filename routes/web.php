@@ -21,6 +21,8 @@ Route::resource('city','cityController');
 
 Route::get('loginRedirect', 'Auth\LoginController@loginRedirect')->name('loginRedirect');
 
+Route::post('verify/Session', 'Auth\LoginController@verifySession')->name('verifySession');
+
 route::get('home','HomeController@home')->name('home');
 route::resource('user','userController');
 route::resource('medico','medicoController');
@@ -67,9 +69,36 @@ route::get('medico/{id}/data/primordial/','medicoController@data_primordial_medi
 route::get('medic/{id}/consulting_room/create','consulting_roomController@consulting_room_create')->name('consulting_room_create');
 
 route::resource('patient','patientController');
+route::get('stipulate/{id}/appointment','medico_diaryController@stipulate_appointment')->name('stipulate_appointment');
+
+
+route::post('patient/appoitment/rate/store','patientController@store_rate_comentary')->name('store_rate_comentary');
+route::get('patient/{id}/medicos','patientController@patient_medicos')->name('patient_medicos');
+route::get('patient/{id}/appoitment/rate','patientController@rate_appointment')->name('rate_appointment');
+
+route::get('patient/{id}/appoitment','patientController@patient_appointments')->name('patient_appointments');
+route::get('patient/{id}/appoitment/pending','patientController@patient_appointments_pending')->name('patient_appointments_pending');
+route::get('patient/{id}/appoitment/unrated','patientController@patient_appointments_unrated')->name('patient_appointments_unrated');
+
+route::post('appoitment/store','medico_diaryController@appointment_store')->name('appointment_store');
+route::get('patients/register','patientController@patient_register_view')->name('patient_register_view');
+route::post('patient/register/store','patientController@patient_register')->name('patient_register');
+route::get('confirm/patient/{id}/{code}','patientController@confirmPatient')->name('confirmPatient');
 route::resource('medicalCenter','medicalCenterController');
 route::get('medicalCenter/{id}/search/medico/belongs','medicalCenterController@search_medico_belong_medical_center')->name('search_medico_belong_medical_center');
+route::get('confirm/patient/{id}','patientController@successRegPatient')->name('successRegPatient');
+route::get('patient/{id}/edit/address','patientController@address_patient')->name('address_patient');
+route::post('patient/{id}/store/address','patientController@patient_store_address')->name('patient_store_address');
 
+route::get('patient/delete/{id}/medico','patientController@delete_patient_doctors')->name('delete_patient_doctors');
+
+//
+route::get('medico/{id}/patients','medicoController@medico_patients')->name('medico_patients');
+
+route::get('medico/{m_id}/patient/{p_id}/appointments','medicoController@medico_appointments_patient')->name('medico_appointments_patient');
+
+route::get('medico/delete/{id}/patient','patientController@delete_medico_patients')->name('delete_medico_patients');
+//
 route::post('medicalCenter/{id}/store/experience','medicalCenterController@medical_center_experience_store')->name('medical_center_experience_store');
 route::post('medicalCenter/{id}/store/specialty','medicalCenterController@medical_center_specialty_store')->name('medical_center_specialty_store');
 route::post('medicalCenter/{id}/list/specialty','medicalCenterController@medicalCenter_list_specialty')->name('medicalCenter_list_specialty');
@@ -109,11 +138,14 @@ route::post('inner/cities/select3','medicoController@inner_cities_select3')->nam
 
 route::get('confirm/MedicalCenter/{id}/{code}','medicalCenterController@confirmMedicalCenter')->name('confirmMedicalCenter');
 
+
+
 route::get('confirm/MedicalCenter/{id}/{code}','medicalCenterController@confirmMedicalCenter')->name('confirmMedicalCenter');
 route::get('confirm/medico/{id}/{code}','medicoController@confirmMedico')->name('confirmMedico');
 
 route::get('confirm/medico/{id}','medicoController@successRegMedico')->name('successRegMedico');
 route::get('confirm/assistant/{id}','assistantController@successRegAssistant')->name('successRegAssistant');
+
 
 route::get('confirm/MedicalCenter/{id}','medicalCenterController@successRegMedicalCenter')->name('successRegMedicalCenter');
 
@@ -132,6 +164,8 @@ route::post('medicalCenter/add/medico','medicalCenterController@medical_center_a
 route::get('medicalCenter/{id}/edit/address','medicalCenterController@medical_center_edit_address')->name('medical_center_edit_address');
 
 route::get('medico/{id}/edit/address','medicoController@medico_edit_address')->name('medico_edit_address');
+
+
 
 
 route::post('medicalCenter/{id}/update/address','medicalCenterController@medical_center_update_address')->name('medical_center_update_address');
@@ -183,6 +217,24 @@ route::resource('administrators','administratorsController');
 route::resource('plans','plansController');
 route::resource('promoters','promotersController');
 route::resource('specialty_category','specialty_categoryController');
+
+
+route::get('promoters/{id}/add/medic/invited','promotersController@add_medic')->name('add_medic');
+
+route::post('promoters/store/medic','promotersController@store_medic')->name('store_medic');
+
+route::get('promoters/{id}/add/medical_center/invited','promotersController@add_medical_center')->name('add_medical_center');
+
+route::get('promoter/{id}/list_medical_center_invited','promotersController@list_medical_center_invited')->name('list_medical_center_invited');
+
+route::get('promoter/{id}/list_client','promotersController@list_client')->name('list_client');
+route::post('promoter/{id}/list_client_activated','promotersController@list_client_activated')->name('list_client_activated');
+
+route::post('promoter/{id}/list_client_desactivated','promotersController@list_client_desactivated')->name('list_client_desactivated');
+
+route::get('promoter/{id}/panel_control','promotersController@panel_control_promoters')->name('panel_control_promoters');
+
+route::post('promoters/store/medical_center','promotersController@store_medical_center')->name('store_medical_center');
 
 route::get('cities/{id}/plan','plansController@citiesPlans')->name('citiesPlans');
 route::post('cities/plan/store','plansController@citiesPlansStore')->name('citiesPlansStore');

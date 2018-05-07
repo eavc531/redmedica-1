@@ -19,6 +19,7 @@ class CreatePromotersTable extends Migration
             $table->string('name');
             $table->string('lastName');
             $table->string('email');
+            $table->string('role')->default('Promotor');
             $table->timestamps();
         });
     }

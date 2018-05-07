@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\patients_doctor;
+use App\event;
+use App\patient;
 use App\medico;
 use App\country;
 use App\city;
@@ -274,8 +277,6 @@ class medicoController extends Controller
      */
     public function create()
     {
-
-
       $countries = country::orderBy('name','asc')->pluck('name','name');
       $specialties = specialty::orderBy('name','asc')->pluck('name','name');
 
@@ -357,8 +358,9 @@ class medicoController extends Controller
 
         $user->attachRole($role);
 
-        Mail::send('mails.confirmMedico',['medico'=>$medico,'user'=>$user,'code'=>$code],function($msj){
+        Mail::send('mails.confirmMedico',['medico'=>$medico,'user'=>$user,'code'=>$code],function($msj) use($medico){
            $msj->subject('Médicos Si');
+           // $msj->to($medico->email);
            $msj->to('eavc53189@gmail.com');
 
       });
@@ -515,4 +517,30 @@ class medicoController extends Controller
       return response()->json('ok');
 
     }
+
+    public function medico_patients($id)
+    {
+        $medico = medico::find($id);
+
+        $patients = patients_doctor::Join('medicos', 'patients_doctors.medico_id', '=', 'medicos.id')
+                                    ->Join('patients', 'patients_doctors.patient_id', '=', 'patients.id')
+                                    ->select('patients.*','patients_doctors.id as patients_doctor_id')
+                                    ->where('medicos.id',$id)
+                                    ->orderBy('patients_doctors.created_at','desc')
+                                    ->paginate(10);
+
+        return view('medico.medico_patients',compact('medico','patients'));
+
+    }
+
+    public function medico_appointments_patient($medico_id,$patient_id)
+    {
+        $medico = medico::find($medico_id);
+        $patient = patient::find($patient_id);
+        $appointments = event::where('medico_id', $medico_id)->where('patient_id',$patient_id)->orderBy('created_at','desc')->paginate(10);
+
+        return view('medico.medico_patient_appointments',compact('medico','patient','appointments'));
+
+    }
+
 }

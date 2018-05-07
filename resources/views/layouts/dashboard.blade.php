@@ -1,5 +1,4 @@
 
-{{-- and Auth::user()->hasRole('admin') --}}
 @if(Auth::check() and Auth::user()->hasRole('admin'))
         <div class="box-dashboard mb-5" id="dashboard">
           <div class="row px-1">
@@ -84,6 +83,9 @@
                 <div class="col-12 nopadding">
 									<a href="{{route('medico_schedule',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Editar Horario</span></a>
 								</div>
+                <div class="col-12 nopadding">
+									<a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Pacientes</span></a>
+								</div>
 							</div>
 							<div class="row px-1">
 								{{-- <div class="col-12 nopadding">
@@ -105,5 +107,106 @@
 						</div>
 						<!-- Hasta aqui -->
 
+@elseif(Auth::check() and Auth::user()->role == 'Promotor')
+  <div class="box-dashboard" id="dashboard">
+    <div class="row px-1">
+      <img  class="img-dashboard" src="{{asset('img/Medicossi-Marca original-05.png')}}" alt="">
+    </div>
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="#" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Me gusta</span></a>
+      </div>
+      <div class="col-12 px-1">
+        <a href="#" class="btn btn-block btn-config-dashboard color-admin"><i class="fas fa-gift"></i><span>Compartir</a>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="{{route('add_medic',Auth::user()->promoter_id)}}" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Invitar Profesional </span></a>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="{{route('add_medical_center',Auth::user()->promoter_id)}}" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Invitar Centro Médico </span></a>
+      </div>
+
+    </div>
+    {{-- <div class="row">
+      <div class="col-12 px-1">
+        <a href="{{route('list_client',Auth::user()->promoter_id)}}" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Lista de Clientes</span></a>
+      </div>
+    </div> --}}
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="{{route('list_client',Auth::user()->promoter_id)}}" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Lista de Clientes Invitados</span></a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="#" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Planes</span></a>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="#" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Contrato</span></a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="#" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Recursos</span></a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="#" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Descarga tu app</span></a>
+      </div>
+    </div>
+    </div>
+@elseif(Auth::check() and Auth::user()->role == 'Paciente')
+  <div class="box-dashboard" id="dashboard">
+    <div class="row px-1">
+      <img  class="img-dashboard" src="{{asset('img/Medicossi-Marca original-05.png')}}" alt="">
+    </div>
+    <div class="row">
+      <div class="col-12 px-1">
+        <a href="#" class="btn btn-block btn-config-dashboard color-patient"><i class="far fa-thumbs-up"></i><span>Me gusta</span></a>
+      </div>
+      <div class="col-12 px-1">
+        <a href="#" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-gift"></i><span>Compartir</a>
+      </div>
+    </div>
+    <div class="row p-1">
+      <div class="col-12 nopadding">
+        <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-home fa-2"></i><span>Inicio</a>
+      </div>
+      <div class="col-12 nopadding">
+        <a href="{{route('patient_medicos',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-users"></i><span>Mis medicos</span></a>
+      </div>
+      <div class="col-12 nopadding">
+        <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-users"></i><span>Buscar Médicos</span></a>
+      </div>
+      <div class="col-12 nopadding">
+        <a href="{{route('patient_appointments',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-users"></i><span>Citas Médicas</span></a>
+      </div>
+    </div>
+    <div class="row px-1">
+      {{-- <div class="col-12 nopadding">
+        <a href="#" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-user-plus fa-2"></i><span>Agregar comentario y/o calificación</a>
+      </div>
+    </div>
+    <div class="row p-1">
+      {{-- <div class="col-12 nopadding">
+        <a href="#" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-book"></i><span>Agendar cita</span></a>
+      </div> --}}
+      <div class="col-12 nopadding">
+        <a href="#" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-cogs"></i><span>Recursos</span></a>
+      </div>
+      <div class="col-12 nopadding">
+        <a href="#" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-mobile-alt"></i><span>Descarga tu app</span></a>
+      </div>
+    </div>
+  </div>
 @endif

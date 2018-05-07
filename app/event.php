@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class event extends Model
 {
-  protected $fillable = [
-    'title',
-    'start',
-    'end',
-    'color',
-    'user_id',
-  ];
+
+  public function medico(){
+     return $this->belongsTo('App\medico');
+  }
 
 }
