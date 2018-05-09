@@ -43,9 +43,11 @@
            <div class="col-12 col-sm-4 col-lg-4 p-4">
              <div class="form-group">
                {{-- <label for="">Primeras visitas:<b class="price">600MXN</b></label> --}}
-               <a class="" href="{{route('patient.edit',$patient['id'])}}"><i class="fas fa-cogs mr-2"></i>Ver perfíl</a>
+               <a class="" href="{{route('patient_profile',$patient['id'])}}"><i class="fas fa-cogs mr-2"></i>Ver perfíl</a>
              </div>
                 <a class="btn btn-secondary" href="{{route('medico_appointments_patient',['medico_id'=>$medico->id,'patient_id'=>$patient['id']])}}">Lista de Citas con Paciente</a>
+
+                <a href="{{route('admin_data_patient',['medico_id'=>$medico->id,'patient_id'=>$patient->id])}}" class="btn btn-secondary">Administrar Paciente</a>
              <div class="form-group">
 
                {{-- <a href="{{route('delete_patient_doctors',$patient->patients_doctor_id)}}" class="btn btn-danger" onclick="return confirm('¿Esta Segur@ de Querer Eliminar este Médico de su lista de Médicos?')">Eliminar de la lista</a> --}}

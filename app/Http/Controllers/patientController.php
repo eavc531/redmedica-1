@@ -12,6 +12,7 @@ use App\city;
 use App\medico;
 use App\patients_doctor;
 use App\event;
+use App\note;
 use Geocoder;
 use Carbon\Carbon;
 class patientController extends Controller
@@ -21,6 +22,18 @@ class patientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
+
+  
+
+     public function patient_profile($id)
+     {
+         $patient = patient::find($id);
+         return view('patient.profile')->with('patient', $patient);
+     }
+
     public function index()
     {
         $patient = patient::orderBy('name','asc')->paginate(10);
@@ -255,18 +268,18 @@ class patientController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+//esTO SE CREO PARA Q LO HICERA EL ADMIN == CONFIRMAR PARA borrar
         $request->validate([
           'name'=>'required',
           'lastName'=>'required',
           'email'=>'required',
           'identification'=>'required',
-            'gender'=>'required',
-            'name'=>'required',
-            'lastName'=>'required',
-            'phone1'=>'required|numeric',
-            'phone2'=>'numeric|nullable',
-            'password'=>'nullable',
+          'gender'=>'required',
+          'name'=>'required',
+          'lastName'=>'required',
+          'phone1'=>'required|numeric',
+          'phone2'=>'numeric|nullable',
+          'password'=>'nullable',
 
         ]);
 
@@ -289,8 +302,6 @@ class patientController extends Controller
         ]);
 
       }
-
-
 
         $patient->fill($request->all(),['except'=>['email']]);
 

@@ -19,7 +19,7 @@
 						</div>
 						<div class="col-lg-6 col-12">
 							<div class="form-group">
-							    {!!Form::select('gender',['Masculino','Femenino'],null,['class'=>'form-control','placeholder'=>'Genero'])!!}
+							    {!!Form::select('gender',['Masculino'=>'Masculino','Femenino'=>'Femenino'],null,['class'=>'form-control','placeholder'=>'Genero'])!!}
 							 </div>
 						</div>
 						<div class="col-lg-6 col-12">

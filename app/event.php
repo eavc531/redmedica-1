@@ -11,4 +11,7 @@ class event extends Model
      return $this->belongsTo('App\medico');
   }
 
+  public function patient(){
+     return $this->belongsTo('App\patient');
+  }
 }

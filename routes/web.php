@@ -10,12 +10,26 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/edit','medicoController@medico_note_edit')->name('medico_note_edit');
 
+route::post('medico/patient/note/config/store','medicoController@note_config_store')->name('note_config_store');
+
+route::get('medico/{m_id}/patient/{p_id}/notes/','medicoController@notes_patient')->name('notes_patient');
+route::get('medico/{m_id}/note/{note_id}/config/{p_id}','medicoController@note_replace_config')->name('note_replace_config');
+
+route::post('medico/patient/note/store','medicoController@note_store')->name('note_store');
+
+
+//route::post('medico/list/questions','medicoController@questions_labs')->name('questions_labs');
 
 route::get('/', function () {
     return redirect()->route('home');
 });
+Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}','medicoController@create_note_patient')->name('create_note_patient');
 
+Route::get('medico/{m_id}/admin/data/{p_id}/patient','medicoController@admin_data_patient')->name('admin_data_patient');
+// Route::get('medico/{m_id}/admin/data/{p_id}/patient','patientController@admin_data_patient')->name('admin_data_patient');
+Route::get('patient/{id}/profile','patientController@patient_profile')->name('patient_profile');
 
 Route::resource('city','cityController');
 

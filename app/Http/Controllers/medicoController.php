@@ -22,7 +22,9 @@ use App\medico_experience;
 use App\social_network;
 use App\Role;
 use App\insurance_carrier;
+use App\question_lab;
 use Geocoder;
+use App\note;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
@@ -33,6 +35,99 @@ class medicoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function medico_note_edit($m_id,$p_id,$n_id){
+       $note = note::find($n_id);
+       $medico = medico::find($m_id);
+       $patient = patient::find($p_id);
+
+       return view('medico.edit_note',compact('note','medico','patient'));
+     }
+
+     public function note_config_store(Request $request){
+
+       $noteCount = note::where('medico_id',$request->medico_id)->where('title', $request->title)->where('type_note', 'customized')->count();
+
+       if($noteCount == 0){
+         $note = new note;
+         $note->title = $request->title;
+         $note->content = $request->content;
+         $note->medico_id = $request->medico_id;
+         $note->type_note = 'customized';
+         $note->save();
+
+       }else{
+         $note = note::find($request->note_id);
+         $note->title = $request->title;
+         $note->content = $request->content;
+         $note->medico_id = $request->medico_id;
+         $note->type_note = 'customized';
+         $note->save();
+       }
+
+       return redirect()->route('admin_data_patient',['medico_id'=>$request->medico_id,'patient_id'=>$request->patient_id]);
+     }
+
+       public function note_replace_config($m_id,$n_id,$p_id)
+     {
+
+       $note = note::find($n_id);
+       $medico = medico::find($m_id);
+       $patient = patient::find($p_id);
+
+       return view('medico.note_replace_config',compact('note','medico','patient'));
+     }
+
+     public function notes_patient($m_id,$p_id)
+     {
+
+          $notes = note::where('patient_id', $p_id)->where('medico_id',$m_id)->get();
+
+          $patient = patient::find($p_id);
+          $medico = medico::find($m_id);
+
+         return view('medico.notes_patient',compact('notes','patient','medico'));
+     }
+
+     public function note_store(Request $request)
+     {
+
+        $note = new note;
+        $note->title = $request->title;
+        $note->content = $request->content;
+        $note->patient_id = $request->patient_id;
+        $note->medico_id = $request->medico_id;
+        $note->type_note = 'saved';
+        $note->save();
+
+         return redirect()->route('admin_data_patient',['med_id'=>$request->medico_id, 'p_id'=>$request->patient_id])->with('success', 'Nota Guardada de Forma Exitosa.');
+     }
+
+
+     public function admin_data_patient($id_medico,$id_patient)
+     {
+         $patient = patient::find($id_patient);
+         $medico = medico::find($id_medico);
+         $noteMedicIniCount = note::where('type_note', 'customized')->where('medico_id', $id_medico)->where('type_note', 'customized')->count();
+
+         if($noteMedicIniCount == 0){
+           $noteMedicIni = note::where('type_note', 'system')->where('title', 'Nota Médica Inicial')->first();
+         }else{
+           $noteMedicIni = note::where('type_note', 'customized')->where('medico_id', $id_medico)->where('title', 'Nota Médica Inicial')->first();
+         }
+
+
+         return view('medico.admin_data_patient',compact('patient','medico','noteMedicIni'));
+     }
+
+     public function create_note_patient($id_medico,$id_patient,$id_note)
+     {
+         $patient = patient::find($id_patient);
+
+         $medico = medico::find($id_medico);
+         $note = note::find($id_note);
+
+         return view('medico.create_note_patient',compact('patient','medico','note'));
+     }
 
      public function medico_edit_address($id){
        $medico = medico::find($id);
@@ -69,16 +164,11 @@ class medicoController extends Controller
            if($medico->stateConfirm != 'data_primordial_complete' and $medico->stateConfirm != 'complete'){
              return redirect()->route('data_primordial_medico',$id)->with('warning', 'Debes rellenar los siguietnes Datos para Poder acceder a otros paneles de tu cuenta.');
            }
-
-
-
-
            $medico->country = $request->country;
            $medico->state = $request->state;
            $medico->city = $request->city;
            $medico->state_id = $state->id;
            $medico->city_id = $city->id;
-
            $medico->postal_code = $request->postal_code;
            $medico->colony = $request->colony;
            $medico->street = $request->street;
@@ -87,7 +177,6 @@ class medicoController extends Controller
            $medico->longitud = $Coordinates['lng'];
            $medico->latitud = $Coordinates['lat'];
            $medico->save();
-
 
            if($medico->stateConfirm == 'data_primordial_complete'){
              $medico->stateConfirm = 'complete';

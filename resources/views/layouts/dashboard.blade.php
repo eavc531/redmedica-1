@@ -86,6 +86,9 @@
                 <div class="col-12 nopadding">
 									<a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Pacientes</span></a>
 								</div>
+                <div class="col-12 nopadding">
+									<a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Mis Calificaciones</span></a>
+								</div>
 							</div>
 							<div class="row px-1">
 								{{-- <div class="col-12 nopadding">
@@ -181,6 +184,9 @@
     <div class="row p-1">
       <div class="col-12 nopadding">
         <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-home fa-2"></i><span>Inicio</a>
+      </div>
+      <div class="col-12 nopadding">
+        <a href="{{route('patient_profile',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-home fa-2"></i><span>Perfil</a>
       </div>
       <div class="col-12 nopadding">
         <a href="{{route('patient_medicos',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-users"></i><span>Mis medicos</span></a>
