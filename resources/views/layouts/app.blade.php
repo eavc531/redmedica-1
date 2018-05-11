@@ -10,6 +10,7 @@
 
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/styles.css')}}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 
 	@yield('css')
@@ -23,7 +24,7 @@
 
 	<nav class="navbar navbar-expand-lg navbar-config">
 		@if(Auth::check())
-		<a class="navbar-brand mr-auto" id="show" href="#" style="position: absolute; left: 2%; top: 30%;"><i class="fas fa-bars"></i></a>
+<!-- 		<a class="navbar-brand mr-auto" id="show" href="#" style="position: absolute; left: 2%; top: 30%;"><i class="fas fa-bars"></i></a> -->
 		@endif
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span><i class="fa fa-bars"></i></span>
@@ -50,15 +51,13 @@
 				</form>
 			</div>
 		</nav>
-
-
 	<section class="section-dashboard mb-3">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-12 col-lg-2 ">
+				<div class="col-lg-2 col-12 col-sm-3">
 					@include('layouts.dashboard')
 				</div>
-				<div class="col-lg-8 col-12 box-mesage">
+				<div class="col-lg-8 col-12 col-sm-9 box-mesage">
 					@include('notifications.alerts')
 					@yield('content')
 				</div>

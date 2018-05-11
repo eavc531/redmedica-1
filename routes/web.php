@@ -10,12 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/edit','medicoController@medico_note_edit')->name('medico_note_edit');
 
 route::post('medico/patient/note/config/store','medicoController@note_config_store')->name('note_config_store');
 
 route::get('medico/{m_id}/patient/{p_id}/notes/','medicoController@notes_patient')->name('notes_patient');
 route::get('medico/{m_id}/note/{note_id}/config/{p_id}','medicoController@note_replace_config')->name('note_replace_config');
+route::get('medico/{m_id}/patient/{p_id}/edit/appointment/{app_id}','medico_diaryController@edit_appointment')->name('edit_appointment');
+
 
 route::post('medico/patient/note/store','medicoController@note_store')->name('note_store');
 
@@ -83,6 +87,8 @@ route::get('medico/{id}/data/primordial/','medicoController@data_primordial_medi
 route::get('medic/{id}/consulting_room/create','consulting_roomController@consulting_room_create')->name('consulting_room_create');
 
 route::resource('patient','patientController');
+route::get('medico/{m_id}/stipulate/appointment/patient/{p_id}','medico_diaryController@medico_stipulate_appointment')->name('medico_stipulate_appointment');
+
 route::get('stipulate/{id}/appointment','medico_diaryController@stipulate_appointment')->name('stipulate_appointment');
 
 

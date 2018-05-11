@@ -1,20 +1,17 @@
+@extends('layouts.app')
 
+@section('content')
 
 
 <div class="row">
   <div class="col-12 mb-3">
     <h2 class="text-center font-title">Citas con Paciente: {{$patient->name}} {{$patient->lastName}} </h2>
-    <hr>
-  </div>
-</div>
-<div class="row">
-  <div class="col-6">
 
   </div>
-  <div class="col-6 text-right">
-    <a href="{{route('medico_patients',$medico->id)}}" class="btn btn-secondary">Atras</a>
-  </div>
 </div>
+{{-- MENU DE PACIENTES --}}
+@include('medico.includes.main_medico_patients')
+
 @if($appointments->first() != Null)
 <div class="row">
   @foreach ($appointments as $app)
@@ -38,8 +35,12 @@
             <p>Comentario al Respecto: {{$app->comentary}}</p>
         @endisset
 
-      </div>
 
+      </div>
+      <div class="card-footer">
+        <a href="{{route('edit_appointment',['m_id'=>$medico,'p_id'=>$patient->id,'app_id'=>$app->id])}}" class="btn btn-success">Editar</a>
+
+      </div>
     </div>
   @endforeach
   <div class="card-heading">
@@ -52,3 +53,5 @@
 </div>
 
 @endif
+
+@endsection

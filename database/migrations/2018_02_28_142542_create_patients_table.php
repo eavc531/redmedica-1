@@ -22,6 +22,8 @@ class CreatePatientsTable extends Migration
             $table->string('phone1');
             $table->string('phone2')->nullable();
             $table->string('email');
+            $table->string('age')->nullable();
+            $table->date('birthdate')->nullable();
             $table->string('dateActivation')->nullable();
             $table->string('status')->default('disabled');
             $table->string('confirmation_code')->nullable();

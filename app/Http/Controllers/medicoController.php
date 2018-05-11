@@ -121,12 +121,14 @@ class medicoController extends Controller
 
      public function create_note_patient($id_medico,$id_patient,$id_note)
      {
+         $states = state::orderBy('name','asc')->pluck('name','name');
+         $cities = city::orderBy('name','asc')->pluck('name','name');
          $patient = patient::find($id_patient);
 
          $medico = medico::find($id_medico);
          $note = note::find($id_note);
 
-         return view('medico.create_note_patient',compact('patient','medico','note'));
+         return view('medico.create_note_patient',compact('patient','medico','note','states','cities'));
      }
 
      public function medico_edit_address($id){

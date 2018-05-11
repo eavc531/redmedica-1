@@ -22,25 +22,10 @@
               <hr>
             </div>
           </div>
-          <div class="row justify-content-center mb-2">
-            <div class="col-8 -auto">
-              <div class="row">
-                <div class="col-lg-2 col-6">
-                  <a href="#"><img src="{{asset('img/botones-medicossi-26.png')}}" alt=""></a>
-                </div>
-                <div class="col-lg-2 col-6">
-                  <img src="{{asset('img/botones-medicossi-27.png')}}" alt="">
-                </div>
 
-                <div class="col-lg-2 mt-3 col-12">
-                  <a href="{{route('medico_patients',$medico->id)}}" class="btn btn-secondary">Lista de Pacientes</a>
-                </div>
-                <div class="col-lg-2 mt-3 col-12">
-                  <a href="{{route('notes_patient',['p_id'=>$patient->id,'m_id'=>$medico->id])}}" class="btn btn-secondary">Notas Médicas</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          {{-- MENU DE PACIENTES --}}
+          @include('medico.includes.main_medico_patients')
+          
           <div class="row">
             <div class="col-lg-6 col-12">
             </div>

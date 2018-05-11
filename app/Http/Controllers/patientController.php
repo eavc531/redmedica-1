@@ -26,8 +26,6 @@ class patientController extends Controller
 
 
 
-  
-
      public function patient_profile($id)
      {
          $patient = patient::find($id);
@@ -106,6 +104,7 @@ class patientController extends Controller
      }
      public function patient_appointments(Request $request,$id)
      {
+       
        $patient = patient::find($id);
        $appointments = event::where('patient_id', $id)->orderBy('id','desc')->paginate(5);
 
@@ -145,13 +144,17 @@ class patientController extends Controller
        return view('patient.patient_register');
      }
      public function patient_register(Request $request){
+
+
+       $age =  \Carbon\Carbon::parse($request->birthdate)->diffInYears(\Carbon\Carbon::now());
+
        $request->validate([
          'identification'=>'required|unique:patients',
          'gender'=>'required',
          'name'=>'required',
          'lastName'=>'required',
          'phone1'=>'required|numeric',
-         'phone2'=>'numeric|nullable',
+         'birthdate'=>'required',
          'email'=>'required|email|unique:patients',
          'password'=>'required',
        ]);
@@ -159,6 +162,9 @@ class patientController extends Controller
        $code = str_random(25);
        $patient = new patient;
        $patient->fill($request->all());
+       $patient->age = $age;
+
+       // $patient->birthdate =
        $patient->confirmation_code = $code;
        $patient->save();
        $user = new User;

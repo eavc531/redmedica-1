@@ -1,3 +1,6 @@
+{{-- //NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE//NO EDITAR NO SIRVE --}}
+
+
 @extends('layouts.app')
 
 @section('content')
@@ -33,14 +36,15 @@
 							 </div>
 						</div>
 						<div class="col-lg-6 col-12">
-							<div class="form-group">
-							    {!!Form::number('phone1',null,['class'=>'form-control','placeholder'=>'Teléfono 1'])!!}
-							</div>
+              <div class="form-group">
+                  {!!Form::number('age',null,['class'=>'form-control','placeholder'=>'edad'])!!}
+             </div>
 						</div>
 						<div class="col-lg-6 col-12">
-							<div class="form-group">
-                  {!!Form::number('phone2',null,['class'=>'form-control','placeholder'=>'Teléfono 2 (Opcional)'])!!}
-							</div>
+              <div class="form-group">
+                  {!!Form::number('phone1',null,['class'=>'form-control','placeholder'=>'Teléfono 1'])!!}
+              </div>
+
 						</div>
             <div class="col-lg-6 col-12">
 							<div class="form-group">

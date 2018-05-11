@@ -37,6 +37,9 @@
                  <div class="col-12">
                    <p class="card-text"><b>{{$patient['state']}},{{$patient['city']}}</b></p>
                  </div>
+                 <div class="col-12">
+                  <a href="{{route('medico_stipulate_appointment',['m_id'=>$medico->id,'p_id'=>$patient])}}" class="btn btn-success">Agendar Cita</a>
+                 </div>
                </div>
              </div>
            </div>
@@ -46,7 +49,8 @@
                <a class="" href="{{route('patient_profile',$patient['id'])}}"><i class="fas fa-cogs mr-2"></i>Ver perfíl</a>
              </div>
                 <a class="btn btn-secondary" href="{{route('medico_appointments_patient',['medico_id'=>$medico->id,'patient_id'=>$patient['id']])}}">Lista de Citas con Paciente</a>
-
+                <a href="{{route('notes_patient',['m_id'=>$medico->id,'p_id'=>$patient->id])}}" class="btn btn-secondary btn-lg">Notas Médicas</i></a>
+                <a href="{{route('medico_stipulate_appointment',['m_id'=>$medico->id,'p_id'=>$patient])}}" class="btn btn-secondary btn-lg">agendar cita</a>
                 <a href="{{route('admin_data_patient',['medico_id'=>$medico->id,'patient_id'=>$patient->id])}}" class="btn btn-secondary">Administrar Paciente</a>
              <div class="form-group">
 

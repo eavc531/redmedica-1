@@ -36,7 +36,7 @@
                 <p>Comentario al Respecto: {{$app->comentary}}</p>
 
                 <a href="{{route('rate_appointment',$app->id)}}" class="btn btn-success">Calificar Cita</a>
-                {{$app->id}}
+
               </div>
 
             </div>

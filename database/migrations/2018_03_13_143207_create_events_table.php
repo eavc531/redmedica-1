@@ -32,10 +32,12 @@ class CreateEventsTable extends Migration
           $table->foreign('medico_id')->references('id')->on('medicos');
           $table->integer('patient_id')->unsigned()->nullable();
           $table->foreign('patient_id')->references('id')->on('patients');
+          $table->string('namePatient')->nullable();
           $table->string('state')->default('Pendiente');
           $table->integer('score')->nullable();
           $table->string('calification')->nullable();
           $table->string('comentary')->nullable();
+          $table->string('stipulated')->default('patient');
           $table->timestamps();
         });
     }

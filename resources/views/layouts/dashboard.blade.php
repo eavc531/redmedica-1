@@ -78,13 +78,11 @@
 									<a href="{{route('medico.edit', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user fa-2"></i><span>Editar Perfil</span></a>
 								</div>
 								<div class="col-12 nopadding">
-									<a href="{{route('medico_diary',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Panel de control</span></a>
+
 								</div>
+
                 <div class="col-12 nopadding">
-									<a href="{{route('medico_schedule',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Editar Horario</span></a>
-								</div>
-                <div class="col-12 nopadding">
-									<a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Pacientes</span></a>
+									<a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Mis Pacientes</span></a>
 								</div>
                 <div class="col-12 nopadding">
 									<a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Mis Calificaciones</span></a>
@@ -100,8 +98,11 @@
 								{{-- <div class="col-12 nopadding">
 									<a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-table"></i><span>Especialidad</span></a>
 								</div> --}}
+                <div class="col-12 nopadding">
+                  <a href="{{route('medico_schedule',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Editar Horario</span></a>
+                </div>
 								<div class="col-12 nopadding">
-									<a href="{{route('medico_diary',Auth::user()->id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-book"></i><span>Agenda</span></a>
+									<a href="{{route('medico_diary',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-book"></i><span>Agenda</span></a>
 								</div>
 								<div class="col-12 nopadding">
 									<a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-mobile-alt"></i><span>Descarga tu app</span></a>

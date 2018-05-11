@@ -43,14 +43,15 @@
 							 </div>
 						</div>
 						<div class="col-lg-6 col-12">
-							<div class="form-group">
-							    {!!Form::number('phone1',null,['class'=>'form-control','placeholder'=>'Teléfono 1'])!!}
-							</div>
+              <div class="form-group">
+                  {!!Form::date('birthdate',null,['class'=>'form-control','placeholder'=>'Fecha de Nacimiento'])!!}
+              </div>
 						</div>
 						<div class="col-lg-6 col-12">
-							<div class="form-group">
-                  {!!Form::number('phone2',null,['class'=>'form-control','placeholder'=>'Teléfono 2 (Opcional)'])!!}
-							</div>
+
+              <div class="form-group">
+                  {!!Form::number('phone1',null,['class'=>'form-control','placeholder'=>'Teléfono 1'])!!}
+              </div>
 						</div>
             <div class="col-lg-6 col-12">
 							<div class="form-group">

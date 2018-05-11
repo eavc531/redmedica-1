@@ -10,6 +10,7 @@
 
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/styles.css')}}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 
 	@yield('css')
@@ -72,12 +73,10 @@
 				</form>
 			</div>
 		</nav>
-
-
 		<section class="section-dashboard mb-3">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-lg-2 col-sm-4 col-12 ">
+					<div class="col-lg-2 col-sm-3 col-12 ">
 						@include('layouts.dashboard')
 					</div>
 					<div class="col-lg-10 col-sm-9 col-12">

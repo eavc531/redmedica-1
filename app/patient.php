@@ -16,6 +16,7 @@ class patient extends Model
     'email',
     'dateActivation',
     'status',
-      'gender',
+    'gender',
+    'birthdate'
   ];
 }

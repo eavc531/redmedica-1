@@ -22,26 +22,9 @@
               <hr>
             </div>
           </div>
-          <div class="row justify-content-center mb-2">
-            <div class="col-8 -auto">
-              <div class="row">
-                <div class="col-lg-2 col-6">
-                  <a href="#"><img src="{{asset('img/botones-medicossi-26.png')}}" alt=""></a>
-                </div>
-                <div class="col-lg-2 col-6">
-                  <img src="{{asset('img/botones-medicossi-27.png')}}" alt="">
-                </div>
+          {{-- MENU DE PACIENTES --}}
+          @include('medico.includes.main_medico_patients')
 
-                <div class="col-lg-2 mt-3 col-12">
-                  <a href="{{route('medico_patients',$medico->id)}}" class="btn btn-secondary">Lista de Pacientes</a>
-                </div>
-                {{$medico->id}}
-                <div class="col-lg-2 mt-3 col-12">
-                  <a href="{{route('notes_patient',['m_id'=>$medico->id,'p_id'=>$patient->id])}}" class="btn btn-secondary">Notas Médicas del Paciente</a>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="row">
             <div class="col-lg-6 col-12">
             </div>
@@ -55,11 +38,6 @@
           </ul>
 
 
-
-
-
-
-
           {{-- //////////centro de menu////////////centro de menu////////////centro de menu////////////centro de menu// --}}
           </div>
         <div class="col-12 col-lg-3">
@@ -69,21 +47,24 @@
               <span>Usuario firmado:</span>
               <span>{{$medico->email}}</span>
             </div>
+            <div class="col-12 border-head-panel text-center">
+              <span><strong>Administrando Datos de Paciente:</strong></span>
+              <span>{{$patient->name}} {{$patient->lastName}}</span>
+            </div>
 
 
-              <hr>
               <div class="col-12 box-control-panel text-center p-0">
-                <a href="" id="green">
+                <a href="" id="green" class="btn btn-secondary">
                   <i class="fas fa-plus"></i>
                   <h5>Dar paciente de alta</h5>
                 </a>
               </div>
 
 
-              <hr>
+
               <div class="col-12">
                 <div class="col-12 box-control-panel text-center p-0">
-                  <a href="" id="green">
+                  <a href="" id="green" class="btn btn-secondary">
                     <h5>Nueva nota médica</h5>
                     <i class="fas fa-plus-circle"></i>
                   </a>
@@ -94,37 +75,35 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-12 box-control-panel text-center p-0">
-                    <a href="">
-                      <img src="{{asset('img/botones-medicossi-26.png')}}" alt="">
+                    <a href="" class="btn btn-secondary">
+                      <img src="{{asset('img/botones-medicossi-26.png')}}" alt="" style="width:120px">
                       <h5>Agrega nueva cita</h5>
                     </a>
                   </div>
                   <div class="col-12">
-                    <div class="col-lg-12 col-12 mt-2">
-                      <button type="submit" class="btn-config-blue btn btn-block" data-toggle="modal" data-target="#modal-end-consult">Termino de consulta</button>
-                    </div>
+
                     <div class="col-lg-12 col-12 mt-2">
                       <button type="submit" class="btn-config-green btn btn-block">Nuevo recordatorio</button>
                     </div>
                   </div>
                 </div>
               </div>
-              <hr>
+
               <div class="col-12">
                 <div class="col-12 box-control-panel text-center p-0">
-                  <a href="">
+                  {{-- <a href="">
                     <i class="fas fa-chart-line"></i>
                     <h5>Mis Estadisticas</h5>
-                  </a>
+                  </a> --}}
                 </div>
               </div>
-              <hr>
+
 
           </div>
           <div class="row">
             <div class="col-12">
-              <a href="" class="btn-config-green btn btn-block">Configuración</a>
-              <a href="" class="btn-config-green btn btn-block">Atras</a>
+              {{-- <a href="" class="btn-config-green btn btn-block">Configuración</a>
+              <a href="" class="btn-config-green btn btn-block">Atras</a> --}}
             </div>
           </div>
         </div>
