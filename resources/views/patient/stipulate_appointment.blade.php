@@ -23,9 +23,13 @@
           </div>
           </div>
           <hr>
-					<h5>Agendar Cita</h5>
-					<p>Las Horas disponibles de este médico, estan marcadas en el calendario como color naranja:  <div class="" style="width:30px;height:30px;background:#f9da7f">	</div></p>
-					<p>seleccione horas disponibles y rellene los campos del formulario, a continuación presione el boton agendar cita, y listo ya habra agendado una cita con el Médico: {{$medico->name}} {{$medico->lastName}}</p>
+          <button type="button" class="btn btn-small btn-info">Ayuda</button>
+          <div class="card">
+            <h5>Agendar Cita</h5>
+  					<p>Las Horas disponibles de este médico, estan marcadas en el calendario como color naranja:  <div class="" style="width:30px;height:30px;background:#f9da7f">	</div></p>
+  					<p>Seleccione horas disponibles en el calendario, rellene los campos del formulario, a continuación presione el boton "Agendar", y listo ya habra agendado una cita con el Médico: {{$medico->name}} {{$medico->lastName}}, o cualquier Médico que seleccione en el panel "Buscar Médicos"</p>
+          </div>
+
 
 
         @include('medico.includes.alert_calendar')
@@ -133,9 +137,9 @@
 
                   <div class="col-lg-6">
                     @if($countEventSchedule != 0)
-                    <button onclick="store_event()"type="button" class="btn btn-config-blue">Guardar</button>
+                    <button onclick="store_event()"type="button" class="btn btn-config-blue">Agendar</button>
                     @else
-                    <button onclick=""type="button" class="btn btn-config-blue" disabled>Guardar</button>
+                    <button onclick=""type="button" class="btn btn-config-blue" disabled>Agendar</button>
                     @endif
                     {{-- <button type="submit" class="btn btn-config-blue">Guardar</button> --}}
                   </div>
@@ -398,7 +402,7 @@
       dateEnd = $('#date_end3').val();
       hourEnd = $('#hourEnd2').val();
       minsEnd = $('#minsEnd2').val();
-
+      patient_id = "{{Auth::user()->patient->id}}";
 			medico_id = "{{$medico->id}}";
       route = "{{route('appointment_store')}}";
       errormsj = '';
@@ -406,7 +410,7 @@
        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
        type:'post',
        url:route,
-       data:{title:title,description:description,date_start:date_start,hourStart:hourStart,minsStart:minsStart,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,medico_id:medico_id},
+       data:{title:title,description:description,date_start:date_start,hourStart:hourStart,minsStart:minsStart,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,medico_id:medico_id,patient_id:patient_id},
        error:function(error){
          console.log(error);
         $.each(error.responseJSON.errors, function(index, val){

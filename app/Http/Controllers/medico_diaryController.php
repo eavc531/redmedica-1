@@ -19,13 +19,11 @@ class medico_diaryController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
      public function edit_appointment($id,$p_id,$app_id)
     {
       $app = event::find($app_id);
       $medico = medico::find($id);
       $patient =  patient::find($p_id);
-
 
       ///////igual
       $lunes = event::where('medico_id',$id)->where('title','lunes')->orderBy('end','asc')->get();
@@ -109,11 +107,11 @@ class medico_diaryController extends Controller
 
         $days_hide = ['lunes'=>$lunes3,'martes'=>$martes3,'miercoles'=>$miercoles3,'jueves'=>$jueves3,'viernes'=>$viernes3,'sabado'=>$sabado3,'domingo'=>$domingo3];
         ///////igual
-        
-        return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide)->with('countEventSchedule', $countEventSchedule)->with('patient', $patient);
+
+        return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide)->with('countEventSchedule', $countEventSchedule)->with('patient', $patient)->with('app', $app);
 
       }
-      return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('countEventSchedule', $countEventSchedule)->with('patient',$patient);
+      return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('countEventSchedule', $countEventSchedule)->with('patient',$patient)->with('app', $app);
       // ->with($months, 'months');
     }
 
@@ -771,7 +769,7 @@ class medico_diaryController extends Controller
 
      public function update_event(Request $request)
      {
-
+       dd($request->all());
        $hour_start1 = $request->hourStart.':'.$request->minsStart;
 
        $hour_end1 = $request->hourEnd.':'.$request->minsEnd;
