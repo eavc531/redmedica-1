@@ -15,6 +15,10 @@ use App\event;
 use App\note;
 use Geocoder;
 use Carbon\Carbon;
+use Auth;
+use App\photo;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 class patientController extends Controller
 {
     /**
@@ -25,6 +29,39 @@ class patientController extends Controller
 
 
 
+       public function patient_add_medic($id)
+     {
+       $p_m_count = patients_doctor::where('medico_id',$id)->where('patient_id',Auth::user()->patient->id)->count();
+       $medico = medico::find($id);
+       if($p_m_count == 0){
+         $p_m = new patients_doctor;
+         $p_m->medico_id = $id;
+         $p_m->patient_id = Auth::user()->patient->id;
+         $p_m->save();
+
+         return back()->with('success', 'El médico: '.$medico->name.' '.$medico->lastName.' ha sido añadido a tu lista de Médicos.');
+       }else{
+          return back()->with('warning', 'El médico: '.$medico->name.' '.$medico->lastName.' ya fue agregado previamente a tu lista de Médicos.');
+       }
+
+     }
+       public function resend_mail_confirm_patient($id)
+     {
+       $user = user::where('patient_id',$id);
+       $code = str_random(25);
+       $patient = patient::find($id);
+       $patient->confirmation_code = $code;
+       $patient->save();
+
+       Mail::send('mails.confirmPatient',['patient'=>$patient,'code'=>$code,'user'=>$user], function($msj) use ($patient){
+          $msj->subject('Médicos Si');
+          $msj->to('eavc53189@gmail.com');
+
+        });
+
+        return redirect()->route('successRegPatient',$patient->id)->with('success', 'Se ha reenviado el mensaje de confirmación al correo electronico, asociado a tu cuenta MédicoSi');
+
+     }
 
      public function patient_profile($id)
      {
@@ -54,13 +91,40 @@ class patientController extends Controller
                                   ->select('medicos.*','patients_doctors.id as patients_doctor_id')
                                   ->where('patients.id',$id)
                                   ->orderBy('patients_doctors.created_at','desc')
-                                  ->paginate(10);
+                                  ->get();
+
+      foreach ($medicos as $medico) {
+              $photo = photo::where('medico_id',$medico->id)->where('type', 'perfil')->first();
+              //dd($photo);
+            if($photo == Null){
+              $image = Null;
+            }else{
+              $image = $photo->path;
+            }
+            $data[$medico->id] = ['identification'=>$medico->identification,'specialty'=>$medico->specialty,'id'=>$medico->id,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'patients_doctor_id'=>$medico->patients_doctor_id];
+
+      }
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $medicos = patientController::paginate_custom($data,$currentPage);
+
 
          return view('patient.patient_medicos',compact('medicos','patient'));
      }
 
+     public function paginate_custom($data,$currentPage){
+
+       $col = new Collection($data);
+       $perPage = 8;
+       $currentPageSearchResults = $col->slice(($currentPage - 1) * $perPage, $perPage)->all();
+       $medicosCerc = new LengthAwarePaginator($currentPageSearchResults, count($col), $perPage);
+       $medicosCerc->setPath(route('tolist2'));
+       return $medicosCerc;
+     }
+
      public function store_rate_comentary(Request $request)
      {
+
        $request->validate([
          'score'=>'required'
        ]);
@@ -94,6 +158,19 @@ class patientController extends Controller
        $event->comentary = $request->comentary;
        $event->save();
 
+       // $exist_votepatient = event::where('medico_id',$event->medico_id)->whereNotNull('score')->where('patient_id', $event->patient_id)->count();
+       $event2 = event::where('medico_id',$event->medico_id)->whereNotNull('score')->get();
+       $count = event::where('medico_id',$event->medico_id)->whereNotNull('score')->count();
+       $suma = 0;
+       foreach ($event2 as $key => $value) {
+         $suma = $suma + $value->score;
+       }
+        $medico = medico::find($event->medico_id);
+        $medico->calification = $suma / $count;
+        $medico->votes = $count;
+        $medico->save();
+
+       //$medico =
        return back()->with('success', 'Se ha guardado de forma exitosa, la calificación de la Cita.');
      }
 
@@ -104,9 +181,9 @@ class patientController extends Controller
      }
      public function patient_appointments(Request $request,$id)
      {
-       
+
        $patient = patient::find($id);
-       $appointments = event::where('patient_id', $id)->orderBy('id','desc')->paginate(5);
+       $appointments = event::where('patient_id', $id)->orderBy('id','desc')->paginate(4);
 
          return view('patient.appointments',compact('patient','appointments'));
      }
@@ -115,7 +192,7 @@ class patientController extends Controller
      {
        $patient = patient::find($id);
        // dd(Carbon::now());
-       $appointments = event::where('patient_id', $id)->where('dateStart','<', Carbon::now())->orderBy('id','desc')->paginate(5);
+       $appointments = event::where('patient_id', $id)->where('dateStart','<', Carbon::now())->orderBy('id','desc')->paginate(4);
        $pending = 'Pendiente';
          return view('patient.appointments',compact('patient','appointments','pending'));
      }
@@ -123,7 +200,7 @@ class patientController extends Controller
      public function patient_appointments_unrated(Request $request,$id)
      {
        $patient = patient::find($id);
-       $appointments = event::where('patient_id', $id)->whereNull('calification')->orderBy('id','desc')->paginate(5);
+       $appointments = event::where('patient_id', $id)->whereNull('calification')->orderBy('id','desc')->paginate(4);
         $unrated = 'Sin Calificar';
          return view('patient.appointments',compact('patient','appointments','unrated'));
      }

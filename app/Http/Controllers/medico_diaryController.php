@@ -19,6 +19,10 @@ class medico_diaryController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     public function medico_app_details($id,$p_id,$app_id){
+         $app = event::find($app_id);
+       return view('medico.medico_app_details',compact('app'));
+     }
      public function edit_appointment($id,$p_id,$app_id)
     {
       $app = event::find($app_id);
@@ -108,10 +112,10 @@ class medico_diaryController extends Controller
         $days_hide = ['lunes'=>$lunes3,'martes'=>$martes3,'miercoles'=>$miercoles3,'jueves'=>$jueves3,'viernes'=>$viernes3,'sabado'=>$sabado3,'domingo'=>$domingo3];
         ///////igual
 
-        return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide)->with('countEventSchedule', $countEventSchedule)->with('patient', $patient)->with('app', $app);
+        return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide)->with('countEventSchedule', $countEventSchedule)->with('patient', $patient)->with('app', $app)->with('mode', 'edition');
 
       }
-      return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('countEventSchedule', $countEventSchedule)->with('patient',$patient)->with('app', $app);
+      return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('countEventSchedule', $countEventSchedule)->with('patient',$patient)->with('app', $app)->with('mode', 'edition');
       // ->with($months, 'months');
     }
 
@@ -271,7 +275,7 @@ class medico_diaryController extends Controller
          $event->color = 'rgb(141, 13, 201)';
        }
 
-
+       /////////Pending/////////Pending/////////Pending/////////Pending/////////Pending
        if(Auth::check() and Auth::user()->role == 'Paciente'){
            $event->namePatient = Auth::user()->patient->name.' '.Auth::user()->patient->lastName;
            $event->patient_id = Auth::user()->patient->id;
@@ -281,7 +285,7 @@ class medico_diaryController extends Controller
            $event->medico_id = $request->medico_id;
            $patient = patient::find($request->patient_id);
            $event->namePatient = $patient->name.' '.$patient->lastName;
-
+           $event->stipulated = "medico";
         }
        $event->hour_start = $hourStart;
        $event->hour_end = $hourEnd;
@@ -298,8 +302,26 @@ class medico_diaryController extends Controller
        }
 
        $medico = medico::find($request->medico_id);
-
+       $count_notifications = event::where('medico_id',$request->medico_id)->where('notification','not_see')->count();
+       $medico->notification_number = $count_notifications;
+       $medico->save();
        $patient = patient::find($request->patient_id);
+
+
+       if($event->stipulated == 'medico'){
+         Mail::send('mails.med_notification_patient_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($patient){
+            $msj->subject('Médicos Si');
+            $msj->to('eavc53189@gmail.com');
+          });
+
+         Mail::send('mails.med_notification_medico_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($medico){
+            $msj->subject('Médicos Si');
+            $msj->to('testprogramas531@gmail.com');
+          });
+
+
+         return response()->json('Se ha agendado Una Cita "'.$request->title.'" con el Paciente: '.$patient->name.' '.$patient->lastName.' para la fecha: '.$request->date_start.' y hora: '.$hourStart.'.');
+       }
 
        Mail::send('mails.notification_patient_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($patient){
           $msj->subject('Médicos Si');
@@ -311,8 +333,8 @@ class medico_diaryController extends Controller
           $msj->to('testprogramas531@gmail.com');
         });
 
-       return response()->json('Se ha agendado Una Cita "'.$request->title.'" con el Médico: '.$medico->name.' '.$medico->lastName.' para la fecha: '.$request->date_start.' y hora: '.$hourStart.'.');
 
+       return response()->json('Se ha agendado Una Cita "'.$request->title.'" con el Médico: '.$medico->name.' '.$medico->lastName.' para la fecha: '.$request->date_start.' y hora: '.$hourStart.'.');
      }
 
      public function stipulate_appointment($id)
@@ -617,7 +639,7 @@ class medico_diaryController extends Controller
            $schedule->dow = 6;
          }
 
-         $schedule->color = '#f7b88c';
+         $schedule->color = 'rgba(162, 231, 50, 0.64)';
 
          $schedule->rendering = 'background';
          $schedule->medico_id = $id;
@@ -769,7 +791,7 @@ class medico_diaryController extends Controller
 
      public function update_event(Request $request)
      {
-       dd($request->all());
+
        $hour_start1 = $request->hourStart.':'.$request->minsStart;
 
        $hour_end1 = $request->hourEnd.':'.$request->minsEnd;
@@ -827,7 +849,10 @@ class medico_diaryController extends Controller
      $event->medico_id = $request->medico_id;
      $event->save();
 
-     return response()->json('ok');
+     if($request->ajax()){
+        return response()->json('ok');
+     }
+
      return redirect()->route('medico_diary',$request->medico_id)->with('success','Nuevo Evento Guardado');
 
      }

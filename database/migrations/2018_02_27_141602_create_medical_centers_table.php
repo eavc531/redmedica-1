@@ -48,6 +48,7 @@ class CreateMedicalCentersTable extends Migration
             $table->string('stateAccount')->default('Desactivada');
             $table->integer('promoter_id')->unsigned()->nullable();
             $table->foreign('promoter_id')->references('id')->on('promoters');
+            $table->string('type_patient_service')->nullable();
 
             $table->timestamps();
 

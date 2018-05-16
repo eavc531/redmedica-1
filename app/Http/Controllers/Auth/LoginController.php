@@ -19,7 +19,7 @@ class LoginController extends Controller
         if($medico->stateConfirm == 'medium'){
           return redirect()->route('data_primordial_medico',$medico->id);
         }elseif($medico->stateConfirm == 'complete'){
-          return redirect()->route('medico_diary',$medico->id);
+          return redirect()->route('medico_patients',$medico->id);
         }else{
           Auth::logout();
           return redirect()->route('home')->with('warning', 'Su Cuenta no esta Verificada, o a sido Bloqueada');
@@ -41,7 +41,7 @@ class LoginController extends Controller
           return redirect()->route('panel_control_promoters',Auth::user()->promoter->id);
       }elseif(Auth::user()->role == 'Paciente'){
         if(Auth::user()->patient->stateConfirm == 'mailConfirmed'){
-          return redirect()->route('address_patient',Auth::user()->patient->id)->with('success', 'Binvendio: '.Auth::user()->patient->name.' '.Auth::user()->patient->lastName.' antes de Continuar por favor agrega los datos correspondientes a tu dirección.');
+          return redirect()->route('address_patient',Auth::user()->patient->id)->with('success', 'Bienvendi@: '.Auth::user()->patient->name.' '.Auth::user()->patient->lastName.' antes de Continuar por favor agrega los datos correspondientes a tu dirección.');
         }elseif(Auth::user()->patient->stateConfirm == 'complete'){
           return back();
         }
@@ -69,7 +69,7 @@ class LoginController extends Controller
 
     public function logout(){
       Auth::logout();
-      return back();
+      return redirect()->route('home');
     }
 
     public function verifySession(){

@@ -46,15 +46,19 @@
 	</nav> -->
 	<nav class="navbar navbar-expand-lg navbar-config">
 		@if(Auth::check())
-		<a class="navbar-brand mr-auto" id="show" href="#" style="position: absolute; left: 2%; top: 30%;"><i class="fas fa-bars"></i></a>
+		<!-- 		<a class="navbar-brand mr-auto" id="show" href="#" style="position: absolute; left: 2%; top: 30%;"><i class="fas fa-bars"></i></a> -->
 		@endif
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span><i class="fa fa-bars"></i></span>
 		</button>
-
 		<div class="collapse navbar-collapse ml-lg-auto" id="navbarSupportedContent">
+			<div class="row">
+				<div class="col-12 text-navbar">
+					<h4 class="font-navbar">¡Siempre encontrarás tu mejor opción!</h4>
+				</div>
+			</div>
 			<ul class="navbar-nav">
-				<li class="nav-item dropdown mt-2">
+				<li class="nav-item dropdown">
 					@if(Auth::check())
 					<a class="nav-link dropdown-toggle font-navbar" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
 						{{Auth::user()->name}}
@@ -68,16 +72,21 @@
 					</div>
 					@endif
 				</ul>
-				<form class="form-inline my-2">
-					<a href="{{route('home')}}" class="position-img-navbar"><img src="{{asset('img/Medicossi-Marca original-01.png')}}" alt="" class="img-navbar"></a>
+				<form class="form-inline mb-2">
+					<a href="{{route('home')}}"><img src="{{asset('img/Medicossi-Marca original-01.png')}}" alt="" class="img-navbar"></a>
 				</form>
 			</div>
 		</nav>
 		<section class="section-dashboard mb-3">
 			<div class="container-fluid">
 				<div class="row">
+					<div class="col-12 text-center">
+						<span class="btn-block btn-lg d-block d-sm-none" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="border-radius:0;"><i class="fa fa-plus mb-2 mr-2"></i>Menu</span>
+					</div>
 					<div class="col-lg-2 col-sm-3 col-12 ">
+						<div class="collapse show" id="collapseExample">
 						@include('layouts.dashboard')
+						</div>
 					</div>
 					<div class="col-lg-10 col-sm-9 col-12">
 						@include('notifications.alerts')

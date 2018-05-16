@@ -33,7 +33,7 @@
    @endforeach
  </div>
  <div class="col-12 col-sm-10 m-sm-auto col-lg-10 m-lg-auto">
-  {!!Form::open(['route'=>['medicalCenter_store_insurrances',request()->id],'method'=>'POST'])!!}
+  {!!Form::open(['route'=>['medico_store_insurrances',request()->id],'method'=>'POST'])!!}
   <label for="" class="font-title mt-4">Otra, Especifique:</label>
     <div class="input-group-prepend">
       <input type="text" name="name" value="" class="form-control">
@@ -46,12 +46,17 @@
   <div class="col-lg-10 m-lg-auto">
     <h4 class="text-center font-title">Aseguradoras Aceptadas</h4>
     <ul class="list-group mt-3">
-      @foreach ($insurances as $i)
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{$i->name}}
-        <a href="{{route('delete_insurance',$i->id)}}" class="btn badge badge-danger"><i class="fas fa-ban fa-2x"></i></a>
-      </li>
-      @endforeach
+      <div class="row">
+        @foreach ($insurances as $i)
+          <div class="col-6">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{$i->name}}
+              <a href="{{route('delete_insurance',$i->id)}}" class="btn badge badge-danger"><i class="fas fa-ban fa-2x"></i></a>
+            </li>
+          </div>
+        @endforeach
+      </div>
+
     </ul>
   </div>
 </div>

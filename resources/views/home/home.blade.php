@@ -339,6 +339,7 @@
                  <div class="row">
                   <div class="col-8 m-auto col-sm-3 col-lg-3">
                     <div class="cont-img">
+
                       @isset($medico['image'])
                       <img src="{{asset($medico['image'])}}" class="prof-img img-thumbnail" alt="..." >
                       @else
@@ -353,6 +354,7 @@
                     <span>Especialidad:</span> <a href="#" class="outstanding mr-2"> {{$medico['specialty']}}</a>
                     <div class="star-profile">
                       <ul class="rating mt-1">
+
                         <li class="star container-franchise__star li-config">&starf;</li>
                         <li class="star container-franchise__star li-config">&starf;</li>
                         <li class="star container-franchise__star li-config">&starf;</li>
@@ -379,8 +381,14 @@
                     <button onclick="return verifySession()" class="btn"><i class="fa fa-envelope-open mr-2"></i>Agendar cita</button>
                     @endif
                   </div>
+
                   <div class="form-group">
-                   <a href="" class="btn-icon"><i class="fa fa-phone mr-2"></i>Ver Telefono</a>
+                    @if(Auth::check() and Auth::user()->role == 'Paciente')
+                    <a onclick="return confirm('¿Esta Segur@ de añadir a este Médico a su lista?')" href="{{route('patient_add_medic',$medico['id'])}}" class="btn btn-info">Agregar a mi Lista</a>
+                    @else
+                    <button onclick="return verifySession2()" class="btn btn-info"></i>Agregar a mi Lista</button>
+                    @endif
+
                  </div>
                  @isset($medico['dist'])
                  <div class="form-group">
@@ -576,7 +584,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-warning text-white">
-        <h5 class="modal-title" id="exampleModalLabel">Debes Iniciar Session como paciente para poder agendar Citas</h5>
+        <h5 class="modal-title" id="text_modal"></h5>
 
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -903,6 +911,34 @@
              // data:{verifySession:verifySession},
              success:function(result){
                if(result == 'session_of'){
+                 $("#text_modal").html('Debes Iniciar Session como paciente para poder agendar Citas');
+                 $('#modal_verify_patient').modal('show');
+                 return;
+                 // $('#text-alert').html('Debes Iniciar session como Paciente para poder agendar cita.');
+                 // $('#alert').fadeIn();
+               }else if(result == 'no_patient'){
+                 $("#text_modal").html('Debes Iniciar Session como paciente para poder agendar Citas');
+                 $('#modal_verify_patient').modal('show');
+                 return;
+               }
+             },
+             error:function(result){
+               console.log(result);
+           }
+         });
+         }
+
+         function verifySession2(){
+           route = "{{route('verifySession')}}";
+
+           $.ajax({
+             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+             type:'post',
+             url: route,
+             // data:{verifySession:verifySession},
+             success:function(result){
+               if(result == 'session_of'){
+                 $("#text_modal").html('Debes Iniciar Session como paciente para poder agregar médicos a tu cuenta.');
                  $('#modal_verify_patient').modal('show');
                  return;
                  // $('#text-alert').html('Debes Iniciar session como Paciente para poder agendar cita.');

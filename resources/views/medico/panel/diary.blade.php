@@ -306,14 +306,17 @@
             </div>
             <div class="border-panel-blue my-1">
               <div class="form-group text-center">
+                <button type="button" class="btn-info btn" data-toggle="modal" data-target="#info1"><i class="fas fa-info mr-2"></i>Ayuda</button>
                 <div class="form-group" style="margin-top:35px">
                   <label for="" class="label-title ">Agendar Evento Personal</label>
                 </div>
 
                   {!!Form::open(['route'=>'medico_diary.store','method'=>'POST'])!!}
                 <input class="form-control my-2" type="text" placeholder="Titulo" id="title2">
+                {!!Form::select('title',['Ambulatoria'=>'Ambulatoria','Externa o a Domicilio'=>'Externa o a Domicilio','Urgencias'=>'Urgencias','Cita por Internet'=>'Cita por Internet'],null,['class'=>'form-control','id'=>'eventType2','Tipo de Evento'=>'Tipo de Cita'])!!}
+                <input class="form-control my-2" type="text" placeholder="Mensaje" id="eventType2">
 
-                {!!Form::select('eventType',['Cita Medica'=>'Cita Médica','Cita Medica Importante'=>'Cita Médica Importante','Consulta Medica'=>'Consulta Médica','Consulta Medica Importante'=>'Consulta Médica Importante','Recordatorio'=>'Recordatorio','Cita por Internet'=>'Cita por Internet'],'Consulta Medica',['class'=>'form-control','id'=>'eventType2'])!!}
+
                 <input class="form-control my-2" type="text" placeholder="Descripción (Opcional)" id="description2">
                 <input class="form-control my-2" type="text" placeholder="precio (Opcional)" id="price2">
                 <div class="row">
@@ -404,8 +407,10 @@
     </div>
   </div>
 
+
+
 {{-- <button onclick="filtrar()" type="button" name="button">Filtrar</button> --}}
-<input type="text" name="" value="" id="input1">
+{{-- <input type="text" name="" value="" id="input1"> --}}
 
 @isset($days_hide)
 <input id="lunes" type="hidden" name="" value="{{$days_hide['lunes']}}">
@@ -423,7 +428,31 @@
 <input id="min_hour" type="hidden" name="" value="{{$min_hour}}">
 
 @endisset
+<div class="modal fade" id="info1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="exampleModalLabel">Como agendar una cita</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
+        <h5 class="font-title-grey">¿Como Agendar Cita con un Paciente Registrado?</h5>
+        <p>Para agendar cita, debe seleccionar en la barra lateral izquierda,la opcion "Mis Pacientes",seleccionar el
+        paciente al que desea agendar la consulta, y luego hacer click en el boton "Agendar cita", con esto se abrira el panel correspondiente para agendar cita con el paciente seleccionado.</p>
+
+        <h5 class="font-title-grey">Mi Agenda</h5>
+        <p>El Panel mi Agenda le permite organizar sus eventos, y filtrarlos segun su tipo, tambien puede editar los eventos creados previamente; al hacer click sobre ellos se abrira una ventana que contendra la informacion de los mismos, en esta ventana podra modificar los datos del evento seleccionado, o eliminar el evento por completo.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
 
   @endsection
   {{-- ///////////////////////////////////////////////////////CONTENIDO//////////////////// --}}
@@ -569,7 +598,7 @@
             $('#event_id2').val(event.id);
             $('#event_id_destroy2').val(event.id);
             $('#namePatient').val(event.namePatient);
-
+            $('#card_edit').fadeOut();
             $('#card_edit').fadeIn();
             vaciar();
             $('#alert_success_up1').fadeOut();

@@ -38,9 +38,9 @@
             <div class="row">
               <div class="col-lg-4 col-12">
                 <input name="medico_id" type="hidden" value="1">
-                {!!Form::model($app, ['route'=>'medico_diary.store','method'=>'POST'])!!}
+                {!!Form::model($app,['route'=>'update_event','method'=>'POST'])!!}
                 {!!Form::hidden('medico_id',$medico->id,['id'=>'medico_id4'])!!}
-                {!!Form::hidden('event_id2',null,['id'=>'event_id2'])!!}
+                {!!Form::hidden('event_id',$app->id,['id'=>'event_id2'])!!}
                 <div class="form-group">
                   <label for="" class="font-title">Paciente</label>
                   {{Form::text('namePatient',null,['id'=>'namePatient','class'=>'form-control','disabled'])}}
@@ -69,16 +69,17 @@
               <div class="col-lg-4 col-12">
                 <div class="form-group">
                   <label for="" class="font-title">Fecha de inicio</label>
-                  {!!Form::date('date_start',null,['class'=>'form-control','id'=>'dateStartUp1'])!!}
+                  {!!Form::date('date_start',\Carbon\Carbon::parse($app->start),['class'=>'form-control','id'=>'dateStartUp1'])!!}
                 </div>
               </div>
               <div class="col-lg-4 col-12">
                 <div class="form-group">
                   <label for="" class="font-title">Hora de Inicio</label>
+
                   <div class="row">
-                    <div class="col">{!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourStartUp1'])!!}</div>
+                    <div class="col">{!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23'],\Carbon\Carbon::parse($app->start)->format('H'),['class'=>'form-control','id'=>'hourStartUp1'])!!}</div>
                     <div class="col">
-                      {!!Form::select('minsStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsStartUp1'])!!}
+                      {!!Form::select('minsStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],\Carbon\Carbon::parse($app->start)->format('i'),['class'=>'form-control','id'=>'minsStartUp1'])!!}
                     </div>
                   </div>
                 </div>
@@ -95,8 +96,8 @@
                 <div class="form-group text-center">
                   <label for="" class="font-title" class="mx-3">Hora de Culminación</label>
                   <div class="row">
-                    <div class="col-lg-6 my-1">{!!Form::select('hourEnd',['--'=>'--','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourEndUp1'])!!}</div>
-                    <div class="col-lg-6 my-1"> {!!Form::select('minsEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsEndUp1'])!!}</div>
+                    <div class="col-lg-6 my-1">{!!Form::select('hourEnd',['--'=>'--','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],\Carbon\Carbon::parse($app->end)->format('H'),['class'=>'form-control','id'=>'hourEndUp1'])!!}</div>
+                    <div class="col-lg-6 my-1"> {!!Form::select('minsEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],\Carbon\Carbon::parse($app->end)->format('i'),['class'=>'form-control','id'=>'minsEndUp1'])!!}</div>
                   </div>
                 </div>
               </div>
@@ -111,10 +112,11 @@
               </div>
               <div class="col-lg-4 col-sm-4 col-12">
                 <button onclick="close_edit()" type="button" class="btn-block btn btn-secondary my-1">Cancelar</button>
-                {!!Form::close()!!}
+
               </div>
              <div class="col-lg-4 col-sm-4 col-12">
-               <button onclick="update_event()" type="button" class="btn-block btn btn-primary my-1">Guardar</button>
+                <button type="submit" name="button">Guardar</button>
+               {{-- <button onclick="update_event()" type="button" class="btn-block btn btn-primary my-1">Guardar</button> --}}
              </div>
           </div>
           {!!Form::close()!!}
@@ -149,107 +151,7 @@
 
           </div>
         <div class="col-12 col-lg-3">
-          <div id="dashboard">
-            <img  class="img-dashboard" src="{{asset('img/Medicossi-Marca original-04.png')}}" alt="">
-            <div class="col-12 border-head-panel text-center">
-              <span>Médico:</span>
-              <span>{{$medico->name}} {{$medico->lastName}}</span>
-            </div>
-            {{-- <div class="col-12 border-panel-green text-center my-1">
-              <a class="btn btn-block btn-config-green" href="{{route('medico_schedule',$medico->id)}}">
-                Otorgar horario de consulta
-              </a>
-            </div> --}}
-            <div class="border-panel-blue my-1">
-              <div class="form-group text-center">
-                <div class="form-group" style="margin-top:35px">
-                  <label for="" class="label-title ">Agendar Cita</label>
-                </div>
 
-
-                {{-- <input class="form-control my-2" type="text" placeholder="Titulo" id="title2"> --}}
-
-                {!!Form::select('title',['Ambulatoria'=>'Ambulatoria','Externa o a Domicilio'=>'Externa o a Domicilio','Urgencias'=>'Urgencias','Cita por Internet'=>'Cita por Internet'],null,['class'=>'form-control','id'=>'title4','placeholder'=>'Tipo de Cita'])!!}
-                <div class="mt-2">
-                  {!!Form::text('patient',$patient->name.' '.$patient->lastName,['class'=>'form-control', 'disabled'])!!}
-                </div>
-
-                <input class="form-control my-2" type="text" placeholder="Mensaje o descripción" id="description2">
-                {{-- <input class="form-control my-2" type="text" placeholder="precio (Opcional)" id="price2"> --}}
-                <div class="row">
-                  <div class="col-4 font-title">
-                    inicio:
-                  </div>
-                    <div class="col-8">
-                       {!!Form::date('date_start',null,['class'=>'form-control','id'=>'date_start2'])!!}
-                    </div>
-                </div>
-                <div class="row mt-1">
-                  <div class="col-3 font-title">
-                    Hora
-
-                  </div>
-                  <div class="form-inline">
-                    {!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourStart2','placeholder'=>'--'])!!}
-
-                      {!!Form::select('minsStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsStart2','placeholder'=>'--'])!!}
-
-                      {{-- {!!Form::select('startFormatHour',['am'=>'am','pm'=>'pm'],null,['id'=>'startFormatHour3','class'=>'form-control  mb-1'])!!} --}}
-                  </div>
-
-                </div>
-                <label for="" class="mt-2 font-title">Culminacion</label>
-                <div class="row mt-1">
-
-                  <div class="col-3">
-                    Hora
-
-                  </div>
-                  <div class="form-inline">
-                    {!!Form::select('hourEnd',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourEnd2','placeholder'=>'--'])!!}
-
-                      {!!Form::select('minsEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsEnd2','placeholder'=>'--'])!!}
-
-                      {{-- {!!Form::select('endformatHour',['am'=>'am','pm'=>'pm'],null,['id'=>'endFormatHour2','class'=>'form-control  mb-1'])!!} --}}
-                  </div>
-
-                </div>
-
-                <div id="alert_error" class="alert alert-warning alert-dismissible fade show text-left" role="alert" style="display:none">
-                  <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
-                  <p id="text_error" style="font-size:12px"></p>
-                </div>
-
-                <div id="alert_success" class="alert alert-success alert-dismissible fade show text-left" role="alert" style="display:none">
-                  <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
-                  <p id="text_success" style="font-size:12px"></p>
-                </div>
-
-                <div class="col-12 text-center mt-2 row">
-
-
-                  <div class="col-lg-6">
-                    @if($countEventSchedule != 0)
-                    <button onclick="store_event()"type="button" class="btn btn-config-blue">Guardar</button>
-                    @else
-                    <button onclick=""type="button" class="btn btn-config-blue" disabled>Guardar</button>
-                    @endif
-                    {{-- <button type="submit" class="btn btn-config-blue">Guardar</button> --}}
-                  </div>
-                  <div class="col-lg-6">
-                    <button onclick="vaciar()" type="button"class="btn btn-config-secondary">Cancelar</button>
-                  </div>
-                  {!!Form::close()!!}
-                </div>
-              </div>
-
-
-
-
-            </div>
-
-
-        </div>
       </div>
     </div>
   </div>
@@ -271,6 +173,8 @@
 <input id="max_hour" type="hidden" name="" value="{{$max_hour}}">
 <input id="min_hour" type="hidden" name="" value="{{$min_hour}}">
 
+<input type="hidden" name="" value="{{\Carbon\Carbon::parse($app->start)->format('m-d-Y')}}" id="date_edit">
+
 @endisset
 
 
@@ -287,6 +191,9 @@
 
 
     $(document).ready(function(){
+      date_edit = $('#date_edit').val();
+      date_ini_format = moment(date_edit).format('YYYY-MM-DD');
+      // alert(date_ini_format);
       max_hour = $('#max_hour').val();
       min_hour = $('#min_hour').val();
 
@@ -356,7 +263,7 @@
         maxTime:max_hour,
         minTime:min_hour,
         hiddenDays: [lunes,martes,miercoles,jueves,viernes,sabado,domingo],
-
+        defaultDate: date_ini_format,
 
         select:function(start,end){
          start = moment(start);
@@ -400,6 +307,7 @@
 
       });
   });
+
 
 
       function newConsultation(){

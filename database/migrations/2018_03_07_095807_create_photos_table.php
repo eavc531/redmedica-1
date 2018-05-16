@@ -27,6 +27,10 @@ class CreatePhotosTable extends Migration
             $table->integer('assistant_id')->unsigned()->nullable();
             $table->foreign('assistant_id')->references('id')->on('assistants');
 
+            $table->integer('patient_id')->unsigned()->nullable();
+            $table->foreign('patient_id')->references('id')->on('patients');
+
+
             $table->timestamps();
         });
     }

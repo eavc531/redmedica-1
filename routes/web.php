@@ -10,9 +10,42 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+route::get('/', function(){
+    return redirect()->route('home');
+});
+
+Route::get('loginRedirect', 'Auth\LoginController@loginRedirect')->name('loginRedirect');
+
+Route::post('verify/Session', 'Auth\LoginController@verifySession')->name('verifySession');
+route::get('home','HomeController@home')->name('home');
+route::post('login2','Auth\LoginController@login2')->name('login2');
+route::get('list/result2','HomeController@tolist2')->name('tolist2');
+
+route::get('list/result3','HomeController@tolist3')->name('tolist3');
+route::post('ajax/map','HomeController@ajax_map')->name('ajax_map');
+
+route::post('list/specialtyList1','HomeController@specialtyList1')->name('specialtyList1');
+route::post('list/specialtyList2','HomeController@specialtyList2')->name('specialtyList2');
+route::post('list/specialtyList3','HomeController@specialtyList3')->name('specialtyList3');
+route::post('list/specialtyList4','HomeController@specialtyList4')->name('specialtyList4');
+route::post('logout','Auth\LoginController@logout')->name('logout');
+
+route::get('medicalCenter/{id}/search/medico','medicalCenterController@search_medico_medical_center')->name('search_medico_medical_center');
+
+route::get('medicalCenter/{id}/search/medico/belongs','medicalCenterController@search_medico_belong_medical_center')->name('search_medico_belong_medical_center');
+////midleware//
+// Route::group(['middleware' => ['medicalCenterConfirm']], function () {
+
+Route::get('patient/add/medic/{id}','patientController@patient_add_medic')->name('patient_add_medic');
+
+Route::get('patient/{id}resend/mail/confirm','patientController@resend_mail_confirm_patient')->name('resend_mail_confirm_patient');
+
+Route::get('medico/{m_id}/calification','medicoController@show_calification_medic')->name('show_calification_medic');
 
 
 Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/edit','medicoController@medico_note_edit')->name('medico_note_edit');
+
+Route::get('medico/{m_id}/patient/{p_id}/appointment/{app_id}/details','medico_diaryController@medico_app_details')->name('medico_app_details');
 
 route::post('medico/patient/note/config/store','medicoController@note_config_store')->name('note_config_store');
 
@@ -20,15 +53,10 @@ route::get('medico/{m_id}/patient/{p_id}/notes/','medicoController@notes_patient
 route::get('medico/{m_id}/note/{note_id}/config/{p_id}','medicoController@note_replace_config')->name('note_replace_config');
 route::get('medico/{m_id}/patient/{p_id}/edit/appointment/{app_id}','medico_diaryController@edit_appointment')->name('edit_appointment');
 
-
 route::post('medico/patient/note/store','medicoController@note_store')->name('note_store');
-
 
 //route::post('medico/list/questions','medicoController@questions_labs')->name('questions_labs');
 
-route::get('/', function () {
-    return redirect()->route('home');
-});
 Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}','medicoController@create_note_patient')->name('create_note_patient');
 
 Route::get('medico/{m_id}/admin/data/{p_id}/patient','medicoController@admin_data_patient')->name('admin_data_patient');
@@ -36,12 +64,6 @@ Route::get('medico/{m_id}/admin/data/{p_id}/patient','medicoController@admin_dat
 Route::get('patient/{id}/profile','patientController@patient_profile')->name('patient_profile');
 
 Route::resource('city','cityController');
-
-Route::get('loginRedirect', 'Auth\LoginController@loginRedirect')->name('loginRedirect');
-
-Route::post('verify/Session', 'Auth\LoginController@verifySession')->name('verifySession');
-
-route::get('home','HomeController@home')->name('home');
 route::resource('user','userController');
 route::resource('medico','medicoController');
 route::get('medico/{id}/perfil','medicoController@medico_perfil')->name('medico_perfil');
@@ -50,6 +72,8 @@ route::resource('medico_diary','medico_diaryController');
 
 
 route::post('compare/hours/{id}','medico_diaryController@compare_hours')->name('compare_hours');
+
+route::get('check/{id}/notification','medicoController@marcar_como_vista')->name('marcar_como_vista');
 
 route::get('medico/{id}/diary/events','medico_diaryController@medico_diary_events')->name('medico_diary_events');
 route::post('medico/{id}/diary/events2','medico_diaryController@medico_diary_events2')->name('medico_diary_events2');
@@ -78,6 +102,8 @@ route::post('medico/service/store','medicoController@service_medico_store')->nam
 route::post('medic/experience/store','medicoController@medico_experience_store')->name('medico_experience_store');
 route::post('medic/social_network/store','medicoController@medico_social_network_store')->name('medico_social_network_store');
 
+Route::get('medico/{id}/notification/appointments', 'medicoController@notification_appointments')->name('notification_appointments');
+
 route::post('medicalCenter/social/store','medicalCenterController@medicalCenter_social_store')->name('medicalCenter_social_store');
 route::post('borrar_social','medicoController@borrar_social')->name('borrar_social');
 
@@ -105,7 +131,10 @@ route::get('patients/register','patientController@patient_register_view')->name(
 route::post('patient/register/store','patientController@patient_register')->name('patient_register');
 route::get('confirm/patient/{id}/{code}','patientController@confirmPatient')->name('confirmPatient');
 route::resource('medicalCenter','medicalCenterController');
-route::get('medicalCenter/{id}/search/medico/belongs','medicalCenterController@search_medico_belong_medical_center')->name('search_medico_belong_medical_center');
+
+route::post('medicalCenter/select/insurrances','medicalCenterController@select_insurrances')->name('select_insurrances');
+route::post('medicalCenter/select/insurrances/medico','medicoController@select_insurrances2')->name('select_insurrances2');
+
 route::get('confirm/patient/{id}','patientController@successRegPatient')->name('successRegPatient');
 route::get('patient/{id}/edit/address','patientController@address_patient')->name('address_patient');
 route::post('patient/{id}/store/address','patientController@patient_store_address')->name('patient_store_address');
@@ -129,6 +158,10 @@ route::post('medicalCenter/experience/delete','medicalCenterController@medical_e
 
 route::get('medicalCenter/{id}/create/add/insurrances','medicalCenterController@create_add_insurrances')->name('create_add_insurrances');
 route::post('medicalCenter/{id}/store/insurrances','medicalCenterController@medicalCenter_store_insurrances')->name('medicalCenter_store_insurrances');
+
+route::post('medico/{id}/store/insurrances','medicoController@medico_store_insurrances')->name('medico_store_insurrances');
+route::get('medico/{id}/create/add/insurrances','medicoController@medico_create_add_insurrances')->name('medico_create_add_insurrances');
+
 route::get('medicalCenter/insurance/{id}/delete','medicalCenterController@delete_insurance')->name('delete_insurance');
 
 
@@ -175,7 +208,7 @@ route::post('medicalCenter/{id}/description','medicalCenterController@medicalCen
 route::post('medicalCenter/{id}/description/update','medicalCenterController@medicalCenter_description_update')->name('medicalCenter_description_update');
 
 route::get('medicalCenter/{id}/manage/medicos','medicalCenterController@medical_center_manage_medicos')->name('medical_center_manage_medicos');
-route::get('medicalCenter/{id}/search/medico','medicalCenterController@search_medico_medical_center')->name('search_medico_medical_center');
+
 
 route::get('medicalCenter/{id}/edit/data','medicalCenterController@medical_center_edit_data')->name('medical_center_edit_data');
 route::post('medicalCenter/{id}/edit/data/update','medicalCenterController@medical_center_edit_data_update')->name('medical_center_edit_data_update');
@@ -202,25 +235,15 @@ route::get('medicalCenter/{id}/delete/schedule','medicalCenterController@medical
 route::get('send_mail/medicalCenter/{id}/code_confirmded','medicalCenterController@resend_mail_medical_center')->name('resend_mail_medical_center');
 route::get('medicalCenter/{id}/profile','medicalCenterController@medicalCenter_profile')->name('medicalCenter_profile');
 
-route::post('resend/mail/confirmation','medicoController@resendMailMedicoConfirm')->name('resendMailMedicoConfirm');
+route::get('medico/{id}/resend/mail/confirmation','medicoController@resendMailMedicoConfirm')->name('resendMailMedicoConfirm');
 
 route::get('list/result/','HomeController@tolist')->name('tolist');
 /////////////////////////////////////////////////////////////////////////////////borar
-route::get('list/result2','HomeController@tolist2')->name('tolist2');
 
-route::get('list/result3','HomeController@tolist3')->name('tolist3');
-route::post('ajax/map','HomeController@ajax_map')->name('ajax_map');
-
-route::post('list/specialtyList1','HomeController@specialtyList1')->name('specialtyList1');
-route::post('list/specialtyList2','HomeController@specialtyList2')->name('specialtyList2');
-route::post('list/specialtyList3','HomeController@specialtyList3')->name('specialtyList3');
-route::post('list/specialtyList4','HomeController@specialtyList4')->name('specialtyList4');
 /////////////////////////////////////////////////////////////////////////////////borrar
 route::post('map/medicalCenter','HomeController@map_medical_center_name')->name('map_medical_center_name');
 
-route::post('login2','Auth\LoginController@login2')->name('login2');
 
-route::post('logout','Auth\LoginController@logout')->name('logout');
 
 route::get('medical/centers/list','medicalCenterController@MedicalCenterList')->name('MedicalCenterList');
 
@@ -281,3 +304,6 @@ route::get('clients/promoter/{id}','promotersController@clientsPromoter')->name(
 //sroute::get('edit/price/{id}/plan','plansController@PermissionSet')->name('editPrice');
 route::post('medicalCenter/{id}/coordinates/store','medicalCenterController@medicalCenter_store_coordinates')->name('medicalCenter_store_coordinates');
 route::post('medico/{id}/coordinates/store','medicoController@medico_store_coordinates')->name('medico_store_coordinates');
+
+
+// });

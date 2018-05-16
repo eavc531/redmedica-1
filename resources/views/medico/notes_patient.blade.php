@@ -25,7 +25,7 @@
 
           {{-- MENU DE PACIENTES --}}
           @include('medico.includes.main_medico_patients')
-          
+
           <div class="row">
             <div class="col-lg-6 col-12">
             </div>
@@ -39,9 +39,6 @@
                 <li>{{$note->title}} <a href="{{route('medico_note_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
             @endforeach
           </ul>
-
-
-
 
           {{-- //////////centro de menu////////////centro de menu////////////centro de menu////////////centro de menu// --}}
           </div>
@@ -114,9 +111,6 @@
       </div>
     </div>
   </div>
-
-
-
 
   @endsection
   {{-- ///////////////////////////////////////////////////////CONTENIDO//////////////////// --}}

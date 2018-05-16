@@ -1,5 +1,4 @@
 <?php namespace App\Http\Controllers;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\User;
 use App\medico;
@@ -13,6 +12,7 @@ use App\state;
 use App\city;
 use App\consulting_room;
 use App\photo;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
       class HomeController extends Controller
@@ -25,8 +25,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
           $this->cities = $cities;
 
         }
-        public function home(){
 
+        public function home(){
           // $myCoordinates = Geocoder::getCoordinatesForAddress('calle paez,1404');
           // dd($myCoordinates);
           $medicos_json = '';
@@ -38,7 +38,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
           return view('home.home')->with('medicos_json', $medicos_json)->with('states', $this->states)->with('cities',$this->cities);
 
         }
-
 
         public function calculate_dist_to_array($medicos,$dist,$lat,$lng){
           $data = [];
@@ -75,8 +74,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
               }
 
               $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'dist'=>$distCalculate,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image];
-
-
             }
           }
           return $data;
@@ -805,8 +802,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
       public function detail_medic_map($id){
         $medico = medico::find($id);
 
+        dd($medico->image->path);
         return view('home.detail_medic_map')->with('medico', $medico);
-
       }
 
 }

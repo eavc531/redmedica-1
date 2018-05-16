@@ -60,56 +60,59 @@
           </div>
         </div>
 @elseif(Auth::check() and Auth::user()->hasRole('medico'))
-					<!-- Copia desde aqui abajo -->
-					<div class="box-dashboard" id="dashboard">
-						<div class="row px-1">
-							<img  class="img-dashboard" src="{{asset('img/Medicossi-Marca original-04.png')}}" alt="">
-						</div>
-						<div class="row">
-							<div class="col-12 px-1">
-								<a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-thumbs-up"></i><span>Me gusta</span></a>
-							</div>
-							<div class="col-12 px-1">
-								<a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-gift"></i><span>Compartir</span></a>
-								</div>
-							</div>
-							<div class="row p-1">
-								<div class="col-12 nopadding">
-									<a href="{{route('medico.edit', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user fa-2"></i><span>Editar Perfil</span></a>
-								</div>
-								<div class="col-12 nopadding">
-
-								</div>
-
-                <div class="col-12 nopadding">
-									<a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Mis Pacientes</span></a>
-								</div>
-                <div class="col-12 nopadding">
-									<a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Mis Calificaciones</span></a>
-								</div>
-							</div>
-							<div class="row px-1">
-								{{-- <div class="col-12 nopadding">
-									<a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user-plus fa-2"></i><span>Agregar comentario y/o calificación</span></a>
-								</div> --}}
-							</div>
-
-							<div class="row p-1">
-								{{-- <div class="col-12 nopadding">
-									<a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-table"></i><span>Especialidad</span></a>
-								</div> --}}
-                <div class="col-12 nopadding">
-                  <a href="{{route('medico_schedule',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Editar Horario</span></a>
+          <!-- Copia desde aqui abajo -->
+          <div class="box-dashboard" id="dashboard">
+            <div class="row px-1">
+              <img  class="img-dashboard" src="{{asset('img/Medicossi-Marca original-04.png')}}" alt="">
+            </div>
+            <div class="row">
+              <div class="col-12 px-1">
+                <a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-thumbs-up"></i><span>Me gusta</span></a>
+              </div>
+              <div class="col-12 px-1">
+                <a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-gift"></i><span>Compartir</span></a>
                 </div>
-								<div class="col-12 nopadding">
-									<a href="{{route('medico_diary',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-book"></i><span>Agenda</span></a>
-								</div>
-								<div class="col-12 nopadding">
-									<a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-mobile-alt"></i><span>Descarga tu app</span></a>
-								</div>
-							</div>
-						</div>
-						<!-- Hasta aqui -->
+              </div>
+              <div class="row p-1">
+                <div class="col-12 nopadding">
+                  <a href="{{route('notification_appointments', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-bell"></i> <span>Nuevas Citas ({{Auth::user()->medico->notification_number}})</span></a>
+                </div>
+                <div class="col-12 nopadding">
+                  <a href="{{route('medico.edit', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user fa-2"></i><span>Editar Perfil</span></a>
+                </div>
+                {{-- <div class="col-12 nopadding">
+                  <a href="{{route('medico_diary',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-cogs"></i><span>Panel de control</span></a>
+                </div> --}}
+
+                <div class="col-12 nopadding">
+                  <a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-address-card"></i><span>Pacientes</span></a>
+                </div>
+                <div class="col-12 nopadding">
+                  <a href="{{route('show_calification_medic',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-list-alt"></i><span>Calificaciones</span></a>
+                </div>
+              </div>
+              <div class="row px-1">
+                {{-- <div class="col-12 nopadding">
+                  <a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user-plus fa-2"></i><span>Agregar comentario y/o calificación</span></a>
+                </div> --}}
+              </div>
+
+              <div class="row px-1">
+                {{-- <div class="col-12 nopadding">
+                  <a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-table"></i><span>Especialidad</span></a>
+                </div> --}}
+                <div class="col-12 nopadding">
+                  <a href="{{route('medico_diary',Auth::user()->medico->id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-book"></i><span>Agenda</span></a>
+                </div>
+                <div class="col-12 nopadding">
+                  <a href="{{route('medico_schedule',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-edit"></i><span>Editar Horario</span></a>
+                </div>
+                <div class="col-12 nopadding">
+                  <a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-mobile-alt"></i><span>Descarga tu app</span></a>
+                </div>
+              </div>
+            </div>
+            <!-- Hasta aqui -->
 
 @elseif(Auth::check() and Auth::user()->role == 'Promotor')
   <div class="box-dashboard" id="dashboard">
@@ -172,7 +175,7 @@
 @elseif(Auth::check() and Auth::user()->role == 'Paciente')
   <div class="box-dashboard" id="dashboard">
     <div class="row px-1">
-      <img  class="img-dashboard" src="{{asset('img/Medicossi-Marca original-05.png')}}" alt="">
+      <img  class="img-dashboard" src="{{asset('img/Medicossi-Marca original-04.png')}}" alt="">
     </div>
     <div class="row">
       <div class="col-12 px-1">
@@ -187,16 +190,16 @@
         <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-home fa-2"></i><span>Inicio</a>
       </div>
       <div class="col-12 nopadding">
-        <a href="{{route('patient_profile',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-home fa-2"></i><span>Perfil</a>
+        <a href="{{route('patient_profile',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-user fa-2"></i><span>Perfil</a>
       </div>
       <div class="col-12 nopadding">
         <a href="{{route('patient_medicos',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-users"></i><span>Mis medicos</span></a>
       </div>
       <div class="col-12 nopadding">
-        <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-users"></i><span>Buscar Médicos</span></a>
+        <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-search"></i><span>Buscar Médicos</span></a>
       </div>
       <div class="col-12 nopadding">
-        <a href="{{route('patient_appointments',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-users"></i><span>Citas Médicas</span></a>
+        <a href="{{route('patient_appointments',Auth::user()->patient_id)}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-notes-medical mr-1"></i><span>Citas Médicas</span></a>
       </div>
     </div>
     <div class="row px-1">

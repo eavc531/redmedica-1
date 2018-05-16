@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
   <div class="col-12">
-    <h2 class="font-title text-center">Perfil Profesional Médico</h2>
+    <h2 class="font-title text-center" id="title">Perfil Profesional Médico</h2>
   </div>
 </div>
 @if(Session::Has('successComplete'))
@@ -205,7 +205,7 @@
       <tbody>
         @foreach ($consulting_rooms as $consulting_room)
         <tr>
-          
+
           @isset($consulting_room->name)
           <td>{{$consulting_room->name}}</td>
           @else
@@ -408,7 +408,7 @@
 <hr>
 <div class="row mt-3">
   <div class="col-12">
-    <h4 class="font-title-blue text-center">Aseguradoras(no funciona)</h4>
+    <h4 class="font-title-blue text-center">Aseguradoras</h4>
   </div>
 </div>
 <hr>
@@ -417,100 +417,62 @@
    <label><b>Clasificación de servicios profesionales otorgados</b></label>
  </div>
 </div>
-<div class="row mb-3" >
-  <div class="col-12">
-    <div class="col-lg-8 col-12 m-auto">
-      <div class="custom-control custom-radio custom-control-inline">
-        {{-- <input type="radio" id="show-question4" name="customRadioInline1" class="custom-control-input"> --}}
-        <!--        {{Form::radio('aseguradora1')}} -->
-        <label class="custom-control-label" for="show-question4">Solo pacientes privados</label>
-      </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="show-question5" name="customRadioInline1" class="custom-control-input">
-        <label class="custom-control-label" for="show-question5">Pacientes por aseguradoras, convenios y privados</label>
-      </div>
-      <div class="card border-primary p-3 mt-3" id="panel-insurance" style="display: none;">
-        <div class="row">
-         <div class="col-6">
+
+      <div class="row my-3">
+        <div class="col-lg-9 col-12 m-auto">
           <div class="custom-control custom-radio">
-           <input type="radio" id="customRadio11" name="customRadio" class="custom-control-input">
-           <label class="custom-control-label" for="customRadio11">AXA</label>
+            {{-- {{Form::radio('type_patient_service','Solo pacientes privados',['class'=>'custom-control-input','id'=>'radio'])}} --}}
+
+            @if($medico->type_patient_service == "Solo pacientes privados")
+            <input type="radio" name="type_patient_service" value="solo medicos privados" checked="checked" id="radio" onclick="hide_aseguradoras()">
+            @else
+              <input type="radio" name="type_patient_service" value="Solo pacientes privados" id="radio" onclick="hide_aseguradoras()">
+            @endif
+            <label class="" for="show-question1" id="radio"  >Solo pacientes privados</label>
+          </div>
+          <div class="custom-control custom-radio">
+
+            @if($medico->type_patient_service == "Pacientes por aseguradoras, convenios y privados")
+
+            <input type="radio" name="type_patient_service" value="Pacientes por aseguradoras, convenios y privados" checked="checked" id="radio2" onclick="show_aseguradoras()">
+            @else
+              <input type="radio" name="type_patient_service" value="Pacientes por aseguradoras, convenios y privados" id="radio2" onclick="show_aseguradoras()">
+            @endif
+            <label class="" for="show-question1" id="radioxxx"  >Pacientes por aseguradoras, convenios y privados</label>
+            <label class="" for="show-question2"></label>
+          </div>
+          <div class= "p-3 mt-3" id="panel-insurance" style="display:none;">
+            <a href="{{route('create_add_insurrances',$medico->id)}}" class="btn btn-success btn-block">Agregar Aseguradoras</a>
+          </div>
+          <div class="aseguradoras" id="aseguradoras" style="display:none">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    @foreach ($insurance_carrier as $key => $value)
+                      <div class="col-6">
+                      <li>{{$value->name}}</li>
+                      </div>
+                    @endforeach
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+
+                    </div>
+                    <div class="col-6 mt-2">
+                        <a href="{{route('medico_create_add_insurrances',$medico->id)}}" class="btn btn-success btn-block">Agregar Aseguradoras</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
          </div>
        </div>
-       <div class="col-6">
-
-         <div class="custom-control custom-radio">
-          <input type="radio" id="customRadio12" name="customRadio" class="custom-control-input">
-          <label class="custom-control-label" for="customRadio12">Met Life</label>
-        </div>
-
-      </div>
-      <div class="col-6">
-       <div class="custom-control custom-radio">
-        <input type="radio" id="customRadio13" name="customRadio" class="custom-control-input">
-        <label class="custom-control-label" for="customRadio13">Seguros monterrey</label>
       </div>
 
 
-    </div>
-    <div class="col-6">
-     <div class="custom-control custom-radio">
-      <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-      <label class="custom-control-label" for="customRadio2">Gnp Grupo Provincial</label>
-    </div>
-  </div>
-  <div class="col-6">
-   <div class="custom-control custom-radio">
-    <input type="radio" id="customRadio14" name="customRadio" class="custom-control-input">
-    <label class="custom-control-label" for="customRadio14">Mapfre Seguros Tepeyac</label>
-  </div>
-</div>
-<div class="col-6">
- <div class="custom-control custom-radio">
-   <input type="radio" id="customRadio16" name="customRadio" class="custom-control-input">
-   <label class="custom-control-label" for="customRadio16">ING</label>
- </div>
-</div>
-<div class="col-6">
- <div class="custom-control custom-radio">
-  <input type="radio" id="customRadio17" name="customRadio" class="custom-control-input">
-  <label class="custom-control-label" for="customRadio17">Seguros Atlas</label>
-</div>
-</div>
-<div class="col-6">
- <div class="custom-control custom-radio">
-  <input type="radio" id="customRadio18" name="customRadio" class="custom-control-input">
-  <label class="custom-control-label" for="customRadio18">Alianz</label>
-</div>
-</div>
-<div class="col-6">
- <div class="custom-control custom-radio">
-  <input type="radio" id="customRadio19" name="customRadio" class="custom-control-input">
-  <label class="custom-control-label" for="customRadio19">Zurich</label>
-</div>
-</div>
-@foreach ($insurance_carriers as $insurance_carrier)
-<div class="col-6">
-  <div class="custom-control custom-radio">
-   {{Form::radio($insurance_carrier)}}<label for="">{{$insurance_carrier}}</label>
-   <label class="custom-control-label" for="customRadio19">Zurich</label>
- </div>
-</div>
-
-@endforeach
-</div>
-
-<hr>
-<div class="text-center">
- <a href="" class="btn btn-success" data-toggle="modal" data-target="#modal-insurance"><i class="fas fa-plus mr-2"></i>Agregar otro seguro</a>
-</div>
-</div>
-</div>
-</div>
-</div>
 <div class="row my-2">
   <div class="col-12 text-center">
-    <a href="{{route('medico_diary',$medico->id)}}" class="btn btn-primary">Ir a Panel de Control</a>
+    <a href="#title" class="btn btn-primary">Ir a Inicio de Pagina</a>
 
   </div>
 </div>
@@ -631,7 +593,51 @@
     list_social();
     list_service();
     list_experience();
+    comprueba_checkbox();
   });
+
+  function hide_aseguradoras(){
+    type_patient_service = $('#radio').val();
+    medico_id = "{{$medico->id}}"
+    route = "{{route('select_insurrances2')}}"
+    $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url:route,
+     data:{type_patient_service:type_patient_service,medico_id:medico_id},
+     error:function(error){
+    },
+    success:function(result){
+      console.log(result);
+    }
+  });
+    $('#aseguradoras').hide();
+  }
+
+  function show_aseguradoras(){
+    type_patient_service = $('#radio2').val();
+    medico_id = "{{$medico->id}}"
+    route = "{{route('select_insurrances2')}}"
+    $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url:route,
+     data:{type_patient_service:type_patient_service,medico_id:medico_id},
+     error:function(error){
+    },
+    success:function(result){
+      console.log(result);
+    }
+  });
+    $('#aseguradoras').show();
+  }
+
+  function comprueba_checkbox(){
+      if($("#radio2").is(':checked')) {
+        $('#aseguradoras').show();
+        }
+  }
+
 
   function modal_service2(){
     $('#modal-service2').modal('toggle');

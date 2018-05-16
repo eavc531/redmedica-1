@@ -388,7 +388,7 @@
 <hr>
 <div class="row mt-3">
   <div class="col-12">
-    <h4 class="font-title-blue text-center">Aseguradoras (Faltar Por Arreglar)</h4>
+    <h4 class="font-title-blue text-center">Aseguradoras</h4>
   </div>
 </div>
 <div class="row">
@@ -396,29 +396,64 @@
    <label><b>Clasificación de servicios profesionales otorgados</b></label>
  </div>
 </div>
+
+
 <div class="row my-3">
   <div class="col-lg-9 col-12 m-auto">
     <div class="custom-control custom-radio">
-      <input type="radio" id="show-question1" name="customRadio" class="custom-control-input">
-      <label class="custom-control-label" for="show-question1">Solo pacientes privados</label>
+      {{-- {{Form::radio('type_patient_service','Solo pacientes privados',['class'=>'custom-control-input','id'=>'radio'])}} --}}
+
+      @if($medicalCenter->type_patient_service == "Solo pacientes privados")
+      <input type="radio" name="type_patient_service" value="solo medicos privados" checked="checked" id="radio" onclick="hide_aseguradoras()">
+      @else
+        <input type="radio" name="type_patient_service" value="Solo pacientes privados" id="radio" onclick="hide_aseguradoras()">
+      @endif
+      <label class="" for="show-question1" id="radio"  >Solo pacientes privados</label>
     </div>
     <div class="custom-control custom-radio">
-      <input type="radio" id="show-question2" name="customRadio" class="custom-control-input">
-      <label class="custom-control-label" for="show-question2">Pacientes por aseguradoras, convenios y privados</label>
+
+      @if($medicalCenter->type_patient_service == "Pacientes por aseguradoras, convenios y privados")
+
+      <input type="radio" name="type_patient_service" value="Pacientes por aseguradoras, convenios y privados" checked="checked" id="radio2" onclick="show_aseguradoras()">
+      @else
+        <input type="radio" name="type_patient_service" value="Pacientes por aseguradoras, convenios y privados" id="radio2" onclick="show_aseguradoras()">
+      @endif
+      <label class="" for="show-question1" id="radioxxx"  >Pacientes por aseguradoras, convenios y privados</label>
+      <label class="" for="show-question2"></label>
     </div>
     <div class= "p-3 mt-3" id="panel-insurance" style="display:none;">
       <a href="{{route('create_add_insurrances',$medicalCenter->id)}}" class="btn btn-success btn-block">Agregar Aseguradoras</a>
     </div>
-    <div class="text-center">
-     {{-- <a href="" class="btn btn-success" data-toggle="modal" data-target="#modal-insurance"><i class="fas fa-plus mr-2"></i>Agregar otro seguro</a> --}}
+    <div class="aseguradoras" id="aseguradoras" style="display:none">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              @foreach ($insurance_carrier as $key => $value)
+                <div class="col-6">
+                <li>{{$value->name}}</li>
+                </div>
+              @endforeach
+            </div>
+            <div class="row">
+              <div class="col-6">
+
+              </div>
+              <div class="col-6">
+                  <a href="{{route('create_add_insurrances',$medicalCenter->id)}}" class="btn btn-success btn-block">Agregar Aseguradoras</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
    </div>
  </div>
 </div>
+
 <hr>
 </div>
 <div class="row">
   <div class="col-12 text-center">
-    <button class="btn btn-success" type="buton">Guardar</button>
+    {{-- <button class="btn btn-success" type="buton">Guardar</button> --}}
   </div>
 </div>
 </div>
@@ -442,7 +477,53 @@
       medicalCenter_list_specialty();
       medicalCenter_list_experience();
       list_social();
+      comprueba_checkbox();
+
     });
+
+    function hide_aseguradoras(){
+      type_patient_service = $('#radio').val();
+      medicalCenter_id = "{{$medicalCenter->id}}"
+      route = "{{route('select_insurrances')}}"
+      $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url:route,
+       data:{type_patient_service:type_patient_service,medicalCenter_id:medicalCenter_id},
+       error:function(error){
+      },
+      success:function(result){
+        console.log(result);
+      }
+    });
+      $('#aseguradoras').hide();
+    }
+
+    function show_aseguradoras(){
+      type_patient_service = $('#radio2').val();
+      medicalCenter_id = "{{$medicalCenter->id}}"
+      route = "{{route('select_insurrances')}}"
+      $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url:route,
+       data:{type_patient_service:type_patient_service,medicalCenter_id:medicalCenter_id},
+       error:function(error){
+      },
+      success:function(result){
+        console.log(result);
+      }
+    });
+      $('#aseguradoras').show();
+    }
+
+    function comprueba_checkbox(){
+        if($("#radio2").is(':checked')) {
+          $('#aseguradoras').show();
+          }
+    }
+
+
 
     function show_map(){
       $('#store_coordinates').attr('disabled', true);

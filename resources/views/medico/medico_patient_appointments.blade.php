@@ -15,34 +15,51 @@
 @if($appointments->first() != Null)
 <div class="row">
   @foreach ($appointments as $app)
-    <div class="card mb-2" style="width:100%">
-      <div class="card-body">
-        <p>Tipo de Cita: {{$app->title}}</p>
-        <p>Paciente: <a href="{{route('medico.edit',$app->patient->id)}}"><strong>{{$app->patient->name}} {{$app->patient->lastName}}</strong></a></p>
-        @isset($app->descriptión)
-        <p>Mensaje o descriptión: {{$app->descriptión}}</p>
-        @endisset
-        <p>Fecha: {{\Carbon\Carbon::parse($app->hour_start)->format('d-m-Y')}}</p>
-        <p>Hora: {{\Carbon\Carbon::parse($app->hour_start)->format('H:i')}}</p>
-        <p>Estado: {{$app->state}}</p>
-        @isset($app->score)
-          <p>Estrellas Otorgadas: {{$app->score}}</p>
-        @endisset
-        @isset($app->calification)
-          <p>Calificación: {{$app->calification}}</p>
-        @endisset
-        @isset($app->comentary)
-            <p>Comentario al Respecto: {{$app->comentary}}</p>
-        @endisset
+  <div class="col-lg-12">
+    <div class="card date-card my-2">
+      <div class="row">
+        <div class="col-lg-4 col-sm-4 col-12">
+         <div class="p-2">
+          <label for="" class="font-title-grey"> Paciente:</label> <p><a href="{{route('medico.edit',$app->medico->id)}}"><strong>{{$app->patient->name}} {{$app->patient->lastName}}</strong></a></p>
+          <label for="" class="font-title-grey">Tipo de Cita:</label> <p>{{$app->title}}</p>
+          {{-- <label for="" class="font-title-grey">Especialidad del Medico:</label> <p>{{$app->medico->scpecialty}}</p> --}}
 
-
+        </div>
       </div>
-      <div class="card-footer">
-        <a href="{{route('edit_appointment',['m_id'=>$medico,'p_id'=>$patient->id,'app_id'=>$app->id])}}" class="btn btn-success">Editar</a>
+      <div class="col-lg-4 col-sm-4 col-12">
+        <div class="p-2">
+          <label for="" class="font-title-grey">Fecha:</label> <p>{{\Carbon\Carbon::parse($app->hour_start)->format('d-m-Y')}}</p>
+          <label for="" class="font-title-grey">Hora:</label> <p>{{\Carbon\Carbon::parse($app->hour_start)->format('H:i')}}</p>
+          <label for="" class="font-title-grey">Estado:</label> <p>{{$app->state}}</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-4 col-12">
+        <div class="p-2">
 
+            <label for="" class="font-title-grey">Solicitada Por:</label> <p>@if($app->stipulated == 'patient') Paciente: {{$app->patient->name}} {{$app->patient->lastName}}@else Medico: {{$app->medico->name}} {{$app->medico->lastName}}
+
+            @endif
+          {{-- <label for="" class="font-title-grey">Estrellas Otorgadas:</label> <p>{{$app->score}}</p>
+          <label for="" class="font-title-grey">Calificación:</label> <p>{{$app->calification}}</p> --}}
+          {{-- <label for="" class="font-title-grey">Comentario:</label> <p>{{$app->comentary}}</p> --}}
+
+
+        </p>
+        <div class="form-inline">
+          <a href="{{route('medico_app_details',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i>Detalles</a>
+          {{-- <a href="{{route('marcar_como_vista',$app->id)}}" class="btn btn-success ml-2" data-toggle="tooltip" data-placement="top" title="Marcar como vista"><i class="fas fa-check"></i></a> --}}
+
+
+        </div>
+        </div>
       </div>
     </div>
-  @endforeach
+
+
+
+  </div>
+</div>
+@endforeach
   <div class="card-heading">
     {{$appointments->appends(Request::all())->links()}}
   </div>

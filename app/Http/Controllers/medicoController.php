@@ -25,6 +25,8 @@ use App\insurance_carrier;
 use App\question_lab;
 use Geocoder;
 use App\note;
+use DB;
+use App\insurrance_show;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
@@ -35,6 +37,49 @@ class medicoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function show_calification_medic($id){
+       $event = event::where('medico_id',$id)->whereNotNull('score')->paginate(10);
+       return view('medico.show_calification_medic',compact('event'));
+
+     }
+
+     public function medico_create_add_insurrances(Request $request,$id){
+
+       $insurrance_show = insurrance_show::orderBy('name','asc')->get();
+       $insurances = insurance_carrier::where('medico_id',$id)->get();
+       return view('medico.create_add_insurrances')->with('insurrance_show', $insurrance_show)->with('insurances', $insurances);
+     }
+
+     public function medico_store_insurrances(Request $request,$id){
+
+       $request->validate([
+         'name'=>'required|'.Rule::unique('insurance_carriers')->where('medico_id',$id),
+       ]);
+
+       $insurance = new insurance_carrier;
+       $insurance->name = $request->name;
+       $insurance->medico_id = $id;
+       $insurance->save();
+
+       return back()->with('success', 'Aseguradora agregada con exito');
+     }
+
+     public function select_insurrances2(Request $request){
+
+       $medico = medico::find($request->medico_id);
+       $medico->type_patient_service = $request->type_patient_service;
+       $medico->save();
+
+       return response()->json($request->all());
+
+     }
+
+     public function notification_appointments($id){
+       $appointments = event::where('medico_id',$id)->where('notification', 'not_see')->where('state', 'Pendiente')->paginate(4);
+       return view('medico.notification_appointments',compact('appointments'));
+
+     }
      public function medico_note_edit($m_id,$p_id,$n_id){
        $note = note::find($n_id);
        $medico = medico::find($m_id);
@@ -468,19 +513,21 @@ class medicoController extends Controller
         return view('medico.successReg')->with('user', $user)->with('medico', $medico);
     }
 
-    public function resendMailMedicoConfirm(Request $request){
+    public function resendMailMedicoConfirm($id){
 
+        $medico = medico::find($id);
          $code = str_random(25);
-         $user = User::find($request->user_id);
+         $user = User::where('medico_id',$id)->first();
          $user->confirmation_code = $code;
          $user->save();
 
-         Mail::send('mails.confirmMedico',['user'=>$user,'code'=>$code], function($msj) use($user){
-            $msj->subject('Red Medica: '.$user->name);
+         Mail::send('mails.confirmMedico',['medico'=>$medico,'user'=>$user,'code'=>$code],function($msj) use($medico){
+            $msj->subject('Médicos Si');
+            // $msj->to($medico->email);
             $msj->to('eavc53189@gmail.com');
         });
 
-        return redirect()->route('successRegMedico',$user->id)->with('success', 'Se ha Reenviado el mensaje de confirmación a tu Correo Electronico.')->with('user', $user);
+        return redirect()->route('successRegMedico',$user->id)->with('success', 'Se ha reenviado el mensaje de confirmación al correo electronico, asociado a tu cuenta MédicoSi')->with('user', $user);
    }
     /**
      * Display the specified resource.
@@ -503,7 +550,7 @@ class medicoController extends Controller
 
      public function medico_perfil($id)
      {
-         $insurance_carriers = insurance_carrier::where('medico_id',$id)->get();
+         $insurance_carrier = insurance_carrier::where('medico_id',$id)->get();
          $medicalCenter = medicalCenter::orderBy('name','asc')->pluck('name','name');
          $cities = city::orderBy('name','asc')->pluck('name','name');
          $medico = medico::find($id);
@@ -514,12 +561,12 @@ class medicoController extends Controller
          $social_networks = social_network::where('medico_id', $id)->get();
          $images = photo::where('medico_id', $medico->id)->where('type','image')->get();
 
-         return view('medico.perfil')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carriers',$insurance_carriers)->with('states', $states);
+         return view('medico.perfil')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carrier',$insurance_carrier)->with('states', $states);
      }
 
     public function edit($id)
     {
-        $insurance_carriers = insurance_carrier::where('medico_id',$id)->get();
+        $insurance_carrier = insurance_carrier::where('medico_id',$id)->get();
         $medicalCenter = medicalCenter::orderBy('name','asc')->pluck('name','name');
         $cities = city::orderBy('name','asc')->pluck('name','id');
         $states = state::orderBy('name','asc')->pluck('name','id');
@@ -532,7 +579,7 @@ class medicoController extends Controller
         $images = photo::where('medico_id', $medico->id)->where('type','image')->get();
         $specialties = specialty::orderBy('name','asc')->pluck('name','name');
 
-        return view('medico.edit')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carriers',$insurance_carriers)->with('states', $states)->with('specialties', $specialties);
+        return view('medico.edit')->with('medico', $medico)->with('photo', $photo)->with('consulting_rooms', $consulting_room)->with('consultingIsset', $consultingIsset)->with('cities', $cities)->with('medicalCenter', $medicalCenter)->with('medico_specialty', $medico_specialty)->with('social_networks', $social_networks)->with('images', $images)->with('insurance_carrier',$insurance_carrier)->with('states', $states)->with('specialties', $specialties);
     }
 
     /**
@@ -633,5 +680,23 @@ class medicoController extends Controller
         return view('medico.medico_patient_appointments',compact('medico','patient','appointments'));
 
     }
+
+    public function marcar_como_vista($id)
+    {
+
+        $appointment = event::find($id);
+        $appointment->notification = 'see';
+        $appointment->save();
+
+        $event = event::where('medico_id',$appointment->medico_id)->where('notification', 'not_see')->count();
+
+        $medico = medico::find($appointment->medico_id);
+        $medico->notification_number = $event;
+        $medico->save();
+
+        return back()->with('success','Se ha Maracado como vista la Cita para el Paciente: '.$appointment->namePatient.' Estipulada para la Fecha: '.$appointment->start);
+
+    }
+
 
 }

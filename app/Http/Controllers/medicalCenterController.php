@@ -37,6 +37,16 @@ class medicalCenterController extends Controller
 
   }
 
+  public function select_insurrances(Request $request){
+
+    $medicalCenter = medicalCenter::find($request->medicalCenter_id);
+    $medicalCenter->type_patient_service = $request->type_patient_service;
+    $medicalCenter->save();
+
+    return response()->json($request->all());
+
+  }
+
   public function medical_center_experience_store(Request $request,$id){
     $request->validate([
       'name'=>['required', Rule::unique('medical_center_experiences')->where('medicalCenter_id',$id)],
@@ -85,7 +95,7 @@ class medicalCenterController extends Controller
 
     public function medicalCenter_store_insurrances(Request $request,$id){
       $request->validate([
-        'name'=>'required|unique:insurance_carriers'
+        'name'=>'required|'.Rule::unique('insurance_carriers')->where('medical_center_id',$id)
       ]);
 
       $insurance = new insurance_carrier;
@@ -466,6 +476,7 @@ class medicalCenterController extends Controller
 
       $medicos = medico::where('medicalCenter_id', $id)->get();
 
+      $insurance_carrier = insurance_carrier::where('medical_center_id',$id)->get();
       // /dd($medicos);
 
       $medicalCenter = medicalCenter::find($id);
@@ -478,7 +489,7 @@ class medicalCenterController extends Controller
       $domingo = day::where('medical_center_id', $id)->where('name', 'domingo')->orderBy('hour_ini','asc')->get();
 
 
-      return view('medicalCenter.edit')->with('medicalCenter', $medicalCenter)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('medicos', $medicos)->with('images',$images);
+      return view('medicalCenter.edit')->with('medicalCenter', $medicalCenter)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('medicos', $medicos)->with('images',$images)->with('insurance_carrier',$insurance_carrier);
 
     }
 

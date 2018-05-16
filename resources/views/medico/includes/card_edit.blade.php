@@ -15,13 +15,14 @@
       {!!Form::hidden('event_id2',null,['id'=>'event_id2'])!!}
       <div class="form-group">
         <label for="" class="font-title">Paciente</label>
+
         {{Form::text('namePatient',null,['id'=>'namePatient','class'=>'form-control','disabled'])}}
       </div>
     </div>
     <div class="col-lg-4 col-12">
       <div class="form-group">
-        <label for="" class="font-title">Tipo de evento</label>
-        {!!Form::text('title',null,['class'=>'form-control','id'=>'titleUp1'])!!}
+          <label for="" class="font-title">Tipo de Cita</label>
+          {!!Form::select('title',['Ambulatoria'=>'Ambulatoria','Externa o a Domicilio'=>'Externa o a Domicilio','Urgencias'=>'Urgencias','Cita por Internet'=>'Cita por Internet'],null,['class'=>'form-control','id'=>'titleUp1','placeholder'=>'Tipo de Cita'])!!}
       </div>
     </div>
     <div class="col-lg-4 col-12">

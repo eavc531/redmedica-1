@@ -15,9 +15,11 @@ class medicalCenterConfirmMidleware
      */
     public function handle($request, Closure $next)
     {
-        if(){
-          return redirect('home');
-        }
-        return $next($request);
+      if(Auth::check()){
+         return $next($request);
+      }else{
+         return redirect()->route('home');
+      }
+
     }
 }

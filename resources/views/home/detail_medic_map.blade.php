@@ -17,12 +17,16 @@
       </div> --}}
       <hr>
       <div class="row">
-        <div class="col-8 m-auto col-sm-3 col-lg-3">
-          <picture>
-            <source srcset="" type="image/svg+xml">
-              <img src="{{asset('img/profile.png')}}" class="img-fluid img-thumbnail" alt="...">
-            </picture>
-          </div>
+				<div class="col-8 m-auto col-sm-3 col-lg-3">
+					<div class="cont-img">
+{{$medico['image']}}
+						@isset($medico['image'])
+						<img src="{{asset($medico['image'])}}" class="prof-img img-thumbnail" alt="..." >
+						@else
+						<img src="{{asset('img/profile.png')}}" class="prof-img img-thumbnail" alt="...">
+						@endisset
+					</div>
+				</div>
           <div class="col-12 col-sm-5 col-lg-5">
            <div class="card-body p-2">
             <h5 class="card-title title-edit">{{$medico['name']}}</h5>

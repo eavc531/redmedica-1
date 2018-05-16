@@ -58,9 +58,9 @@
               </div>
             </div>
             <div class="col-lg-12 col-12 mt-3">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="">
-               Reenviar Correo de Confirmación
-             </button>
+              <a href="{{route("resend_mail_confirm_patient",$patient->id)}}" class="btn btn-primary">Reenviar Correo de Confirmación</a>
+              
+             </a>
            </div>
          </div>
        </div>

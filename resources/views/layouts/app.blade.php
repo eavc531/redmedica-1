@@ -10,7 +10,7 @@
 
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/styles.css')}}">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 
 	@yield('css')
@@ -24,15 +24,19 @@
 
 	<nav class="navbar navbar-expand-lg navbar-config">
 		@if(Auth::check())
-<!-- 		<a class="navbar-brand mr-auto" id="show" href="#" style="position: absolute; left: 2%; top: 30%;"><i class="fas fa-bars"></i></a> -->
+		<!-- 		<a class="navbar-brand mr-auto" id="show" href="#" style="position: absolute; left: 2%; top: 30%;"><i class="fas fa-bars"></i></a> -->
 		@endif
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span><i class="fa fa-bars"></i></span>
 		</button>
-
 		<div class="collapse navbar-collapse ml-lg-auto" id="navbarSupportedContent">
+			<div class="row">
+				<div class="col-12 text-navbar">
+					<h4 class="font-navbar">¡Siempre encontrarás tu mejor opción!</h4>
+				</div>
+			</div>
 			<ul class="navbar-nav">
-				<li class="nav-item dropdown mt-2">
+				<li class="nav-item dropdown">
 					@if(Auth::check())
 					<a class="nav-link dropdown-toggle font-navbar" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
 						{{Auth::user()->name}}
@@ -46,54 +50,59 @@
 					</div>
 					@endif
 				</ul>
-				<form class="form-inline my-2">
-					<a href="{{route('home')}}" class="position-img-navbar"><img src="{{asset('img/Medicossi-Marca original-01.png')}}" alt="" class="img-navbar"></a>
+				<form class="form-inline mb-2">
+					<a href="{{route('home')}}"><img src="{{asset('img/Medicossi-Marca original-01.png')}}" alt="" class="img-navbar"></a>
 				</form>
 			</div>
 		</nav>
-	<section class="section-dashboard mb-3">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-2 col-12 col-sm-3">
-					@include('layouts.dashboard')
-				</div>
-				<div class="col-lg-8 col-12 col-sm-9 box-mesage">
-					@include('notifications.alerts')
-					@yield('content')
-				</div>
-			</div>
-		</div>
-	</section>
-	<footer>
-		<div class="section-footer sticky-bottom">
-			<div class="row align-items-center nomargin p-1">
-				<div class="col-lg-6 col-sm-6 col-12 text-center nopadding">
-					<a href="" class="p-2"><img class="buttons-footer" src="{{asset('img/botones-medicossi-13.png')}}" alt=""></a>
-					<a href="" class="p-2"><img class="buttons-footer" src="{{asset('img/botones-medicossi-14.png')}}" alt=""></a>
-					<a href="" class="p-2"><img class="buttons-footer" src="{{asset('img/botones-medicossi-15.png')}}" alt=""></a>
-					<a href="" class="p-2"><img class="buttons-footer" src="{{asset('img/botones-medicossi-16.png')}}" alt=""></a>
-				</div>
-				<div class="col-lg-6 col-sm-6 col-12 text-center nopadding">
-					<span class="font-footer"><b>MedicosSi</b> siempre encontrarás tu mejor opción.</span>
+		<section class="section-dashboard mb-3">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12 text-center">
+						<span class="btn-block btn-lg btn-config-green d-block d-sm-none" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="border-radius:0;"><i class="fa fa-plus mr-2 mb-2"></i>Menu</span>
+					</div>
+					<div class="col-lg-2 col-12 col-sm-3 mb-2">
+						<div class="collapse show" id="collapseExample">
+							@include('layouts.dashboard')
+						</div>
+					</div>
+					<div class="col-lg-8 col-12 col-sm-9 box-mesage">
+						@include('notifications.alerts')
+						@yield('content')
+					</div>
 				</div>
 			</div>
-		</div>
-	</footer>
+		</section>
+		<footer>
+			<div class="section-footer sticky-bottom">
+				<div class="row align-items-center nomargin p-1">
+					<div class="col-lg-6 col-sm-6 col-12 text-center nopadding">
+						<a href="" class="p-2"><img class="buttons-footer" src="{{asset('img/botones-medicossi-13.png')}}" alt=""></a>
+						<a href="" class="p-2"><img class="buttons-footer" src="{{asset('img/botones-medicossi-14.png')}}" alt=""></a>
+						<a href="" class="p-2"><img class="buttons-footer" src="{{asset('img/botones-medicossi-15.png')}}" alt=""></a>
+						<a href="" class="p-2"><img class="buttons-footer" src="{{asset('img/botones-medicossi-16.png')}}" alt=""></a>
+					</div>
+					<div class="col-lg-6 col-sm-6 col-12 text-center nopadding">
+						<span class="font-footer"><b>MedicosSi</b> siempre encontrarás tu mejor opción.</span>
+					</div>
+				</div>
+			</div>
+		</footer>
 
-</body>
+	</body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.3/js/tether.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.3/js/tether.min.js"></script>
 
-<script src="https://use.fontawesome.com/7886bdfbdc.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-{{-- flata fint awesome js --flata fint awesome js -flata fint awesome js --}}
+	<script src="https://use.fontawesome.com/7886bdfbdc.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	{{-- flata fint awesome js --flata fint awesome js -flata fint awesome js --}}
 
-{{-- <script type="text/javascript" src="{{asset('jquery\jquery.js ')}}"></script> --}}
-{{-- <script src="{{asset('bootstrap\js\bootstrap.js')}}"></script> --}}
+	{{-- <script type="text/javascript" src="{{asset('jquery\jquery.js ')}}"></script> --}}
+	{{-- <script src="{{asset('bootstrap\js\bootstrap.js')}}"></script> --}}
 
 
-<script type="text/javascript" src="{{asset('js/main.js')}}"></script>
-@yield('scriptJS')
-</html>
+	<script type="text/javascript" src="{{asset('js/main.js')}}"></script>
+	@yield('scriptJS')
+	</html>
