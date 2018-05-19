@@ -47,16 +47,36 @@ Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/edit','medicoController@med
 
 Route::get('medico/{m_id}/patient/{p_id}/appointment/{app_id}/details','medico_diaryController@medico_app_details')->name('medico_app_details');
 
-route::post('medico/patient/note/config/store','medicoController@note_config_store')->name('note_config_store');
+// Route::get('medico/{m_id}/patient/{p_id}/note/{app_id}/config','notesController@note_replace_config')->name('note_replace_config');
 
-route::get('medico/{m_id}/patient/{p_id}/notes/','medicoController@notes_patient')->name('notes_patient');
-route::get('medico/{m_id}/note/{note_id}/config/{p_id}','medicoController@note_replace_config')->name('note_replace_config');
+route::post('medico/patient/note/config/store','notesController@note_config_store')->name('note_config_store');
+
 route::get('medico/{m_id}/patient/{p_id}/edit/appointment/{app_id}','medico_diaryController@edit_appointment')->name('edit_appointment');
 
-route::post('medico/patient/note/store','medicoController@note_store')->name('note_store');
+///////////////NOTES
+route::get('medico/{m_id}/patient/{p_id}/type_notes','notesController@type_notes')->name('type_notes');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/config','notesController@note_config')->name('note_config');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/ini_create','notesController@note_medic_ini_create')->name('note_medic_ini_create');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/ini_edit','notesController@note_ini_edit')->name('note_ini_edit');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/evo_edit','notesController@note_evo_edit')->name('note_evo_edit');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/inter_edit','notesController@note_inter_edit')->name('note_inter_edit');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/urgencias_edit','notesController@note_urgencias_edit')->name('note_urgencias_edit');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/egreso_edit','notesController@note_egreso_edit')->name('note_egreso_edit');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/referencia_edit','notesController@note_referencia_edit')->name('note_referencia_edit');
 
-//route::post('medico/list/questions','medicoController@questions_labs')->name('questions_labs');
+route::get('medico/{m_id}/patient/{p_id}/notes/','notesController@notes_patient')->name('notes_patient');
+route::post('medico/patient/note/store','notesController@note_store')->name('note_store');
+route::post('medico/patient/note/update/{id}','notesController@note_update')->name('note_update');
 
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/referencia/create','notesController@note_referencia_create')->name('note_referencia_create');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/interconsulta_create','notesController@note_inter_create')->name('note_inter_create');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/urg_create','notesController@note_urgencias_create')->name('note_urgencias_create');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/egreso_create','notesController@note_egreso_create')->name('note_egreso_create');
+route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/evo_create','notesController@note_evo_create')->name('note_evo_create');
+
+
+
+/////////////////
 Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}','medicoController@create_note_patient')->name('create_note_patient');
 
 Route::get('medico/{m_id}/admin/data/{p_id}/patient','medicoController@admin_data_patient')->name('admin_data_patient');
@@ -82,7 +102,7 @@ route::get('medico/{id}/business/hours','medico_diaryController@medico_business_
 
 route::post('medico/business/hours/edit','medico_diaryController@medico_business_hours_update')->name('medico_business_hours_update');
 route::post('delete/event','medico_diaryController@delete_event')->name('delete_event');
-
+route::get('delete/{id}/event2','medico_diaryController@delete_event2')->name('delete_event2');
 Route::post('medico/update/event', 'medico_diaryController@update_event')->name('update_event');
 Route::get('medico/{id}/panel/diary', 'medico_diaryController@medico_diary')->name('medico_diary');
 Route::get('medico/{id}/panel/schedule', 'medico_diaryController@medico_schedule')->name('medico_schedule');

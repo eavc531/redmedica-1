@@ -80,14 +80,14 @@
   </div>
   <div class="row">
     <div class="col-lg-4 col-sm-4 col-12">
-      <button onclick="delete_event()" type="button" class="btn-block btn btn-danger my-1">Eliminar</button>
+      <button onclick="delete_event()" type="button" class="btn-block btn btn-danger my-1" id="delete5">Eliminar</button>
     </div>
     <div class="col-lg-4 col-sm-4 col-12">
-      <button onclick="close_edit()" type="button" class="btn-block btn btn-secondary my-1">Cancelar</button>
+      <button onclick="close_edit()" type="button" class="btn-block btn btn-secondary my-1" id="Cancelar5">Cancelar</button>
       {!!Form::close()!!}
     </div>
    <div class="col-lg-4 col-sm-4 col-12">
-     <button onclick="update_event()" type="button" class="btn-block btn btn-primary my-1">Guardar</button>
+     <button onclick="update_event()" type="button" class="btn-block btn btn-primary my-1" id="guardar5">Guardar</button>
    </div>
 </div>
 {!!Form::close()!!}

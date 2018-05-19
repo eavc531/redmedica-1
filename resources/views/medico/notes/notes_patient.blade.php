@@ -33,10 +33,28 @@
           </div>
           <hr>
           {{-- ////////////////////////////////////////////centro de menu////////////centro de menu// --}}
-
+          <a class="btn btn-primary" href="{{route('type_notes',['medico_id'=>$medico->id,'patient_id'=>$patient->id])}}">Crear Nueva Nota</a>
           <ul>
             @foreach ($notes as $note)
-                <li>{{$note->title}} <a href="{{route('medico_note_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+
+              <li>{{$note->title}} {{$note->created_at}}
+                @if($note->title == 'Nota Médica Inicial')
+                <a href="{{route('note_ini_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+                @elseif($note->title == 'Nota Médica de Evolucion')
+                <a href="{{route('note_evo_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+                @elseif($note->title == 'Nota de Interconsulta')
+                <a href="{{route('note_inter_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+
+                @elseif($note->title == 'Nota médica de Urgencias')
+                    <a href="{{route('note_urgencias_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+                @elseif($note->title == 'Nota médica de Egreso')
+                    <a href="{{route('note_egreso_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+                @elseif($note->title == 'Nota de Referencia o traslado')
+                     <a href="{{route('note_referencia_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+                @endif
+
+
+                </li>
             @endforeach
           </ul>
 

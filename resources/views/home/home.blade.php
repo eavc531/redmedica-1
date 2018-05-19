@@ -6,6 +6,9 @@
   width: 900px;
   height: 800px;
 }
+
+
+
   /* a{
      cursor: pointer;
      } */
@@ -14,7 +17,15 @@
    @endsection
    @section('content')
 
-
+     <div class="row">
+       <div class="col-12">
+         <span class="fa fa-star checked"></span>
+         <span class="fa fa-star checked"></span>
+         <span class="fa fa-star checked"></span>
+         <span class="fa fa-star"></span>
+         <span class="fa fa-star"></span>
+       </div>
+     </div>
 
    @if(!isset(Auth::user()->id))
    <div class="row">

@@ -216,6 +216,7 @@ class medico_diaryController extends Controller
 
      public function appointment_store(Request $request)
      {
+       return response()->json($request->all());
        $request->validate([
          'title'=>'required',
          'date_start'=>'required',
@@ -800,8 +801,15 @@ class medico_diaryController extends Controller
 
        $comprobar_horario2 = event::where('medico_id',$request->medico_id)->where('rendering', 'background')->where('start','<=',$hour_end1)->where('end','>=',$hour_end1)->count();
 
+
        if($comprobar_horario == 0 or $comprobar_horario2 == 0){
-         return response()->json('fuera del horario');
+
+         if($request->ajax()){
+            return response()->json('fuera del horario');
+         }else{
+           return back()->with('warning', 'Imposible Cambiar a la Fecha seleccionada, esta fuera del horario establecido.');
+         }
+
        }
 
      $hourStart = $request->hourStart.':'.$request->minsStart.':'.'00';
@@ -828,7 +836,9 @@ class medico_diaryController extends Controller
      }
 
    //  \Carbon\Carbon::parse()
+
      $event = event::find($request->event_id);
+     $before_date = $event->start;
      $event->title = $request->title;
      $event->title = $request->title;
      $event->start = $start;
@@ -849,11 +859,34 @@ class medico_diaryController extends Controller
      $event->medico_id = $request->medico_id;
      $event->save();
 
+     $patient = patient::find($event->patient_id);
+     $medico = medico::find($event->medico_id);
+     if($start != $before_date){
+
+       Mail::send('mails.med_notification_patient_appointment_change',['medico'=>$medico,'patient'=>$patient,'event'=>$event,'before_date'=>$before_date],function($msj) use($patient){
+          $msj->subject('Notificación Cambio de Fecha de Cita, Médicos Si');
+          $msj->to('eavc53189@gmail.com');
+        });
+
+       Mail::send('mails.med_notification_medico_appointment_change',['medico'=>$medico,'patient'=>$patient,'event'=>$event,'before_date'=>$before_date],function($msj) use($medico){
+          $msj->subject('Notificación Cambio de Fecha de Cita, Médicos Si');
+          $msj->to('testprogramas531@gmail.com');
+        });
+
+        if($request->ajax()){
+           return response()->json('fecha_editada');
+        }
+
+       return redirect()->route('medico_app_details',['m_id'=>$request->medico_id,'p_id'=>$event->patient_id,'app_id'=>$event->id])->with('success','Se ha cambiado la "Hora/Fecha" de la consulta con Exito. Se ha enviado un correo al Paciente: "'.$event->namePatient.'" para notificarle del cambio de la consulta.');
+
+
+     }
+
      if($request->ajax()){
         return response()->json('ok');
      }
 
-     return redirect()->route('medico_diary',$request->medico_id)->with('success','Nuevo Evento Guardado');
+     return redirect()->route('medico_app_details',['m_id'=>$request->medico_id,'p_id'=>$event->patient_id,'app_id'=>$event->id])->with('success','La Consulta ha sido editada con exito');
 
      }
 
@@ -880,6 +913,14 @@ class medico_diaryController extends Controller
         event::destroy($request->event_id);
 
         return response()->json('Se ha eliminado un evento correspondiente a la fecha: '.$fecha->start);
+    }
+
+    public function delete_event2($id)
+    {
+      $event = event::find($id);
+        event::destroy($id);
+
+        return redirect()->route('medico_appointments_patient',['m_id'=>$event->medico_id,'p_id'=>$event->patient_id])->with('danger','Se ha eliminado una Cita con el paciente: '.$event->medico->name.' '.$event->medico->lastName.' correspondiente a la fecha: '.$event->start);
     }
 
     public function compare_hours(Request $request,$id)

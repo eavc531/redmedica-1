@@ -34,8 +34,9 @@
       </div>
       <div class="col-lg-4 col-sm-4 col-12">
         <div class="p-2">
-          <label for="" class="font-title-grey">Fecha:</label> <p>{{\Carbon\Carbon::parse($app->hour_start)->format('d-m-Y')}}</p>
-          <label for="" class="font-title-grey">Hora:</label> <p>{{\Carbon\Carbon::parse($app->hour_start)->format('H:i')}}</p>
+          <label for="" class="font-title-grey">Fecha:</label> <p>{{\Carbon\Carbon::parse($app->start)->format('d-m-Y')}}</p>
+          <label for="" class="font-title-grey">Hora inicio:</label> <p>{{\Carbon\Carbon::parse($app->start)->format('H:i')}}</p>
+          <label for="" class="font-title-grey">Hora Culminacion:</label> <p>{{\Carbon\Carbon::parse($app->end)->format('H:i')}}</p>
           <label for="" class="font-title-grey">Estado:</label> <p>{{$app->state}}</p>
         </div>
       </div>
@@ -73,7 +74,7 @@
 
         </div>
         <div class="col-6">
-          <a href="{{route('medico_app_details',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning btn-block" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i>Editar/Cambiar Fecha</a>
+          <a href="{{route('edit_appointment',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning btn-block" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i>Editar/Cambiar Fecha</a>
         </div>
       </div>
 

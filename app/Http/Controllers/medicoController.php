@@ -38,6 +38,7 @@ class medicoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+
      public function show_calification_medic($id){
        $event = event::where('medico_id',$id)->whereNotNull('score')->paginate(10);
        return view('medico.show_calification_medic',compact('event'));
@@ -88,50 +89,11 @@ class medicoController extends Controller
        return view('medico.edit_note',compact('note','medico','patient'));
      }
 
-     public function note_config_store(Request $request){
 
-       $noteCount = note::where('medico_id',$request->medico_id)->where('title', $request->title)->where('type_note', 'customized')->count();
 
-       if($noteCount == 0){
-         $note = new note;
-         $note->title = $request->title;
-         $note->content = $request->content;
-         $note->medico_id = $request->medico_id;
-         $note->type_note = 'customized';
-         $note->save();
+    
 
-       }else{
-         $note = note::find($request->note_id);
-         $note->title = $request->title;
-         $note->content = $request->content;
-         $note->medico_id = $request->medico_id;
-         $note->type_note = 'customized';
-         $note->save();
-       }
 
-       return redirect()->route('admin_data_patient',['medico_id'=>$request->medico_id,'patient_id'=>$request->patient_id]);
-     }
-
-       public function note_replace_config($m_id,$n_id,$p_id)
-     {
-
-       $note = note::find($n_id);
-       $medico = medico::find($m_id);
-       $patient = patient::find($p_id);
-
-       return view('medico.note_replace_config',compact('note','medico','patient'));
-     }
-
-     public function notes_patient($m_id,$p_id)
-     {
-
-          $notes = note::where('patient_id', $p_id)->where('medico_id',$m_id)->get();
-
-          $patient = patient::find($p_id);
-          $medico = medico::find($m_id);
-
-         return view('medico.notes_patient',compact('notes','patient','medico'));
-     }
 
      public function note_store(Request $request)
      {

@@ -28,7 +28,9 @@
             </div>
             </div>
           </div>
-
+          <div class="alert-info p-3 m-2" style="display:none" id="alert_carga5">
+            Procesando...
+          </div>
         @include('medico.includes.alert_calendar')
         @include('medico.includes.card_edit')
           <hr>
@@ -759,13 +761,16 @@
     }
 
     function close_edit(){
-
       $('#card_edit').fadeOut();
       vaciar2();
     }
 
     function update_event(){
 
+      $('#alert_carga5').fadeIn();
+      $('#guardar5').attr("disabled", true);
+      $('#delete5').attr("disabled", true);
+      $('#cancelar5').attr("disabled", true);
       title = $('#titleUp1').val();
       eventType = $('#eventTypeUp1').val();
       description = $('#descriptionUp4').val();
@@ -793,7 +798,10 @@
        url:route,
        data:{title:title,eventType:eventType,description:description,price:price,date_start:date_start,hourStart:hourStart,minsStart:minsStart,startFormatHour:startFormatHour,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,endFormatHour:endFormatHour,medico_id:medico_id,event_id:event_id,state:state},
        error:function(error){
-
+         $('#alert_carga5').fadeOut();
+         $('#guardar5').attr("disabled", false);
+         $('#delete5').attr("disabled", false);
+         $('#cancelar5').attr("disabled", false);
          console.log(error);
         $.each(error.responseJSON.errors, function(index, val){
           errormsj+='<li>'+val+'</li>';
@@ -805,9 +813,17 @@
         console.log(errormsj);
       },
       success:function(result){
+        $('#alert_carga5').fadeOut();
+        $('#guardar5').attr("disabled", false);
+        $('#delete5').attr("disabled", false);
+        $('#cancelar5').attr("disabled", false);
+
         if(result == 'fuera del horario'){
           $('#text_error_up1').html('imposible guardar evento, fuera del horario establecido');
           $('#alert_error_up1').fadeIn();
+        }else if(result == 'fecha_editada'){
+          $('#text_success_up1').html('Se a Guardado el cambio de Fecha con Exito, se ha enviado una notificacion al correo del paciente para informar del cambio de la Cita.');
+          $('#alert_success_up1').fadeIn();
         }else {
           console.log(result);
           $('#text_success_up1').html('Guardado con Exito');

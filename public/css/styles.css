@@ -1,3 +1,6 @@
+.checked {
+        color:orange;
+      }
 
 a:focus{
 	color: #fff;
@@ -39,13 +42,13 @@ a:hover, a:active, a:focus{
 
 .text-navbar{
 	position: absolute;
-	left: 0%; 
+	left: 0%;
 	top: 35%;
 }
 
 .btn-config-green{
 	background-color: #799600;
-	border-color: #799600; 
+	border-color: #799600;
 	color: #fff !important;
 	word-wrap: break-word;
 }
@@ -65,7 +68,7 @@ a:hover, a:active, a:focus{
 	border-radius: 0;
 	font-size: 18px;
 	text-align: left;
-	white-space: normal; 
+	white-space: normal;
 }
 
 /* Admin */
@@ -214,7 +217,7 @@ a:hover, a:active, a:focus{
 	{
 		transform: translate(0px,5px);
 		-webkit-transform: translate(0px,5px);
-	} 
+	}
 
 	/*||||||||||||||||||| Stadistic |||||||||||||||||||||||*/
 
@@ -282,7 +285,7 @@ a:hover, a:active, a:focus{
 	/*||||||||||||||||||| Modal |||||||||||||||||||||||*/
 
 	.modal-checked{
-		color: #565656; 
+		color: #565656;
 		font-size: 18px;
 	}
 
@@ -352,7 +355,7 @@ a:hover, a:active, a:focus{
 	.font-title-index{
 		margin-top: .8em;
 		color: #0060df;
-		text-shadow: 1px 1px 1px solid #000; 
+		text-shadow: 1px 1px 1px solid #000;
 	}
 
 	.white{
@@ -521,20 +524,20 @@ a:hover, a:active, a:focus{
 
 
 	.border-head-panel{
-		border: 2px solid #000; 
+		border: 2px solid #000;
 		word-wrap: break-word;
 		color: #a1bc31;
 		padding: 5px;
 	}
 
 	.border-panel-blue{
-		border: 2px solid #0060DF; 
+		border: 2px solid #0060DF;
 		word-wrap: break-word;
 		padding: 5px;
 	}
 
 	.border-panel-green{
-		border: 2px solid #a1bc31; 
+		border: 2px solid #a1bc31;
 		word-wrap: break-word;
 		padding: 5px;
 	}
@@ -591,16 +594,16 @@ a:hover, a:active, a:focus{
 	}
 
 	.icon-notification{
-		font-size: 24px; 
+		font-size: 24px;
 		color: red;
 	}
 
-	/* center col-lg-8 */ 
+	/* center col-lg-8 */
 
 	.button-panel{
 		word-wrap: break-word;
 		padding: 13px;
-		max-width: 100%; 
+		max-width: 100%;
 		color: #0060DF;
 		background-color: #fff;
 		border: 2px solid #0060DF;
@@ -669,7 +672,7 @@ a:hover, a:active, a:focus{
 		display: block;
 		line-height: 1;
 		position: relative;
-		text-align: left;  
+		text-align: left;
 	}
 
 	.radio-switch-field:first-child {
@@ -918,7 +921,7 @@ a:hover, a:active, a:focus{
     	box-shadow: 2px 2px 2px #c1c1c1;
     }
 
-	
+
 	/* |||||||||||||||||| RATING STAR ||||||||||||||||||*/
 
 
@@ -1157,7 +1160,7 @@ a:hover, a:active, a:focus{
 @media screen and (min-width: 401px) and (max-width: 520px) {
 
 	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
-	
+
 	.font-navbar{
 		padding-top: 20px;
 		text-align: center;
@@ -1209,7 +1212,7 @@ a:hover, a:active, a:focus{
 @media only screen and (max-width: 400px) {
 
 	/*||||||||||||||||||| Index |||||||||||||||||||||||*/
-	
+
 	.navbar-brand{
 		display:none;
 	}

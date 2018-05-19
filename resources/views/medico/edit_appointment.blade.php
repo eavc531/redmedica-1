@@ -24,8 +24,10 @@
 
           </div>
           {{-- MENU DE PACIENTES --}}
-          @include('medico.includes.main_medico_patients')
-
+          {{-- @include('medico.includes.main_medico_patients') --}}
+          <div class="alert-info p-3 m-2" style="display:none" id="alert_carga5">
+            Procesando...
+          </div>
           <div class="card p-2" id="card_edit">
             <div class="row">
               <div class="col-12">
@@ -108,14 +110,14 @@
             </div>
             <div class="row">
               <div class="col-lg-4 col-sm-4 col-12">
-                <button onclick="delete_event()" type="button" class="btn-block btn btn-danger my-1">Eliminar</button>
+                <a href="{{route('delete_event2',$app->id)}}" class="btn btn-danger btn-block">Eliminar</a>
               </div>
               <div class="col-lg-4 col-sm-4 col-12">
-                <button onclick="close_edit()" type="button" class="btn-block btn btn-secondary my-1">Cancelar</button>
+                <a href="{{route('medico_app_details',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn-block btn btn-secondary my-1">Cancelar</a>
 
               </div>
              <div class="col-lg-4 col-sm-4 col-12">
-                <button type="submit" name="button">Guardar</button>
+                <button type="submit" name="button" class="btn btn-success btn-block" id="guardar">Guardar</button>
                {{-- <button onclick="update_event()" type="button" class="btn-block btn btn-primary my-1">Guardar</button> --}}
              </div>
           </div>
@@ -712,7 +714,11 @@ function  PendientePorCobrar(){
         .fadeTo(200, 1).fadeTo(200, .2).fadeTo(200, 1);
     }
 
-
+    // function cargando(){
+    //   $( "#guardar" ).prop( "disabled", true );
+    //   $( "#alert" ).fadeIn();
+    //   confirm('si');
+    // }
 
   </script>
 
