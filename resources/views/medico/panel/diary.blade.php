@@ -3,6 +3,12 @@
 <link rel="stylesheet" type="text/css" href="{{asset('fullcalendar/fullcalendar.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('fullcalendar\tema_boostrap_descargado\tema_boostrap.css')}}">
 
+<style media="screen">
+.fc-event {
+    border-width: 1px;
+}
+</style>
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.css"> --}}
 {{-- <link href='../fullcalendar.print.min.css' rel='stylesheet' media='print' /> --}}
@@ -38,22 +44,19 @@
             {{-- //////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT --}}
 
 
-
-
-
-
           {{-- ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR --}}
           {{-- IF SHOW CALENDAR --}}
           @if($countEventSchedule != 0)
 
           <div id='calendar' style=""></div>
-
-
           {{-- ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR --}}
 
 
             <div class="row text-center mt-2">
               <div class="col">
+                <div class="" style="width:15px;height:15px;background:">
+
+                </div>
                   <input type="radio" value="Disponible" name="opcion" onclick="filtroDisponible()"/><br />
                 <label for="" class="mx-2"> Disponible </label>
               </div>
@@ -61,26 +64,30 @@
               <input type="radio" value="A" name="opcion" onclick="filtroCitaPorInternet()"/><br />
                 <label for="">Cita por internet</label>
               </div>
-              {{-- <div class="col">
-                  <input type="radio" value="A" name="opcion" onclick="filtrar('Cita por internet')"/><br />
-                <label for="">Confirmada con paciente</label>
-              </div> --}}
+              <div class="col">
+                  <input type="radio" value="A" name="opcion" onclick="pre_pagada()"/><br />
+                <label for="">Pre-pagada</label>
+              </div>
               {{-- <div class="col">
                   <input type="radio" value="A" name="opcion" onclick="filtrar('Cita por internet')"/><br />
                 <label for="">Paciente valorado</label>
               </div> --}}
               <div class="col">
-                <input type="radio" value="A" name="opcion" onclick="CerradaYCobrada()"/><br />
-                <label for="">Cita cerrada y cobrada</label>
+                <input type="radio" value="A" name="opcion" onclick="CerradaYCobrada()"/><br/>
+                <label for="">Cerrada Y Cobrada</label>
               </div>
               <div class="col">
                   <input type="radio" value="A" name="opcion" onclick="PendientePorCobrar()"/><br />
-                <label for="">Pendiente por cobrar o aseguradora</label>
+                <label for="">Pendiente por cobrar</label>
               </div>
               <div class="col">
-                <input type="radio" value="A" name="opcion" onclick="FiltroPacienteCancelo()"/><br />
-                <label for="">Paciente cancelo</label>
+                  <input type="radio" value="A" name="opcion" onclick="Aseguradora()"/><br />
+                <label for="">Aseguradora</label>
               </div>
+              {{-- <div class="col">
+                  <input type="radio" value="A" name="opcion" onclick="PendientePorCobrar()"/><br />
+                <label for="">Confirmada con Paciente</label>
+              </div> --}}
             </div>
 
 
@@ -313,20 +320,19 @@
                   <label for="" class="label-title ">Agendar Evento Personal</label>
                 </div>
 
-                  {!!Form::open(['route'=>'medico_diary.store','method'=>'POST'])!!}
-                <input class="form-control my-2" type="text" placeholder="Titulo" id="title2">
-                {!!Form::select('title',['Ambulatoria'=>'Ambulatoria','Externa o a Domicilio'=>'Externa o a Domicilio','Urgencias'=>'Urgencias','Cita por Internet'=>'Cita por Internet'],null,['class'=>'form-control','id'=>'eventType2','Tipo de Evento'=>'Tipo de Cita'])!!}
-                <input class="form-control my-2" type="text" placeholder="Mensaje" id="eventType2">
+                  {!!Form::open(['route'=>'event_personal_store','method'=>'POST','id'=>'form_event','name'=>'form_event'])!!}
+                  {!!Form::hidden('medico_id',$medico->id)!!}
+                {!!Form::select('title',['Ausente'=>'Ausente'],null,['class'=>'form-control','id'=>'title6','Tipo de Evento'=>'Tipo de Cita'])!!}
 
-
-                <input class="form-control my-2" type="text" placeholder="Descripción (Opcional)" id="description2">
-                <input class="form-control my-2" type="text" placeholder="precio (Opcional)" id="price2">
+                <input class="form-control my-2" type="text" placeholder="Descripción (Opcional)" id="description6" name="descripti9oon">
+                <label for="" class="mt-2 font-title">Datos de Inicio</label>
                 <div class="row">
+
                   <div class="col-4 font-title">
-                    inicio:
+                    Fecha
                   </div>
                     <div class="col-8">
-                       {!!Form::date('date_start',null,['class'=>'form-control','id'=>'date_start2'])!!}
+                      {!!Form::date('date_start',null,['class'=>'form-control','id'=>'date_start2'])!!}
                     </div>
                 </div>
                 <div class="row mt-1">
@@ -335,36 +341,26 @@
 
                   </div>
                   <div class="form-inline">
-                    {!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourStart2','placeholder'=>'--'])!!}
+                    {!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23'],null,['class'=>'form-control','id'=>'hourStart2','placeholder'=>'--'])!!}
 
-                      {!!Form::select('minsStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsStart2','placeholder'=>'--'])!!}
+                      {!!Form::select('minsStart',['00'=>'00','15'=>'15','30'=>'30','45'=>'45','59'=>'59'],null,['class'=>'form-control','id'=>'minsStart2','placeholder'=>'--'])!!}
 
                       {{-- {!!Form::select('startFormatHour',['am'=>'am','pm'=>'pm'],null,['id'=>'startFormatHour3','class'=>'form-control  mb-1'])!!} --}}
                   </div>
 
                 </div>
-                <label for="" class="mt-2 font-title">Datos de Culminacion(opcional)</label>
-                <div class="row">
-                  <div class="col-4">
-                    fecha:
-                  </div>
-                    <div class="col-8">
+                <label for="" class="mt-2 font-title">Datos de Culminacion</label>
 
-                       {!!Form::date('date_end',null,['class'=>'form-control','id'=>'date_end3'])!!}
-                    </div>
-                </div>
                 <div class="row mt-1">
 
-                  <div class="col-3">
+                  <div class="col-4 font-title">
                     Hora
-
                   </div>
                   <div class="form-inline">
-                    {!!Form::select('hourEnd',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourEnd2','placeholder'=>'--'])!!}
+                    {!!Form::select('hourEnd',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23'],null,['class'=>'form-control','id'=>'hourEnd2','placeholder'=>'--'])!!}
 
-                      {!!Form::select('minsEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],null,['class'=>'form-control','id'=>'minsEnd2','placeholder'=>'--'])!!}
+                      {!!Form::select('minsEnd',['00'=>'00','15'=>'15','30'=>'30','45'=>'45','59'=>'59'],null,['class'=>'form-control','id'=>'minsEnd2','placeholder'=>'--'])!!}
 
-                      {{-- {!!Form::select('endformatHour',['am'=>'am','pm'=>'pm'],null,['id'=>'endFormatHour2','class'=>'form-control  mb-1'])!!} --}}
                   </div>
 
                 </div>
@@ -385,7 +381,8 @@
 
                   <div class="col-lg-6">
                     @if($countEventSchedule != 0)
-                    <button onclick="store_event()"type="button" class="btn btn-config-blue">Guardar</button>
+                      <button type="submit" name="button" class="btn btn-config-blue">Guardars</button>
+                    {{-- <button onclick="store_event()"type="button" class="btn btn-config-blue">Guardar</button> --}}
                     @else
                     <button onclick=""type="button" class="btn btn-config-blue" disabled>Guardar</button>
                     @endif
@@ -447,6 +444,11 @@
 
         <h5 class="font-title-grey">Mi Agenda</h5>
         <p>El Panel mi Agenda le permite organizar sus eventos, y filtrarlos segun su tipo, tambien puede editar los eventos creados previamente; al hacer click sobre ellos se abrira una ventana que contendra la informacion de los mismos, en esta ventana podra modificar los datos del evento seleccionado, o eliminar el evento por completo.</p>
+
+        <h5 class="font-title-grey">Horario</h5>
+        <p>Las Horas disponibles del médico se marcan en el calendario con el color verde claro.</p>
+        <div class="" style="width:40px;height:40px; border:solid black 1px;background:rgba(162, 231, 50, 0.64);border-radius:5px"></div>
+        <p>El Horario de trabajo puede ser modificado, al presionar el boton editar de la tabla "Horario de trabajo" justo debado del calendario.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
@@ -512,15 +514,6 @@
     // function calendario(){
           $('#calendar').fullCalendar({
 
-            customButtons: {
-            myCustomButton: {
-            text: 'Pantalla Completa',
-            click: function() {
-          window.location.href = '{{route("medico_diary_fullscreen",$medico->id)}}';
-          }
-        }
-      },
-
         header: {
           left: 'prev,next today myCustomButton',
           center: 'title',
@@ -539,6 +532,9 @@
         minTime:min_hour,
         hiddenDays: [lunes,martes,miercoles,jueves,viernes,sabado,domingo],
 
+        slotDuration: '00:15:00',
+        slotLabelInterval: 15,
+        slotLabelFormat: 'h(:mm)a',
 
         select:function(start,end){
          start = moment(start);
@@ -590,6 +586,7 @@
             $('#state').val(event.state);
             $('#descriptionUp4').val(event.description);
             $('#eventTypeUp1').val(event.eventType);
+            $('#payment_method7').val(event.payment_method);
             $('#dateStartUp1').val(start);
 
             $('#hourStartUp1').val(hour_start);
@@ -607,10 +604,12 @@
             // $('#ModalEdit').modal('show');
         },
         eventRender: function (event, element, view) {
+          if(event.title == 'Ausente'){
+            element.find('.fc-title').append('<div class="hr-line-solid-no-margin"></div><span style="font-size: 10px">'+event.description+'</span>');
+          }else{
+            element.find('.fc-title').append('<div class="hr-line-solid-no-margin"></div><span style="font-size: 10px">'+event.namePatient+'</span><span style="font-size: 10px"><p style="font-size: 10px">'+event.description+'</p></span>');
+          }
 
-
-
-          element.find('.fc-title').append('<div class="hr-line-solid-no-margin"></div><span style="font-size: 10px">'+event.namePatient+'</span><span style="font-size: 10px"><p style="font-size: 10px">'+event.description+'</p></span>');
         },
         //       businessHours:
         // {
@@ -704,7 +703,8 @@
     }
 
 
-    function store_event(){
+
+      $('#form_event').submit(function() {
 
       title = $('#title2').val();
       eventType = $('#eventType2').val();
@@ -718,18 +718,13 @@
       hourEnd = $('#hourEnd2').val();
       minsEnd = $('#minsEnd2').val();
       endFormatHour = $('#endFormatHour2').val();
-
       medico_id = "{{$medico->id}}";
-
-
-
-      route = "{{route('medico_diary.store')}}";
       errormsj = '';
       $.ajax({
        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
        type:'post',
-       url:route,
-       data:{title:title,eventType:eventType,description:description,price:price,date_start:date_start,hourStart:hourStart,minsStart:minsStart,startFormatHour:startFormatHour,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,endFormatHour:endFormatHour,medico_id:medico_id},
+       url: $(this).attr('action'),
+       data: $(this).serialize(),
        error:function(error){
          console.log(error);
         $.each(error.responseJSON.errors, function(index, val){
@@ -740,6 +735,7 @@
         $('#alert_success').fadeOut();
 
         console.log(errormsj);
+
       },
       success:function(result){
         if(result == 'fuera del horario'){
@@ -757,8 +753,10 @@
 
       }
     });
+      return false;
+    });
 
-    }
+
 
     function close_edit(){
       $('#card_edit').fadeOut();
@@ -774,6 +772,7 @@
       title = $('#titleUp1').val();
       eventType = $('#eventTypeUp1').val();
       description = $('#descriptionUp4').val();
+      payment_method = $('#payment_method7').val();
       price = $('#priceUp1').val();
       date_start = $('#dateStartUp1').val();
       hourStart = $('#hourStartUp1').val();
@@ -784,10 +783,8 @@
       minsEnd = $('#minsEndUp1').val();
       endFormatHour = $('#endFormatHour2').val();
       state = $('#state').val();
-
       medico_id = "{{$medico->id}}";
       event_id = $('#event_id2').val();
-
 
       route = "{{route('update_event')}}";
       errormsj = '';
@@ -796,7 +793,7 @@
        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
        type:'post',
        url:route,
-       data:{title:title,eventType:eventType,description:description,price:price,date_start:date_start,hourStart:hourStart,minsStart:minsStart,startFormatHour:startFormatHour,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,endFormatHour:endFormatHour,medico_id:medico_id,event_id:event_id,state:state},
+       data:{title:title,eventType:eventType,description:description,price:price,date_start:date_start,hourStart:hourStart,minsStart:minsStart,startFormatHour:startFormatHour,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,endFormatHour:endFormatHour,medico_id:medico_id,event_id:event_id,state:state,payment_method:payment_method},
        error:function(error){
          $('#alert_carga5').fadeOut();
          $('#guardar5').attr("disabled", false);
@@ -875,30 +872,6 @@
 
 
 
-    function filtrar(filtro){
-      $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
-      test = 1;
-      route = '{{route('medico_diary_events2',$medico->id)}}';
-          $.ajax({
-           headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-           type:'post',
-           url:route,
-           data:{test:test},
-              error:function(error){
-                 console.log(error);
-              },
-              success:function(result){
-                $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                    if(value.eventType == 'Consulta Medica Importante' || value.rendering == 'background'){
-                        $("#calendar").fullCalendar('renderEvent', value, true);
-                    }
-                });
-
-          }
-          });
-
-      }
-
       function filtroDisponible(filtro){
         $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
         test = 1;
@@ -913,7 +886,7 @@
                 },
                 success:function(result){
                   $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                      if(value.state != 'Cancelada' & value.state != 'Cerrada y Cobrada'){
+                      if(value.state != 'Cancelada'){
                           $("#calendar").fullCalendar('renderEvent', value, true);
                       }
                   });
@@ -937,9 +910,11 @@
                   },
                   success:function(result){
                     $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                        if(value.eventType == 'Cita por Internet'){
+                      console.log(result);
+                        if(value.title == 'Cita por Internet' || value.rendering == 'background'){
                             $("#calendar").fullCalendar('renderEvent', value, true);
                         }
+
                     });
 
               }
@@ -962,7 +937,7 @@
                     },
                     success:function(result){
                       $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                          if(value.state == 'Cerrada y Cobrada'){
+                          if(value.state == 'Cerrada y Cobrada' || value.rendering == 'background' ){
                               $("#calendar").fullCalendar('renderEvent', value, true);
                           }
                       });
@@ -972,6 +947,29 @@
 
             }
 
+            function  pre_pagada(){
+              $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
+              test = 1;
+              route = '{{route('medico_diary_events2',$medico->id)}}';
+                  $.ajax({
+                   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                   type:'post',
+                   url:route,
+                   data:{test:test},
+                      error:function(error){
+                         console.log(error);
+                      },
+                      success:function(result){
+                        $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
+                            if(value.state == 'pre-pagada' || value.rendering == 'background' ){
+                                $("#calendar").fullCalendar('renderEvent', value, true);
+                            }
+                        });
+
+                  }
+                  });
+
+              }
 
 
 function  PendientePorCobrar(){
@@ -988,7 +986,7 @@ function  PendientePorCobrar(){
           },
           success:function(result){
             $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                if(value.state == 'Pendiente'){
+                if(value.state == 'Pendiente' || value.rendering == 'background'){
                     $("#calendar").fullCalendar('renderEvent', value, true);
                 }
             });
@@ -998,8 +996,7 @@ function  PendientePorCobrar(){
 
   }
 
-
-  function  FiltroPacienteCancelo(){
+  function  Aseguradora(){
     $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
     test = 1;
     route = '{{route('medico_diary_events2',$medico->id)}}';
@@ -1013,7 +1010,7 @@ function  PendientePorCobrar(){
             },
             success:function(result){
               $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                  if(value.state == 'Pagada'){
+                  if(value.state == 'Aseguradora' || value.rendering == 'background'){
                       $("#calendar").fullCalendar('renderEvent', value, true);
                   }
               });
@@ -1022,6 +1019,30 @@ function  PendientePorCobrar(){
         });
 
     }
+
+  // function  FiltroPacienteCancelo(){
+  //   $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
+  //   test = 1;
+  //   route = '{{route('medico_diary_events2',$medico->id)}}';
+  //       $.ajax({
+  //        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+  //        type:'post',
+  //        url:route,
+  //        data:{test:test},
+  //           error:function(error){
+  //              console.log(error);
+  //           },
+  //           success:function(result){
+  //             $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
+  //                 if(value.state == 'Pagada'){
+  //                     $("#calendar").fullCalendar('renderEvent', value, true);
+  //                 }
+  //             });
+  //
+  //       }
+  //       });
+  //
+  //   }
 
 
     function parpadeo(){

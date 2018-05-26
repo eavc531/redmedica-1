@@ -21,7 +21,6 @@ class CreateMedicosTable extends Migration
             $table->string('gender');
             $table->string('email',60);
             $table->string('password');
-
             $table->integer('medicalCenter_id')->unsigned()->nullable();
             $table->foreign('medicalCenter_id')->references('id')->on('medical_centers');
             $table->string('phone')->nullable();

@@ -60,8 +60,8 @@
   <div class="row">
     <div class="col-lg-4">
       <div class="form-group text-center">
-        <label for="" class="font-title">Fecha de Culminación</label>
-        {!!Form::date('date_End',null,['class'=>'form-control','id'=>'dateEndUp1'])!!}
+        <label for="" class="font-title">Tipo de Pago</label>
+        {!!Form::select('payment_method',['Normal'=>'Normal','Pre-pagada'=>'Pre-pagada','Aseguradora'=>'Aseguradora'],null,['class'=>'form-control','id'=>'payment_method7'])!!}
       </div>
     </div>
     <div class="col-lg-4 col-12 col-sm-5 m-sm-auto">
@@ -74,8 +74,8 @@
       </div>
     </div>
     <div class="col-4">
-      <label for="Estado" class="font-title">Estado:</label>
-      {{Form::select('state',['Pendiente'=>'Pendiente','Cancelada'=>'Cancelada','Pagada'=>'Pagada','Cerrada y Cobrada'=>'Cerrada y Cobrada'],null,['class'=>'form-control','id'=>'state'])}}
+      <label for="Estado" class="font-title">Estado del Pago:</label>
+      {{Form::select('state',['Pendiente'=>'Pendiente','Cancelada'=>'Cancelada','Pagada'=>'Pagada','Cerrada y Cobrada'=>'Cerrada y Cobrada','pre-pagada'=>'pre-pagada','Aseguradora'=>'Aseguradora'],null,['class'=>'form-control','id'=>'state'])}}
     </div>
   </div>
   <div class="row">

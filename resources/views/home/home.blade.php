@@ -7,8 +7,6 @@
   height: 800px;
 }
 
-
-
   /* a{
      cursor: pointer;
      } */
@@ -17,15 +15,6 @@
    @endsection
    @section('content')
 
-     <div class="row">
-       <div class="col-12">
-         <span class="fa fa-star checked"></span>
-         <span class="fa fa-star checked"></span>
-         <span class="fa fa-star checked"></span>
-         <span class="fa fa-star"></span>
-         <span class="fa fa-star"></span>
-       </div>
-     </div>
 
    @if(!isset(Auth::user()->id))
    <div class="row">
@@ -364,14 +353,12 @@
                     <p>Cédula: {{$medico['identification']}}</p>
                     <span>Especialidad:</span> <a href="#" class="outstanding mr-2"> {{$medico['specialty']}}</a>
                     <div class="star-profile">
-                      <ul class="rating mt-1">
+                      <div class="form-inline">
+                        Calificación:
+                        <span class="ml-2 mr-2">@include('home.star_rate')</span>
+                           <span> de "{{$medico['votes']}}" voto(s).</span>
+                      </div>
 
-                        <li class="star container-franchise__star li-config">&starf;</li>
-                        <li class="star container-franchise__star li-config">&starf;</li>
-                        <li class="star container-franchise__star li-config">&starf;</li>
-                        <li class="star container-franchise__star li-config">&starf;</li>
-                        <li class="star container-franchise__star li-config">&starf;</li>
-                      </ul>
                     </div>
                     <div class="row mt-3 align-self-end">
                       <div class="col-12">

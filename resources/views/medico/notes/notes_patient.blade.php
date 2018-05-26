@@ -39,9 +39,11 @@
 
               <li>{{$note->title}} {{$note->created_at}}
                 @if($note->title == 'Nota Médica Inicial')
-                <a href="{{route('note_ini_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+                <a href="{{route('note_ini_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn btn-warning">Ver/editar</a>
+                  <a href="{{route('view_preview',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn btn-info">Vista Previa/Descargar</a>
                 @elseif($note->title == 'Nota Médica de Evolucion')
-                <a href="{{route('note_evo_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
+                <a href="{{route('note_evo_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn btn-warning">Ver/editar</a>
+                  <a href="{{route('view_preview',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn btn-info">Vista Previa/Descargar</a>
                 @elseif($note->title == 'Nota de Interconsulta')
                 <a href="{{route('note_inter_edit',['medico_id'=>$medico->id,'patient_id'=>$patient->id,'note_id'=>$note->id])}}" class="btn">Ver/editar</a>
 

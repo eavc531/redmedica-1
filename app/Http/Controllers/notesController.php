@@ -10,6 +10,26 @@ use App\element_note;
 
 class notesController extends Controller
 {
+  public function view_preview($m_id,$p_id,$n_id){
+    $patient = patient::find($p_id);
+    $medico = medico::find($m_id);
+    $note = note::find($n_id);
+    $data_note = 0;
+
+    if($note->title == 'Nota Médica Inicial'){
+        return view('medico.notes.view_preview.inicial',compact('patient','medico','note','data_note'));
+    }elseif($note->title == 'Nota Médica de Evolucion'){
+      return view('medico.notes.view_preview.evolucion',compact('patient','medico','note','data_note'));
+    }elseif($note->title == 'Nota de Interconsulta'){
+      return view('medico.notes.view_preview.interconsulta',compact('patient','medico','note','data_note'));
+    }elseif($note->title == 'Nota médica de Urgencias'){
+      return view('medico.notes.view_preview.urgencias',compact('patient','medico','note','data_note'));
+    }elseif($note->title == 'Nota médica de Egreso'){
+      return view('medico.notes.view_preview.egreso',compact('patient','medico','note','data_note'));
+    }elseif($note->title == 'Nota de Referencia o traslado'){
+      return view('medico.notes.view_preview.referencia',compact('patient','medico','note','data_note'));
+    }
+  }
 
   public function note_referencia_create($m_id,$p_id,$n_id){
     $patient = patient::find($p_id);

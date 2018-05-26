@@ -163,6 +163,7 @@ return [
          Zizaco\Entrust\EntrustServiceProvider::class,
          Spatie\Geocoder\GeocoderServiceProvider::class,
          Stevebauman\Location\LocationServiceProvider::class,
+         // Barryvdh\DomPDF\ServiceProvider::class,
          //Midnite81\GeoLocation\GeoLocationServiceProvider::class,
          //este ultimo verificar su uso
     ],
@@ -218,6 +219,7 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Geocoder' => Spatie\Geocoder\Facades\Geocoder::class,
         'Location' => Stevebauman\Location\Facades\Location::class,
+        // 'PDF' => Barryvdh\DomPDF\Facade::class,
         //'GeoLocation' => Midnite81\Geolocation\Facades\GeoLocation::class,
         //revisar est ult
     ],

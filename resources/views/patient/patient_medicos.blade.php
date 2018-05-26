@@ -62,7 +62,7 @@
          @endif
          <a href="{{route('delete_patient_doctors',$medico['patients_doctor_id'])}}" class="btn btn-danger mr-2" onclick="return confirm('¿Esta Segur@ de Querer Eliminar este Médico de su lista de Médicos?')" data-toggle="tooltip" data-html="true" title="<em>Eliminar</em>"><i class="fas fa-trash mr-0"></i></a>
        </div>
-       <a href="{{route('show_calification_medic',$medico['id'])}}">Calificacion</a>
+       <a href="{{route('calification_medic',$medico['id'])}}">Calificacion</a>
 <!--        <div class="form-group">
 
        </div>

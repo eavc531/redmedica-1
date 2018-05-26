@@ -29,7 +29,8 @@
      </div>
      <div class="col-12 col-sm-5 col-lg-5">
       <div class="card-body p-2">
-       <h5 class="card-title font-title">{{$patient['name']}}</h5>
+       <h5 class="card-title font-title">
+         <a href="{{route('patient_profile',$patient['id'])}}">{{$patient['name']}}</h5></a>
        <div class="form-inline">
          <label for="" class="font-title-grey">Cédula:</label> <span class="">{{$patient['identification']}}</span>
        </div>

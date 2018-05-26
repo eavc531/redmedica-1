@@ -44,7 +44,7 @@
                     <label>Sexo: {{$patient->gender}}</label>
                   </div>
                   <div class="col-lg-6 col-12">
-                    <label>Tlf: {{$patient->phone}}</label>
+                    <label>Tlf: {{$patient->phone1}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -59,7 +59,7 @@
             </div>
             <div class="col-lg-12 col-12 mt-3">
               <a href="{{route("resend_mail_confirm_patient",$patient->id)}}" class="btn btn-primary">Reenviar Correo de Confirmación</a>
-              
+
              </a>
            </div>
          </div>

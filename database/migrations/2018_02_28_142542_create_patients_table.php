@@ -38,6 +38,7 @@ class CreatePatientsTable extends Migration
             $table->string('number_int')->nullable();
             $table->string('latitud')->nullable();
             $table->string('longitud')->nullable();
+            $table->string('photo_profile')->nullable();
             $table->timestamps();
         });
     }

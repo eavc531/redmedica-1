@@ -2,7 +2,11 @@
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('fullcalendar/fullcalendar.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('fullcalendar\tema_boostrap_descargado\tema_boostrap.css')}}">
-
+<style media="screen">
+.fc-event {
+    border-width: 1px;
+}
+</style>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.css"> --}}
 {{-- <link href='../fullcalendar.print.min.css' rel='stylesheet' media='print' /> --}}
@@ -39,7 +43,8 @@
       <div id="alert_success_1" class="alert alert-success alert-dismissible fade show text-left" role="alert" style="display:none">
        <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
        <p id="text_success_1" style="font-size:12px"></p>
-       <a href="{{route('home')}}" class="btn btn-outline-primary">volver a inicio</a>
+       {{-- <a href="{{route('home')}}" class="btn btn-outline-primary">volver a inicio</a> --}}
+       <a href="{{route('patient_appointments',Auth::user()->patient->id)}}" class="btn btn-outline-primary">Ver mis Citas Pendienes</a>
 
        {{--<a class="btn btn-outline-success" href="{{route('patient_appointments',Auth::user()->patient->id)}}">Tus Citas Pendientes</a>--}}
      </div>
@@ -91,11 +96,13 @@
           <label for="" class="label-title ">Agendar Cita</label>
         </div>
 
-
+        <label for="" class="mt-2 font-title">Tipo de Evento</label>
+        {!!Form::select('title',['Ambulatoria'=>'Ambulatoria','Externa o a Domicilio'=>'Externa o a Domicilio','Urgencias'=>'Urgencias','Cita por Internet'=>'Cita por Internet'],null,['class'=>'form-control','id'=>'eventType2','placeholder'=>'seleccionar'])!!}
+        <label for="" class="mt-2 font-title">Metodo de Pago</label>
+        {!!Form::select('payment_method',['Normal'=>'Normal','Aseguradora'=>'Aseguradora'],null,['class'=>'form-control','id'=>'payment_method6'])!!}
         {{-- <input class="form-control my-2" type="text" placeholder="Titulo" id="title2"> --}}
 
-        {!!Form::select('title',['Ambulatoria'=>'Ambulatoria','Externa o a Domicilio'=>'Externa o a Domicilio','Urgencias'=>'Urgencias','Cita por Internet'=>'Cita por Internet'],null,['class'=>'form-control','id'=>'eventType2','placeholder'=>'Tipo de Cita'])!!}
-        <input class="form-control my-2" type="text" placeholder="Mensaje" id="description2">
+
         {{-- <input class="form-control my-2" type="text" placeholder="precio (Opcional)" id="price2"> --}}
         <div class="row">
           <div class="col-lg-4 col-sm-12 font-title">
@@ -269,15 +276,7 @@
 
     // function calendario(){
       $('#calendar').fullCalendar({
-        height: 550,
-        customButtons: {
-          myCustomButton: {
-            text: 'Pantalla Completa',
-            click: function() {
-              window.location.href = '{{route("medico_diary_fullscreen",$medico->id)}}';
-            }
-          }
-        },
+
 
         header: {
           left: 'prev,next today myCustomButton',
@@ -297,6 +296,9 @@
         minTime:min_hour,
         hiddenDays: [lunes,martes,miercoles,jueves,viernes,sabado,domingo],
 
+        slotDuration: '00:15:00',
+        slotLabelInterval: 15,
+        slotLabelFormat: 'h(:mm)a',
 
         select:function(start,end){
          start = moment(start);
@@ -431,7 +433,7 @@
       $('#btn_agendar').attr("disabled", true);
       $('#alert_carga').fadeIn();
       title = $('#eventType2').val();
-      description = $('#description2').val();
+      payment_method = $('#payment_method6').val();
       date_start = $('#date_start2').val();
       hourStart = $('#hourStart2').val();
       minsStart = $('#minsStart2').val();
@@ -446,7 +448,7 @@
        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
        type:'post',
        url:route,
-       data:{title:title,description:description,date_start:date_start,hourStart:hourStart,minsStart:minsStart,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,medico_id:medico_id,patient_id:patient_id},
+       data:{title:title,payment_method:payment_method,date_start:date_start,hourStart:hourStart,minsStart:minsStart,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,medico_id:medico_id,patient_id:patient_id},
        error:function(error){
           $('#btn_agendar').attr("disabled", false);
           $('#alert_carga').fadeOut();
@@ -469,7 +471,10 @@
           $('#text_error').html('Imposible crear evento fuera del horario establecido');
           $('#alert_error').fadeIn();
           $('#alert_success').fadeOut();
-
+        }else if(result == 'ya existe'){
+          $('#text_error').html('Imposible crear evento,Ya existe un Evento en las horas seleccionadas, por favor compruebe la fecha en el calendario e intente nuevamente');
+          $('#alert_error').fadeIn();
+          $('#alert_success').fadeOut();
         }else{
           console.log(result);
           $('#text_success').html('Guardado con Exito');

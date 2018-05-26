@@ -16,6 +16,7 @@ use App\note;
 use Geocoder;
 use Carbon\Carbon;
 use Auth;
+use App\rate_medic;
 use App\photo;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -26,7 +27,97 @@ class patientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function qualify_medic(Request $request){
+       $event = event::find($request->event_id);
 
+       if($event->status == 'calificada'){
+         return back()->with('success','Solo puedes calificar al Médico una vez por Cita.');
+       }
+       if(\Carbon\Carbon::now() < \Carbon\Carbon::parse($event->end)){
+         return back()->with('success','No puedes calificar la Cita hasta despues de su fecha de culminacion.');
+       }
+
+       $you_rate = rate_medic::where('patient_id', $request->patient_id)->where('medico_id', $request->medico_id)->first();
+       $count_rate = rate_medic::where('patient_id', $request->patient_id)->where('medico_id', $request->medico_id)->count();
+
+         $medico = medico::find($request->medico_id);
+         $patient = medico::find($request->patient_id);
+
+         return view('patient.patient_rate_medic',compact('you_rate','medico','patient','count_rate','event'));
+
+     }
+
+     public function store_rate_comentary(Request $request)
+     {
+       $request->validate([
+         'rate'=>'required'
+       ]);
+
+       $calification = '';
+       switch ($request->rate) {
+    case  Null:
+        $calification = 'Neutral';
+        break;
+    case 1:
+        $calification = 'Pesimo';
+        break;
+    case 2:
+        $calification = 'Malo';
+        break;
+    case 3:
+        $calification = 'Regular';
+        break;
+    case 4:
+        $calification = 'Buena';
+        break;
+    case 5:
+        $calification = 'Excelente';
+        break;
+
+      }
+
+      $rate_medic1 = rate_medic::where('patient_id',$request->patient_id)->where('medico_id',$request->medico_id)->count();
+      $rate_medic2 = rate_medic::where('patient_id',$request->patient_id)->where('medico_id',$request->medico_id)->first();
+      if($rate_medic1 != 0){
+
+        $rate_medic2->delete();
+      }
+
+      $rate_medic = new rate_medic;
+      $rate_medic->rate = $request->rate;
+      $rate_medic->comentary = $request->comentary;
+      $rate_medic->patient_id = $request->patient_id;
+      $rate_medic->medico_id = $request->medico_id;
+      $rate_medic->save();
+
+      $rate_medicT = rate_medic::where('medico_id',$request->medico_id)->get();
+      $count = rate_medic::where('medico_id',$request->medico_id)->count();
+
+      $suma = 0;
+       foreach ($rate_medicT as $value) {
+         $suma = $suma + $value->rate;
+       }
+
+        $medico = medico::find($request->medico_id);
+        $medico->calification = $suma / $count;
+        $medico->votes = $count;
+        $medico->save();
+
+        $event = event::find($request->event_id);
+        $event->status = 'calificada';
+        $event->save();
+
+       return redirect()->route('calification_medic',$medico->id)->with('success', 'Haz calificado el servicio del medico: '.$medico->name.' '.$medico->lastName.' como un servicio: '.$calification);
+     }
+
+
+     public function patient_rate_medic($p_id,$m_id){
+       $you_rate = rate_medic::where('patient_id', $p_id)->first();
+       $rate_medic = rate_medic::paginate(10);
+       $medico = medico::find($m_id);
+       $patient = medico::find($p_id);
+       return view('patient.patient_rate_medic',compact('you_rate','rate_medic','medico','patient'));
+     }
 
 
        public function patient_add_medic($id)
@@ -66,7 +157,9 @@ class patientController extends Controller
      public function patient_profile($id)
      {
          $patient = patient::find($id);
-         return view('patient.profile')->with('patient', $patient);
+         $photo = photo::where('patient_id',$id)->where('type', 'perfil')->first();
+
+         return view('patient.profile')->with('patient', $patient)->with('photo', $photo);
      }
 
     public function index()
@@ -92,7 +185,7 @@ class patientController extends Controller
                                   ->where('patients.id',$id)
                                   ->orderBy('patients_doctors.created_at','desc')
                                   ->get();
-
+       $data = [];
       foreach ($medicos as $medico) {
               $photo = photo::where('medico_id',$medico->id)->where('type', 'perfil')->first();
               //dd($photo);
@@ -101,10 +194,11 @@ class patientController extends Controller
             }else{
               $image = $photo->path;
             }
+
             $data[$medico->id] = ['identification'=>$medico->identification,'specialty'=>$medico->specialty,'id'=>$medico->id,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'patients_doctor_id'=>$medico->patients_doctor_id];
 
-      }
 
+      }
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $medicos = patientController::paginate_custom($data,$currentPage);
 
@@ -122,57 +216,7 @@ class patientController extends Controller
        return $medicosCerc;
      }
 
-     public function store_rate_comentary(Request $request)
-     {
 
-       $request->validate([
-         'score'=>'required'
-       ]);
-
-       $calification = '';
-       switch ($request->score) {
-    case  Null:
-        $calification = 'Neutral';
-        break;
-    case 1:
-        $calification = 'Muy Mala';
-        break;
-    case 2:
-        $calification = 'Mala';
-        break;
-    case 3:
-        $calification = 'Regular';
-        break;
-    case 4:
-        $calification = 'Buena';
-        break;
-    case 5:
-        $calification = 'Excelente';
-        break;
-
-      }
-
-       $event = event::find($request->event_id);
-       $event->score = $request->score;
-       $event->calification = $calification;
-       $event->comentary = $request->comentary;
-       $event->save();
-
-       // $exist_votepatient = event::where('medico_id',$event->medico_id)->whereNotNull('score')->where('patient_id', $event->patient_id)->count();
-       $event2 = event::where('medico_id',$event->medico_id)->whereNotNull('score')->get();
-       $count = event::where('medico_id',$event->medico_id)->whereNotNull('score')->count();
-       $suma = 0;
-       foreach ($event2 as $key => $value) {
-         $suma = $suma + $value->score;
-       }
-        $medico = medico::find($event->medico_id);
-        $medico->calification = $suma / $count;
-        $medico->votes = $count;
-        $medico->save();
-
-       //$medico =
-       return back()->with('success', 'Se ha guardado de forma exitosa, la calificación de la Cita.');
-     }
 
      public function rate_appointment($id)
      {
@@ -208,6 +252,12 @@ class patientController extends Controller
     public function create()
     {
         return view('patient.create');
+    }
+
+    public function patient_edit_data($id)
+    {
+      $patient = patient::find($id);
+        return view('patient.patient_edit_data')->with('patient', $patient);
     }
 
     /**
@@ -319,23 +369,6 @@ class patientController extends Controller
        return redirect()->route('patient.index')->with('success', 'Se ha registrado un nuevo Paciente de Forma Satisfactoria');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
       $patient = patient::find($id);
@@ -349,35 +382,25 @@ class patientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function patient_update(Request $request, $id)
     {
-//esTO SE CREO PARA Q LO HICERA EL ADMIN == CONFIRMAR PARA borrar
+
         $request->validate([
-          'name'=>'required',
-          'lastName'=>'required',
-          'email'=>'required',
           'identification'=>'required',
           'gender'=>'required',
           'name'=>'required',
           'lastName'=>'required',
+          'name'=>'required',
+          'lastName'=>'required',
+          'birthdate'=>'required',
           'phone1'=>'required|numeric',
-          'phone2'=>'numeric|nullable',
-          'password'=>'nullable',
 
         ]);
 
       $user = User::where('patient_id',$id)->first();
-
       $patient = patient::find($id);
       $name = $patient->name.' '.$patient->lastName;
 
-      if($request->email != $user->email){
-        $request->validate([
-          'email'=>'required|unique:users|unique:patients'
-
-        ]);
-
-      }
 
       if($request->identification != $patient->identification){
         $request->validate([
@@ -385,23 +408,16 @@ class patientController extends Controller
         ]);
 
       }
-
+      $age =  \Carbon\Carbon::parse($request->birthdate)->diffInYears(\Carbon\Carbon::now());
         $patient->fill($request->all(),['except'=>['email']]);
-
+        $patient->age = $age;
         $patient->save();
-
-
         $user->name = $request->name;
 
-        if($request->password != Null){
-            $user->password = bcrypt($request->password);
-        }
-
-          $user->email = $request->email;
         $user->save();
 
 
-        return redirect()->route('patient.index')->with('success', 'Los datos del Paciente: '.$name.' han sido Actualizados.');
+        return redirect()->route('patient_profile',$id)->with('success', 'Los datos han sido actualizados de forma exitosa.');
     }
 
     /**
@@ -450,11 +466,6 @@ class patientController extends Controller
          }
 
            $Coordinates = Geocoder::getCoordinatesForAddress($request->country.','.$request->city.','.$request->colony.','.$request->street.','.$request->number_ext);
-
-          // $state = state::where('name',$request->state)->first();
-          //
-          // $city = city::where('name',$request->city)->first();
-
           $patient = patient::find($id);
           // if($medico->stateConfirm != 'data_primordial_complete' and $medico->stateConfirm != 'complete'){
           //   return redirect()->route('data_primordial_medico',$id)->with('warning', 'Debes rellenar los siguietnes Datos para Poder acceder a otros paneles de tu cuenta.');
@@ -479,7 +490,7 @@ class patientController extends Controller
 
           $patient->save();
 
-          return back();
+          return redirect()->route('patient_profile',$patient->id)->with('success', 'Datos de dirección guardados de forma satisfactoria');
 
 
     }
@@ -488,5 +499,57 @@ class patientController extends Controller
       $medico = medico::find($id);
 
       return view('patient.stipulate_appointment',compact('medico'));
+    }
+
+    public function store_rate_comentary2(Request $request)
+    {
+
+      $request->validate([
+        'score'=>'required'
+      ]);
+
+      $calification = '';
+      switch ($request->score) {
+   case  Null:
+       $calification = 'Neutral';
+       break;
+   case 1:
+       $calification = 'Muy Mala';
+       break;
+   case 2:
+       $calification = 'Mala';
+       break;
+   case 3:
+       $calification = 'Regular';
+       break;
+   case 4:
+       $calification = 'Buena';
+       break;
+   case 5:
+       $calification = 'Excelente';
+       break;
+
+     }
+
+      // $event = event::find($request->event_id);
+      // $event->score = $request->score;
+      // $event->calification = $calification;
+      // $event->comentary = $request->comentary;
+      // $event->save();
+
+      // $exist_votepatient = event::where('medico_id',$event->medico_id)->whereNotNull('score')->where('patient_id', $event->patient_id)->count();
+      $event2 = event::where('medico_id',$event->medico_id)->whereNotNull('score')->get();
+      $count = event::where('medico_id',$event->medico_id)->whereNotNull('score')->count();
+      $suma = 0;
+      foreach ($event2 as $key => $value) {
+        $suma = $suma + $value->score;
+      }
+       $medico = medico::find($event->medico_id);
+       $medico->calification = $suma / $count;
+       $medico->votes = $count;
+       $medico->save();
+
+      //$medico =
+      return back()->with('success', 'Se ha guardado de forma exitosa, la calificación de la Cita.');
     }
 }

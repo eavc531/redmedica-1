@@ -75,12 +75,13 @@
     </div>
   </div>
   <div class="row">
-    {{-- @if($patient->stateConfirm == 'complete')
+    @if($patient->stateConfirm == 'complete')
     <div class="col-lg-6 col-12 mt-2">
-      <a href="{{route('patient.edit',$patient->id)}}" class="btn btn-primary btn-block">Cancelar</a>
+      <a href="{{route('patient_profile',$patient->id)}}" class="btn btn-primary btn-block">Cancelar</a>
     </div>
-    @endif --}}
+    @endif
     <div class="col-lg-6 col-12 mt-2">
+
       <button type="submit" class="btn-config-green btn btn-block">Guardar</button>
     </div>
   </div>

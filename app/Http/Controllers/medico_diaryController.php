@@ -19,10 +19,99 @@ class medico_diaryController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     public function event_personal_store(Request $request)
+     {
+
+       $request->validate([
+         'title'=>'required',
+         'date_start'=>'required',
+         'hourStart'=>'required',
+         'minsStart'=>'required',
+         'hourEnd'=>'required',
+         'minsEnd'=>'required',
+       ]);
+
+       $hour_start1 = $request->hourStart.':'.$request->minsStart;
+       $hour_end1 = $request->hourEnd.':'.$request->minsEnd;
+
+       $hourStart = $request->hourStart.':'.$request->minsStart.':'.'00';
+       $start = $request->date_start.' '.$request->hourStart.':'.$request->minsStart.':'.'00';
+
+
+       if($request->date_End == Null){
+         $date_End = $request->date_start;
+       }else{
+         $date_End = $request->date_End;
+       }
+
+       if($request->hourEnd == Null or $request->minsEnd == Null){
+         $hourEnd = $request->hourStart.':'.$request->minsStart.':'.'00';
+         $end = $date_End.' '.$request->hourStart.':'.$request->minsStart.':'.'00';
+       }else{
+         $end = $date_End.' '.$request->hourEnd.':'.$request->minsEnd.':'.'00';
+         $hourEnd = $request->hourEnd.':'.$request->minsEnd.':'.'00';
+       }
+
+       $day1 = \Carbon\Carbon::parse($start)->dayOfWeek;
+
+       $hour_start2 = \Carbon\Carbon::parse($start)->format('H:i');
+       $hour_end2 = \Carbon\Carbon::parse($end)->format('H:i');
+
+
+       if($day1 == 1){
+         $day = 'lunes';
+       }
+       if($day1 == 2){
+         $day = 'martes';
+       }
+       if($day1 == 3){
+         $day = 'miercoles';
+       }
+       if($day1 == 4){
+         $day = 'jueves';
+       }
+       if($day1 == 5){
+         $day = 'viernes';
+       }
+       if($day1 == 6){
+         $day = 'sabado';
+       }
+       if($day1 == 0){
+         $day = 'domingo';
+       }
+
+       $comprobar_horario = event::where('medico_id',$request->medico_id)->where('title', $day)->where('rendering', 'background')->where('start','<=',$hour_start2)->where('end','>=',$hour_start2)->count();
+
+       $comprobar_horario2 = event::where('medico_id',$request->medico_id)->where('title', $day)->where('rendering', 'background')->where('start','<=',$hour_end2)->where('end','>=',$hour_end2)->count();
+
+       if($comprobar_horario == 0 or $comprobar_horario2 == 0){
+         return response()->json('fuera de horario');
+       }
+
+       $comprobar_disponibilidad = event::where('medico_id',$request->medico_id)->whereNull('rendering')->where('start','<=',$start)->where('end','>',$start)->count();
+
+      $comprobar_disponibilidad2 = event::where('medico_id',$request->medico_id)->whereNull('rendering')->where('start','<',$end)->where('end','>=',$end)->count();
+
+      if($comprobar_disponibilidad != 0 or $comprobar_disponibilidad2 != 0){
+        return response()->json('ya existe');
+      }
+
+       $event = new event;
+       $event->medico_id = $request->medico_id;
+       $event->title = $request->title;
+       $event->description = $request->description;
+       $event->start = $start;
+       $event->end = $end;
+       $event->save();
+
+       return response()->json('okxxx');
+
+     }
      public function medico_app_details($id,$p_id,$app_id){
          $app = event::find($app_id);
        return view('medico.medico_app_details',compact('app'));
      }
+
      public function edit_appointment($id,$p_id,$app_id)
     {
       $app = event::find($app_id);
@@ -112,10 +201,10 @@ class medico_diaryController extends Controller
         $days_hide = ['lunes'=>$lunes3,'martes'=>$martes3,'miercoles'=>$miercoles3,'jueves'=>$jueves3,'viernes'=>$viernes3,'sabado'=>$sabado3,'domingo'=>$domingo3];
         ///////igual
 
-        return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide)->with('countEventSchedule', $countEventSchedule)->with('patient', $patient)->with('app', $app)->with('mode', 'edition');
+        return view('medico.patient.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide)->with('countEventSchedule', $countEventSchedule)->with('patient', $patient)->with('app', $app)->with('mode', 'edition');
 
       }
-      return view('medico.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('countEventSchedule', $countEventSchedule)->with('patient',$patient)->with('app', $app)->with('mode', 'edition');
+      return view('medico.patient.edit_appointment')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('countEventSchedule', $countEventSchedule)->with('patient',$patient)->with('app', $app)->with('mode', 'edition');
       // ->with($months, 'months');
     }
 
@@ -146,7 +235,6 @@ class medico_diaryController extends Controller
            $domingo1 = event::where('medico_id',$id)->where('title','domingo')->orderBy('end','asc')->max('end');
 
            $max_hour = max($lunes1,$martes1,$miercoles1,$jueves1,$viernes1,$sabado1,$domingo1);
-
 
            $lunes2 = event::where('medico_id',$id)->where('title','lunes')->min('start');
            $martes2 = event::where('medico_id',$id)->where('title','martes')->min('start');
@@ -213,10 +301,9 @@ class medico_diaryController extends Controller
          // ->with($months, 'months');
        }
 
-
      public function appointment_store(Request $request)
      {
-       return response()->json($request->all());
+
        $request->validate([
          'title'=>'required',
          'date_start'=>'required',
@@ -224,20 +311,14 @@ class medico_diaryController extends Controller
          'minsStart'=>'required',
          'hourEnd'=>'required',
          'minsEnd'=>'required',
+         'payment_method'=>'required',
        ]);
 
        $hour_start1 = $request->hourStart.':'.$request->minsStart;
        $hour_end1 = $request->hourEnd.':'.$request->minsEnd;
-       $comprobar_horario = event::where('medico_id',$request->medico_id)->where('rendering', 'background')->where('start','<=',$hour_start1)->where('end','>=',$hour_start1)->count();
 
-       $comprobar_horario2 = event::where('medico_id',$request->medico_id)->where('rendering', 'background')->where('start','<=',$hour_end1)->where('end','>=',$hour_end1)->count();
-
-       if($comprobar_horario == 0 or $comprobar_horario2 == 0){
-         return response()->json('fuera del horario');
-       }
-
+       //fecha completa
        $hourStart = $request->hourStart.':'.$request->minsStart.':'.'00';
-
        $start = $request->date_start.' '.$request->hourStart.':'.$request->minsStart.':'.'00';
 
        if($request->date_End == Null){
@@ -255,38 +336,86 @@ class medico_diaryController extends Controller
          $hourEnd = $request->hourEnd.':'.$request->minsEnd.':'.'00';
        }
 
+       $day1 = \Carbon\Carbon::parse($start)->dayOfWeek;
+       $hour_start2 = \Carbon\Carbon::parse($start)->format('H:i');
+       $hour_end2 = \Carbon\Carbon::parse($end)->format('H:i');
+
+       if($day1 == 1){
+         $day = 'lunes';
+       }
+       if($day1 == 2){
+         $day = 'martes';
+       }
+       if($day1 == 3){
+         $day = 'miercoles';
+       }
+       if($day1 == 4){
+         $day = 'jueves';
+       }
+       if($day1 == 5){
+         $day = 'viernes';
+       }
+       if($day1 == 6){
+         $day = 'sabado';
+       }
+       if($day1 == 0){
+         $day = 'domingo';
+       }
+
+       $comprobar_horario = event::where('medico_id',$request->medico_id)->where('title', $day)->where('rendering', 'background')->where('start','<=',$hour_start2)->where('end','>=',$hour_start2)->count();
+
+       $comprobar_horario2 = event::where('medico_id',$request->medico_id)->where('title', $day)->where('rendering', 'background')->where('start','<=',$hour_end2)->where('end','>=',$hour_end2)->count();
+
+       if($comprobar_horario == 0 or $comprobar_horario2 == 0){
+         return response()->json('fuera de horario');
+       }
+
+       $comprobar_disponibilidad = event::where('medico_id',$request->medico_id)->whereNull('rendering')->where('start','<=',$start)->where('end','>',$start)->count();
+
+      $comprobar_disponibilidad2 = event::where('medico_id',$request->medico_id)->whereNull('rendering')->where('start','<',$end)->where('end','>=',$end)->count();
+
+      if($comprobar_disponibilidad != 0 or $comprobar_disponibilidad2 != 0){
+        return response()->json('ya existe');
+      }
+
        $event = new event;
        //$event->price = $request->price;
-
-       $event->description = $request->description;
+       $event->payment_method = $request->payment_method;
+       // $event->description = $request->description;
        $event->title = $request->title;
        $event->start = $start;
        $event->end = $end;
 
        $event->dateStart = $request->date_start;
        $event->dateEnd = $date_End;
+       // if($request->title == 'Ambulatoria'){
+       //   $event->color = 'rgb(40, 130, 55)';
+       // }elseif($request->title == 'Externa o a Domicilio'){
+       //   $event->color = 'rgb(241, 80, 0)';
+       // }elseif($request->title == 'Urgencias'){
+       //   $event->color = 'rgb(0, 190, 241)';
 
-       if($request->title == 'Ambulatoria'){
-         $event->color = 'rgb(40, 130, 55)';
-       }elseif($request->title == 'Externa o a Domicilio'){
-         $event->color = 'rgb(241, 80, 0)';
-       }elseif($request->title == 'Urgencias'){
-         $event->color = 'rgb(0, 190, 241)';
-       }elseif($request->title == 'Cita por Internet'){
-         $event->color = 'rgb(141, 13, 201)';
+       if($request->title == 'Cita por Internet'){
+         $event->color = 'rgb(35, 44, 173)';
+       }else{
+         $event->color = 'rgb(151, 166, 232)';
        }
 
-       /////////Pending/////////Pending/////////Pending/////////Pending/////////Pending
+
        if(Auth::check() and Auth::user()->role == 'Paciente'){
            $event->namePatient = Auth::user()->patient->name.' '.Auth::user()->patient->lastName;
            $event->patient_id = Auth::user()->patient->id;
            $event->medico_id = $request->medico_id;
+           $patient = patient::find($request->patient_id);
+           $event->namePatient = $patient->name.' '.$patient->lastName;
+           $event->stipulated = "Paciente";
+           $event->notification = "not_see";
         }elseif (Auth::check() and Auth::user()->role == 'medico') {
            $event->patient_id = $request->patient_id;
            $event->medico_id = $request->medico_id;
            $patient = patient::find($request->patient_id);
            $event->namePatient = $patient->name.' '.$patient->lastName;
-           $event->stipulated = "medico";
+           $event->stipulated = "Medico";
         }
        $event->hour_start = $hourStart;
        $event->hour_end = $hourEnd;
@@ -654,6 +783,79 @@ class medico_diaryController extends Controller
 
      }
 
+     public function store_event_personal(Request $request)
+     {
+       //return response()->json('diary');
+         $request->validate([
+           // 'title'=>'required',
+           'title'=>'required',
+           'date_start'=>'required',
+           'hourStart'=>'required',
+           'minsStart'=>'required',
+         ]);
+
+         $hour_start1 = $request->hourStart.':'.$request->minsStart;
+
+         $hour_end1 = $request->hourEnd.':'.$request->minsEnd;
+
+         $comprobar_horario = event::where('medico_id',$request->medico_id)->where('rendering', 'background')->where('start','<=',$hour_start1)->where('end','>=',$hour_start1)->count();
+
+         $comprobar_horario2 = event::where('medico_id',$request->medico_id)->where('rendering', 'background')->where('start','<=',$hour_end1)->where('end','>=',$hour_end1)->count();
+
+         if($comprobar_horario == 0 or $comprobar_horario2 == 0){
+           return response()->json('fuera del horario');
+         }
+
+         //dd($request->description);
+         //dd($request->eventType);
+         $hourStart = $request->hourStart.':'.$request->minsStart.':'.'00';
+
+         $start = $request->date_start.' '.$request->hourStart.':'.$request->minsStart.':'.'00';
+
+         if($request->date_End == Null){
+           $date_End = $request->date_start;
+         }else{
+           $date_End = $request->date_End;
+         }
+
+         if($request->hourEnd == Null or $request->minsEnd == Null){
+           $hourEnd = $request->hourStart.':'.$request->minsStart.':'.'00';
+           $end = $date_End.' '.$request->hourStart.':'.$request->minsStart.':'.'00';
+
+         }else{
+           $end = $date_End.' '.$request->hourEnd.':'.$request->minsEnd.':'.'00';
+           $hourEnd = $request->hourEnd.':'.$request->minsEnd.':'.'00';
+         }
+
+         $event = new event;
+         $event->price = $request->price;
+         $event->title = $request->title;
+         $event->description = $request->description;
+         $event->title = $request->title;
+         $event->start = $start;
+         $event->end = $end;
+
+         $event->dateStart = $request->date_start;
+         $event->dateEnd = $date_End;
+
+         if($request->title == 'Cita Medica'){
+           $event->color = 'rgb(40, 130, 55)';
+         }elseif($request->title == 'Cita Medica Importante'){
+           $event->color = 'rgb(241, 80, 0)';
+         }elseif($request->title == 'Consulta Medica'){
+           $event->color = 'rgb(0, 190, 241)';
+         }elseif($request->title == 'Consulta Medica Importante'){
+           $event->color = 'rgb(141, 13, 201)';
+         }elseif($request->title == 'Recordatorio'){
+           $event->color = 'rgb(129, 231, 39)';
+         }
+
+         $event->medico_id = $request->medico_id;
+         $event->save();
+
+         return response()->json('ok');
+
+     }
 
     public function store(Request $request)
     {
@@ -769,21 +971,12 @@ class medico_diaryController extends Controller
            'hourEnd'=>'required',
            'minsEnd'=>'required',
          ]);
-
          //if($request->)
-
          $start = $request->hourStart.':'.$request->minsStart;
-
          $end = $request->hourEnd.':'.$request->minsEnd;
-
-
-
-
          $schedule = event::find($request->event_id);
-
          $schedule->start = $start;
          $schedule->end = $end;
-
          $schedule->save();
 
          return redirect()->route('medico_schedule',$request->medico_id)->with('success2','horas Editadas para el dia: '.$schedule->title);
@@ -843,16 +1036,20 @@ class medico_diaryController extends Controller
      $event->title = $request->title;
      $event->start = $start;
      $event->end = $end;
-
+     $event->payment_method = $request->payment_method;
      $event->dateStart = $request->date_start;
      $event->dateEnd = $date_End;
 
-     if($request->title == 'Normal'){
-       $event->color = 'blue';
-     }elseif($request->title == 'Importante'){
-       $event->color = 'red';
-     }elseif($request->title == 'Recordatorio'){
-       $event->color = 'yellow';
+     if($request->title == 'Cita por Internet'){
+       $event->color = 'rgb(35, 44, 173)';
+     }else{
+       $event->color = 'rgb(151, 166, 232)';
+     }
+
+     if($request->state == 'Cerrada y Cobrada'){
+       $event->color = 'rgb(247, 215, 43)';
+     }elseif($request->state == 'pre-pagada'){
+       $event->color = 'rgb(214, 50, 50)';
      }
 
      $event->state = $request->state;

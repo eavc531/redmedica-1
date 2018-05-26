@@ -22,7 +22,7 @@
      <div class="card-body">
       <div class="row">
         <div class="col-12">
-          <label for="" class="font-title-grey">Medico:</label><p> <a href="{{route('medico.edit',$app->medico->id)}}"><strong>{{$app->medico->name}} {{$app->medico->lastName}}</strong></a></p>
+          {{-- <label for="" class="font-title-grey">Medico:</label><p> <a href="{{route('medico.edit',$app->medico->id)}}"><strong>{{$app->medico->name}} {{$app->medico->lastName}}</strong></a></p> --}}
           <label for="" class="font-title-grey">Especialidad del Medico:</label> <p>{{$app->medico->specialty}}</p>
           @isset($app->descriptión)
           <label for="" class="font-title-grey">Mensaje o descriptión:</label> <p>{{$app->descriptión}}</p>
@@ -70,18 +70,16 @@
            <div class="col-12 col-lg nopadding">
              {{Form::radio('score',5,['class'=> 'mr-1'])}}  Muy Bueno
            </div>
-           <div class="col-12 col-lg nopadding">
-             {{Form::radio('score',5,['class'=> 'mr-1'])}}  Neutral
-           </div>
+          
          </div>
          <div class="form-group">
           <label for="" class="font-title-grey">Comentario sobre la Cita:</label>
           {!!Form::textarea('comentary',null,['class'=>'form-control','style'=>'height:100px'])!!}
 
-          <input type="hidden" name="event_id" value="{{$app->id}}">
+          {{-- <input type="hidden" name="event_id" value="{{$app->id}}">
         </div>
         <input type="submit" name="" value="Guardar" class="btn btn-success">
-        <a href="{{route('patient_appointments',$app->patient_id)}}" class="btn btn-secondary">Cancelar</a>
+        <a href="{{route('patient_appointments',$app->patient_id)}}" class="btn btn-secondary">Cancelar</a> --}}
         {!!Form::close()!!}
       </div>
     </div>

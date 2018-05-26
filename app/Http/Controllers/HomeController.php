@@ -73,7 +73,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
                 $image = $photo->path;
               }
 
-              $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'dist'=>$distCalculate,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image];
+              $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'dist'=>$distCalculate,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'rate'=>$medico->calification, 'votes'=>$medico->votes];
             }
           }
           return $data;
@@ -136,7 +136,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
             $image = $photo->path;
           }
 
-          $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image];
+          $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'rate'=>$medico->calification, 'votes'=>$medico->votes];
           }
 
           return $data;
@@ -377,7 +377,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
                   }else{
                     $image = $photo->path;
                   }
-                  $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'consulting_room'=>$consulting_room,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image];
+                  $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'consulting_room'=>$consulting_room,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'rate'=>$medico->calification, 'votes'=>$medico->votes];
                 }
               }
               $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -409,7 +409,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
                     }else{
                       $image = $photo->path;
                     }
-                    $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'consulting_room'=>$consulting_room,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image
+                    $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'consulting_room'=>$consulting_room,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'rate'=>$medico->calification, 'votes'=>$medico->votes
                   ];
                   }
                 }
@@ -465,94 +465,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
         //fin NOMBRE/CEDULA MEDIC
           }
 
-
           if($request->typeSearch == Null or $request->typeSearch2 == Null){
             return redirect()->route('home');
           }
 
       }
-//<<<<<//
-      // public function map_medical_center_name(Request $request){
-      //   $numberPageNow = ($request->numberPageNow * 4) -4;
-      //   $dist = $request->dist;
-      //
-      //   //Centro Medico por nombre
-      //   if($request->typeSearch == 'Centro Medico'){
-      //     $medicalCenter = medicalCenter::where('name','LIKE','%'.$request->search.'%')->get();
-      //     $medicalCenterCount = medicalCenter::where('name','LIKE','%'.$request->search.'%')->count();
-      //     //dd($medicalCenter);
-      //     $data = [];
-      //     foreach ($medicalCenter as $mc) {
-      //       $photo = photo::where('medicalCenter_id',$mc->id)->where('type', 'perfil')->first();
-      //       if($photo == Null){
-      //         $image = Null;
-      //       }else{
-      //         $image = $photo->path;
-      //       }
-      //     $data[$mc->id] = ['id'=>$mc->id,'identification'=>$medico->identification,'name'=>$mc->name,'city'=>$mc->city,'state'=>$mc->state,'longitud'=>$mc->longitud,'latitud'=>$mc->latitud,'image'=>$image];
-      //     }
-      //
-      //     $data = array_slice($data,$numberPageNow, 4);
-      //     return response()->json($data);
-      //   }
-      //
-      //
-      //   //$myCoordinates = Geocoder::getCoordinatesForAddress('mexicali,mexico');
-      //
-      //   //$CoordinatesMedic = Geocoder::getCoordinatesForAddress('tijuana,mexico');
-      //
-      //   $medicos = DB::table('medicos')
-      //   //->Join('medico_specialties', 'medicos.id', '=', 'medico_specialties.medico_id')
-      //   ->Join('cities', 'medicos.city_id', '=', 'cities.id')
-      //   ->Join('states', 'medicos.state_id', '=', 'states.id')
-      //   ->select('medicos.*','cities.longitud as longitud','cities.latitud as latitud','cities.name as cityName','states.name as stateName')
-      //   ->where('medicos.name','LIKE','%'.$request->search.'%')
-      //   ->orWhere('medicos.lastName','LIKE','%'.$request->search.'%')
-      //   ->get();
-      //
-      //   //dd($medicos->cityName);
-      //
-      //
-      //   $data = [];
-      //
-      //   //ordenar array
-      //
-      //   foreach ($medicos as $medico) {
-      //     //Haversine
-      //
-      //
-      //     $myLat = deg2rad(32.62);
-      //     //$myLat = deg2rad($myCoordinates['lat']);
-      //
-      //     $myLng = deg2rad(-115.4522623);
-      //     //$myLng = deg2rad($myCoordinates['lng']);
-      //
-      //     $medicLat = deg2rad($medico->latitud);
-      //     $medicLng = deg2rad($medico->longitud);
-      //
-      //     $latDelta = $medicLat - $myLat;
-      //     $lonDelta = $medicLng - $myLng;
-      //
-      //     $earthRadius = 6371; //en km
-      //
-      //     $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-      //     cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
-      //     $distCalculate =  $angle * $earthRadius;
-      //
-      //
-      //     if($dist > $distCalculate){
-      //
-      //       $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'cityName'=>$medico->cityName,'stateName'=>$medico->stateName,'dist'=>$distCalculate,'lng'=>$medico->longitud,'lat'=>$medico->latitud];
-      //
-      //     }
-      //   }
-      //
-      //   $data = collect($data)->sortBy('dist')->toArray();
-      //   $data = array_slice($data,$numberPageNow, 4);
-      //   return response()->json($data);
-      //
-      // }
-
 
       public function specialtyList1(Request $request){
         $specialties = specialty::where('specialty_category_id',1)->orderBy('name','asc')->get();

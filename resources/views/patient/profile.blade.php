@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
   <div class="col-12">
-    <h2>Aun no Funciona este panel</h2>
+
     <h2 class="font-title text-center">Perfil de Paciente</h2>
   </div>
 </div>
@@ -20,13 +20,6 @@
    <div class="register">
     <div class="row">
 
-     {{-- <div class="col-12 text-right">
-      <div class="btn-group " role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary">1</button>
-        <button type="button" class="btn btn-secondary">2</button>
-        <button type="button" class="btn btn-config-blue">3</button>
-      </div>
-    </div> --}}
 
   </div>
   <div class="row mt-3">
@@ -42,10 +35,11 @@
       </div>
     @endisset
 
-    {!!Form::open(['route'=>'photo.store','method'=>'POST','files'=>true])!!}
+    {!!Form::open(['route'=>'patient_image_profile','method'=>'POST','files'=>true])!!}
     {!!Form::hidden('email',$patient->email)!!}
     {!!Form::hidden('patient_id',$patient->id)!!}
-    {!!Form::file('image')!!}
+    <input type="file" name="image" value="">
+
     {!!Form::submit('Subir')!!}
     {!!Form::close()!!}
   </div>
@@ -76,13 +70,12 @@
     </div>
     <div class="col-6">
       <ul>
-        @if ($patient->showNumber == 'si')
-          <li><b>Telefono celular</b>: {{$patient->phone}}</li>
-        @endif
         <li><b>Telefono 1:</b>{{$patient->phone1}}</li>
         <li><b>Telefono 2:</b>{{$patient->phone2}}</li>
+        <li><b>Edad:</b>{{$patient->birthdate}}</li>
+        <li><b>Edad:</b>{{$patient->age}}</li>
       </ul>
-        <a href="" class="btn btn-block btn-success">Editar</a>
+        <a href="{{route('patient_edit_data',$patient->id)}}" class="btn btn-block btn-success">Editar</a>
     </div>
   </div>
 </div>
@@ -111,7 +104,7 @@
       <li><strong>Numero Interno:</strong> {{$patient->number_int}}</li>
     </ul>
 
-    <a class="btn btn-success btn-block"href="">Editar</a>
+    <a href="{{route('address_patient',$patient->id)}}" class="btn btn-block btn-success">Editar</a>
   </div>
 </div>
 <hr>

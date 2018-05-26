@@ -2,36 +2,56 @@
 
 namespace App\Http\Controllers;
 use App\photo;
+use App\patient;
+
 use Illuminate\Http\Request;
 
 class photoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
+    public function patient_image_profile(Request $request)
+    {
+
+       $request->validate([
+         'image'=>'image|required'
+       ]);
+
+       $extension = $request->file('image')->getClientOriginalExtension();
+
+       $photoCount = photo::where('patient_id',$request->patient_id)->where('type','perfil')->count();
+
+       if($photoCount != 0){
+         $photo = photo::where('patient_id',$request->patient_id)->where('type','perfil')->first();
+        
+         if(\File::exists(public_path($photo->path))){
+           \File::delete(public_path($photo->path));
+           $photo->delete();
+         }
+       }
+
+        $patient = patient::find($request->patient_id);
+         $namePhoto = $patient->name.'.'.$extension;
+         $pathSave = 'img/users/'.$patient->identification.'/photos';
+
+         $photo = new photo;
+         $photo->name = $patient->name;
+         $photo->path = $pathSave.'/'.$namePhoto;
+
+         $photo->type = 'perfil';
+         $photo->patient_id = $request->patient_id;
+
+         $photo->save();
+
+         $request->file('image')->move($pathSave,$namePhoto);
+
+         return back()->with('success', 'Nueva imagen de Perfil establecida');
+      }
+
+
+
     public function store(Request $request)
     {
         $request->validate([
@@ -48,12 +68,6 @@ class photoController extends Controller
         if($photos1 != Null){
           $photos1->delete();
         }
-
-        // if(!is_null($photos)){
-        //   $photoNow = photo::where('type', 'perfil')->first();
-        //   $photoNow->type = 'nada';
-        //   $photoNow->save();
-        // }ARREGLARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 
         if($photoCount == 0){
           $nameP = 1;

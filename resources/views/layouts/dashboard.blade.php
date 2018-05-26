@@ -88,7 +88,7 @@
                   <a href="{{route('medico_patients',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-address-card"></i><span>Pacientes</span></a>
                 </div>
                 <div class="col-12 nopadding">
-                  <a href="{{route('show_calification_medic',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-list-alt"></i><span>Calificaciones</span></a>
+                  <a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-list-alt"></i><span>Calificaciones</span></a>
                 </div>
               </div>
               <div class="row px-1">
@@ -102,7 +102,7 @@
                   <a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-table"></i><span>Especialidad</span></a>
                 </div> --}}
                 <div class="col-12 nopadding">
-                  <a href="{{route('medico_diary',Auth::user()->medico->id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-book"></i><span>Agenda</span></a>
+                  <a href="{{route('medico_diary',Auth::user()->medico->id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-book"></i><span>Mi Agenda</span></a>
                 </div>
                 <div class="col-12 nopadding">
                   <a href="{{route('medico_schedule',Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-edit"></i><span>Editar Horario</span></a>

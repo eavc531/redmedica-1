@@ -25,7 +25,9 @@ use App\insurance_carrier;
 use App\question_lab;
 use Geocoder;
 use App\note;
+use App\rate_medic;
 use DB;
+use Auth;
 use App\insurrance_show;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -39,9 +41,16 @@ class medicoController extends Controller
      */
 
 
-     public function show_calification_medic($id){
-       $event = event::where('medico_id',$id)->whereNotNull('score')->paginate(10);
-       return view('medico.show_calification_medic',compact('event'));
+     public function calification_medic($id){
+
+
+      $rate_medic = rate_medic::where('medico_id',$id)->paginate(10);
+
+       if(Auth::check() and Auth::user()->role == 'Paciente'){
+         $you_rate = rate_medic::where('medico_id',$id)->where('patient_id',Auth::user()->patient->id);
+         return view('medico.calification_medic',compact('you_rate','rate_medic'));
+       }
+       return view('medico.calification_medic',compact('rate_medic'));
 
      }
 
@@ -77,7 +86,7 @@ class medicoController extends Controller
      }
 
      public function notification_appointments($id){
-       $appointments = event::where('medico_id',$id)->where('notification', 'not_see')->where('state', 'Pendiente')->paginate(4);
+       $appointments = event::where('medico_id',$id)->where('notification', 'not_see')->paginate(4);
        return view('medico.notification_appointments',compact('appointments'));
 
      }
@@ -88,12 +97,6 @@ class medicoController extends Controller
 
        return view('medico.edit_note',compact('note','medico','patient'));
      }
-
-
-
-    
-
-
 
      public function note_store(Request $request)
      {
@@ -629,7 +632,7 @@ class medicoController extends Controller
                                     ->orderBy('patients_doctors.created_at','desc')
                                     ->paginate(10);
 
-        return view('medico.medico_patients',compact('medico','patients'));
+        return view('medico.patient.medico_patients',compact('medico','patients'));
 
     }
 
@@ -639,7 +642,7 @@ class medicoController extends Controller
         $patient = patient::find($patient_id);
         $appointments = event::where('medico_id', $medico_id)->where('patient_id',$patient_id)->orderBy('created_at','desc')->paginate(10);
 
-        return view('medico.medico_patient_appointments',compact('medico','patient','appointments'));
+        return view('medico.patient.medico_patient_appointments',compact('medico','patient','appointments'));
 
     }
 
