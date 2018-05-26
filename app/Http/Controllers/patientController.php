@@ -33,6 +33,7 @@ class patientController extends Controller
        if($event->status == 'calificada'){
          return back()->with('success','Solo puedes calificar al Médico una vez por Cita.');
        }
+
        if(\Carbon\Carbon::now() < \Carbon\Carbon::parse($event->end)){
          return back()->with('success','No puedes calificar la Cita hasta despues de su fecha de culminacion.');
        }
@@ -40,10 +41,10 @@ class patientController extends Controller
        $you_rate = rate_medic::where('patient_id', $request->patient_id)->where('medico_id', $request->medico_id)->first();
        $count_rate = rate_medic::where('patient_id', $request->patient_id)->where('medico_id', $request->medico_id)->count();
 
-         $medico = medico::find($request->medico_id);
-         $patient = medico::find($request->patient_id);
+       $medico = medico::find($request->medico_id);
+       $patient = medico::find($request->patient_id);
 
-         return view('patient.patient_rate_medic',compact('you_rate','medico','patient','count_rate','event'));
+       return view('patient.patient_rate_medic',compact('you_rate','medico','patient','count_rate','event'));
 
      }
 
@@ -146,7 +147,8 @@ class patientController extends Controller
 
        Mail::send('mails.confirmPatient',['patient'=>$patient,'code'=>$code,'user'=>$user], function($msj) use ($patient){
           $msj->subject('Médicos Si');
-          $msj->to('eavc53189@gmail.com');
+          $msj->to($patient->email);
+          //$msj->to('eavc53189@gmail.com');
 
         });
 
@@ -173,7 +175,6 @@ class patientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
 
      public function patient_medicos($id)
      {
@@ -236,7 +237,7 @@ class patientController extends Controller
      {
        $patient = patient::find($id);
        // dd(Carbon::now());
-       $appointments = event::where('patient_id', $id)->where('dateStart','<', Carbon::now())->orderBy('id','desc')->paginate(4);
+       $appointments = event::where('patient_id', $id)->where('start','<', Carbon::now())->orderBy('id','desc')->paginate(4);
        $pending = 'Pendiente';
          return view('patient.appointments',compact('patient','appointments','pending'));
      }
@@ -308,7 +309,8 @@ class patientController extends Controller
 
        Mail::send('mails.confirmPatient',['patient'=>$patient,'code'=>$code,'user'=>$user], function($msj) use ($patient){
           $msj->subject('Médicos Si');
-          $msj->to('eavc53189@gmail.com');
+          $msj->subject($patient->email);
+          //$msj->to('eavc53189@gmail.com');
 
         });
 

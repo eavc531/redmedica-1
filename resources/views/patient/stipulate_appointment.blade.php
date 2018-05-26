@@ -32,9 +32,6 @@
      </div>
      <hr>
 
-
-
-
     @include('medico.includes.alert_calendar')
     @include('medico.includes.card_edit')
     <hr>
@@ -44,7 +41,7 @@
        <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
        <p id="text_success_1" style="font-size:12px"></p>
        {{-- <a href="{{route('home')}}" class="btn btn-outline-primary">volver a inicio</a> --}}
-       <a href="{{route('patient_appointments',Auth::user()->patient->id)}}" class="btn btn-outline-primary">Ver mis Citas Pendienes</a>
+       <a href="{{route('patient_appointments_pending',Auth::user()->patient->id)}}" class="btn btn-outline-primary">Ver mis Citas Pendienes</a>
 
        {{--<a class="btn btn-outline-success" href="{{route('patient_appointments',Auth::user()->patient->id)}}">Tus Citas Pendientes</a>--}}
      </div>
@@ -60,12 +57,7 @@
          </div>
        </div>
      @endif
-
-
      {{-- ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR --}}
-
-
-
      {{-- IF SHOW CALENDAR --}}
    </div>
  </div>
@@ -76,10 +68,6 @@
       <span>Médico:</span>
       <span>{{$medico->name}} {{$medico->lastName}}</span>
     </div>
-
-
-
-
 
     {{-- <div class="col-12 border-panel-green text-center my-1">
       <a class="btn btn-block btn-config-green" href="{{route('medico_schedule',$medico->id)}}">
@@ -162,7 +150,7 @@
       {{-- <button type="submit" class="btn btn-config-blue">Guardar</button> --}}
     </div>
     <div class="col-lg-6">
-      <button onclick="vaciar()" type="button"class="btn btn-config-secondary">Cancelar</button>
+      <button onclick="vaciar()" type="button"class="btn btn-config-secondary" id="btn_cancelar">Cancelar</button>
     </div>
     {!!Form::close()!!}
   </div>
@@ -431,7 +419,9 @@
     function store_event(){
 
       $('#btn_agendar').attr("disabled", true);
+      $('#btn_cancelar').attr("disabled", true);
       $('#alert_carga').fadeIn();
+      close_edit();
       title = $('#eventType2').val();
       payment_method = $('#payment_method6').val();
       date_start = $('#date_start2').val();
@@ -451,6 +441,7 @@
        data:{title:title,payment_method:payment_method,date_start:date_start,hourStart:hourStart,minsStart:minsStart,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,medico_id:medico_id,patient_id:patient_id},
        error:function(error){
           $('#btn_agendar').attr("disabled", false);
+          $('#btn_cancelar').attr("disabled", false);
           $('#alert_carga').fadeOut();
 
          $.each(error.responseJSON.errors, function(index, val){
@@ -460,10 +451,11 @@
          $('#alert_error').fadeIn();
          $('#alert_success').fadeOut();
 
-         console.log(errormsj);
+         console.log(error);
        },
        success:function(result){
          $('#btn_agendar').attr("disabled", false);
+         $('#btn_cancelar').attr("disabled", false);
          $('#alert_carga').fadeOut();
         vaciar();
         console.log(result);
@@ -485,7 +477,7 @@
           $('#text_success_1').html(result);
           $('#alert_success_1').fadeIn();
           $('#btn_agendar').attr("disabled", false);
-
+          $('#btn_cancelar').attr("disabled", false);
         }
 
       }

@@ -9,7 +9,7 @@
    <div class="register">
     <div class="row">
      <div class="col-12">
-      <h2 class="text-center font-title">Citas Médicas @if(isset($pending)){{$pending}}@elseif(isset($unrated)){{$unrated}}@endif</h2>
+      <h2 class="text-center font-title">Citas Médicas @if(isset($pending)){{$pending}}s     @elseif(isset($unrated)){{$unrated}}@endif</h2>
       <hr>
     </div>
   </div>
@@ -17,15 +17,16 @@
     @if(isset($pending))
       <a href="{{route('patient_appointments',$patient->id)}}" class="btn btn-primary" data-toggle="tooltip" data-html="true" title="<em>Todas</em>"><i class="fas fa-bars"></i></a>
       <a href="{{route('patient_appointments_pending',$patient->id)}}" class="btn btn-warning disabled" data-toggle="tooltip" data-html="true" title="<em>Pendientes</em>"><i class="fas fa-exclamation-triangle"></i></a>
-      {{-- <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="<em>Sin calificar</em>"><i class="fas fa-ban"></i></a> --}}
+
+      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="<em>Realizadas</em>"><i class="fas fa-ban"></i></a>
     @elseif(isset($unrated))
       <a href="{{route('patient_appointments',$patient->id)}}" class="btn btn-primary" data-toggle="tooltip" data-html="true" title="<em>Todas</em>"><i class="fas fa-bars"></i></a>
       <a href="{{route('patient_appointments_pending',$patient->id)}}" class="btn btn-warning" data-toggle="tooltip" data-html="true" title="<em>Pendientes</em>"><i class="fas fa-exclamation-triangle"></i></a>
-      {{-- <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger disabled" data-toggle="tooltip" data-html="true" title="<em>Sin calificar</em>"><i class="fas fa-ban"></i></a> --}}
+      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger disabled" data-toggle="tooltip" data-html="true" title="<em>Sin calificar</em>"><i class="fas fa-ban"></i></a>
     @else
       <a href="{{route('patient_appointments',$patient->id)}}" class="btn btn-primary disabled" data-toggle="tooltip" data-html="true" title="<em>Todas</em>"><i class="fas fa-bars"></i></a>
       <a href="{{route('patient_appointments_pending',$patient->id)}}" class="btn btn-warning" data-toggle="tooltip" data-html="true" title="<em>Pendientes</em>"><i class="fas fa-exclamation-triangle"></i></a>
-      {{-- <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="<em>Sin calificar</em>"><i class="fas fa-ban"></i></a> --}}
+      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="<em>Sin calificar</em>"><i class="fas fa-ban"></i></a>
     @endif
   </div>
   @if($appointments->first() != Null)
@@ -52,7 +53,13 @@
             <label for="" class="font-title-grey">Fecha:</label> <p>{{\Carbon\Carbon::parse($app->start)->format('d-m-Y')}}</p>
 
             <label for="" class="font-title-grey">Hora:</label> <p>{{\Carbon\Carbon::parse($app->start)->format('H:i')}}</p>
-            <label for="" class="font-title-grey">Estado:</label> <p>{{$app->state}}</p>
+            <label for="" class="font-title-grey">Estado:</label>
+            @if(\Carbon\Carbon::now() > \Carbon\Carbon::parse($app->start))
+              Pendiente
+            @else
+              Realizada
+            @endif
+
           </div>
         </div>
         <div class="col-lg-4 col-sm-4 col-12">

@@ -356,7 +356,9 @@
                       <div class="form-inline">
                         Calificación:
                         <span class="ml-2 mr-2">@include('home.star_rate')</span>
+                          @if($medico['rate'] != Null)
                            <span> de "{{$medico['votes']}}" voto(s).</span>
+                         @endif 
                       </div>
 
                     </div>
@@ -640,7 +642,7 @@
 @endif
 
 {{-- <script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY&callback=initMap"></script> --}}
-<script src="http://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY"></script>
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyBAwMPmNsRoHB8CG4NLVIa_WRig9EupxNY"></script>
 <script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
 <script type="text/javascript">
         // function conocerEvento(e) {

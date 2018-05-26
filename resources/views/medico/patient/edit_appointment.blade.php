@@ -238,16 +238,7 @@
 
     // function calendario(){
           $('#calendar').fullCalendar({
-            height: 550,
-            customButtons: {
-            myCustomButton: {
-            text: 'Pantalla Completa',
-            click: function() {
-          window.location.href = '{{route("medico_diary_fullscreen",$medico->id)}}';
-          }
-        }
-      },
-
+        
         header: {
           left: 'prev,next today myCustomButton',
           center: 'title',

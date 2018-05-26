@@ -104,5 +104,7 @@
 
 
 	<script type="text/javascript" src="{{asset('js/main.js')}}"></script>
+
+	<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 	@yield('scriptJS')
 	</html>

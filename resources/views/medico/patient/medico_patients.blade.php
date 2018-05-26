@@ -48,7 +48,7 @@
      </div>
      <div class="row">
       <div class="col-lg-2 col-2  col-sm-3 text-center">
-        <a class="btn btn-secondary" href="{{route('patient_profile',$patient['id'])}}" data-toggle="tooltip" data-html="true" title="<em>Lista de citas con paciente</em>"><i class="fas fa-user"></i></a>
+        <a class="btn btn-secondary" href="{{route('patient_profile',$patient['id'])}}" data-toggle="tooltip" data-html="true" title="<em>Perfil</em>"><i class="fas fa-user"></i></a>
       </div>
       <div class="col-lg-2 col-2  col-sm-3 text-center">
         <a class="btn btn-secondary" href="{{route('medico_appointments_patient',['medico_id'=>$medico->id,'patient_id'=>$patient['id']])}}" data-toggle="tooltip" data-html="true" title="<em>Lista de citas con paciente</em>"><i class="fas fa-bars"></i></a>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-  <link rel="stylesheet" href="{{asset('rateyo/jquery.rateyo.css')}}">
+<link rel="stylesheet" href="{{asset('rateyo/jquery.rateyo.css')}}">
 
 @endsection
 @section('content')
@@ -41,7 +41,7 @@
              <li class="star container-franchise__star li-config">&starf;</li>
              <li class="star container-franchise__star li-config">&starf;</li>
            </ul> --}}
-           <div class="rateYo p-1" style="border: solid 1px rgb(139, 139, 138);border-radius:10px"></div>
+           <div class="rateYo p-1" style="border-radius:10px"></div>
          </div>
          <div class="row align-self-end">
            <div class="col-12">
@@ -50,19 +50,18 @@
          </div>
        </div>
      </div>
-     <div class="col-12 col-sm-4 col-lg-4 p-2">
-       <div class="form-inline ml-3">
-
+     <div class="col-12 col-sm-4 col-lg-4 p-2 align-self-center text-center">
+     
          {{-- <label for="">Primeras visitas:<b class="price">600MXN</b></label> --}}
-         <a class="btn btn-primary mr-2" href="{{route('medico.edit',$medico['id'])}}" data-toggle="tooltip" data-html="true" title="<em>Ver Perfil</em>"><i class="fas fa-sign-in-alt"></i></a>
+         <a class="btn btn-secondary mr-2" href="{{route('medico.edit',$medico['id'])}}" data-toggle="tooltip" data-html="true" title="<em>Ver Perfil</em>"><i class="fas fa-sign-in-alt"></i></a>
          @if(Auth::check() and Auth::user()->role == 'Paciente')
-         <a href="{{route('stipulate_appointment',$medico['id'])}}" class="btn" data-toggle="tooltip" data-html="true" title="<em>Agendar cita</em>"><i class="fa fa-envelope-open mr-0"></i></a>
+         <a class="btn btn-primary mr-2" href="{{route('stipulate_appointment',$medico['id'])}}" class="btn" data-toggle="tooltip" data-html="true" title="<em>Agendar cita</em>"><i class="fas fa-notes-medical mr-0"></i></a>
          @else
-         <button onclick="return verifySession()" class="btn btn-primary mr-2"  data-toggle="tooltip" data-html="true" title="<em>Agendar cita</em>"><i class="fa fa-envelope-open mr-0"></i></button>
+         <button onclick="return verifySession()" class="btn btn-primary mr-2"  data-toggle="tooltip" data-html="true" title="<em>Agendar cita</em>"><i class="fas fa-notes-medical mr-0"></i></button>
          @endif
          <a href="{{route('delete_patient_doctors',$medico['patients_doctor_id'])}}" class="btn btn-danger mr-2" onclick="return confirm('¿Esta Segur@ de Querer Eliminar este Médico de su lista de Médicos?')" data-toggle="tooltip" data-html="true" title="<em>Eliminar</em>"><i class="fas fa-trash mr-0"></i></a>
-       </div>
-       <a href="{{route('calification_medic',$medico['id'])}}">Calificacion</a>
+       <a class="btn btn-warning" href="{{route('calification_medic',$medico['id'])}}" data-toggle="tooltip" data-html="true" title="<em>Calificación</em>"><i class="fas fa-star"></i></a>
+
 <!--        <div class="form-group">
 
        </div>
@@ -89,17 +88,17 @@
 </section>
 @endsection
 @section('scriptJS')
-  <script src="{{asset('rateyo/jquery.rateyo.js')}}" type="text/javascript">
+<script src="{{asset('rateyo/jquery.rateyo.js')}}" type="text/javascript">
 
-  </script>
-  <script type="text/javascript">
+</script>
+<script type="text/javascript">
   $(function () {
 
-  $(".rateYo").rateYo({
-    starWidth: "20px",
-    rating: 3.2,
+    $(".rateYo").rateYo({
+      starWidth: "20px",
+      rating: 3.2,
 
     });
   });
-  </script>
+</script>
 @endsection

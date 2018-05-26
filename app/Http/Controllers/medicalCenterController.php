@@ -451,8 +451,8 @@ class medicalCenterController extends Controller
       $medicalCenter->save();
       Mail::send('mails.confirmMedicalCenter',['medicalCenter'=>$medicalCenter,'code'=>$code], function($msj) use ($medicalCenter){
          $msj->subject('Médicos Si');
-         $msj->to('eavc53189@gmail.com');
-         // $msj->to($medicalCenter->emailAdmin);
+         //$msj->to('eavc53189@gmail.com');
+         $msj->to($medicalCenter->emailAdmin);
        });
 
        return redirect()->route('successRegMedicalCenter',$medicalCenter->id)->with('success','Se ha Enviado un mensaje a su correo electronico para que pueda Confirmar su Cuenta');

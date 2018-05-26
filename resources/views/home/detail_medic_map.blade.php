@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 	<section class="box-register">
     <div class="row mb-4">
 
@@ -20,8 +19,8 @@
 				<div class="col-8 m-auto col-sm-3 col-lg-3">
 					<div class="cont-img">
 {{$medico['image']}}
-						@isset($medico['image'])
-						<img src="{{asset($medico['image'])}}" class="prof-img img-thumbnail" alt="..." >
+						@isset($photo->path)
+						<img src="{{asset($photo->path)}}" class="prof-img img-thumbnail" alt="..." >
 						@else
 						<img src="{{asset('img/profile.png')}}" class="prof-img img-thumbnail" alt="...">
 						@endisset

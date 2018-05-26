@@ -1,6 +1,6 @@
 .checked {
-	color:orange;
-}
+        color:orange;
+      }
 
 a:focus{
 	color: #fff;
@@ -8,10 +8,6 @@ a:focus{
 
 body{
 	font-family: 'Montserrat', sans-serif;
-}
-
-.box-shadow{
-	box-shadow: 2px 2px 6px #c1c1c1;
 }
 
 .nopadding{
@@ -418,7 +414,6 @@ a:hover, a:active, a:focus{
 
 	.section-dashboard{
 		margin-top: 50px;
-		min-height: 80vh;
 	}
 
 	.box-dashboard{
@@ -517,15 +512,13 @@ a:hover, a:active, a:focus{
 	}
 
 
-	.prof-img2{/*
-		max-height: 150px;*/
-		height: 120px;
-		width:120px;
+	.prof-img2{
+		max-height: 115px;
+		height: auto;
 		max-width: 100%;
 		display: block;
 		margin: auto;
 		border-radius: 50%;
-		object-fit: contain;
 	}
 
 
@@ -740,9 +733,9 @@ a:hover, a:active, a:focus{
 		left: 0;
 	}
 
-/*	[type="radio"]:checked ~ label {
+	[type="radio"]:checked ~ label {
 		color: #000;
-	}*/
+	}
 
 	/* Shedduler */
 
@@ -786,130 +779,50 @@ a:hover, a:active, a:focus{
     	width: 70%;
     }
 
-    /*||||||||||||||||||| (Include) Menu Medico paitent |||||||||||||||||||||||*/
-
-    .btn-menu-medico{
-    	text-shadow: 0px 1px rgba(0, 0, 0, 0.2);
-    	text-align:center;
-    	text-decoration: none;
-    	font-family: 'Helvetica Neue', Helvetica, sans-serif;
-    	display:inline-block;
-    	color: #FFF;
-    	background: #7F8C8D;
-    	padding: 7px 20px;
-    	white-space: nowrap;
-    	margin: 10px 5px;
-    	-webkit-transition: all 0.2s ease-in-out;
-    	-ms-transition: all 0.2s ease-in-out;
-    	-moz-transition: all 0.2s ease-in-out;
-    	-o-transition: all 0.2s ease-in-out;
-    	transition: all 0.2s ease-in-out;
-    }
-
-    .btn-menu-medico-azul{
-    	background: #3498DB;
-    	box-shadow: 0px 5px 0px 0px #2980B9;
-    }
-
-    .btn-menu-medico-azul:hover{
-    	color: #fff;
-    	background: #39a0e5;
-    }
-
-    .btn-menu-medico-azul:active{
-    	box-shadow: 0px 2px 0px 0px #2980B9;
-    }
-
-    .btn-menu-medico-verde{
-    	background: #2ECC71;
-    	box-shadow: 0px 5px 0px 0px #27AE60;
-    }
-
-    .btn-menu-medico-verde:hover{
-    	color: #fff;
-    	background: #32db78;
-    }
-
-    .btn-menu-medico-verde:active{
-    	box-shadow: 0px 2px 0px 0px #27AE60;
-    }
-
-    .btn-menu-medico-amarillo{
-    	background: #f1c232;
-    	box-shadow: 0px 5px 0px 0px #c69f29;
-    }
-
-    .btn-menu-medico-amarillo:hover{
-    	color: #fff;
-    	background: #ffcc32;
-    }
-
-    .btn-menu-medico-amarillo:active{
-    	box-shadow: 0px 2px 0px 0px #c69f29;
-    }
-
-    .btn-menu-medico-morado{
-    	background: #902cd3;
-    	box-shadow: 0px 5px 0px 0px #7726ad;
-    }
-
-    .btn-menu-medico-morado:hover{
-    	color: #fff;
-    	background: #aa36f7;
-    }
-
-    .btn-menu-medico-morado:active{
-    	box-shadow: 0px 2px 0px 0px #7726ad;
-    }
-    /*//////////////////// card-edit ////////////////////////////////*/
-    .card-edit{
-		background-color: #0060df;
-		color: #fff;
-    }
 
     /*//////////////////// RADIOS////////////////////////////////*/
 
 
-    .radio {
-    	margin: 0.5rem;
-    }
-    .radio .radio-diary {
-    	position: absolute;
-    	opacity: 0;
-    }
-    .radio .radio-diary + .radio-label:before {
-    	content: '';
-    	background: #f4f4f4;
-    	border-radius: 100%;
-    	border: 1px solid #b4b4b4;
-    	display: block;
-    	width: 1.4em;
-    	height: 1.4em;
-    	position: relative;
-    	top: -0.2em;
-    	left: 40%;
-    	/*  margin-right: 1em;*/
-    	vertical-align: top;
-    	cursor: pointer;
-    	text-align: center;
-    	transition: all 250ms ease;
-    }
-    .radio .radio-diary:checked + .radio-label:before {
-    	background-color: #3197EE;
-    	box-shadow: inset 0 0 0 4px #f4f4f4;
-    }
-    .radio .radio-diary:focus + .radio-label:before {
-    	outline: none;
-    	border-color: #3197EE;
-    }
-    .radio .radio-diary:disabled + .radio-label:before {
-    	box-shadow: inset 0 0 0 4px #f4f4f4;
-    	border-color: #b4b4b4;
-    	background: #b4b4b4;
-    }
-    .radio .radio-diary + .radio-label:empty:before {
-    	margin-right: 0;
-    }
+.radio {
+  margin: 0.5rem;
+}
+.radio .radio-diary {
+  position: absolute;
+  opacity: 0;
+}
+.radio .radio-diary + .radio-label:before {
+  content: '';
+  background: #f4f4f4;
+  border-radius: 100%;
+  border: 1px solid #b4b4b4;
+  display: block;
+  width: 1.4em;
+  height: 1.4em;
+  position: relative;
+  top: -0.2em;
+  left: 40%;
+/*  margin-right: 1em;*/
+  vertical-align: top;
+  cursor: pointer;
+  text-align: center;
+  transition: all 250ms ease;
+}
+.radio .radio-diary:checked + .radio-label:before {
+  background-color: #3197EE;
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+}
+.radio .radio-diary:focus + .radio-label:before {
+  outline: none;
+  border-color: #3197EE;
+}
+.radio .radio-diary:disabled + .radio-label:before {
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+  border-color: #b4b4b4;
+  background: #b4b4b4;
+}
+.radio .radio-diary + .radio-label:empty:before {
+  margin-right: 0;
+}
 
 
     /*||||||||||||||||||| Index-profile |||||||||||||||||||||||*/
@@ -963,7 +876,7 @@ a:hover, a:active, a:focus{
     }
 
     .outstanding{
-    /*	border: 1px solid #0060DF;*/
+    	border: 1px solid #0060DF;
     	padding: 0px 7.5px;
     	color: #0060DF;
     	font-weight: 550;
@@ -1009,48 +922,48 @@ a:hover, a:active, a:focus{
     }
 
 
-    /* |||||||||||||||||| RATING STAR ||||||||||||||||||*/
+	/* |||||||||||||||||| RATING STAR ||||||||||||||||||*/
 
 
-    .rate {
-    	display: inline-block;
-    	margin: 0;
-    	padding: 0;
-    	border: none;
-    }
+.rate {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
 
-    .rate-star {
-    	display: none;
-    }
+.rate-star {
+  display: none;
+}
 
-    .rate-label {
-    	float: right;
-    	font-size: 0;
-    	color: #d9d9d9;
-    	margin: auto 2px;
-    }
+.rate-label {
+  float: right;
+  font-size: 0;
+  color: #d9d9d9;
+  margin: auto 2px;
+}
 
-    .rate-label:before {
-    	content: "\f005";
-    	font-family: FontAwesome;
-    	font-size: 26px;
-    }
+.rate-label:before {
+  content: "\f005";
+  font-family: FontAwesome;
+  font-size: 26px;
+}
 
-    .rate-label:hover,
-    .rate-label:hover ~ label {
-    	color: #fcd000;
-    	transition: 0.2s;
-    }
+.rate-label:hover,
+.rate-label:hover ~ label {
+  color: #fcd000;
+  transition: 0.2s;
+}
 
-    .rate-star:checked ~ label {
-    	color: #ccac00;
-    }
+.rate-star:checked ~ label {
+  color: #ccac00;
+}
 
-    .rate-star:checked ~ label:hover,
-    .rate-star:checked ~ label:hover ~ label {
-    	color: #fcd000;
-    	transition: 0.2s;
-    }
+.rate-star:checked ~ label:hover,
+.rate-star:checked ~ label:hover ~ label {
+  color: #fcd000;
+  transition: 0.2s;
+}
 
 
 
@@ -1181,9 +1094,9 @@ a:hover, a:active, a:focus{
     	.toggle-menu{
     		display: block;
     	}
-    	.text-navbar{
-    		display:none;
-    	}
+    	  		.text-navbar{
+		display:none;
+	}
 
     }
 
@@ -1214,9 +1127,9 @@ a:hover, a:active, a:focus{
     		margin-top: 10px !important;
     		margin-bottom: 30px !important;
     	}
-    	.text-navbar{
-    		display:none;
-    	}
+    		.text-navbar{
+		display:none;
+	}
 
     	/*|||||||||||||||| register step 1 |||||||||||||||||||*/
 
@@ -1289,7 +1202,7 @@ a:hover, a:active, a:focus{
 	.toggle-menu{
 		display: block;
 	}
-	.text-navbar{
+		.text-navbar{
 		display:none;
 	}
 }

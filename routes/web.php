@@ -62,6 +62,7 @@ route::get('medico/{m_id}/patient/{p_id}/edit/appointment/{app_id}','medico_diar
 ///////////////NOTES
 route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/view_preview','notesController@view_preview')->name('view_preview');
 route::get('medico/{m_id}/patient/{p_id}/type_notes','notesController@type_notes')->name('type_notes');
+
 route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/config','notesController@note_config')->name('note_config');
 route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/ini_create','notesController@note_medic_ini_create')->name('note_medic_ini_create');
 route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/ini_edit','notesController@note_ini_edit')->name('note_ini_edit');
@@ -94,7 +95,7 @@ route::resource('medico_diary','medico_diaryController');
 route::post('compare/hours/{id}','medico_diaryController@compare_hours')->name('compare_hours');
 
 route::get('check/{id}/notification','medicoController@marcar_como_vista')->name('marcar_como_vista');
-
+route::get('Medico/{m_id}/patient/{p_id}/appointment/{app_id}/marcar_como_vista','medicoController@marcar_como_vista_redirect')->name('marcar_como_vista_redirect');
 route::get('medico/{id}/diary/events','medico_diaryController@medico_diary_events')->name('medico_diary_events');
 route::post('medico/{id}/diary/events2','medico_diaryController@medico_diary_events2')->name('medico_diary_events2');
 

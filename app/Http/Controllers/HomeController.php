@@ -718,9 +718,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
       public function detail_medic_map($id){
         $medico = medico::find($id);
+        $photo = photo::where('medico_id',$id)->where('type', 'perfil')->first();
+        
 
-        dd($medico->image->path);
-        return view('home.detail_medic_map')->with('medico', $medico);
+        return view('home.detail_medic_map')->with('medico', $medico)->with('photo', $photo );
       }
 
 }

@@ -42,7 +42,7 @@
         <div class="p-2">
           <label for="" class="font-title-grey">Fecha de Creacion:</label> <p>{{\Carbon\Carbon::parse($app->created_at)->format('d-m-Y')}}</p>
 
-            <label for="" class="font-title-grey">Solicitada Por:</label> <p>@if($app->stipulated == 'patient') Paciente: {{$app->patient->name}} {{$app->patient->lastName}}@else Medico: {{$app->medico->name}} {{$app->medico->lastName}}
+            <label for="" class="font-title-grey">Solicitada Por:</label> <p>@if($app->stipulated == 'Paciente') Paciente: {{$app->patient->name}} {{$app->patient->lastName}}@else Medico: {{$app->medico->name}} {{$app->medico->lastName}}
 
             @endif
           {{-- <label for="" class="font-title-grey">Estrellas Otorgadas:</label> <p>{{$app->score}}</p>
@@ -52,7 +52,9 @@
 
         </p>
         <div class="form-inline">
-          <a href="" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar Cita/(Aun No Funciona)"><i class="far fa-edit"></i></a>
+          <a href="{{route('marcar_como_vista_redirect',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i></a>
+
+
           <a href="{{route('marcar_como_vista',$app->id)}}" class="btn btn-success ml-2" data-toggle="tooltip" data-placement="top" title="Marcar como vista"><i class="fas fa-check"></i></a>
 
 

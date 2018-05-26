@@ -742,7 +742,11 @@
           $('#text_error').html('Imposible crear evento fuera del horario establecido');
           $('#alert_error').fadeIn();
           $('#alert_success').fadeOut();
-        }else{
+        }else if(result == 'ya existe'){
+          $('#text_error').html('Imposible crear evento,Ya existe un Evento en las horas seleccionadas, por favor compruebe la fecha en el calendario e intente nuevamente');
+          $('#alert_error').fadeIn();
+          $('#alert_success').fadeOut();
+        }else{  
           console.log(result);
           $('#text_success').html('Guardado con Exito');
           $('#alert_success').fadeIn();

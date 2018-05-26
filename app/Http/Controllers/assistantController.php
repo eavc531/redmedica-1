@@ -101,11 +101,11 @@ class assistantController extends Controller
         $user->role = 'Asistente';
         $user->save();
 
-        Mail::send('mails.ActivationAssistent',['assistant'=>$assistant,'user'=>$user,'code'=>$code],function($msj){
-           $msj->subject('Médicos Si');
-           $msj->to('eavc53189@gmail.com');
-
-      });
+      //   Mail::send('mails.ActivationAssistent',['assistant'=>$assistant,'user'=>$user,'code'=>$code],function($msj){
+      //      $msj->subject('Médicos Si');
+      //      $msj->to('eavc53189@gmail.com');
+      //
+      // });
 
       return redirect()->route('successRegAssistant',$user->id)->with('success', 'Se ha enviado un mensaje de confirmación a tu Correo Electronico.')->with('user', $user);
 

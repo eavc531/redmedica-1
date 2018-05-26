@@ -43,14 +43,14 @@ class medicoController extends Controller
 
      public function calification_medic($id){
 
-
+       $medico = medico::find($id);
       $rate_medic = rate_medic::where('medico_id',$id)->paginate(10);
 
-       if(Auth::check() and Auth::user()->role == 'Paciente'){
-         $you_rate = rate_medic::where('medico_id',$id)->where('patient_id',Auth::user()->patient->id);
-         return view('medico.calification_medic',compact('you_rate','rate_medic'));
-       }
-       return view('medico.calification_medic',compact('rate_medic'));
+       // if(Auth::check() and Auth::user()->role == 'Medico'){
+       //   $you_rate = rate_medic::where('medico_id',$id)->get();
+       //   return view('medico.calification_medic',compact('you_rate','rate_medic','medico'));
+       // }
+       return view('medico.calification_medic',compact('rate_medic','medico'));
 
      }
 
@@ -461,8 +461,8 @@ class medicoController extends Controller
 
         Mail::send('mails.confirmMedico',['medico'=>$medico,'user'=>$user,'code'=>$code],function($msj) use($medico){
            $msj->subject('Médicos Si');
-           // $msj->to($medico->email);
-           $msj->to('eavc53189@gmail.com');
+           $msj->to($medico->email);
+           //$msj->to('eavc53189@gmail.com');
 
       });
 
@@ -488,8 +488,8 @@ class medicoController extends Controller
 
          Mail::send('mails.confirmMedico',['medico'=>$medico,'user'=>$user,'code'=>$code],function($msj) use($medico){
             $msj->subject('Médicos Si');
-            // $msj->to($medico->email);
-            $msj->to('eavc53189@gmail.com');
+            $msj->to($medico->email);
+            //$msj->to('eavc53189@gmail.com');
         });
 
         return redirect()->route('successRegMedico',$user->id)->with('success', 'Se ha reenviado el mensaje de confirmación al correo electronico, asociado a tu cuenta MédicoSi')->with('user', $user);
@@ -640,7 +640,7 @@ class medicoController extends Controller
     {
         $medico = medico::find($medico_id);
         $patient = patient::find($patient_id);
-        $appointments = event::where('medico_id', $medico_id)->where('patient_id',$patient_id)->orderBy('created_at','desc')->paginate(10);
+        $appointments = event::where('medico_id', $medico_id)->where('patient_id',$patient_id)->orderBy('created_at','desc')->paginate(4);
 
         return view('medico.patient.medico_patient_appointments',compact('medico','patient','appointments'));
 
@@ -663,5 +663,21 @@ class medicoController extends Controller
 
     }
 
+    public function marcar_como_vista_redirect($m_id,$p_id,$app_id)
+    {
+
+        $app = event::find($app_id);
+        $app->notification = 'see';
+        $app->save();
+
+        $event = event::where('medico_id',$app->medico_id)->where('notification', 'not_see')->count();
+
+        $medico = medico::find($app->medico_id);
+        $medico->notification_number = $event;
+        $medico->save();
+
+        return redirect()->route('edit_appointment',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])->with('success','Se ha Maracado como vista la Cita para el Paciente: '.$app->namePatient.' Estipulada para la Fecha: '.$app->start);
+
+    }
 
 }

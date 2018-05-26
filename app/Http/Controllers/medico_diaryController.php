@@ -85,7 +85,7 @@ class medico_diaryController extends Controller
        $comprobar_horario2 = event::where('medico_id',$request->medico_id)->where('title', $day)->where('rendering', 'background')->where('start','<=',$hour_end2)->where('end','>=',$hour_end2)->count();
 
        if($comprobar_horario == 0 or $comprobar_horario2 == 0){
-         return response()->json('fuera de horario');
+         return response()->json('fuera del horario');
        }
 
        $comprobar_disponibilidad = event::where('medico_id',$request->medico_id)->whereNull('rendering')->where('start','<=',$start)->where('end','>',$start)->count();
@@ -367,7 +367,7 @@ class medico_diaryController extends Controller
        $comprobar_horario2 = event::where('medico_id',$request->medico_id)->where('title', $day)->where('rendering', 'background')->where('start','<=',$hour_end2)->where('end','>=',$hour_end2)->count();
 
        if($comprobar_horario == 0 or $comprobar_horario2 == 0){
-         return response()->json('fuera de horario');
+         return response()->json('fuera del horario');
        }
 
        $comprobar_disponibilidad = event::where('medico_id',$request->medico_id)->whereNull('rendering')->where('start','<=',$start)->where('end','>',$start)->count();
@@ -441,12 +441,14 @@ class medico_diaryController extends Controller
        if($event->stipulated == 'medico'){
          Mail::send('mails.med_notification_patient_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($patient){
             $msj->subject('Médicos Si');
-            $msj->to('eavc53189@gmail.com');
+            $msj->to($patient->email);
+            //$msj->to('eavc53189@gmail.com');
           });
 
          Mail::send('mails.med_notification_medico_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($medico){
             $msj->subject('Médicos Si');
-            $msj->to('testprogramas531@gmail.com');
+            // $msj->to('testprogramas531@gmail.com');
+            $msj->to($medico->email);
           });
 
 
@@ -455,12 +457,14 @@ class medico_diaryController extends Controller
 
        Mail::send('mails.notification_patient_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($patient){
           $msj->subject('Médicos Si');
-          $msj->to('eavc53189@gmail.com');
+          $msj->to($patient->email);
+          //$msj->to('eavc53189@gmail.com');
         });
 
        Mail::send('mails.notification_medico_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($medico){
           $msj->subject('Médicos Si');
-          $msj->to('testprogramas531@gmail.com');
+          $msj->to($medico->email);
+          //$msj->to('testprogramas531@gmail.com');
         });
 
 
@@ -1062,12 +1066,14 @@ class medico_diaryController extends Controller
 
        Mail::send('mails.med_notification_patient_appointment_change',['medico'=>$medico,'patient'=>$patient,'event'=>$event,'before_date'=>$before_date],function($msj) use($patient){
           $msj->subject('Notificación Cambio de Fecha de Cita, Médicos Si');
-          $msj->to('eavc53189@gmail.com');
+          $msj->to($patient->email);
+          //$msj->to('eavc53189@gmail.com');
         });
 
        Mail::send('mails.med_notification_medico_appointment_change',['medico'=>$medico,'patient'=>$patient,'event'=>$event,'before_date'=>$before_date],function($msj) use($medico){
           $msj->subject('Notificación Cambio de Fecha de Cita, Médicos Si');
-          $msj->to('testprogramas531@gmail.com');
+          $msj->to($medico->email);
+          //$msj->to('testprogramas531@gmail.com');
         });
 
         if($request->ajax()){
@@ -1150,7 +1156,7 @@ class medico_diaryController extends Controller
       $event2 = event::where('medico_id',$id)->where('title', $day)->where('rendering', 'background')->where('start','<=',$request->hour_end)->where('end','>=',$request->hour_end)->count();
 
       if($event == 0 or $event2 == 0){
-        return response()->json('fuera de horario');
+        return response()->json('fuera del horario');
       }else{
         return response()->json('ok');
       }

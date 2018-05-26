@@ -19,11 +19,12 @@ class LoginController extends Controller
         if($medico->stateConfirm == 'medium'){
           return redirect()->route('data_primordial_medico',$medico->id);
         }elseif($medico->stateConfirm == 'complete'){
-          return redirect()->route('medico_patients',$medico->id);
+          return redirect()->route('medico_diary',$medico->id);
         }else{
           Auth::logout();
           return redirect()->route('home')->with('warning', 'Su Cuenta no esta Verificada, o a sido Bloqueada');
         }
+
       }elseif(Auth::user()->hasRole('medical_center')){
         $medical_center = medicalCenter::find(Auth::user()->medical_center_id);
 

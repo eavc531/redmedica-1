@@ -134,8 +134,8 @@ class promotersController extends Controller
          $user->attachRole($role);
          Mail::send('mails.confirmMedicalCenter',['medicalCenter'=>$medicalCenter,'code'=>$code,'promoter'=>$promoter], function($msj) use ($medicalCenter){
             $msj->subject('Médicos Si');
-            $msj->to('eavc53189@gmail.com');
-            //$msj->to($medicalCenter->emailAdmin);
+            //$msj->to('eavc53189@gmail.com');
+            $msj->to($medicalCenter->emailAdmin);
 
           });
 
@@ -199,7 +199,7 @@ class promotersController extends Controller
 
          Mail::send('mails.confirmMedicoInvited',['medico'=>$medico,'user'=>$user,'code'=>$code,'promoter'=>$promoter],function($msj){
             $msj->subject('Médicos Si');
-            $msj->to('eavc53189@gmail.com');
+            $msj->to($medico->email);
        });
 
            return redirect()->route('list_client',$request->promoter_id)->with('success', 'Se ha Registrado un nuevo Médico como su invitado, solo falta que confirme su cuenta a travez de el correo asociado a su registro.');
