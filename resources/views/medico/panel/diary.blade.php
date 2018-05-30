@@ -343,7 +343,7 @@
                   <div class="form-inline">
                     {!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23'],null,['class'=>'form-control','id'=>'hourStart2','placeholder'=>'--'])!!}
 
-                      {!!Form::select('minsStart',['00'=>'00','15'=>'15','30'=>'30','45'=>'45','59'=>'59'],null,['class'=>'form-control','id'=>'minsStart2','placeholder'=>'--'])!!}
+                      {!!Form::select('minsStart',['00'=>'00','15'=>'15','30'=>'30','45'=>'45'],null,['class'=>'form-control','id'=>'minsStart2','placeholder'=>'--'])!!}
 
                       {{-- {!!Form::select('startFormatHour',['am'=>'am','pm'=>'pm'],null,['id'=>'startFormatHour3','class'=>'form-control  mb-1'])!!} --}}
                   </div>
@@ -359,7 +359,7 @@
                   <div class="form-inline">
                     {!!Form::select('hourEnd',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23'],null,['class'=>'form-control','id'=>'hourEnd2','placeholder'=>'--'])!!}
 
-                      {!!Form::select('minsEnd',['00'=>'00','15'=>'15','30'=>'30','45'=>'45','59'=>'59'],null,['class'=>'form-control','id'=>'minsEnd2','placeholder'=>'--'])!!}
+                      {!!Form::select('minsEnd',['00'=>'00','15'=>'15','30'=>'30','45'=>'45'],null,['class'=>'form-control','id'=>'minsEnd2','placeholder'=>'--'])!!}
 
                   </div>
 
@@ -381,7 +381,7 @@
 
                   <div class="col-lg-6">
                     @if($countEventSchedule != 0)
-                      <button type="submit" name="button" class="btn btn-config-blue">Guardars</button>
+                      <button type="submit" name="button" class="btn btn-config-blue">Guardar</button>
                     {{-- <button onclick="store_event()"type="button" class="btn btn-config-blue">Guardar</button> --}}
                     @else
                     <button onclick=""type="button" class="btn btn-config-blue" disabled>Guardar</button>
@@ -471,6 +471,67 @@
 
 
     $(document).ready(function(){
+
+      $('#form, #fo3').submit(function() {
+        cerrar();
+        $('#alert_carga5').fadeIn();
+        $('#guardar5').attr("disabled", true);
+        $('#delete5').attr("disabled", true);
+        $('#cancelar5').attr("disabled", true);
+        errormsj = '';
+             $.ajax({
+               headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+               type: 'POST',
+               url: $(this).attr('action'),
+               data: $(this).serialize(),
+               // Mostramos un mensaje con la respuesta de PHP
+               error:function(error){
+                 $('#alert_carga5').fadeOut();
+                 $('#guardar5').attr("disabled", false);
+                 $('#delete5').attr("disabled", false);
+                 $('#cancelar5').attr("disabled", false);
+                 console.log(error);
+                $.each(error.responseJSON.errors, function(index, val){
+                  errormsj+='<li>'+val+'</li>';
+                });
+                $('#text_error_up1').html('<ul style="list-style:none;">'+errormsj+'</ul>');
+                $('#alert_error_up1').fadeIn();
+                $('#alert_success_up1').fadeOut();
+
+                console.log(errormsj);
+              },
+               success:function(result){
+                 console.log(result);
+                 $('#alert_carga5').fadeOut();
+                 $('#guardar5').attr("disabled", false);
+                 $('#delete5').attr("disabled", false);
+                 $('#cancelar5').attr("disabled", false);
+
+                 if(result == 'fuera del horario'){
+                   $('#text_error_up1').html('imposible guardar evento, fuera del horario establecido');
+                   $('#alert_error_up1').fadeIn();
+                 }else if(result == 'fecha_editada'){
+                   $('#text_success_up1').html('Se ha cambiado la "Hora/Fecha" de la consulta con Exito. Se ha enviado un correo al Paciente para notificarle del cambio de la consulta.');
+                   $('#alert_success_up1').fadeIn();
+                   $('#card_edit').fadeOut();
+                 }else {
+                   console.log(result);
+                   $('#card_edit').fadeOut();
+                   $('#text_success_up1').html('Guardado con Exito');
+                   $('#alert_success_up1').fadeIn();
+                   $('#alert_error_up1').fadeOut();
+                   $('#calendar').fullCalendar('removeEvents');
+                   $('#calendar').fullCalendar('refetchEvents');
+
+                 }
+
+               }
+
+           })
+
+           return false;
+       });
+
       max_hour = $('#max_hour').val();
       min_hour = $('#min_hour').val();
 
@@ -581,27 +642,35 @@
             mins_start = $.fullCalendar.moment(event.start).format('mm');
             hour_end = $.fullCalendar.moment(event.end).format('HH');
             mins_end = $.fullCalendar.moment(event.end).format('mm');
-            $('#priceUp1').val(event.price);
-            $('#titleUp1').val(event.title);
-            $('#state').val(event.state);
-            $('#descriptionUp4').val(event.description);
-            $('#eventTypeUp1').val(event.eventType);
-            $('#payment_method7').val(event.payment_method);
-            $('#dateStartUp1').val(start);
-
-            $('#hourStartUp1').val(hour_start);
-            $('#minsStartUp1').val(mins_start);
-            $('#dateEndUp1').val(end);
-            $('#hourEndUp1').val(hour_end);
-            $('#minsEndUp1').val(mins_end);
-            $('#event_id2').val(event.id);
-            $('#event_id_destroy2').val(event.id);
-            $('#namePatient').val(event.namePatient);
+            $('#confirmed_patient9').val(event.confirmed_patient);
+            $('#confirmed_medico9').val(event.confirmed_medico);
+            $('#price9').val(event.price);
+            $('#title9').val(event.title);
+            $('#state9').val(event.state);
+            $('#description9').val(event.description);
+            $('#eventType9').val(event.eventType);
+            $('#payment_method9').val(event.payment_method);
+            $('#dateStart9').val(start);
+            $('#hourStart9').val(hour_start);
+            $('#minsStart9').val(mins_start);
+            $('#dateEndU9').val(end);
+            $('#hourEnd9').val(hour_end);
+            $('#minsEnd9').val(mins_end);
+            $('#event_id9').val(event.id);
+            $('#event_id9').val(event.id);
+            $('#event_id_destroy9').val(event.id);
+            $('#namePatient9').val(event.namePatient);
             $('#card_edit').fadeOut();
             $('#card_edit').fadeIn();
-            vaciar();
+
             $('#alert_success_up1').fadeOut();
-            // $('#ModalEdit').modal('show');
+            vaciar();
+            if(event.confirmed_medico == 'Si'){
+              $('#confirmar').attr('disabled', true);
+            }else{
+              $('#confirmar').attr('disabled', false);
+            }
+
         },
         eventRender: function (event, element, view) {
           if(event.title == 'Ausente'){
@@ -661,6 +730,7 @@
 
 
     function cerrar(){
+
       $('#alert_error').fadeOut();
       $('#alert_success').fadeOut();
       $('#alert_success_up1').fadeOut();
@@ -668,6 +738,7 @@
       $('#alert_success_up1').fadeOut();
       $('#alert_danger_up1').fadeOut();
 
+      vaciar2();
     }
 
     function vaciar(){
@@ -746,7 +817,7 @@
           $('#text_error').html('Imposible crear evento,Ya existe un Evento en las horas seleccionadas, por favor compruebe la fecha en el calendario e intente nuevamente');
           $('#alert_error').fadeIn();
           $('#alert_success').fadeOut();
-        }else{  
+        }else{
           console.log(result);
           $('#text_success').html('Guardado con Exito');
           $('#alert_success').fadeIn();
@@ -762,95 +833,27 @@
 
 
 
-    function close_edit(){
-      $('#card_edit').fadeOut();
-      vaciar2();
-    }
 
-    function update_event(){
 
+
+
+
+
+    function cancel(){
+
+      cerrar();
       $('#alert_carga5').fadeIn();
       $('#guardar5').attr("disabled", true);
       $('#delete5').attr("disabled", true);
       $('#cancelar5').attr("disabled", true);
-      title = $('#titleUp1').val();
-      eventType = $('#eventTypeUp1').val();
-      description = $('#descriptionUp4').val();
-      payment_method = $('#payment_method7').val();
-      price = $('#priceUp1').val();
-      date_start = $('#dateStartUp1').val();
-      hourStart = $('#hourStartUp1').val();
-      minsStart = $('#minsStartUp1').val();
-      startFormatHour = $('#startFormatHour3').val();
-      dateEnd = $('#dateEndUp1').val();
-      hourEnd = $('#hourEndUp1').val();
-      minsEnd = $('#minsEndUp1').val();
-      endFormatHour = $('#endFormatHour2').val();
-      state = $('#state').val();
-      medico_id = "{{$medico->id}}";
-      event_id = $('#event_id2').val();
 
-      route = "{{route('update_event')}}";
-      errormsj = '';
-
-      $.ajax({
-       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-       type:'post',
-       url:route,
-       data:{title:title,eventType:eventType,description:description,price:price,date_start:date_start,hourStart:hourStart,minsStart:minsStart,startFormatHour:startFormatHour,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,endFormatHour:endFormatHour,medico_id:medico_id,event_id:event_id,state:state,payment_method:payment_method},
-       error:function(error){
-         $('#alert_carga5').fadeOut();
-         $('#guardar5').attr("disabled", false);
-         $('#delete5').attr("disabled", false);
-         $('#cancelar5').attr("disabled", false);
-         console.log(error);
-        $.each(error.responseJSON.errors, function(index, val){
-          errormsj+='<li>'+val+'</li>';
-        });
-        $('#text_error_up1').html('<ul style="list-style:none;">'+errormsj+'</ul>');
-        $('#alert_error_up1').fadeIn();
-        $('#alert_success_up1').fadeOut();
-
-        console.log(errormsj);
-      },
-      success:function(result){
-        $('#alert_carga5').fadeOut();
-        $('#guardar5').attr("disabled", false);
-        $('#delete5').attr("disabled", false);
-        $('#cancelar5').attr("disabled", false);
-
-        if(result == 'fuera del horario'){
-          $('#text_error_up1').html('imposible guardar evento, fuera del horario establecido');
-          $('#alert_error_up1').fadeIn();
-        }else if(result == 'fecha_editada'){
-          $('#text_success_up1').html('Se a Guardado el cambio de Fecha con Exito, se ha enviado una notificacion al correo del paciente para informar del cambio de la Cita.');
-          $('#alert_success_up1').fadeIn();
-        }else {
-          console.log(result);
-          $('#text_success_up1').html('Guardado con Exito');
-          $('#alert_success_up1').fadeIn();
-          $('#alert_error_up1').fadeOut();
-          $('#calendar').fullCalendar('removeEvents');
-          $('#calendar').fullCalendar('refetchEvents');
-          close_edit();
-        }
-
-      }
-    });
-
-    }
-
-    function delete_event(){
-      question = confirm('¿Esta segur@ de Borrar este Evento?');
+      question = confirm('Esta a punto de Rechazar/Cancelar esta Cita,se enviara un corredo al paciente para notificarle de este suceso,¿Esta segur@ de Continuar?.');
       if(question == false){
-       exit();
+       return false;
      }
-      event_id = $('#event_id2').val();
+      event_id = $('#event_id9').val();
 
-
-      route = "{{route('delete_event')}}";
-      errormsj = '';
-
+      route = "{{route('cancel_appointment')}}";
       $.ajax({
        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
        type:'post',
@@ -861,18 +864,57 @@
       },
       success:function(result){
         console.log(result);
+        $('#alert_carga5').fadeOut();
+         $('#guardar5').attr("disabled", false);
+         $('#delete5').attr("disabled", false);
+         $('#cancelar5').attr("disabled", false);
         $('#text_danger_up1').html(result);
         $('#alert_danger_up1').fadeIn();
-
         $('#alert_error_up1').fadeOut();
         $('#calendar').fullCalendar('removeEvents');
         $('#calendar').fullCalendar('refetchEvents');
-        close_edit();
+        $('#card_edit').fadeOut();
       }
     });
 
     }
 
+
+    function confirmar2(){
+
+      cerrar();
+      $('#alert_carga5').fadeIn();
+      $('#guardar5').attr("disabled", true);
+      $('#delete5').attr("disabled", true);
+      $('#cancelar5').attr("disabled", true);
+      event_id = $('#event_id9').val();
+
+      route = "{{route('appointment_confirm_ajax')}}";
+      $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url:route,
+       data:{event_id:event_id},
+       error:function(error){
+         console.log(error);
+      },
+      success:function(result){
+        $('#alert_carga5').fadeOut();
+         $('#guardar5').attr("disabled", false);
+         $('#delete5').attr("disabled", false);
+         $('#cancelar5').attr("disabled", false);
+        console.log(result);
+        cerrar();
+        $('#text_success_up1').html(result);
+        $('#alert_success_up1').fadeIn();
+        $('#alert_error_up1').fadeOut();
+        $('#calendar').fullCalendar('removeEvents');
+        $('#calendar').fullCalendar('refetchEvents');
+        $('#card_edit').fadeOut();
+      }
+    });
+
+    }
 
 
 
@@ -1064,6 +1106,7 @@ function  PendientePorCobrar(){
         $("#hourEnd2").fadeTo(200, .2)
         .fadeTo(200, 1).fadeTo(200, .2).fadeTo(200, 1);
     }
+
 
 
 

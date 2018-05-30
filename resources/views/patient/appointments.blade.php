@@ -66,19 +66,19 @@
           <div class="p-2">
             <label for="" class="font-title-grey">Fecha de Creacion:</label> <p>{{\Carbon\Carbon::parse($app->created_at)->format('d-m-Y')}}</p>
 
-              <label for="" class="font-title-grey">Creada Por:</label> <p>@if($app->stipulated == 'patient') Paciente: {{$app->patient->name}} {{$app->patient->lastName}}@else Medico: {{$app->medico->name}} {{$app->medico->lastName}}
+              <label for="" class="font-title-grey">Creada Por:</label> <p>@if($app->stipulated == 'Paciente') Paciente: {{$app->patient->name}} {{$app->patient->lastName}}@else Medico: {{$app->medico->name}} {{$app->medico->lastName}}
 
               @endif
 
                 @if($app->status == 'calificada')
 
                 @elseif(\Carbon\Carbon::now() >= \Carbon\Carbon::parse($app->end))
-                {!!Form::open(['route'=>'qualify_medic','method'=>'POST'])!!}
-                {!!Form::hidden('medico_id',$app->medico_id)!!}
-                {!!Form::hidden('patient_id',$app->patient_id)!!}
-                {!!Form::hidden('event_id',$app->id)!!}
-                {!!Form::submit('Calificar Médico',['class'=>'btn btn-success'])!!}
-                {!!Form::close()!!}
+                  {{-- {!!Form::open(['route'=>'qualify_medic','method'=>'POST'])!!}
+                  {!!Form::hidden('medico_id',$app->medico_id)!!}
+                  {!!Form::hidden('patient_id',$app->patient_id)!!}
+                  {!!Form::hidden('event_id',$app->id)!!}
+                  {!!Form::submit('Calificar Médico',['class'=>'btn btn-success'])!!}
+                  {!!Form::close()!!} --}}
               @else
                 <a onclick="return alert('No podras calificar al médico hasta despues de la cita, luego de la fecha de la cita este boton se activara y podras calificar al médico.')" href="" class="btn btn-warning mt-4" data-toggle="tooltip" data-placement="top" title="No podras Calificar al médico hasta despues de la cita."><strong>Calificar Médico</strong></a>
 

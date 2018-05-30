@@ -10,7 +10,7 @@
 
 
 
-      <h2>"Verificación por correo electrónico de Red Medica"</h2>
+      <h2>"Verificación por correo electrónico de MédicosSi"</h2>
 
       <p>Un Cordial saludo: {{$medicalCenter->nameAdmin}} , Para Confirmar el registro del Centro Medico: {{$medicalCenter->tradename}},
         debe Ingresar a la Ruta: </p><a href="{{route('confirmMedicalCenter',['id'=>$medicalCenter->id,'code'=>$code])}}">{{route('confirmMedicalCenter',['id'=>$medicalCenter->id,'code'=>$code])}}</a>

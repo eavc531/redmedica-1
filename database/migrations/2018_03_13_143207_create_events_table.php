@@ -42,6 +42,8 @@ class CreateEventsTable extends Migration
           $table->string('show_comentary')->default('no');
           $table->string('status')->nullable();
           $table->string('payment_method')->nullable();
+          $table->string('confirmed_medico')->default('No');
+          $table->string('confirmed_patient')->default('No');
           $table->timestamps();
         });
     }

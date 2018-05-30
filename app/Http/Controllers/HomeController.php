@@ -210,9 +210,16 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
         }
         public function tolist2(Request $request){
+          if(!isset($request->typeSearch2)){
+            $request->validate([
+              'typeSearch'=>'required'
+            ]);
+          }
+
 
           $lat = $request->latitud;
           $lng = $request->longitud;
+        
 
 
           $dist = $request->dist;
@@ -719,7 +726,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
       public function detail_medic_map($id){
         $medico = medico::find($id);
         $photo = photo::where('medico_id',$id)->where('type', 'perfil')->first();
-        
+
 
         return view('home.detail_medic_map')->with('medico', $medico)->with('photo', $photo );
       }

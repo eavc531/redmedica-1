@@ -1,5 +1,67 @@
 
+function update_event(){
 
+
+ cerrar();
+ medico_id = $('#medico_id4').val();
+ event_id = $('#event_id3').val();
+ title = $('#titleUp9').val();
+ alert(title);
+ description = $('#descriptionUp4').val();
+ route = "{{route('update_event')}}";
+ $('#alert_carga5').fadeIn();
+ $('#guardar5').attr("disabled", true);
+ $('#delete5').attr("disabled", true);
+ $('#cancelar5').attr("disabled", true);
+ errormsj = '';
+      $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type: 'POST',
+        url: route,
+        data:{medico_id:medico_id,event_id:event_id,title:title,description:description},
+        success:function(result){
+          console.log(result);
+          $('#alert_carga5').fadeOut();
+          $('#guardar5').attr("disabled", false);
+          $('#delete5').attr("disabled", false);
+          $('#cancelar5').attr("disabled", false);
+
+          if(result == 'fuera del horario'){
+            $('#text_error_up1').html('imposible guardar evento, fuera del horario establecido');
+            $('#alert_error_up1').fadeIn();
+          }else if(result == 'fecha_editada'){
+            $('#text_success_up1').html('Se a Guardado el cambio de Fecha con Exito, se ha enviado una notificacion al correo del paciente para informar del cambio de la Cita.');
+            $('#alert_success_up1').fadeIn();
+          }else {
+            console.log(result);
+            $('#text_success_up1').html('Guardado con Exito');
+            $('#alert_success_up1').fadeIn();
+            $('#alert_error_up1').fadeOut();
+            $('#calendar').fullCalendar('removeEvents');
+            $('#calendar').fullCalendar('refetchEvents');
+            cerrar();
+          }
+
+        },
+        error:function(error){
+          $('#alert_carga5').fadeOut();
+          $('#guardar5').attr("disabled", false);
+          $('#delete5').attr("disabled", false);
+          $('#cancelar5').attr("disabled", false);
+          console.log(error);
+         $.each(error.responseJSON.errors, function(index, val){
+           errormsj+='<li>'+val+'</li>';
+         });
+         $('#text_error_up1').html('<ul style="list-style:none;">'+errormsj+'</ul>');
+         $('#alert_error_up1').fadeIn();
+         $('#alert_success_up1').fadeOut();
+
+         console.log(errormsj);
+       },
+    })
+
+    return false;
+};
 ///////////////////////////////////////////////////////////
 @extends('layouts.app-panel')
 @section('css')

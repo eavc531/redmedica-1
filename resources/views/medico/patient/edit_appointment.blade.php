@@ -23,110 +23,27 @@
           </div>
 
           </div>
+          <div class="text-right mt-2 mb-2">
+            <button type="button" onclick="modal()" name="button" class="btn btn-info">Ayuda</button>
+          </div>
           {{-- MENU DE PACIENTES --}}
           {{-- @include('medico.includes.main_medico_patients') --}}
-          <div class="alert-info p-3 m-2" style="display:none" id="alert_carga5">
+          {{-- <div class="alert-info p-3 m-2" style="display:none" id="alert_carga5">
             Procesando...
-          </div>
-          <div class="card p-2" id="card_edit">
-            <div class="row">
-              <div class="col-12">
-                <button type="button" name="button" class="close" onclick="close_edit()">
-                  &times;
-                </button>
-                <h3 class="font-title-blue text-center my-2">Editar</h3>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-4 col-12">
-                <input name="medico_id" type="hidden" value="1">
-                {!!Form::model($app,['route'=>'update_event','method'=>'POST'])!!}
-                {!!Form::hidden('medico_id',$medico->id,['id'=>'medico_id4'])!!}
-                {!!Form::hidden('event_id',$app->id,['id'=>'event_id2'])!!}
-                <div class="form-group">
-                  <label for="" class="font-title">Paciente</label>
-                  {{Form::text('namePatient',null,['id'=>'namePatient','class'=>'form-control','disabled'])}}
-                </div>
-              </div>
-              <div class="col-lg-4 col-12">
-                <div class="form-group">
-                  <label for="" class="font-title">Tipo de evento</label>
-                  {!!Form::text('title',null,['class'=>'form-control','id'=>'titleUp1'])!!}
-                </div>
-              </div>
-              <div class="col-lg-4 col-12">
-                <div class="form-group">
-                  <label for="" class="font-title">Descripción (Opcional)</label>
-                  {!!Form::text('description',null,['class'=>'form-control','id'=>'descriptionUp4'])!!}
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-4 col-12">
-                <div class="form-group">
-                  <label for="" class="font-title">Precio</label>
-                  {!!Form::text('price',null,['class'=>'form-control','id'=>'priceUp1'])!!}
-                </div>
-              </div>
-              <div class="col-lg-4 col-12">
-                <div class="form-group">
-                  <label for="" class="font-title">Fecha de inicio</label>
-                  {!!Form::date('date_start',\Carbon\Carbon::parse($app->start),['class'=>'form-control','id'=>'dateStartUp1'])!!}
-                </div>
-              </div>
-              <div class="col-lg-4 col-12">
-                <div class="form-group">
-                  <label for="" class="font-title">Hora de Inicio</label>
+          </div> --}}
 
-                  <div class="row">
-                    <div class="col">{!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23'],\Carbon\Carbon::parse($app->start)->format('H'),['class'=>'form-control','id'=>'hourStartUp1'])!!}</div>
-                    <div class="col">
-                      {!!Form::select('minsStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],\Carbon\Carbon::parse($app->start)->format('i'),['class'=>'form-control','id'=>'minsStartUp1'])!!}
-                    </div>
-                  </div>
-                </div>
-              </div>
+          @if($app->state == 'Rechazada/Cancelada')
+            <div class="alert-danger p-3 m-2" id="procesando">
+              <h5>La Cita con el paciente {{$patient->name}} {{$patient->lastName}} estipulada para la fecha {{$app->start}} fue Rechazada/Cancelada. </h5>
+              <p>Las citas "Rechazadas o Canceladas no pueden ser editadas, ni se mostraran en la agenda, para ver una cita de este tipo puede ir al panel "Citas" y seleccionar el boton "Citas Rechazadas/Canceladas"</p>
             </div>
-            <div class="row">
-              {{-- <div class="col-lg-4">
-                <div class="form-group text-center">
-                  <label for="" class="font-title">Fecha de Culminación</label>
-                  {!!Form::date('date_End',null,['class'=>'form-control','id'=>'dateEndUp1'])!!}
-                </div>
-              </div> --}}
-              <div class="col-lg-4 col-12 col-sm-5 m-sm-auto">
-                <div class="form-group text-center">
-                  <label for="" class="font-title" class="mx-3">Hora de Culminación</label>
-                  <div class="row">
-                    <div class="col-lg-6 my-1">{!!Form::select('hourEnd',['--'=>'--','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],\Carbon\Carbon::parse($app->end)->format('H'),['class'=>'form-control','id'=>'hourEndUp1'])!!}</div>
-                    <div class="col-lg-6 my-1"> {!!Form::select('minsEnd',['--'=>'--','00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29','30'=>'30','31'=>'31','32'=>'32','33'=>'33','34'=>'34','35'=>'35','36'=>'36','37'=>'37','38'=>'38','39'=>'39','40'=>'40','41'=>'41','42'=>'42','43'=>'43','44'=>'44','45'=>'45','46'=>'46','47'=>'47','48'=>'48','49'=>'49','50'=>'50','51'=>'51','52'=>'52','53'=>'53','54'=>'54','55'=>'55','56'=>'56','57'=>'57','58'=>'58','59'=>'59'],\Carbon\Carbon::parse($app->end)->format('i'),['class'=>'form-control','id'=>'minsEndUp1'])!!}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <label for="Estado" class="font-title">Estado:</label>
-                {{Form::select('state',['Pendiente'=>'Pendiente','Cancelada'=>'Cancelada','Pagada'=>'Pagada','Cerrada y Cobrada'=>'Cerrada y Cobrada'],null,['class'=>'form-control','id'=>'state'])}}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-4 col-sm-4 col-12">
-                <a href="{{route('delete_event2',$app->id)}}" class="btn btn-danger btn-block">Eliminar</a>
-              </div>
-              <div class="col-lg-4 col-sm-4 col-12">
-                <a href="{{route('medico_app_details',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn-block btn btn-secondary my-1">Cancelar</a>
-
-              </div>
-             <div class="col-lg-4 col-sm-4 col-12">
-                <button type="submit" name="button" class="btn btn-success btn-block" id="guardar">Guardar</button>
-               {{-- <button onclick="update_event()" type="button" class="btn-block btn btn-primary my-1">Guardar</button> --}}
-             </div>
-          </div>
-          {!!Form::close()!!}
-          </div>
+          @else
+            @include('medico.includes.card_edit_noti')
+          @endif
 
 
         @include('medico.includes.alert_calendar')
-        @include('medico.includes.card_edit')
+
           <hr>
           <div class="" id="example">
             {{-- //////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT --}}
@@ -177,6 +94,43 @@
 
 <input type="hidden" name="" value="{{\Carbon\Carbon::parse($app->start)->format('m-d-Y')}}" id="date_edit">
 
+
+<!-- Modal -->
+<div class="modal fade" id="modal_ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="exampleModalLongTitle">Ayuda</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Confirmar Cita</h5>
+        <p>Al presionar el boton confirmar cita, estaras confirmando tu disponibilidad para la misma, simultaneament se enviara de forma automatica un correo al paciente para notificar la confirmación de la cita.</p>
+        <h5>Rechazar Cita</h5>
+          <p>El Boton Rechazar Cita te permite cancelar una cita, esta quedara registrada en el panel de citas canceladas, al cancelar una cita se enviara un correo electronico de notificacion al paciente para notificarle sobre este cambio.</p>
+        <h5>Editar Citas</h5>
+        <p>Puedes editar las citas en cualquier momento,entre los cambios que puedes realizar se encuentran los siguientes.</p>
+        <h5>Cambiar Fecha</h5>
+        <p>Puedes cambiar la fecha y la hora de la cita en cualquier momento,siempre y cuando este disponible segun tu agenda, que puedes verificar en el calendario, si modificas la fecha al momento de guardar los cambios se enviara un mensaje de notificacion al paciente, para hacerle saber el cambio de la cita, con un link al q podra ingresar para confirmar su disponibilidad</p>
+        <h5>Estado de la Cita</h5>
+        <p>Esta opcion te permitira marcar el estado de la cita, como pendiente, pagada o cobrada y cerrada
+         </p>
+        <h5>Tipo de Pago</h5>
+        <p>Puedes cambiar el tipo de pago, esto en caso de que el cliente al comunicarse con usted solicite este cambio, y asi pueda registrarlo en el sistema.</p>
+        <h5>Confirmacion del Paciente</h5>
+        <p>es posible agregar la confirmacion del paciente, en caso de que el paciente confirme su pago a travez de un metodo ageno al correo electronico, permitiendole registrar este cambio por usted mismo</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{{Form::hidden('change_date','',['id'=>'change_date'])}}
 @endisset
 
 
@@ -192,7 +146,137 @@
   <script type="text/javascript">
 
 
+
+  $("#rechazar").click(function() {
+    $('#procesando').fadeIn();
+    variable = confirm('Esta a punto de Cancelar esta Cita, se enviara un mesaje notificacando al paciente sobre la cancelacion de la misma, ¿Esta segur@ de Continuar?');
+    if(variable == false){
+      return false;
+    }
+    event_id = "{{$app->id}}";
+    route = "{{route('appointment_cancel',$app->id)}}";
+    $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url:route,
+     data:{event_id:event_id},
+        error:function(error){
+           console.log(error);
+        },
+        success:function(result){
+          $('#change_date').val(result)
+          $('#procesando').fadeOut();
+          // $('#text_danger').html(result.danger);
+          // $('#alert_danger_up1').fadeIn();
+          window.location.replace("{{route('edit_appointment',['m-id'=>$medico->id,'p_id'=>$patient->id,'app_id'=>$app->id])}}");
+      }
+    });
+  });
+
+  $("#dateStartUp1").change(function() {
+    dateStart = $('#dateStartUp1').val();
+    hourStart = $('#hourStartUp1').val();
+    minsStart = $('#minsStartUp1').val();
+    event_id = "{{$app->id}}"
+    route = '{{route('verify_change_date')}}';
+        $.ajax({
+         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+         type:'post',
+         url:route,
+         data:{dateStart:dateStart,hourStart:hourStart,minsStart:minsStart,event_id:event_id},
+            error:function(error){
+               console.log(error);
+            },
+            success:function(result){
+              $('#change_date').val(result)
+
+          }
+        });
+  });
+
+
+
+
+  $("#hourStartUp1").change(function() {
+    dateStart = $('#dateStartUp1').val();
+    hourStart = $('#hourStartUp1').val();
+    minsStart = $('#minsStartUp1').val();
+    event_id = "{{$app->id}}"
+    route = '{{route('verify_change_date')}}';
+        $.ajax({
+         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+         type:'post',
+         url:route,
+         data:{dateStart:dateStart,hourStart:hourStart,minsStart:minsStart,event_id:event_id},
+            error:function(error){
+               console.log(error);
+            },
+            success:function(result){
+              $('#change_date').val(result)
+
+          }
+        });
+  });
+  $("#minsStartUp1").change(function() {
+    dateStart = $('#dateStartUp1').val();
+    hourStart = $('#hourStartUp1').val();
+    minsStart = $('#minsStartUp1').val();
+    event_id = "{{$app->id}}"
+    route = '{{route('verify_change_date')}}';
+        $.ajax({
+         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+         type:'post',
+         url:route,
+         data:{dateStart:dateStart,hourStart:hourStart,minsStart:minsStart,event_id:event_id},
+            error:function(error){
+               console.log(error);
+            },
+            success:function(result){
+              $('#change_date').val(result)
+
+          }
+        });
+  });
+
+    function modal(){
+      $('#modal_ayuda').modal('show');
+    }
+
+
     $(document).ready(function(){
+
+      $('#form, #fo3').submit(function() {
+     // Enviamos el formulario usando AJAX
+     change = $('#change_date').val()
+     if(change == 'cambio fecha'){
+       question = confirm('Se a cambiado la fecha de la cita, se le enviara una correo al pacietne para notificarlse acerca del cambio, ¿Desea continuar?')
+       if(question == false){
+          return false;
+       }
+     }
+
+     $('#procesando').fadeIn();
+
+
+           $.ajax({
+               headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+               type: 'POST',
+               url: $(this).attr('action'),
+               data: $(this).serialize(),
+               // Mostramos un mensaje con la respuesta de PHP
+               success: function(data) {
+                 console.log(data);
+                   $('#procesando').fadeOut();
+                   if(data == 'ya existe'){
+                     alert('Imposible Guardar cambios, ya existe un evento que abarca con las horas seleccionadas.');
+                   }
+               }
+           })
+
+           return false;
+       });
+
+
       date_edit = $('#date_edit').val();
       date_ini_format = moment(date_edit).format('YYYY-MM-DD');
       // alert(date_ini_format);
@@ -238,7 +322,7 @@
 
     // function calendario(){
           $('#calendar').fullCalendar({
-        
+
         header: {
           left: 'prev,next today myCustomButton',
           center: 'title',
@@ -710,6 +794,11 @@ function  PendientePorCobrar(){
     //   $( "#alert" ).fadeIn();
     //   confirm('si');
     // }
+
+
+
+
+
 
   </script>
 

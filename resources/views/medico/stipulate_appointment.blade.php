@@ -6,6 +6,9 @@
 .fc-event {
     border-width: 1px;
 }
+.fc-toolbar{
+  background: rgb(27, 172, 94);
+}
 </style>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.css"> --}}
@@ -72,7 +75,7 @@
       <a href="" class="btn-info btn" data-toggle="modal" data-target="#info-modal"><i class="fas fa-info mr-2"></i>¿Como Agendar?</a>
       <div class="form-group text-center">
         <div class="form-group mt-2">
-          <label for="" class="label-title ">Agendar Cita</label>
+          <label for="" class="label-title ">Agendar Cita con: {{$patient->name}} {{$patient->lastName}}</label>
         </div>
 
 
@@ -96,9 +99,9 @@
          <label for="" class="col-form-label font-title-grey"> Hora</label>
        </div>
        <div class="form-inline col-lg-8 col-sm-12">
-        {!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourStart2','placeholder'=>'--'])!!}
+        {!!Form::select('hourStart',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23'],null,['class'=>'form-control','id'=>'hourStart2','placeholder'=>'--'])!!}
 
-        {!!Form::select('minsStart',['00'=>'00','15'=>'15','30'=>'30','45'=>'45','59'=>'59'],null,['class'=>'form-control','id'=>'minsStart2','placeholder'=>'--'])!!}
+        {!!Form::select('minsStart',['00'=>'00','15'=>'15','30'=>'30','45'=>'45'],null,['class'=>'form-control','id'=>'minsStart2','placeholder'=>'--'])!!}
 
         {{-- {!!Form::select('startFormatHour',['am'=>'am','pm'=>'pm'],null,['id'=>'startFormatHour3','class'=>'form-control  mb-1'])!!} --}}
       </div>
@@ -110,9 +113,9 @@
        <label for="" class="col-form-label font-title-grey"> Hora</label>
      </div>
      <div class="form-inline col-lg-8 col-sm-12">
-      {!!Form::select('hourEnd',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24'],null,['class'=>'form-control','id'=>'hourEnd2','placeholder'=>'--'])!!}
+      {!!Form::select('hourEnd',['00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20','21'=>'21','22'=>'22','23'=>'23'],null,['class'=>'form-control','id'=>'hourEnd2','placeholder'=>'--'])!!}
 
-      {!!Form::select('minsEnd',['00'=>'00','15'=>'15','30'=>'30','45'=>'45','59'=>'59'],null,['class'=>'form-control','id'=>'minsEnd2','placeholder'=>'--'])!!}
+      {!!Form::select('minsEnd',['00'=>'00','15'=>'15','30'=>'30','45'=>'45'],null,['class'=>'form-control','id'=>'minsEnd2','placeholder'=>'--'])!!}
 
       {{-- {!!Form::select('endformatHour',['am'=>'am','pm'=>'pm'],null,['id'=>'endFormatHour2','class'=>'form-control  mb-1'])!!} --}}
     </div>
@@ -189,7 +192,7 @@
       </div>
       <div class="modal-body">
         <h5 class="font-title-grey">Agendar Cita</h5>
-        <p>Las Horas disponibles del médico, estan marcadas en el calendario como color naranja:  <div class="" style="width:30px;height:30px;background:#f9da7f">  </div></p>
+        <p>Las Horas disponibles del médico, estan marcadas en el calendario como color verde claro:  <div class="" style="width:40px;height:40px; border:solid black 1px;background:rgba(162, 231, 50, 0.64);border-radius:5px"></div></p>
         <p>Seleccione horas disponibles y rellene los campos del formulario ubicado a la derecha, a continuación presione el boton agendar cita, y listo ya habra agendado una cita con el Paciente: {{$patient->name}} {{$patient->lastName}} o cualquiera que seleccione en su lista de pacientes.</p>
 
           <p>Puede desplasarse a otras fechas en el calendario, con los botones "<",">" en la parte superior de este.</p>
@@ -281,6 +284,9 @@
         slotDuration: '00:15:00',
         slotLabelInterval: 15,
         slotLabelFormat: 'h(:mm)a',
+        eventClick: function(event, jsEvent, view){
+          alert('Este Panel es exclusivo para crear Citas sobre un paciente seleccionado, en este caso:'+" {{$patient->name}} {{$patient->lastName}}"+', si desea editar citas debe ingresar al panel Citas de paciente, o el panel "Mi Agenda donde podra editar todas las Citas Agendadas"');
+        },
 
         select:function(start,end){
          start = moment(start);

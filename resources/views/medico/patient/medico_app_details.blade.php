@@ -8,8 +8,12 @@
       <div class="col-10 mb-3">
       <h2 class="text-center font-title">Detalles de Cita: {{$app->patient->name}} {{$app->patient->lastName}} </h2>
     </div>
-    <div class="col-1 text-right">
-      <a href="{{route('medico_appointments_patient',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id])}}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Atras</a>
+    <div class="col-12 text-right">
+
+        <a href="{{route('notification_appointments',$app->medico_id)}}" class="btn btn-primary">Notificaciones</a>
+        <a href="{{route('medico_appointments_patient',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id])}}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Atras</a>
+
+
     </div>
   </div>
 

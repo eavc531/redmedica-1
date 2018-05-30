@@ -44,20 +44,28 @@ route::post('patient/{id}/updates','patientController@patient_update')->name('pa
 
 Route::get('patient/{id}resend/mail/confirm','patientController@resend_mail_confirm_patient')->name('resend_mail_confirm_patient');
 
-Route::post('patient/medic/qualify','patientController@qualify_medic')->name('qualify_medic');
+
 
 Route::get('medico/{m_id}/calification','medicoController@calification_medic')->name('calification_medic');
+
+Route::post('verify_change_date','medico_diaryController@verify_change_date')->name('verify_change_date');
 
 
 Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/edit','medicoController@medico_note_edit')->name('medico_note_edit');
 
 Route::get('medico/{m_id}/patient/{p_id}/appointment/{app_id}/details','medico_diaryController@medico_app_details')->name('medico_app_details');
+
+Route::post('medico/patient/appointment/{app_id}/cancel','medico_diaryController@appointment_cancel')->name('appointment_cancel');
+
+Route::get('medico/appointment/{id}/confirm','medico_diaryController@appointment_confirm')->name('appointment_confirm');
+Route::post('medico/appointment/confirm','medico_diaryController@appointment_confirm_ajax')->name('appointment_confirm_ajax');
 Route::post('medico/event/personal','medico_diaryController@event_personal_store')->name('event_personal_store');
 // Route::get('medico/{m_id}/patient/{p_id}/note/{app_id}/config','notesController@note_replace_config')->name('note_replace_config');
 
 route::post('medico/patient/note/config/store','notesController@note_config_store')->name('note_config_store');
 
 route::get('medico/{m_id}/patient/{p_id}/edit/appointment/{app_id}','medico_diaryController@edit_appointment')->name('edit_appointment');
+route::post('medico/patient/cancel/appointment/','medico_diaryController@cancel_appointment')->name('cancel_appointment');
 
 ///////////////NOTES
 route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/view_preview','notesController@view_preview')->name('view_preview');

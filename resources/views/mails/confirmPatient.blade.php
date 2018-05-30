@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <h2>"Verificación por correo electrónico de Red Medica"</h2>
+  <h2>"Verificación por correo electrónico de MédicosSi"</h2>
 
     <p>Un Cordial saludo: {{$patient->name}} {{$patient->lastName}}, este es un mensaje de confirmacion para aperturar cuenta en MédicosSi, Para Confirmar su registro debe Ingresar a la Ruta: </p><a href="{{route('confirmPatient',['id'=>$patient->id,'code'=>$code])}}">{{route('confirmPatient',['id'=>$patient->id,'code'=>$code])}}</a>
 

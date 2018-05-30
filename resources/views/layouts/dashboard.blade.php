@@ -65,11 +65,16 @@
           <!-- Copia desde aqui abajo -->
           <div class="box-dashboard" id="dashboard">
             <div class="row">
+
               <div class="col-12">
                 <img  class="img-dashboard" src="{{asset('img/Medicossi-Marca original-04.png')}}" alt="">
               </div>
+
             </div>
             <div class="row">
+              <div class="col-12">
+                <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-home fa-2"></i><span>Inicio</a>
+                </div>
               <div class="col-12">
                 <a href="#" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-thumbs-up"></i><span>Me gusta</span></a>
               </div>
@@ -79,7 +84,7 @@
             </div>
             <div class="row py-1">
               <div class="col-12">
-                <a href="{{route('notification_appointments', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-bell"></i> <span>Nuevas Citas ({{Auth::user()->medico->notification_number}})</span></a>
+                <a href="{{route('notification_appointments', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="far fa-bell"></i> <span>Citas <span style="font-size:10px;background:rgb(214, 84, 19);border-radius:10px;padding:5px">Nuevas ({{Auth::user()->medico->notification_number}})</span> </span></a>
               </div>
               <div class="col-12">
                 <a href="{{route('medico.edit', Auth::user()->medico_id)}}" class="btn btn-block btn-config-dashboard color-medic"><i class="fas fa-user fa-2"></i><span>Editar Perfil</span></a>
@@ -126,6 +131,9 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-12">
+              <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-admin"><i class="fas fa-home fa-2"></i><span>Inicio</a>
+              </div>
             <div class="col-12">
               <a href="#" class="btn btn-block btn-config-dashboard color-admin"><i class="far fa-thumbs-up"></i><span>Me gusta</span></a>
             </div>
@@ -186,7 +194,9 @@
               </div>
             </div>
             <div class="row">
-
+              <div class="col-12">
+                <a href="{{route('home')}}" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-home fa-2"></i><span>Inicio</a>
+                </div>
               <div class="col-12">
                 <a href="#" class="btn btn-block btn-config-dashboard color-patient"><i class="fas fa-gift"></i><span>Compartir</a>
                 </div>

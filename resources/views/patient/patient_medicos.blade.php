@@ -34,14 +34,17 @@
          <p>Cédula: {{$medico['identification']}}</p>
          <span>Especialidad:</span> <a href="#" class="outstanding mr-2"> {{$medico['specialty']}}</a>
          <div class="star-profile">
-           {{-- <ul class="rating">
-             <li class="star container-franchise__star li-config">&starf;</li>
-             <li class="star container-franchise__star li-config">&starf;</li>
-             <li class="star container-franchise__star li-config">&starf;</li>
-             <li class="star container-franchise__star li-config">&starf;</li>
-             <li class="star container-franchise__star li-config">&starf;</li>
-           </ul> --}}
-           <div class="rateYo p-1" style="border-radius:10px"></div>
+
+          <div class="form-inline">
+            Calificación:
+            <span class="ml-2 mr-2">@include('patient.star_rate_2')</span>
+              @if($medico['calification'] != Null)
+               <span> de "{{$medico['votes']}}" voto(s).</span>
+             @else
+               (Aun sin Calificar)
+             @endif
+          </div>
+
          </div>
          <div class="row align-self-end">
            <div class="col-12">
@@ -51,7 +54,7 @@
        </div>
      </div>
      <div class="col-12 col-sm-4 col-lg-4 p-2 align-self-center text-center">
-     
+
          {{-- <label for="">Primeras visitas:<b class="price">600MXN</b></label> --}}
          <a class="btn btn-secondary mr-2" href="{{route('medico.edit',$medico['id'])}}" data-toggle="tooltip" data-html="true" title="<em>Ver Perfil</em>"><i class="fas fa-sign-in-alt"></i></a>
          @if(Auth::check() and Auth::user()->role == 'Paciente')

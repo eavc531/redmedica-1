@@ -121,7 +121,7 @@
 
               {{Form::open(['route'=>'tolist2','method'=>'get'])}}
               {{Form::hidden('search',$specialty->name)}}
-
+              {{-- {{Form::hidden('typeSearch','nada')}} --}}
               {{Form::hidden('typeSearch2','Especialidad Medica')}}
               <button onclick="geolocation2()" type="submit" class="btn-primary btn-link" style="cursor: pointer"><strong>{{$specialty->name}}</strong></button>
               {{Form::close()}}
@@ -349,7 +349,7 @@
                   </div>
                   <div class="col-12 col-sm-5 col-lg-5">
                    <div class="card-body p-2">
-                    <h5 class="card-title title-edit">{{$medico['name']}}</h5>
+                    <h5 class="card-title title-edit">{{$medico['name']}} {{$medico['lastName']}}</h5>
                     <p>Cédula: {{$medico['identification']}}</p>
                     <span>Especialidad:</span> <a href="#" class="outstanding mr-2"> {{$medico['specialty']}}</a>
                     <div class="star-profile">
@@ -358,7 +358,9 @@
                         <span class="ml-2 mr-2">@include('home.star_rate')</span>
                           @if($medico['rate'] != Null)
                            <span> de "{{$medico['votes']}}" voto(s).</span>
-                         @endif 
+                         @else
+                           (Aun sin Calificar)
+                         @endif
                       </div>
 
                     </div>
