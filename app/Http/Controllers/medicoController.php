@@ -698,6 +698,11 @@ class medicoController extends Controller
     //
     // }
     public function video_store(Request $request){
+      $countvideo = video::where('medico_id',$request->medico_id)->count();
+      if($countvideo >= 4){
+        return response()->json('limite');
+      }
+
         $request->validate([
           'name'=>'required',
           'link'=>'required'

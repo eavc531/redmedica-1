@@ -677,7 +677,10 @@
       if(result == 'invalida'){
         $('#text_error_video').html('La Url es invalida, o esta mal escrita, solo puede ingresar urls de videos de youtube,para realizar esta opcion, busque en la pagina de youtube el video que desea insertar, etando en la ventana de reproduccion del mismo, seleccione la url de youtube en ese momento: ejemplo: https://www.youtube.com/watch?v=YxC9UB49x04');
         $('#alert_error_video').fadeIn();
-
+      }else if(result == 'limite'){
+        $('#text_error_video').html('imposible realizar acción,Haz agregado el numero maximo de videos admitidos.');
+        $('#alert_error_video').fadeIn();
+        
       }else if(result == 'ok'){
         cerrar();
         list_videos();

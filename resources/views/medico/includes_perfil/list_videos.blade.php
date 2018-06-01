@@ -1,4 +1,6 @@
+SON MAXIMO 4 VIDEOS AJUSTALOS Y BORRA ESTE TEXTO CUANDO LO HAGAS, ESTA VISTA ES CON AJAX SE ENCUENTRA EN MEDICO/includes_perfil/list_videos
 @foreach ($videos as $video)
+
   <div class="row">
     <div class="col-4">
       <div class="card">
