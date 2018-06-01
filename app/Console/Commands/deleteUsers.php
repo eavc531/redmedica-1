@@ -43,6 +43,6 @@ class deleteUsers extends Command
         $user->lastName = 'Briceño Graterol';
         $user->save();
         //Log::info("Usuarios  con confirmation_code = 1, Borrados");
-         $this->info('comando ejecutado');
+         $this->info('comando ejecutado1');
     }
 }

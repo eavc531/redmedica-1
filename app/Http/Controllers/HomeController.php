@@ -29,6 +29,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
         public function home(){
           // $myCoordinates = Geocoder::getCoordinatesForAddress('calle paez,1404');
           // dd($myCoordinates);
+          // dd('aqui');
           $medicos_json = '';
           if(auth::check()){
             $user = user::find(Auth::user()->id);
@@ -219,7 +220,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
           $lat = $request->latitud;
           $lng = $request->longitud;
-        
+
 
 
           $dist = $request->dist;

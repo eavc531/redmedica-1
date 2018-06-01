@@ -23,44 +23,51 @@
 				{!!Form::open(['route'=>'patient_register','method'=>'POST'])!!}
 					<div class="row">
             <div class="col-lg-6 col-12">
+              <label for="" class="font-title">Cedula</label>
 							<div class="form-group">
-							   {!!Form::text('identification',null,['class'=>'form-control','placeholder'=>'Cedula'])!!}
+							   {!!Form::text('identification',null,['class'=>'form-control',])!!}
 							</div>
 						</div>
 						<div class="col-lg-6 col-12">
+              <label for="" class="font-title">Genero</label>
 							<div class="form-group">
-							    {!!Form::select('gender',['Masculino'=>'Masculino','Femenino'=>'Femenino'],null,['class'=>'form-control','placeholder'=>'Genero'])!!}
+							    {!!Form::select('gender',['Masculino'=>'Masculino','Femenino'=>'Femenino'],null,['class'=>'form-control'])!!}
 							 </div>
 						</div>
 						<div class="col-lg-6 col-12">
+              <label for="" class="font-title">Nombre</label>
 							<div class="form-group">
-							    {!!Form::text('name',null,['class'=>'form-control','placeholder'=>'Nombre'])!!}
+							    {!!Form::text('name',null,['class'=>'form-control'])!!}
 							</div>
 						</div>
 						<div class="col-lg-6 col-12">
+              <label for="" class="font-title">Apellido</label>
 							<div class="form-group">
-							    {!!Form::text('lastName',null,['class'=>'form-control','placeholder'=>'Apellido'])!!}
+							    {!!Form::text('lastName',null,['class'=>'form-control'])!!}
 							 </div>
 						</div>
 						<div class="col-lg-6 col-12">
+              <label for="" class="font-title">Fecha de Nacimiento</label>
               <div class="form-group">
-                  {!!Form::date('birthdate',null,['class'=>'form-control','placeholder'=>'Fecha de Nacimiento'])!!}
+                  {!!Form::date('birthdate',null,['class'=>'form-control'])!!}
               </div>
 						</div>
 						<div class="col-lg-6 col-12">
-
+              <label for="" class="font-title">Teléfono</label>
               <div class="form-group">
-                  {!!Form::number('phone1',null,['class'=>'form-control','placeholder'=>'Teléfono 1'])!!}
+                  {!!Form::number('phone1',null,['class'=>'form-control'])!!}
               </div>
 						</div>
             <div class="col-lg-6 col-12">
+              <label for="" class="font-title">Email</label>
 							<div class="form-group">
-							    {!!Form::email('email',null,['class'=>'form-control','placeholder'=>'email'])!!}
+							    {!!Form::email('email',null,['class'=>'form-control'])!!}
 							</div>
 						</div>
 						<div class="col-lg-6 col-12">
+              <label for="" class="font-title">Clave de Usuario</label>
 							<div class="form-group">
-							    {!!Form::password('password',['class'=>'form-control','placeholder'=>'password'])!!}
+							    {!!Form::password('password',['class'=>'form-control'])!!}
 							</div>
 						</div>
 					</div>

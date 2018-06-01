@@ -2,6 +2,7 @@
 
 namespace App\Console;
 use App\Console\Commands\deleteUsers;
+use App\Console\Commands\reminderCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        deleteUsers::class
+        reminderCommand::class
+
     ];
 
     /**
@@ -24,8 +26,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('user:delete')
+        $schedule->command('reminder:execute')
                  ->everyMinute();
+
     }
 
     /**

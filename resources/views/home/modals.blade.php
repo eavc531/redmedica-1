@@ -63,7 +63,7 @@
 </div>
 
 <!-- Modal Inicio Sesion-->
-<div class="modal fade" id="modalregister" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+{{-- <div class="modal fade" id="modalregister" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -82,7 +82,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 
 <!-- Large modal search-->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

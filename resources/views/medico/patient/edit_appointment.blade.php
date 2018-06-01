@@ -6,7 +6,12 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.css"> --}}
 {{-- <link href='../fullcalendar.print.min.css' rel='stylesheet' media='print' /> --}}
+<style media="screen">
+.fc-toolbar{
+  background: rgb(221, 141, 68);
+}
 
+</style>
 @endsection
 {{-- ///////////////////////////////////////////////////////CONTENIDO//////////////////// --}}
 @section('content')
@@ -32,28 +37,25 @@
             Procesando...
           </div> --}}
 
-          @if($app->state == 'Rechazada/Cancelada')
-            <div class="alert-danger p-3 m-2" id="procesando">
-              <h5>La Cita con el paciente {{$patient->name}} {{$patient->lastName}} estipulada para la fecha {{$app->start}} fue Rechazada/Cancelada. </h5>
-              <p>Las citas "Rechazadas o Canceladas no pueden ser editadas, ni se mostraran en la agenda, para ver una cita de este tipo puede ir al panel "Citas" y seleccionar el boton "Citas Rechazadas/Canceladas"</p>
-            </div>
-          @else
-            @include('medico.includes.card_edit_noti')
-          @endif
+          <div class="col-12">
+            @if($app->state == 'Rechazada/Cancelada')
+              <div class="alert-danger p-3 m-2" id="procesando">
+                <h5>La Cita con el paciente {{$patient->name}} {{$patient->lastName}} estipulada para la fecha {{$app->start}} fue Rechazada/Cancelada. </h5>
+                <p>Las citas "Rechazadas o Canceladas no pueden ser editadas, ni se mostraran en la agenda, para ver una cita de este tipo puede ir al panel "Citas" y seleccionar el boton "Citas Rechazadas/Canceladas"</p>
+              </div>
+            @else
+              @include('medico.includes.card_edit_noti')
+            @endif
 
 
-        @include('medico.includes.alert_calendar')
+            @include('medico.includes.alert_calendar')
+
+          </div>
 
           <hr>
           <div class="" id="example">
             {{-- //////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT//////////////ALERT --}}
-					<div id="alert_success_1" class="alert alert-success alert-dismissible fade show text-left" role="alert" style="display:none">
-					  <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
-					  <p id="text_success_1" style="font-size:12px"></p>
-						<a href="{{route('home')}}" class="btn btn-outline-primary">volver a inicio</a>
 
-						<a class="btn btn-outline-success" href="">Tus Citas Pendientes</a>
-					</div>
           {{-- ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR  ////////////////////FULLCALENDAR --}}
           {{-- IF SHOW CALENDAR --}}
 
@@ -247,9 +249,10 @@
 
       $('#form, #fo3').submit(function() {
      // Enviamos el formulario usando AJAX
+
      change = $('#change_date').val()
      if(change == 'cambio fecha'){
-       question = confirm('Se a cambiado la fecha de la cita, se le enviara una correo al pacietne para notificarlse acerca del cambio, ¿Desea continuar?')
+       question = confirm('Se a cambiado la fecha de la cita, se le enviara una correo al pacietne para notificarle acerca del cambio, ¿Desea continuar?')
        if(question == false){
           return false;
        }
@@ -268,7 +271,14 @@
                  console.log(data);
                    $('#procesando').fadeOut();
                    if(data == 'ya existe'){
-                     alert('Imposible Guardar cambios, ya existe un evento que abarca con las horas seleccionadas.');
+                     alert('Imposible Guardar cambios, ya existe un evento que abarca parte o total de las horas seleccionadas.');
+                   }else if(data == 'fuera del horario'){
+                     alert('Imposible Guardar cambios, la Fecha o las Horas escogidas estan Fuera del Horario disponible en tu agenda, verifica el calendario e intenta nuevamente.');
+                   }else if(data == 'fecha_editada') {
+                     $('#text_success_1').html('Se ha cambiado la "Hora/Fecha" de la consulta con Exito. Se ha enviado un correo al Paciente para notificarle del cambio de la consulta, y permitirle confirmar su disponibilidad con respecto a la nueva Fecha/Hora de la Consulta.');
+                     $('#alert_success_1').fadeIn();
+
+
                    }
                }
            })
@@ -341,6 +351,10 @@
         minTime:min_hour,
         hiddenDays: [lunes,martes,miercoles,jueves,viernes,sabado,domingo],
         defaultDate: date_ini_format,
+
+        slotDuration: '00:15:00',
+        slotLabelInterval: 15,
+        // slotLabelFormat: 'h(:mm)a',
 
         select:function(start,end){
          start = moment(start);
@@ -570,17 +584,19 @@
         console.log(errormsj);
       },
       success:function(result){
+
         if(result == 'fuera del horario'){
           $('#text_error_up1').html('imposible guardar evento, fuera del horario establecido');
           $('#alert_error_up1').fadeIn();
         }else {
           console.log(result);
+          close_edit();
           $('#text_success_up1').html('Guardado con Exito');
           $('#alert_success_up1').fadeIn();
           $('#alert_error_up1').fadeOut();
           $('#calendar').fullCalendar('removeEvents');
           $('#calendar').fullCalendar('refetchEvents');
-          close_edit();
+
         }
 
       }

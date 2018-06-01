@@ -36,6 +36,10 @@ class medico_diaryController extends Controller
        $medico = medico::find($event->medico_id);
        $patient = patient::find($event->patient_id);
 
+       $count_event = event::where('medico_id',$medico->id)->where('confirmed_medico','No')->where('state','!=', 'Rechazada/Cancelada')->count();
+       $medico->notification_number = $count_event;
+       $medico->save();
+
        Mail::send('mails.cancel_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($medico){
           $msj->subject('Notificación Cancelacion de Cita, MédicosSi');
           //$msj->to($patient->email);
@@ -71,6 +75,7 @@ class medico_diaryController extends Controller
 
      public function appointment_confirm($id)
      {
+
        $event = event::find($id);
        $event->confirmed_medico = 'Si';
        $event->save();
@@ -83,6 +88,12 @@ class medico_diaryController extends Controller
             //$msj->to($patient->email);
             $msj->to('eavc53189@gmail.com');
           });
+
+      $count_notifications = event::where('medico_id',$medico->id)->where('confirmed_medico','No')->where('state','!=', 'Rechazada/Cancelada')->whereNull('rendering')->count();
+      $medico->notification_number = $count_notifications;
+      $medico->save();
+
+
        return redirect()->route('notification_appointments',$event->medico_id)->with('success', 'Se a confirmado la cita con el paciente: '.$event->patient->name.' '.$event->patient->lastName.' para la Fecha: '.$event->start);
      }
 
@@ -106,13 +117,9 @@ class medico_diaryController extends Controller
 
      public function update_event(Request $request)
      {
-
-
        $hour_start1 = $request->hourStart.':'.$request->minsStart;
 
        $hour_end1 = $request->hourEnd.':'.$request->minsEnd;
-
-
 
      $hourStart = $request->hourStart.':'.$request->minsStart.':'.'00';
 
@@ -196,6 +203,7 @@ class medico_diaryController extends Controller
      $event->confirmed_patient = $request->confirmed_patient;
      $event->price = $request->price;
      $event->description = $request->description;
+     $event->confirmed_medico = 'Si';
      if($request->title == 'Cita por Internet'){
        $event->color = 'rgb(35, 44, 173)';
      }else{
@@ -215,8 +223,9 @@ class medico_diaryController extends Controller
 
      $patient = patient::find($event->patient_id);
      $medico = medico::find($event->medico_id);
-     if($start != $before_date){
 
+     if($start != $before_date){
+       $event->confirmed_patient == 'No';
        Mail::send('mails.med_notification_patient_appointment_change',['medico'=>$medico,'patient'=>$patient,'event'=>$event,'before_date'=>$before_date],function($msj) use($patient){
           $msj->subject('Notificación Cambio de Fecha de Cita, Médicos Si');
           $msj->to($patient->email);
@@ -533,6 +542,8 @@ class medico_diaryController extends Controller
      public function appointment_store(Request $request)
      {
 
+
+
        $request->validate([
          'title'=>'required',
          'date_start'=>'required',
@@ -639,7 +650,9 @@ class medico_diaryController extends Controller
            $event->namePatient = $patient->name.' '.$patient->lastName;
            $event->stipulated = "Paciente";
            $event->notification = "not_see";
+           $event->confirmed_patient = 'Si';
         }elseif (Auth::check() and Auth::user()->role == 'medico') {
+            $event->confirmed_medico = 'nada';
            $event->patient_id = $request->patient_id;
            $event->medico_id = $request->medico_id;
            $patient = patient::find($request->patient_id);
@@ -661,13 +674,14 @@ class medico_diaryController extends Controller
        }
 
        $medico = medico::find($request->medico_id);
-       $count_notifications = event::where('medico_id',$request->medico_id)->where('notification','not_see')->count();
-       $medico->notification_number = $count_notifications;
-       $medico->save();
+
+
+
        $patient = patient::find($request->patient_id);
 
 
-       if($event->stipulated == 'medico'){
+       if($event->stipulated == 'Medico'){
+         $medico->confirmedMedico == 'Si';
          Mail::send('mails.med_notification_patient_appointment',['medico'=>$medico,'patient'=>$patient,'event'=>$event],function($msj) use($patient){
             $msj->subject('Médicos Si');
             $msj->to($patient->email);
@@ -697,6 +711,10 @@ class medico_diaryController extends Controller
         });
 
 
+        $count_notifications = event::where('medico_id',$request->medico_id)->where('confirmed_medico','No')->where('state','!=', 'Rechazada/Cancelada')->whereNull('rendering')->count();
+        $medico->notification_number = $count_notifications;
+
+        $medico->save();
        return response()->json('Se ha agendado Una Cita "'.$request->title.'" con el Médico: '.$medico->name.' '.$medico->lastName.' para la fecha: '.$request->date_start.' y hora: '.$hourStart.'.');
      }
 

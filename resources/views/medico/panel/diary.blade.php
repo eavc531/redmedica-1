@@ -25,7 +25,7 @@
           <div class="row">
             <div class="col-12">
               <h2 class="text-center font-title">Mi Agenda</h2>
-
+              {{\Carbon\Carbon::now()}}
             </div>
           </div>
 
@@ -239,39 +239,40 @@
             </div>
 
             <div class="row">
+
               <div class="col-lg-10 col-12 align-items-center">
-                <h6>¿Dese que se mande un mensaje de recordatorio a su paciente con estatus de cita confirmada?</h6>
+                <h6>¿Desea que se mande un mensaje de recordatorio a su paciente con estatus de cita confirmada?</h6>
               </div>
               <div class="col-lg-2 col-12">
                 <div class="radio-switch">
                   <div class="radio-switch-field">
-                    <input id="switch-off" type="radio" name="radio-switch" value="off" checked>
+                    <input id="switch-off" type="radio" name="radio-switch" value="off" checked onclick="switch_reminder1('No')">
                     <label for="switch-off">No</label>
                   </div>
                   <div class="radio-switch-field">
-                    <input id="switch-on" type="radio" name="radio-switch" value="on">
+                    <input id="switch-on" type="radio" name="radio-switch" value="on" onclick="switch_reminder1('Si')">
                     <label for="switch-on">Si</label>
                   </div>
                 </div>
               </div>
               <div class="col-12" id="open-check" style="display: none;">
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+                  <input value="" type="radio" id="customRadioInline1" name="tyme_before" class="custom-control-input" onclick="reminder_time_confirmed('1h')">
                   <label class="custom-control-label" for="customRadioInline1">Una hora antes</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+                  <input type="radio" id="customRadioInline2" name="tyme_before" class="custom-control-input" onclick="reminder_time_confirmed('5h')">
                   <label class="custom-control-label" for="customRadioInline2">5 horas antes</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input">
+                  <input type="radio" id="customRadioInline3" name="1d" class="custom-control-input" onclick="reminder_time_confirmed('1d')">
                   <label class="custom-control-label" for="customRadioInline3">1 dia antes</label>
                 </div>
               </div>
             </div>
             <div class="row my-5">
               <div class="col-lg-10 col-12 align-items-center">
-                <h6>¿Dese que se mande un mensaje de confirmación a su paciente con estatus cita por internet?</h6>
+                <h6>¿Desea que se mande un mensaje de confirmación a su paciente con estatus cita por internet?</h6>
               </div>
               <div class="col-lg-2 col-12">
                 <div class="radio-switch">
@@ -300,6 +301,8 @@
                 </div>
               </div>
             </div>
+
+
           </div>
         <div class="col-12 col-lg-3">
           <div id="dashboard">
@@ -470,6 +473,46 @@
   <script type="text/javascript">
 
 
+    function reminder_time_confirmed(request){
+      medico_id = "{{$medico->id}}";
+      time = request;
+      route = "{{route('reminder_time_confirmed')}}";
+      $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type: 'POST',
+        url: route,
+        data:{medico_id:medico_id,time:time},
+        // Mostramos un mensaje con la respuesta de PHP
+        success:function(result){
+          console.log(result);
+        },
+        error:function(error){
+         console.log(error);
+       },
+    });
+    }
+
+    function switch_reminder1(request){
+      medico_id = "{{$medico->id}}";
+      options = request;
+      route = "{{route('reminder_switch_confirmed')}}";
+      $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type: 'POST',
+        url: route,
+        data:{medico_id:medico_id,options:options},
+        // Mostramos un mensaje con la respuesta de PHP
+        success:function(result){
+          console.log(result);
+        },
+        error:function(error){
+         console.log(error);
+       },
+    });
+    }
+
+
+
     $(document).ready(function(){
 
       $('#form, #fo3').submit(function() {
@@ -595,7 +638,7 @@
 
         slotDuration: '00:15:00',
         slotLabelInterval: 15,
-        slotLabelFormat: 'h(:mm)a',
+        // slotLabelFormat: 'h(:mm)a',
 
         select:function(start,end){
          start = moment(start);
@@ -699,36 +742,6 @@
         $('#ModalCreate').modal('show');
       }
 
-    // desactivar botones
-    // ,
-    //        	viewRender: function(currentView){
-    //       		var minDate = moment(),
-    //       		maxDate = moment().add(6,'days');
-    //       		// Past
-    //       		if (minDate >= currentView.start && minDate <= currentView.end) {
-    //             $(".fc-prev-button").hide();
-    //       			// $(".fc-prev-button").prop('disabled', true);
-    //       			// $(".fc-prev-button").addClass('fc-state-disabled');
-    //       		}
-    //       		else {
-    //       			$(".fc-prev-button").removeClass('fc-state-disabled');
-    //       			$(".fc-prev-button").prop('disabled', false);
-    //       		}
-    //       		// Future
-    //       		if (maxDate >= currentView.start && maxDate <= currentView.end) {
-    //               $(".fc-next-button").hide();
-    //       			// $(".fc-next-button").prop('disabled', true);
-    //       			// $(".fc-next-button").addClass('fc-state-disabled');
-    //       		} else {
-    //       			$(".fc-next-button").removeClass('fc-state-disabled');
-    //       			$(".fc-next-button").prop('disabled', false);
-    //       		}
-    //       	}
-
-
-
-
-
     function cerrar(){
 
       $('#alert_error').fadeOut();
@@ -831,14 +844,6 @@
       return false;
     });
 
-
-
-
-
-
-
-
-
     function cancel(){
 
       cerrar();
@@ -915,8 +920,6 @@
     });
 
     }
-
-
 
       function filtroDisponible(filtro){
         $("#calendar").fullCalendar('removeEvents');//remove the old filtered events

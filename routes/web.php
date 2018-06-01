@@ -15,7 +15,7 @@ route::get('/', function(){
 });
 
 Route::get('loginRedirect', 'Auth\LoginController@loginRedirect')->name('loginRedirect');
-
+Route::post('video_store', 'medicoController@video_store')->name('video_store');
 Route::post('verify/Session', 'Auth\LoginController@verifySession')->name('verifySession');
 route::get('home','HomeController@home')->name('home');
 route::post('login2','Auth\LoginController@login2')->name('login2');
@@ -124,6 +124,8 @@ route::post('medico/list/social_network','medicoController@social_network_list')
 route::post('medicalCenter/list/social_network','medicalCenterController@medicalCenter_social_list')->name('medicalCenter_social_list');
 route::post('medico/list/services','medicoController@medico_service_list')->name('medico_service_list');
 route::post('medico/list/experience','medicoController@medico_experience_list')->name('medico_experience_list');
+route::post('medico_list_videos','medicoController@medico_list_videos')->name('medico_list_videos');
+route::post('delete_video','medicoController@delete_video')->name('delete_video');
 
 route::post('medicoBorrar','medicoController@medicoBorrar')->name('medicoBorrar');
 route::post('medico/experience/delete','medicoController@medico_experience_delete')->name('medico_experience_delete');
@@ -131,7 +133,12 @@ route::post('medico/service/store','medicoController@service_medico_store')->nam
 route::post('medic/experience/store','medicoController@medico_experience_store')->name('medico_experience_store');
 route::post('medic/social_network/store','medicoController@medico_social_network_store')->name('medico_social_network_store');
 
-Route::get('medico/{id}/notification/appointments', 'medicoController@notification_appointments')->name('notification_appointments');
+Route::get('medico/{id}/appointments', 'medicoController@notification_appointments')->name('notification_appointments');
+
+Route::get('medico/{id}/appointments/confirmed', 'medicoController@appointments_confirmed')->name('appointments_confirmed');
+
+Route::get('medico/{id}/appointments/canceled', 'medicoController@appointments_canceled')->name('appointments_canceled');
+
 
 route::post('medicalCenter/social/store','medicalCenterController@medicalCenter_social_store')->name('medicalCenter_social_store');
 route::post('borrar_social','medicoController@borrar_social')->name('borrar_social');
@@ -332,3 +339,7 @@ route::post('medico/{id}/coordinates/store','medicoController@medico_store_coord
 
 route::get('patient/{p_id}/medico/{m_id}/
 rate','patientController@patient_rate_medic')->name('patient_rate_medic');
+
+route::post('reminder_switch_confirmed','reminderController@reminder_switch_confirmed')->name('reminder_switch_confirmed');
+route::post('reminder_time_confirmed','reminderController@reminder_time_confirmed')->name('reminder_time_confirmed');
+route::get('test','reminderController@test')->name('test');

@@ -5,12 +5,39 @@
 
 <div class="row">
   <div class="col-12 mb-3">
-    <h2 class="text-center font-title">Notificaciones de Citas Pendientes</h2>
+
+    @if($type == 'sin confirmar')
+      <h2 class="text-center font-title">Citas por Confirmar</h2>
+    @elseif($type == 'confirmadas')
+     <h2 class="text-center font-title">Citas Confirmadas</h2>
+    @else
+      <h2 class="text-center font-title">Citas Canceladas</h2>
+    @endif
 
   </div>
 </div>
 {{-- MENU DE PACIENTES --}}
 {{-- @include('medico.includes.main_medico_patients') --}}
+<div class="row mt-4 mb-4">
+  <div class="col-12 mb-3">
+    @if($type == 'sin confirmar')
+
+    <a href="{{route('notification_appointments',request()->id)}}" class="btn btn-success disabled" disabled>Citas sin Confirmar</a>
+      <a href="{{route('appointments_confirmed',request()->id)}}" class="btn btn-primary">Citas Confirmadas</a>
+        <a href="{{route('appointments_canceled',request()->id)}}" class="btn btn-danger">Citas Canceladas</a>
+    @elseif($type == 'confirmadas')
+      <a href="{{route('notification_appointments',request()->id)}}" class="btn btn-success">Citas sin Confirmar</a>
+        <a href="{{route('appointments_confirmed',request()->id)}}" class="btn btn-primary disabled" disabled>Citas Confirmadas</a>
+          <a href="{{route('appointments_canceled',request()->id)}}" class="btn btn-danger">Citas Canceladas</a>
+    @else
+      <a href="{{route('notification_appointments',request()->id)}}" class="btn btn-success">Citas sin Confirmar</a>
+        <a href="{{route('appointments_confirmed',request()->id)}}" class="btn btn-primary">Citas Confirmadas</a>
+          <a href="{{route('appointments_canceled',request()->id)}}" class="btn btn-danger disabled" disabled>Citas Canceladas</a>
+    @endif
+
+  </div>
+</div>
+
 
 @if($appointments->first() != Null)
 <div class="row">
@@ -20,7 +47,7 @@
       <div class="row">
         <div class="col-lg-4 col-sm-4 col-12">
          <div class="p-2">
-          <label for="" class="font-title-grey"> Medico:</label> <p><a href="{{route('medico.edit',$app->medico->id)}}"><strong>{{$app->medico->name}} {{$app->medico->lastName}}</strong></a></p>
+          <label for="" class="font-title-grey"> Paciente:</label> <p><a href="{{route('medico.edit',$app->medico->id)}}"><strong>{{$app->patient->name}} {{$app->patient->lastName}}</strong></a></p>
           <label for="" class="font-title-grey">Tipo de Cita:</label> <p>{{$app->title}}</p>
           {{-- <label for="" class="font-title-grey">Especialidad del Medico:</label> <p>{{$app->medico->scpecialty}}</p> --}}
           @isset($app->descriptión)
@@ -52,10 +79,18 @@
 
         </p>
         <div class="form-inline">
-          <a href="{{route('edit_appointment',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i></a>
+          @if($type == 'sin confirmar')
+            <a href="{{route('edit_appointment',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i></a>
 
 
-          <a href="{{route('marcar_como_vista',$app->id)}}" class="btn btn-success ml-2" data-toggle="tooltip" data-placement="top" title="Marcar como vista"><i class="fas fa-check"></i></a>
+            <a href="{{route('appointment_confirm',$app->id)}}" class="btn btn-success ml-2" data-toggle="tooltip" data-placement="top" title="Confirmar Cita"><i class="fas fa-check"></i></a>
+          @elseif($type == 'confirmadas')
+            <a href="{{route('edit_appointment',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i></a>
+
+          @else
+
+          @endif
+
 
 
         </div>
@@ -74,7 +109,14 @@
 </div>
 @else
 <div class="text-center">
-  <h4 class="text-primary">No ahi Notificaciones de Nuevas Citas por el Momento</h4>
+  @if($type == 'sin confirmar')
+    <h4 class="text-primary">No ahi Citas por confirmar por el Momento</h4>
+  @elseif($type == 'confirmadas')
+    <h4 class="text-primary">No ahi registro de citas confirmadas</h4>
+  @else
+    <h4 class="text-primary">No ahi registro de citas canceladas</h4>
+  @endif
+
 </div>
 
 

@@ -283,7 +283,8 @@
 
         slotDuration: '00:15:00',
         slotLabelInterval: 15,
-        slotLabelFormat: 'h(:mm)a',
+        // slotLabelFormat: 'h(:mm)a',
+
         eventClick: function(event, jsEvent, view){
           alert('Este Panel es exclusivo para crear Citas sobre un paciente seleccionado, en este caso:'+" {{$patient->name}} {{$patient->lastName}}"+', si desea editar citas debe ingresar al panel Citas de paciente, o el panel "Mi Agenda donde podra editar todas las Citas Agendadas"');
         },
@@ -424,7 +425,7 @@
       minsEnd = $('#minsEnd2').val();
       patient_id = "{{$patient->id}}";
       medico_id = "{{$medico->id}}";
-      alert(payment_method);
+
       route = "{{route('appointment_store')}}";
       errormsj = '';
       $.ajax({

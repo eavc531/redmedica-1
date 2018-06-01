@@ -1,7 +1,15 @@
+<div id="alert_success_1" class="alert-success p-3 m-2" style="display:none">
+  <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
+  <p id="text_success_1" style="font-size:12px"></p>
+  <a href="{{route('home')}}" class="btn btn-outline-primary">volver a inicio</a>
+</div>
+
+<div class="alert-info p-3 m-2" style="display:none" id="procesando">
+  Procesando... por favor espere.
+</div>
+
 <div class="card p-2" id="card_edit">
-  <div class="alert-info p-3 m-2" style="display:none" id="procesando">
-    Procesando... por favor espere.
-  </div>
+
   <div id="alert_danger_up1" class="alert alert-danger alert-dismissible fade show text-left" role="alert" style="display:none">
     <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
     <h4 id="text_danger" style="font-size:12px"></h4>
@@ -113,7 +121,7 @@
 
 
 
-  <div class="row mt-1">
+  <div class="row mt-4">
 
 
     <div class="col-4">

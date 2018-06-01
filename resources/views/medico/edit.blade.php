@@ -338,6 +338,7 @@
    <h4 id="imgs" class="font-title-blue text-center">Imagenes</h4>
  </div>
 </div>
+
 <div class="row">
   <div class="col-12">
    <div class="form-group">
@@ -362,6 +363,49 @@
   </div>
 </div>
 </div>
+{{-- //videos --}}
+<hr>
+<div class="row">
+  <div class="col-12">
+   <h4 id="imgs" class="font-title-blue text-center">Videos</h4>
+ </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-lg-3 col-12">
+        {!!Form::open(['route'=>'video_store','method'=>'POST','id'=>'form_video'])!!}
+        <div class="form-group">
+          {!!Form::text('name',null,['class'=>'form-control','placeholder'=>'Nombre del video','id'=>'name_video'])!!}
+        </div>
+      </div>
+      <div class="col-lg-7 col-12">
+        <div class="form-group">
+          {!!Form::text('link',null,['class'=>'form-control','placeholder'=>'Ingrese la Url del video de youtube ejemplo: https://www.youtube.com/watch?v=Xwm5xoGo','id'=>'link_social'])!!}
+          {!!Form::hidden('medico_id',$medico->id,['id'=>'medico_id'])!!}
+        </div>
+      </div>
+      <div class="col-lg-2 col-12">
+        <div class="form-group">
+          {{-- <button onclick="storeSocial()" type="button" name="button" class="btn btn-block btn-success">Agregar</button> --}}
+          <button type="submit" name="button" class="btn btn-block btn-success">Agregar</button>
+        </div>
+      </div>
+      {!!Form::close()!!}
+      {{-- alert error  --}}
+
+    </div>
+  </div>
+</div>
+<div id="alert_error_video" class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none">
+  <button type="button" name="button" class="close" onclick="cerrar()">x</button>
+  <p id="text_error_video"></p>
+</div>
+<div class="row mt-5" id="list_videos">
+
+</div>
+
 <hr>
 <div class="row mt-3">
   <div class="col-12">
@@ -525,7 +569,6 @@
 
      <div class="col-12 mt-3">
 
-
       {!!Form::text('name',null,['class'=>'form-control','id'=>'name_experience'])!!}
       {!!Form::hidden('medico_id',$medico->id,['class'=>'form-control','id'=>'medico_id'])!!}
 
@@ -589,10 +632,70 @@
 <script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
 <script type="text/javascript">
 
+  function delete_video(request){
+    question = confirm('¿Esta segur@ de Eliminar este video?')
+    if(question == false){
+      return false;
+    }
+    video_id = request;
+    route = "{{route('delete_video')}}";
+    $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url:route,
+     data:{video_id:video_id},
+     error:function(error){
+       console.log(error);
+    },
+    success:function(result){
+      cerrar();
+      list_videos();
+    }
+  });
+}
+
+  $('#form_video').submit(function(){
+    errormsj = '';
+    $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url: $(this).attr('action'),
+     data: $(this).serialize(),
+     error:function(error){
+       cerrar();
+       console.log(error);
+       $.each(error.responseJSON.errors, function(index, val){
+         errormsj+='<li>'+val+'</li>';
+       });
+       $('#text_error_video').html('<ul>'+errormsj+'</ul>');
+       $('#alert_error_video').fadeIn();
+       console.log(errormsj);
+    },
+    success:function(result){
+      cerrar();
+      console.log(result);
+      if(result == 'invalida'){
+        $('#text_error_video').html('La Url es invalida, o esta mal escrita, solo puede ingresar urls de videos de youtube,para realizar esta opcion, busque en la pagina de youtube el video que desea insertar, etando en la ventana de reproduccion del mismo, seleccione la url de youtube en ese momento: ejemplo: https://www.youtube.com/watch?v=YxC9UB49x04');
+        $('#alert_error_video').fadeIn();
+
+      }else if(result == 'ok'){
+        cerrar();
+        list_videos();
+        $("#form_video")[0].reset();
+      }
+
+
+    }
+
+  });
+    return false;
+  });
+
   $(document).ready(function() {
     list_social();
     list_service();
     list_experience();
+    list_videos();
     comprueba_checkbox();
   });
 
@@ -683,6 +786,24 @@
    },
  });
  })
+
+  function list_videos(){
+     route = "{{route('medico_list_videos')}}";
+     medico_id = $('#medico_id').val();
+     $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url: route,
+       data:{medico_id:medico_id},
+       success:function(result){
+         $('#list_videos').empty().html(result);
+         console.log(result);
+       },
+       error:function(error){
+         console.log(error);
+       },
+     });
+  }
 
   function list_experience(){
    route = "{{route('medico_experience_list')}}";
@@ -959,6 +1080,8 @@ function updateMedic(){
 function cerrar(){
   $('#alert_error_update').fadeOut();
   $('#alert_success_update').fadeOut();
+  $('#alert_error_video').fadeOut();
+
 }
 
 

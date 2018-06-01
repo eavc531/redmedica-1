@@ -26,8 +26,10 @@ use App\question_lab;
 use Geocoder;
 use App\note;
 use App\rate_medic;
+use App\video;
 use DB;
 use Auth;
+
 use App\insurrance_show;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -39,8 +41,6 @@ class medicoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-
      public function calification_medic($id){
 
        $medico = medico::find($id);
@@ -53,6 +53,8 @@ class medicoController extends Controller
        return view('medico.calification_medic',compact('rate_medic','medico'));
 
      }
+
+
 
      public function medico_create_add_insurrances(Request $request,$id){
 
@@ -86,10 +88,26 @@ class medicoController extends Controller
      }
 
      public function notification_appointments($id){
-       $appointments = event::where('medico_id',$id)->where('notification', 'not_see')->paginate(4);
-       return view('medico.notification_appointments',compact('appointments'));
+       $appointments = event::where('medico_id',$id)->where('confirmed_medico','No')->where('state','!=', 'Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
+       $type = 'sin confirmar';
+       return view('medico.notification_appointments',compact('appointments','type'));
 
      }
+
+     public function appointments_confirmed($id){
+       $appointments = event::where('medico_id',$id)->Where('confirmed_medico','Si')->where('state','!=' ,'Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
+       $type = 'confirmadas';
+       return view('medico.notification_appointments',compact('appointments','type'));
+
+     }
+
+     public function appointments_canceled($id){
+       $appointments = event::where('medico_id',$id)->where('state','Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
+       $type = 'caneladas';
+       return view('medico.notification_appointments',compact('appointments','type'));
+
+     }
+
      public function medico_note_edit($m_id,$p_id,$n_id){
        $note = note::find($n_id);
        $medico = medico::find($m_id);
@@ -276,7 +294,7 @@ class medicoController extends Controller
 
         $medico_services = medico_service::where('medico_id', $request->medico_id)->get();
 
-        return view('medico.list_service')->with('services', $medico_services);
+        return view('medico.includes_perfil.list_service')->with('services', $medico_services);
     }
 
     public function medico_experience_delete(Request $request){
@@ -298,14 +316,14 @@ class medicoController extends Controller
      public function social_network_list(Request $request){
          $social_networks = social_network::where('medico_id', $request->medico_id)->get();
 
-         return view('medico.list_social')->with('social_networks', $social_networks);
+         return view('medico.includes_perfil.list_social')->with('social_networks', $social_networks);
      }
 
      public function medico_experience_list(Request $request){
 
          $experiences = medico_experience::where('medico_id', $request->medico_id)->get();
 
-         return view('medico.list_experience')->with('experiences', $experiences);
+         return view('medico.includes_perfil.list_experience')->with('experiences', $experiences);
      }
 
      public function borrar_social(Request $request){
@@ -663,21 +681,55 @@ class medicoController extends Controller
 
     }
 
-    public function marcar_como_vista_redirect($m_id,$p_id,$app_id)
-    {
+    // public function marcar_como_vista_redirect($m_id,$p_id,$app_id)
+    // {
+    //
+    //     $app = event::find($app_id);
+    //     $app->notification = 'see';
+    //     $app->save();
+    //
+    //     $event = event::where('medico_id',$app->medico_id)->where('notification', 'not_see')->count();
+    //
+    //     $medico = medico::find($app->medico_id);
+    //     $medico->notification_number = $event;
+    //     $medico->save();
+    //
+    //     return redirect()->route('edit_appointment',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])->with('success','Se ha Marcado como vista la Cita para el Paciente: '.$app->namePatient.' Estipulada para la Fecha: '.$app->start);
+    //
+    // }
+    public function video_store(Request $request){
+        $request->validate([
+          'name'=>'required',
+          'link'=>'required'
+        ]);
+      $patron = '%^ (?:https?://)? (?:www\.)? (?: youtu\.be/ | youtube\.com (?: /embed/ | /v/ | /watch\?v= ) ) ([\w-]{10,12}) $%x';
+      $array = preg_match($patron, $request->link, $parte);
 
-        $app = event::find($app_id);
-        $app->notification = 'see';
-        $app->save();
+      if((int)$parte > 0) {
+        $url = 'https://www.youtube.com/embed/'.$parte[1];
+        $video = new video;
+        $video->name =  $request->name;
+        $video->link =  $url;
+        $video->medico_id =  $request->medico_id;
+        $video->save();
+          return response()->json('ok');
+        }else{
+          return response()->json('invalida');
+        }
 
-        $event = event::where('medico_id',$app->medico_id)->where('notification', 'not_see')->count();
-
-        $medico = medico::find($app->medico_id);
-        $medico->notification_number = $event;
-        $medico->save();
-
-        return redirect()->route('edit_appointment',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])->with('success','Se ha Maracado como vista la Cita para el Paciente: '.$app->namePatient.' Estipulada para la Fecha: '.$app->start);
 
     }
+
+    public function medico_list_videos(Request $request){
+      $videos = video::where('medico_id',$request->medico_id)->get();
+      return view('medico.includes_perfil.list_videos')->with('videos',$videos);
+    }
+
+    public function delete_video(Request $request){
+      $video = video::find($request->video_id);
+      $video->delete();
+      return response()->json('ok');
+    }
+
 
 }
