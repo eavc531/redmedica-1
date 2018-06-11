@@ -10,7 +10,7 @@
    <div class="register">
     <div class="row">
      <div class="col-12 mb-3">
-      <h2 class="text-center font-title">Mis Pacientes @if(isset($pending)){{$pending}}@elseif(isset($unrated)){{$unrated}}@endif</h2>
+      <h2 class="text-center font-title">Mis Pacientes</h2>
       <hr>
     </div>
   </div>
@@ -59,13 +59,11 @@
       <div class="col-lg-2 col-2  col-sm-4 text-center">
         <a href="{{route('medico_stipulate_appointment',['m_id'=>$medico->id,'p_id'=>$patient])}}" data-toggle="tooltip" data-html="true" title="<em>Agendar cita</em>" class="btn btn-secondary"><i class="fas fa-envelope-open"></i></a>
       </div>
-      <div class="col-lg-2 col-2  col-sm-4 text-center">
-        <a href="{{route('admin_data_patient',['medico_id'=>$medico->id,'patient_id'=>$patient->id])}}" data-toggle="tooltip" data-html="true" title="<em>Administrar paciente</em>" class="btn btn-secondary"><i class="fas fa-wrench"></i></a>
-      </div>
+
     </div>
     <div class="row">
-      <div class="col-12 text-center mt-2">
-        <a href="{{route('medico_stipulate_appointment',['m_id'=>$medico->id,'p_id'=>$patient])}}" class="btn btn-primary">Agendar Cita</a>
+      <div class="col-10 text-center mt-2">
+        <a href="{{route('medico_stipulate_appointment',['m_id'=>$medico->id,'p_id'=>$patient])}}" class="btn btn-primary btn-block">Agendar Cita</a>
       </div>
     </div>
 

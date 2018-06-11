@@ -27,8 +27,46 @@ class patientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function qualify_medic(Request $request){
-       $event = event::find($request->event_id);
+
+     public function calification_medic_show_patient(Request $request){
+       $rate_medicCount = rate_medic::where('medico_id', $request->medico_id)->count();//marcar
+
+
+
+       $paginate = 5;//MARCAR
+        $page_calification = 1;//
+        if($request->page == 'Sig'){
+            $page_calification = $request->page1 + 1;
+        }elseif($request->page == 'Ant'){
+            $page_calification = $request->page1 - 1;
+        }else{
+          if($request->page != null){
+            $page_calification = $request->page;
+          }
+        }
+
+        $skip = ($page_calification - 1)* $paginate;//
+        $cant_page = round($rate_medicCount / $paginate); //marcar
+
+
+
+        if($page_calification > $cant_page){
+          return response()->json('limite');
+        }
+
+        $rate_medic = rate_medic::where('medico_id',$request->medico_id)->skip($skip)->take($paginate)->get();//marcar
+
+       $medico = medico::find($request->medico_id);
+
+        return view('patient.calification_medic_show_patient',compact('rate_medic','medico','cant_page','page_calification'));
+     }
+
+
+
+     public function qualify_medic($p_id,$m_id,$app_id){
+
+
+       $event = event::find($app_id);
 
        if($event->status == 'calificada'){
          return back()->with('success','Solo puedes calificar al Médico una vez por Cita.');
@@ -38,21 +76,41 @@ class patientController extends Controller
          return back()->with('success','No puedes calificar la Cita hasta despues de su fecha de culminacion.');
        }
 
-       $you_rate = rate_medic::where('patient_id', $request->patient_id)->where('medico_id', $request->medico_id)->first();
-       $count_rate = rate_medic::where('patient_id', $request->patient_id)->where('medico_id', $request->medico_id)->count();
+       $you_rate = rate_medic::where('patient_id',$p_id)->where('medico_id', $m_id)->first();
 
-       $medico = medico::find($request->medico_id);
-       $patient = medico::find($request->patient_id);
+       $count_rate = rate_medic::where('patient_id', $p_id)->where('medico_id', $m_id)->count();
+
+       $medico = medico::find($m_id);
+
+       $patient = patient::find($p_id);
 
        return view('patient.patient_rate_medic',compact('you_rate','medico','patient','count_rate','event'));
 
      }
 
+
      public function store_rate_comentary(Request $request)
      {
+       //dd($request->all());
+      $medico = medico::find($request->medico_id);
+
+       if($request->conservar == 'conservar'){
+
+           $event = event::find($request->event_id);
+           $event->status = 'calificada';
+           $event->save();
+
+          return redirect()->route('patient_appointments',$request->patient_id)->with('success', 'Se a guardado tu opinion referente al Médico : '.$medico->name.' '.$medico->lastName.'.');
+       }
+
+       if($request->rate == 6){
+         return back()->with('warning', 'El campo Calificación es requerido');
+       }
        $request->validate([
-         'rate'=>'required'
+         'rate'=>'required',
+         'comentary'=>'max:200'
        ]);
+
 
        $calification = '';
        switch ($request->rate) {
@@ -89,6 +147,11 @@ class patientController extends Controller
       $rate_medic->comentary = $request->comentary;
       $rate_medic->patient_id = $request->patient_id;
       $rate_medic->medico_id = $request->medico_id;
+      if($medico->show_comentary == 'Si'){
+        $rate_medic->show = 'Si';
+      }else{
+        $rate_medic->show = 'No';
+      }
       $rate_medic->save();
 
       $rate_medicT = rate_medic::where('medico_id',$request->medico_id)->get();
@@ -99,7 +162,7 @@ class patientController extends Controller
          $suma = $suma + $value->rate;
        }
 
-        $medico = medico::find($request->medico_id);
+
         $medico->calification = $suma / $count;
         $medico->votes = $count;
         $medico->save();
@@ -108,7 +171,7 @@ class patientController extends Controller
         $event->status = 'calificada';
         $event->save();
 
-       return redirect()->route('calification_medic',$medico->id)->with('success', 'Haz calificado el servicio del medico: '.$medico->name.' '.$medico->lastName.' como un servicio: '.$calification);
+       return redirect()->route('patient_appointments',$request->patient_id)->with('success', 'Se aguardado tu opinion referente al Médico : '.$medico->name.' '.$medico->lastName.'.');
      }
 
 
@@ -147,12 +210,12 @@ class patientController extends Controller
 
        Mail::send('mails.confirmPatient',['patient'=>$patient,'code'=>$code,'user'=>$user], function($msj) use ($patient){
           $msj->subject('Médicos Si');
-          $msj->to($patient->email);
-          //$msj->to('eavc53189@gmail.com');
+          //$msj->to($patient->email);
+          $msj->to('eavc53189@gmail.com');
 
         });
 
-        return redirect()->route('successRegPatient',$patient->id)->with('success', 'Se ha reenviado el mensaje de confirmación al correo electronico, asociado a tu cuenta MédicoSi');
+        return redirect()->route('successRegPatient',$patient->id)->with('success', 'Se ha reenviado el mensaje de confirmación, al correo electronico asociado a tu cuenta MédicosSi');
 
      }
 
@@ -178,6 +241,7 @@ class patientController extends Controller
 
      public function patient_medicos($id)
      {
+
       $patient = patient::find($id);
 
       $medicos = patients_doctor::Join('medicos', 'patients_doctors.medico_id', '=', 'medicos.id')
@@ -235,18 +299,21 @@ class patientController extends Controller
 
      public function patient_appointments_pending(Request $request,$id)
      {
+
        $patient = patient::find($id);
        // dd(Carbon::now());
-       $appointments = event::where('patient_id', $id)->where('start','<', Carbon::now())->orderBy('id','desc')->paginate(4);
+       $appointments = event::where('patient_id', $id)->where('state','Pendiente')->where('status','!=','calificada')->orderBy('id','desc')->paginate(4);
+       // dd($appointments->all());
        $pending = 'Pendiente';
          return view('patient.appointments',compact('patient','appointments','pending'));
      }
-
+     //verificar estoo
      public function patient_appointments_unrated(Request $request,$id)
      {
+
        $patient = patient::find($id);
-       $appointments = event::where('patient_id', $id)->whereNull('calification')->orderBy('id','desc')->paginate(4);
-        $unrated = 'Sin Calificar';
+       $appointments = event::where('patient_id', $id)->where('status','!=','calificada')->where('state','!=', 'Rechazada/Cancelada')->where('end','<',\Carbon\Carbon::now())->orderBy('id','desc')->paginate(4);
+        $unrated = 'Por Calificar';
          return view('patient.appointments',compact('patient','appointments','unrated'));
      }
 
@@ -469,10 +536,6 @@ class patientController extends Controller
 
            $Coordinates = Geocoder::getCoordinatesForAddress($request->country.','.$request->city.','.$request->colony.','.$request->street.','.$request->number_ext);
           $patient = patient::find($id);
-          // if($medico->stateConfirm != 'data_primordial_complete' and $medico->stateConfirm != 'complete'){
-          //   return redirect()->route('data_primordial_medico',$id)->with('warning', 'Debes rellenar los siguietnes Datos para Poder acceder a otros paneles de tu cuenta.');
-          // }
-
           $patient->country = $request->country;
           $patient->state = $request->state;
           $patient->city = $request->city;
@@ -484,6 +547,7 @@ class patientController extends Controller
           $patient->number_int = $request->number_int;
           $patient->longitud = $Coordinates['lng'];
           $patient->latitud = $Coordinates['lat'];
+
           if($patient->stateConfirm != 'complete'){
             $patient->stateConfirm = 'complete';
             $patient->save();
@@ -503,55 +567,5 @@ class patientController extends Controller
       return view('patient.stipulate_appointment',compact('medico'));
     }
 
-    public function store_rate_comentary2(Request $request)
-    {
 
-      $request->validate([
-        'score'=>'required'
-      ]);
-
-      $calification = '';
-      switch ($request->score) {
-   case  Null:
-       $calification = 'Neutral';
-       break;
-   case 1:
-       $calification = 'Muy Mala';
-       break;
-   case 2:
-       $calification = 'Mala';
-       break;
-   case 3:
-       $calification = 'Regular';
-       break;
-   case 4:
-       $calification = 'Buena';
-       break;
-   case 5:
-       $calification = 'Excelente';
-       break;
-
-     }
-
-      // $event = event::find($request->event_id);
-      // $event->score = $request->score;
-      // $event->calification = $calification;
-      // $event->comentary = $request->comentary;
-      // $event->save();
-
-      // $exist_votepatient = event::where('medico_id',$event->medico_id)->whereNotNull('score')->where('patient_id', $event->patient_id)->count();
-      $event2 = event::where('medico_id',$event->medico_id)->whereNotNull('score')->get();
-      $count = event::where('medico_id',$event->medico_id)->whereNotNull('score')->count();
-      $suma = 0;
-      foreach ($event2 as $key => $value) {
-        $suma = $suma + $value->score;
-      }
-       $medico = medico::find($event->medico_id);
-       $medico->calification = $suma / $count;
-       $medico->votes = $count;
-       $medico->save();
-
-      //$medico =
-      return back()->with('success', 'Se ha guardado de forma exitosa, la calificación de la Cita.');
-    }
 }

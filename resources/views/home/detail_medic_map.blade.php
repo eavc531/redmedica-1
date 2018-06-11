@@ -3,8 +3,11 @@
 @section('content')
 
 	<section class="box-register">
-    <div class="row mb-4">
+		<div class="text-right">
 
+			<button onclick="window.history.back();" type="button" name="button" class="btn btn-secondary">Volver</button>
+		</div>
+    <div class="row mb-4">
 
 		<div class="container">
       {{-- <div class="row mb-3">
@@ -49,7 +52,7 @@
         </div>
         <div class="col-12 col-sm-4 col-lg-4 p-4">
           <div class="form-group">
-            {{-- <label for="">Primeras visitas:<b class="price">600MXN</b></label> --}}
+
             <a class="btn btn-success" href="{{route('medico.edit',$medico['id'])}}">Perfil</a>
           </div>
           <div class="form-group">

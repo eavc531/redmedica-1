@@ -22,15 +22,16 @@
   <div class="col-12 mb-3">
     @if($type == 'sin confirmar')
 
-    <a href="{{route('notification_appointments',request()->id)}}" class="btn btn-success disabled" disabled>Citas sin Confirmar</a>
+    <a href="{{route('appointments',request()->id)}}" class="btn btn-success disabled" disabled>Citas sin Confirmar</a>
+    <a href="{{route('appointments_paid_and_pending',request()->id)}}" class="btn btn-success disabled" disabled>Citas Pagadas y Pendientes</a>
       <a href="{{route('appointments_confirmed',request()->id)}}" class="btn btn-primary">Citas Confirmadas</a>
         <a href="{{route('appointments_canceled',request()->id)}}" class="btn btn-danger">Citas Canceladas</a>
     @elseif($type == 'confirmadas')
-      <a href="{{route('notification_appointments',request()->id)}}" class="btn btn-success">Citas sin Confirmar</a>
+      <a href="{{route('appointments',request()->id)}}" class="btn btn-success">Citas sin Confirmar</a>
         <a href="{{route('appointments_confirmed',request()->id)}}" class="btn btn-primary disabled" disabled>Citas Confirmadas</a>
           <a href="{{route('appointments_canceled',request()->id)}}" class="btn btn-danger">Citas Canceladas</a>
     @else
-      <a href="{{route('notification_appointments',request()->id)}}" class="btn btn-success">Citas sin Confirmar</a>
+      <a href="{{route('appointments',request()->id)}}" class="btn btn-success">Citas sin Confirmar</a>
         <a href="{{route('appointments_confirmed',request()->id)}}" class="btn btn-primary">Citas Confirmadas</a>
           <a href="{{route('appointments_canceled',request()->id)}}" class="btn btn-danger disabled" disabled>Citas Canceladas</a>
     @endif

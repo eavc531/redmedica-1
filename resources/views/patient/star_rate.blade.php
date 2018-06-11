@@ -78,4 +78,14 @@
             <i class="fas fa-star-half checked"></i>
           </div>
         </div>
+      @elseif($you_rate->rate == 5)
+        <div class="row">
+          <div class="col-12">
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          </div>
+        </div>
       @endif

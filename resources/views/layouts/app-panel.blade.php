@@ -14,14 +14,95 @@
 
 
 	@yield('css')
+	<style media="screen">
 
+	#loaderx {
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		z-index: 1;
+		width: 150px;
+		height: 150px;
+		margin: -75px 0 0 -75px;
+		border: 16px solid #82cf2b;
+		border-radius: 50%;
+		border-top: 16px solid #0176c4;
+		width: 120px;
+		height: 120px;
+		-webkit-animation: spin 2s linear infinite;
+		animation: spin 2s linear infinite;
+	}
+
+	@-webkit-keyframes spin {
+		0% { -webkit-transform: rotate(0deg); }
+		100% { -webkit-transform: rotate(360deg); }
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(390deg); }
+	}
+
+	/* Add animation to "page content" */
+	.animate-bottom {
+		position: relative;
+		-webkit-animation-name: animatebottom;
+		-webkit-animation-duration: 1s;
+		animation-name: animatebottom;
+		animation-duration: 1s
+	}
+
+	@-webkit-keyframes animatebottom {
+		from { bottom:-100px; opacity:4 }
+		to { bottom:0px; opacity:1 }
+	}
+
+	@keyframes animatebottom {
+		from{ bottom:-100px; opacity:0 }
+		to{ bottom:0; opacity:1 }
+	}
+
+	#myDiv {
+		display: none;
+		text-align: center;
+	}
+
+	#Bloquear{
+		 background:rgb(255, 255, 255);
+		 width: 100%;
+		 height: 100%;
+		 filter:alpha(opacity=10);
+		 opacity:0.7;
+			margin: 0px;
+		 position: absolute;
+		 left: 0px;
+		 top: 0px;
+		 right: 0px;
+		 z-index:1000;
+		 cursor: wait;
+		 margin: 0px;
+		 padding: 0px;
+		 /* display: none;*/
+	 }
+
+	 html
+	{
+			padding: 0;
+			margin: 0;
+			height: 100%;
+			width: 100%;
+	}
+	</style>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
-
+	{{-- LOADER --}}
+	<div class="" id="Bloquear">
+		<div id="loaderx"></div>
+	</div>
 <!-- 	<nav class="navbar navbar-toggleable-md navbar-config">
 		@if(Auth::check())
 		<a class="navbar-brand pl-3" id="show" href="#"><i class="fas fa-bars"></i></a>
@@ -61,7 +142,17 @@
 				<li class="nav-item dropdown">
 					@if(Auth::check())
 					<a class="nav-link dropdown-toggle font-navbar" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-						{{Auth::user()->name}}
+						@if(Auth::user()->role == 'Administrador')
+							<strong>Administrador:</strong> {{Auth::user()->administrator->name}} {{Auth::user()->administrator->lastName}}
+						@elseif (Auth::user()->role == 'Paciente')
+							<strong>Paciente:</strong> {{Auth::user()->patient->name}} {{Auth::user()->patient->lastName}}
+						@elseif (Auth::user()->role == 'medico')
+							<strong>Medico:</strong> {{Auth::user()->medico->name}} {{Auth::user()->medico->lastName}}
+						@elseif (Auth::user()->role == 'Asistente')
+							<strong>Asistente:</strong> {{Auth::user()->asistant->name}} {{Auth::user()->asistant->lastName}}
+						@elseif (Auth::user()->role == 'Promotor')
+							<strong>Promotor:</strong> {{Auth::user()->promoter->name}} {{Auth::user()->promoter->lastName}}
+						@endif
 					</a>
 					<div class="dropdown-menu bg-transparent" style="border:none"; aria-labelledby="navbarDropdown">
 						<a href="#" class="btn-block my-1 btn-config-login btn">Editar perfil</a>
@@ -126,5 +217,30 @@
 
 
 	<script type="text/javascript" src="{{asset('js/main.js')}}"></script>
+
+
+	<script type="text/javascript">
+
+	$(window).on("load", function() {
+			preloaderFadeOutTime = 400;
+			function hidePreloader() {
+					var preloader = $('#Bloquear');
+					preloader.fadeOut(preloaderFadeOutTime);
+					var preloader = $('#loaderx');
+					preloader.fadeOut(preloaderFadeOutTime);
+			}
+			hidePreloader();
+	});
+
+	function loader(){
+	  $('#Bloquear').show()
+	  $('#loaderx').show()
+	}
+
+	function stop_loader(){
+		$('#Bloquear').hide();
+	  $('#loaderx').hide();
+	}
+	</script>
 	@yield('scriptJS')
 	</html>

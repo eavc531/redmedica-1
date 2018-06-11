@@ -1,3 +1,5 @@
+
+
 <div id="alert_success_1" class="alert-success p-3 m-2" style="display:none">
   <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
   <p id="text_success_1" style="font-size:12px"></p>
@@ -134,7 +136,9 @@
     </div> --}}
 
      <div class="col-4">
-       <input name="mysubmit" type="submit" value="Guardar y Confirmar" class="btn btn-success btn-block" id="guardar"/>
+       {{-- <input type="submit" name="Submit" value="Enviar" onclick="javascript:this.disabl ed= true;" /> --}}
+       <input type="submit" value="Enviar!" onclick="loader();this.form.submit();">
+       {{-- <button  type="submit" name="button" value="Guardar y Confirmar" onclick="this.disabled=true;" class="btn btn-success btn-block" >y</button> --}}
 
      </div>
 

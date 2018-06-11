@@ -17,7 +17,8 @@ class CreateRateMedicsTable extends Migration
             $table->increments('id');
             $table->string('rate');
             $table->string('comentary')->nullable();
-            $table->string('show')->default('no');
+            $table->string('show')->default('No');
+            $table->string('viewed')->default('No');
             $table->string('description')->nullable();
             $table->integer('medico_id')->unsigned()->nullable();
             $table->foreign('medico_id')->references('id')->on('medicos');

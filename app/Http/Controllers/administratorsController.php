@@ -78,10 +78,6 @@ class administratorsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
-
-
-
     public function store(Request $request)
     {
         $request->validate([
@@ -100,6 +96,7 @@ class administratorsController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->administrator_id = $administrator->id;
+        $user->role == 'Administrator';
         $user->save();
         $role = Role::where('name','admin')->first();
 

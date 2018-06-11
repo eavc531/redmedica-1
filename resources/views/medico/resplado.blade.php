@@ -1,4 +1,63 @@
+-------------------HTML-------------------
 
+<div class="spinner-wrapper">
+	<div class="spinner"></div>
+</div>
+
+
+-------------------CSS-------------------
+
+ /*||||||||||||||||||| Preloaders |||||||||||||||||||||||*/
+
+    .spinner-wrapper {
+    	position: fixed;
+    	top: 0;
+    	left: 0;
+    	right: 0;
+    	bottom: 0;
+    	background-color: rgba(255, 255, 255, .87);
+    	z-index: 999999;
+    }
+
+    .spinner{
+    	width: 80px;
+    	height: 80px;
+    	border: 2px solid #0060df;
+    	border-top:5px solid #0060df;
+    	border-radius: 100%;
+    	position: absolute;
+    	top:0;
+    	bottom:0;
+    	left:0;
+    	right: 0;
+    	margin: auto;
+    	animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+    	from{
+    		transform: rotate(0deg);
+    		}to{
+    			transform: rotate(360deg);
+    		}
+    	}
+
+
+------------------------- JS ------------------------
+
+$(document).ready(function() {
+//Preloader
+$(window).on("load", function() {
+    preloaderFadeOutTime = 400;
+    function hidePreloader() {
+        var preloader = $('.spinner-wrapper');
+        preloader.fadeOut(preloaderFadeOutTime);
+    }
+    hidePreloader();
+});
+});
+
+///////////////////////////////////////////////////////////
 function update_event(){
 
 

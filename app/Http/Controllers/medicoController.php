@@ -43,17 +43,21 @@ class medicoController extends Controller
      */
      public function calification_medic($id){
 
-       $medico = medico::find($id);
-      $rate_medic = rate_medic::where('medico_id',$id)->paginate(10);
+      $medico = medico::find($id);
+      $type = 'no_vistas';
+      $rate_medic1 = rate_medic::where('medico_id',$id)->paginate(5);
+      $rate_medic2 = rate_medic::where('medico_id',$id)->where('viewed','No')->paginate(5);
 
-       // if(Auth::check() and Auth::user()->role == 'Medico'){
-       //   $you_rate = rate_medic::where('medico_id',$id)->get();
-       //   return view('medico.calification_medic',compact('you_rate','rate_medic','medico'));
-       // }
-       return view('medico.calification_medic',compact('rate_medic','medico'));
+       return view('medico.calification_medic',compact('rate_medic1','medico','rate_medic2','type'));
 
      }
-
+     public function calification_medic_viewed($id){
+       $type = 'vistas';
+       $medico = medico::find($id);
+       $rate_medic1 = rate_medic::where('medico_id',$id)->paginate(5);
+       $rate_medic2 = rate_medic::where('medico_id',$id)->paginate(5);
+       return view('medico.calification_medic',compact('rate_medic1','medico','rate_medic2','type'));
+     }
 
 
      public function medico_create_add_insurrances(Request $request,$id){
@@ -87,24 +91,31 @@ class medicoController extends Controller
 
      }
 
-     public function notification_appointments($id){
+     public function appointments($id){
        $appointments = event::where('medico_id',$id)->where('confirmed_medico','No')->where('state','!=', 'Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
        $type = 'sin confirmar';
-       return view('medico.notification_appointments',compact('appointments','type'));
+       return view('medico.appointments',compact('appointments','type'));
+
+     }
+
+     public function appointments_paid_and_pending($id){
+       $appointments = event::where('medico_id',$id)->where('state','!=', 'Pagada y Pendiente')->paginate(4);
+       $type = 'Pagada y Pendiente';
+       return view('medico.appointments',compact('appointments','type'));
 
      }
 
      public function appointments_confirmed($id){
        $appointments = event::where('medico_id',$id)->Where('confirmed_medico','Si')->where('state','!=' ,'Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
        $type = 'confirmadas';
-       return view('medico.notification_appointments',compact('appointments','type'));
+       return view('medico.appointments',compact('appointments','type'));
 
      }
 
      public function appointments_canceled($id){
        $appointments = event::where('medico_id',$id)->where('state','Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
        $type = 'caneladas';
-       return view('medico.notification_appointments',compact('appointments','type'));
+       return view('medico.appointments',compact('appointments','type'));
 
      }
 
@@ -319,11 +330,37 @@ class medicoController extends Controller
          return view('medico.includes_perfil.list_social')->with('social_networks', $social_networks);
      }
 
+
      public function medico_experience_list(Request $request){
 
-         $experiences = medico_experience::where('medico_id', $request->medico_id)->get();
+       $experiencesCount = medico_experience::where('medico_id', $request->medico_id)->count();
 
-         return view('medico.includes_perfil.list_experience')->with('experiences', $experiences);
+       $paginate = 6;//MARCAR
+        $page = 1;//no
+        if($request->page == 'Sig'){
+            $page = $request->page1 + 1;
+        }elseif($request->page == 'Ant'){
+            $page = $request->page1 - 1;
+        }else{
+          if($request->page != null){
+            $page = $request->page;
+          }
+        }
+
+        $skip = ($page - 1)* $paginate;//
+        $cant_page = round($experiencesCount / $paginate);
+
+
+
+
+        if($page > $cant_page){
+          return response()->json('limite');
+        }
+
+        $experiences = medico_experience::where('medico_id', $request->medico_id)->skip($skip)->take($paginate)->get();
+
+         return view('medico.includes_perfil.list_experience',compact('experiences','cant_page','page'));
+
      }
 
      public function borrar_social(Request $request){
@@ -430,7 +467,7 @@ class medicoController extends Controller
       }
 
           $user->save();
-         return redirect()->route('successRegMedico',$user->id)->with('warning', 'No se pudo verificar la autenticacion del usuario,por favor presione el boton "Reenviar Correo de Confirmación" para intentarlo Nuevamente.');
+         return redirect()->route('successRegMedico',$medico->id)->with('warning', 'No se pudo verificar la autenticacion del usuario,por favor presione el boton "Reenviar Correo de Confirmación" para intentarlo Nuevamente.');
 
      }
 
@@ -506,11 +543,11 @@ class medicoController extends Controller
 
          Mail::send('mails.confirmMedico',['medico'=>$medico,'user'=>$user,'code'=>$code],function($msj) use($medico){
             $msj->subject('Médicos Si');
-            $msj->to($medico->email);
-            //$msj->to('eavc53189@gmail.com');
+            //$msj->to($medico->email);
+            $msj->to('eavc53189@gmail.com');
         });
 
-        return redirect()->route('successRegMedico',$user->id)->with('success', 'Se ha reenviado el mensaje de confirmación al correo electronico, asociado a tu cuenta MédicoSi')->with('user', $user);
+        return redirect()->route('successRegMedico',$medico->id)->with('success', 'Se ha reenviado el mensaje de confirmación al correo electronico, asociado a tu cuenta MédicosSi')->with('user', $user);
    }
     /**
      * Display the specified resource.
@@ -707,6 +744,7 @@ class medicoController extends Controller
           'name'=>'required',
           'link'=>'required'
         ]);
+
       $patron = '%^ (?:https?://)? (?:www\.)? (?: youtu\.be/ | youtube\.com (?: /embed/ | /v/ | /watch\?v= ) ) ([\w-]{10,12}) $%x';
       $array = preg_match($patron, $request->link, $parte);
 
@@ -722,7 +760,6 @@ class medicoController extends Controller
           return response()->json('invalida');
         }
 
-
     }
 
     public function medico_list_videos(Request $request){
@@ -736,5 +773,116 @@ class medicoController extends Controller
       return response()->json('ok');
     }
 
+    public function show_comentary(Request $request){
+      $rate_medic = rate_medic::find($request->rate_id);
+      $rate_medic->show = 'Si';
+      $rate_medic->viewed = 'Si';
+      $rate_medic->save();
 
+      return response()->json('ok1');
+
+    }
+    public function hide_comentary(Request $request){
+      $rate_medic = rate_medic::find($request->rate_id);
+      $rate_medic->show = 'No';
+      $rate_medic->viewed = 'Si';
+      $rate_medic->save();
+      return response()->json('ok');
+
+    }
+    public function checked_comentary(Request $request){
+      $rate_medic = rate_medic::find($request->rate_id);
+      $rate_medic->viewed = 'Si';
+      $rate_medic->save();
+      return response()->json('ok');
+
+    }
+
+    public function mark_all_see($id){
+      $rate_medic = rate_medic::where('medico_id',$id)->where('viewed', 'No')->get();
+      foreach ($rate_medic as $value) {
+        $value->viewed ='Si';
+        $value->save();
+
+      }
+      return back()->with('success', 'Se han marcado todas las nuevas Opiniones como vistas');
+    }
+
+    public function show_all_comentary_default($id){
+      $medico = medico::find($id);
+      $medico->show_comentary = 'Si';
+      $medico->save();
+
+      return Back()->with('success', 'Todas las opiniones entrantes de los usuarios, estaran configuradas para mostrar los comentarios de forma predeterminada');
+    }
+
+    public function hide_all_comentary_default($id){
+      $medico = medico::find($id);
+      $medico->show_comentary = 'No';
+      $medico->save();
+
+      return Back()->with('success', 'Todas las opiniones entrantes de los usuarios, estaran configuradas para ocultar los comentarios de forma predeterminada');
+    }
+
+    public function show_all_comentary($id){
+      $rate_medic = rate_medic::where('medico_id',$id)->get();
+      foreach ($rate_medic as $value) {
+        $value->show ='Si';
+        $value->save();
+
+      }
+      return back()->with('success', 'Se han comfigurado todas as Opiniones registradas hasta ahora, para ser mostradas a los usuarios');
+    }
+    public function hide_all_comentary($id){
+      $rate_medic = rate_medic::where('medico_id',$id)->get();
+
+      foreach ($rate_medic as $value) {
+        $value->show ='No';
+        $value->save();
+      }
+
+      return back()->with('success', 'Se han comfigurado todas as Opiniones registradas hasta ahora, para ser ocultadas a los usuarios');
+    }
+
+    public function income_medic($id){
+      $list_citas_cobradas = event::where('medico_id',$id)->where('state', 'Pagada y Pendiente')->orWhere('state', 'Pagada y Completada')->whereNotNull('namePatient')->paginate(10);
+      $list_citas_cobradas1 = event::where('medico_id',$id)->where('state', 'Pagada y Pendiente')->orWhere('state', 'Pagada y Completada')->whereNotNull('namePatient')->get();
+      $ingresos_obtenidos = 0;
+      foreach ($list_citas_cobradas1 as $value) {
+        $ingresos_obtenidos = $ingresos_obtenidos + $value->price;
+      }
+      $citas_cobradas = event::where('medico_id',$id)->where('state', 'Pagada y Pendiente')->orWhere('state', 'Pagada y Completada')->whereNotNull('namePatient')->count();
+
+      $list_citas_x_cobrar = event::where('medico_id',$id)->where('state', 'Pendiente')->whereNotNull('namePatient')->paginate(10);
+      $list_citas_x_cobrar1 = event::where('medico_id',$id)->where('state', 'Pendiente')->whereNotNull('namePatient')->get();
+      $ingresos_pendientes = 0;
+      foreach ($list_citas_x_cobrar1 as $value) {
+        $ingresos_pendientes =$ingresos_pendientes + $value->price;
+      }
+
+      $citas_pendientes = event::where('medico_id',$id)->where('state', 'Pendiente')->whereNotNull('namePatient')->count();
+
+      return view('medico.income_medic.income_medic',compact('ingresos_obtenidos','citas_cobradas','ingresos_pendientes','citas_pendientes','list_citas_cobradas'));
+    }
+
+    public function income_medic_without_pay($id){
+      $list_citas_cobradas = event::where('medico_id',$id)->where('state', 'Pagada y Pendiente')->orWhere('state', 'Pagada y Completada')->whereNotNull('namePatient')->paginate(10);
+      $list_citas_cobradas1 = event::where('medico_id',$id)->where('state', 'Pagada y Pendiente')->orWhere('state', 'Pagada y Completada')->whereNotNull('namePatient')->get();
+      $ingresos_obtenidos = 0;
+      foreach ($list_citas_cobradas1 as $value) {
+        $ingresos_obtenidos = $ingresos_obtenidos + $value->price;
+      }
+      $citas_cobradas = event::where('medico_id',$id)->where('state', 'Pagada y Pendiente')->orWhere('state', 'Pagada y Completada')->whereNotNull('namePatient')->count();
+
+      $list_citas_x_cobrar = event::where('medico_id',$id)->where('state', 'Pendiente')->whereNotNull('namePatient')->paginate(10);
+      $list_citas_x_cobrar1 = event::where('medico_id',$id)->where('state', 'Pendiente')->whereNotNull('namePatient')->get();
+      $ingresos_pendientes = 0;
+      foreach ($list_citas_x_cobrar1 as $value) {
+        $ingresos_pendientes =$ingresos_pendientes + $value->price;
+      }
+
+      $citas_pendientes = event::where('medico_id',$id)->where('state', 'Pendiente')->whereNotNull('namePatient')->count();
+
+      return view('medico.income_medic.income_medic_without_pay',compact('ingresos_obtenidos','citas_cobradas','ingresos_pendientes','citas_pendientes','list_citas_x_cobrar'));
+    }
 }

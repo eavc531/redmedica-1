@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+
+  @if(Auth::check() and Auth::user()->role != 'medico')
+    <button onclick="volver()" type="button" name="button" class="btn btn-secondary">Volver</button>
+  @elseif(Auth::check() and Auth::user()->role == 'medico' and Auth::user()->medico_id != $medico->id)
+    <button onclick="volver()" type="button" name="button" class="btn btn-secondary">Volver</button>
+  @endif
+
+
 <div class="row">
   <div class="col-12">
     <h2 class="font-title text-center" id="title">Perfil Profesional Médico</h2>
@@ -23,25 +31,13 @@
 <div class="col-12">
   <h4 class="font-title-blue">Datos del Profesional: {{$medico->name}} {{$medico->lastName}}</h4>
 </div>
-
 {{-- <p>La información que se registra en su cuenta,le permite ser ubicado con mayor facilidad por sus clientes a travez del sistema, ademas le permite brindar, una mejor descripción de su profesión.</p> --}}
-
 <section class="box-register">
   <div class="container">
    <div class="register">
-    <div class="row">
 
-     {{-- <div class="col-12 text-right">
-      <div class="btn-group " role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary">1</button>
-        <button type="button" class="btn btn-secondary">2</button>
-        <button type="button" class="btn btn-config-blue">3</button>
-      </div>
-    </div> --}}
-
-  </div>
   <div class="row mt-3">
-   <div class="col-lg-7 col-12">
+   <div class="col-lg-6 col-12">
 
     @isset($photo->path)
     <div class="cont-img my-2">
@@ -60,12 +56,21 @@
     {!!Form::submit('Subir')!!}
     {!!Form::close()!!}
   </div>
-  {{-- <div class="col-lg-5 col-12">
-    <label for="">Barra de progreso</label>
-    <div class="progress">
-      <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 25%; vertical-align: center;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-  </div> --}}
+  <div class="col-lg-6">
+      <h3>Calificación:</h3>
+      <span class="">@include('home.star_rate')</span>
+      <h3><span> de "{{$medico['votes']}}" voto(s).</span></h3>
+      <div class="">
+      <h4>
+        @if(Auth::check() and Auth::user()->role == 'medico')
+          <a href="{{route('calification_medic',$medico->id)}}" class="btn btn-primary mt-2">Opinion de los Usuarios</a>
+        @else
+          <button class="btn btn-success" type="button" name="button" onclick="calification_medic_show_patient()">Calificaciones y Comentarios</button>
+        @endif
+      </h4>
+      </div>
+  </div>
+
 </div>
 <hr>
 
@@ -132,9 +137,6 @@
 </div>
 <hr>
 {{-- section mapa --}}
-
-
-
 <div class="row my-4">
   <div class="col-12">
     <h4 class="font-title-blue text-center">Ubicacion en el mapa</h4>
@@ -169,24 +171,7 @@
 <div class="row">
   <div class="col-12">
     <h4 class="font-title-blue text-center" id="consul">Consultorios</h4>
-    {{-- @if(Session::Has('success3'))
-        <div class="div-alert" style="padding:20px">
-          <div class="alert alert-success alert-dismissible" role="alert" style="">
-             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-             {{Session::get('success3')}}
-          </div>
-        </div>
-        @section('scriptJS')
-          <script type="text/javascript">
 
-
-          var new_position = $('#consul').offset();
-          window.scrollTo(new_position.left,new_position.top);
-
-          </script>
-        @endsection
-
-     @endif --}}
   </div>
 </div>
 <div class="row">
@@ -624,6 +609,24 @@
 </div>
 
 
+<!-- Modal calification-->
+<div class="modal fade" id="modal-calification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="" id="content_calification">
+
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-secondary" type="button" name="button" onclick="cerrar_calificaciones()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 @endsection
 
 @section('scriptJS')
@@ -631,6 +634,110 @@
 
 <script type="text/javascript" src="{{asset('gmaps/gmaps.js')}}"></script>
 <script type="text/javascript">
+
+
+  function cerrar_calificaciones(){
+    $('#modal-calification').modal('hide');
+  }
+
+  function calification_medic_show_patient(){
+
+   route = "{{route('calification_medic_show_patient')}}";
+   medico_id = $('#medico_id').val();
+
+   $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url: route,
+     data:{medico_id:medico_id},
+     success:function(result){
+       $('#modal-calification').modal('show');
+       $('#content_calification').empty().html(result);
+       console.log(result);
+
+     },
+     error:function(error){
+       console.log(error);
+     },
+   });
+  }
+  // calification_medic_show_patient();
+
+  function paginate_calification(result){
+     page = result;
+     page1 = $('#page_calificatione_exp').val();
+     route = "{{route('calification_medic_show_patient')}}";
+     medico_id = $('#medico_id').val();
+     $.ajax({
+       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+       type:'post',
+       url: route,
+       data:{medico_id:medico_id,page:page,page1:page1},
+       success:function(result){
+         if(result == 'limite'){
+           return false;
+         }
+         $('#content_calification').empty().html(result);
+         // $('#div_calification').empty().html(result);
+         console.log(result);
+
+       },
+       error:function(error){
+         console.log(error);
+       },
+     });
+
+   }
+function paginate_experience(result){
+   page = result;
+   page1 = $('#page_exp').val();
+   route = "{{route('medico_experience_list')}}";
+   medico_id = $('#medico_id').val();
+   $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url: route,
+     data:{medico_id:medico_id,page:page,page1:page1},
+     success:function(result){
+       if(result == 'limite'){
+         return false;
+       }
+       $('#medico_experience_ajax').empty().html(result);
+       // $('#div_calification').empty().html(result);
+       console.log(result);
+         $('.bd-example-modal-lg').modal('show');
+     },
+     error:function(error){
+       console.log(error);
+     },
+   });
+
+}
+
+  function list_experience(){
+   route = "{{route('medico_experience_list')}}";
+   medico_id = $('#medico_id').val();
+
+   $.ajax({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     type:'post',
+     url: route,
+     data:{medico_id:medico_id},
+     success:function(result){
+       $('#medico_experience_ajax').empty().html(result);
+       console.log(result);
+
+     },
+     error:function(error){
+       console.log(error);
+     },
+   });
+ }
+
+
+  function volver(){
+    window.history.back();
+  }
 
   function delete_video(request){
     question = confirm('¿Esta segur@ de Eliminar este video?')
@@ -680,7 +787,7 @@
       }else if(result == 'limite'){
         $('#text_error_video').html('imposible realizar acción,Haz agregado el numero maximo de videos admitidos.');
         $('#alert_error_video').fadeIn();
-        
+
       }else if(result == 'ok'){
         cerrar();
         list_videos();
@@ -808,25 +915,7 @@
      });
   }
 
-  function list_experience(){
-   route = "{{route('medico_experience_list')}}";
-   medico_id = $('#medico_id').val();
 
-   $.ajax({
-     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-     type:'post',
-     url: route,
-     data:{medico_id:medico_id},
-     success:function(result){
-       $('#medico_experience_ajax').empty().html(result);
-       console.log(result);
-
-     },
-     error:function(error){
-       console.log(error);
-     },
-   });
- }
 
  function list_social(){
   route = "{{route('social_network_list')}}";

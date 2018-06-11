@@ -4,17 +4,21 @@
 <link rel="stylesheet" type="text/css" href="{{asset('fullcalendar\tema_boostrap_descargado\tema_boostrap.css')}}">
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style media="screen">
+    .fc-toolbar{
+      background: rgb(226, 179, 58);
+    }
+</style>
 {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.css"> --}}
 {{-- <link href='../fullcalendar.print.min.css' rel='stylesheet' media='print' /> --}}
-<style media="screen">
-.fc-toolbar{
-  background: rgb(221, 141, 68);
-}
 
-</style>
+
 @endsection
 {{-- ///////////////////////////////////////////////////////CONTENIDO//////////////////// --}}
 @section('content')
+
+
+
 
   <div class="container-fluid">
     <div class="row">
@@ -191,7 +195,6 @@
             },
             success:function(result){
               $('#change_date').val(result)
-
           }
         });
   });
@@ -247,44 +250,42 @@
 
     $(document).ready(function(){
 
-      $('#form, #fo3').submit(function() {
-     // Enviamos el formulario usando AJAX
-
-     change = $('#change_date').val()
-     if(change == 'cambio fecha'){
-       question = confirm('Se a cambiado la fecha de la cita, se le enviara una correo al pacietne para notificarle acerca del cambio, ¿Desea continuar?')
-       if(question == false){
-          return false;
-       }
-     }
-
-     $('#procesando').fadeIn();
-
-
-           $.ajax({
-               headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-               type: 'POST',
-               url: $(this).attr('action'),
-               data: $(this).serialize(),
-               // Mostramos un mensaje con la respuesta de PHP
-               success: function(data) {
-                 console.log(data);
-                   $('#procesando').fadeOut();
-                   if(data == 'ya existe'){
-                     alert('Imposible Guardar cambios, ya existe un evento que abarca parte o total de las horas seleccionadas.');
-                   }else if(data == 'fuera del horario'){
-                     alert('Imposible Guardar cambios, la Fecha o las Horas escogidas estan Fuera del Horario disponible en tu agenda, verifica el calendario e intenta nuevamente.');
-                   }else if(data == 'fecha_editada') {
-                     $('#text_success_1').html('Se ha cambiado la "Hora/Fecha" de la consulta con Exito. Se ha enviado un correo al Paciente para notificarle del cambio de la consulta, y permitirle confirmar su disponibilidad con respecto a la nueva Fecha/Hora de la Consulta.');
-                     $('#alert_success_1').fadeIn();
-
-
-                   }
-               }
-           })
-
-           return false;
-       });
+     //  $('#form, #fo3').submit(function() {
+     // // Enviamos el formulario usando AJAX
+     //
+     // change = $('#change_date').val()
+     // if(change == 'cambio fecha'){
+     //   question = confirm('Se a cambiado la fecha de la cita, se le enviara una correo al pacietne para notificarle acerca del cambio, ¿Desea continuar?')
+     //   if(question == false){
+     //      return false;
+     //   }
+     // }
+     //
+     // $('#procesando').fadeIn();
+     //       $.ajax({
+     //           headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+     //           type: 'POST',
+     //           url: $(this).attr('action'),
+     //           data: $(this).serialize(),
+     //           // Mostramos un mensaje con la respuesta de PHP
+     //           success: function(data) {
+     //             console.log(data);
+     //               $('#procesando').fadeOut();
+     //               if(data == 'ya existe'){
+     //                 alert('Imposible Guardar cambios, ya existe un evento que abarca parte o total de las horas seleccionadas.');
+     //               }else if(data == 'fuera del horario'){
+     //                 alert('Imposible Guardar cambios, la Fecha o las Horas escogidas estan Fuera del Horario disponible en tu agenda, verifica el calendario e intenta nuevamente.');
+     //               }else if(data == 'fecha_editada') {
+     //                 $('#text_success_1').html('Se ha cambiado la "Hora/Fecha" de la consulta con Exito. Se ha enviado un correo al Paciente para notificarle del cambio de la consulta, y permitirle confirmar su disponibilidad con respecto a la nueva Fecha/Hora de la Consulta.');
+     //                 $('#alert_success_1').fadeIn();
+     //
+     //
+     //               }
+     //           }
+     //       })
+     //
+     //       return false;
+     //   });
 
 
       date_edit = $('#date_edit').val();

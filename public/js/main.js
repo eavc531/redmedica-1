@@ -1,5 +1,8 @@
 //Dashboard
 
+
+
+
 $(document).ready(function(){
   $("#show").click(function(){
     // $("#dashboard").fadeToggle(200);
@@ -23,7 +26,7 @@ $(document).on('change', '.file', function(){
 //tooltip
 
 $(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
+  $('[data-toggle="tooltip"]').tooltip();
 });
 
 // Star raiting
@@ -40,7 +43,7 @@ $(
 }
 );
 
-// Flip card 
+// Flip card
 
 $(document).ready(function () {
   $('.flipButton').bind("click", function() {
@@ -279,10 +282,3 @@ $(document).ready(function(){
         $("#open-check1").slideUp("fast");
     });
 });
-
-
-
-
-
-
-

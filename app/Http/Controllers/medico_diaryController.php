@@ -17,6 +17,30 @@ class medico_diaryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function confirmed_payment_app(Request $request){
+       $event = event::find($request->event_id);
+       $event->payment_state = 'Si';
+       $event->price = $request->price;
+       $event->state = 'Pagada y Pendiente';
+       // return response()->json('ok');
+       $event->color = 'rgb(233, 21, 21)';
+       $event->save();
+       return response()->json('ok');
+     }
+
+
+     public function confirmed_completed_app(Request $request){
+       $event = event::find($request->event_id);
+       $event->payment_state = 'Si';
+       $event->price = $request->price;
+       $event->state = 'Pagada y Completada';
+       // return response()->json('ok');
+       $event->color = 'rgb(255, 255, 255)';
+       $event->save();
+       return response()->json('ok');
+     }
+
      public function verify_change_date(Request $request){
        $event = event::find($request->event_id);
        if(\Carbon\Carbon::parse($event->start)->format('m-d-Y') != \Carbon\Carbon::parse($request->dateStart)->format('m-d-Y') or \Carbon\Carbon::parse($event->start)->format('H') !=  $request->hourStart or \Carbon\Carbon::parse($event->start)->format('i') != $request->minsStart){
@@ -94,7 +118,7 @@ class medico_diaryController extends Controller
       $medico->save();
 
 
-       return redirect()->route('notification_appointments',$event->medico_id)->with('success', 'Se a confirmado la cita con el paciente: '.$event->patient->name.' '.$event->patient->lastName.' para la Fecha: '.$event->start);
+       return redirect()->route('appointments',$event->medico_id)->with('success', 'Se a confirmado la cita con el paciente: '.$event->patient->name.' '.$event->patient->lastName.' para la Fecha: '.$event->start);
      }
 
      public function appointment_confirm_ajax(Request $request)
@@ -117,6 +141,7 @@ class medico_diaryController extends Controller
 
      public function update_event(Request $request)
      {
+       //return response()->json($request->all());
        $hour_start1 = $request->hourStart.':'.$request->minsStart;
 
        $hour_end1 = $request->hourEnd.':'.$request->minsEnd;
@@ -376,7 +401,6 @@ class medico_diaryController extends Controller
         $viernes1 = event::where('medico_id',$id)->where('title','viernes')->orderBy('end','asc')->max('end');
         $sabado1 = event::where('medico_id',$id)->where('title','sabado')->orderBy('end','asc')->max('end');
         $domingo1 = event::where('medico_id',$id)->where('title','domingo')->orderBy('end','asc')->max('end');
-
         $max_hour = max($lunes1,$martes1,$miercoles1,$jueves1,$viernes1,$sabado1,$domingo1);
 
 
@@ -542,8 +566,6 @@ class medico_diaryController extends Controller
      public function appointment_store(Request $request)
      {
 
-
-
        $request->validate([
          'title'=>'required',
          'date_start'=>'required',
@@ -625,7 +647,6 @@ class medico_diaryController extends Controller
        $event->title = $request->title;
        $event->start = $start;
        $event->end = $end;
-
        $event->dateStart = $request->date_start;
        $event->dateEnd = $date_End;
        // if($request->title == 'Ambulatoria'){
@@ -641,7 +662,6 @@ class medico_diaryController extends Controller
          $event->color = 'rgb(151, 166, 232)';
        }
 
-
        if(Auth::check() and Auth::user()->role == 'Paciente'){
            $event->namePatient = Auth::user()->patient->name.' '.Auth::user()->patient->lastName;
            $event->patient_id = Auth::user()->patient->id;
@@ -652,7 +672,7 @@ class medico_diaryController extends Controller
            $event->notification = "not_see";
            $event->confirmed_patient = 'Si';
         }elseif (Auth::check() and Auth::user()->role == 'medico') {
-            $event->confirmed_medico = 'nada';
+            $event->confirmed_medico = 'No';
            $event->patient_id = $request->patient_id;
            $event->medico_id = $request->medico_id;
            $patient = patient::find($request->patient_id);
@@ -661,7 +681,6 @@ class medico_diaryController extends Controller
         }
        $event->hour_start = $hourStart;
        $event->hour_end = $hourEnd;
-
        $event->save();
 
        $patients_doctorsCount = patients_doctor::where('patient_id',$request->patient_id)->where('medico_id',$request->medico_id)->count();
@@ -674,11 +693,7 @@ class medico_diaryController extends Controller
        }
 
        $medico = medico::find($request->medico_id);
-
-
-
        $patient = patient::find($request->patient_id);
-
 
        if($event->stipulated == 'Medico'){
          $medico->confirmedMedico == 'Si';
@@ -709,7 +724,6 @@ class medico_diaryController extends Controller
           $msj->to($medico->email);
           //$msj->to('testprogramas531@gmail.com');
         });
-
 
         $count_notifications = event::where('medico_id',$request->medico_id)->where('confirmed_medico','No')->where('state','!=', 'Rechazada/Cancelada')->whereNull('rendering')->count();
         $medico->notification_number = $count_notifications;
@@ -835,6 +849,7 @@ class medico_diaryController extends Controller
 
      public function medico_diary($id)
      {
+
        // $months = month::where('user_id',Auth::user()->id)->get();
        $medico = medico::find($id);
 
@@ -919,6 +934,7 @@ class medico_diaryController extends Controller
 
          $days_hide = ['lunes'=>$lunes3,'martes'=>$martes3,'miercoles'=>$miercoles3,'jueves'=>$jueves3,'viernes'=>$viernes3,'sabado'=>$sabado3,'domingo'=>$domingo3];
 
+
          return view('medico.panel.diary')->with('medico', $medico)->with('lunes', $lunes)->with('martes', $martes)->with('miercoles', $miercoles)->with('jueves', $jueves)->with('viernes', $viernes)->with('sabado', $sabado)->with('domingo', $domingo)->with('min_hour', $min_hour)->with('max_hour', $max_hour)->with('days_hide', $days_hide)->with('countEventSchedule', $countEventSchedule);
 
        }
@@ -927,10 +943,23 @@ class medico_diaryController extends Controller
        // ->with($months, 'months');
      }
 
+     public function verify_past_appointment($id){
+       $verify_past_appointment = event::where('medico_id',$id)->where('end','<', \Carbon\Carbon::now())->where('state', 'Pendiente')->get();
+
+       foreach ($verify_past_appointment as $value) {
+         $value->color = 'rgb(190, 61, 13)';
+         $value->state = 'Pasada y por Cobrar';
+         $value->save();
+       }
+       // rgb(190, 61, 13)
+
+     }
+
      public function medico_diary_events($id)
      {
-       $data = event::where('medico_id',$id)->where('state','!=','Rechazada/Cancelada')->get();
 
+      medico_diaryController::verify_past_appointment($id);
+       $data = event::where('medico_id',$id)->where('state','!=','Rechazada/Cancelada')->get();
        // return view('fullCalendar.fullCalendar');
         return Response()->json($data);
      }
@@ -985,9 +1014,55 @@ class medico_diaryController extends Controller
            'day'=>'required',
          ]);
 
+         if($request->day == 'lunes a viernes'){
+           $data = array('lunes','martes','miercoles','jueves','viernes');
+           $dow = 0;
+           foreach ($data as $i => $value) {
+             echo $value;
+             $schedule = new event;
+             $dow = $dow + 1;
+             $schedule->dow = $dow;
+             $schedule->color = 'rgba(162, 231, 50, 0.64)';
+             $schedule->rendering = 'background';
+             $schedule->medico_id = $id;
+             $schedule->eventType = 'horario';
+             $schedule->title = $value;
+             $schedule->start = $request->hour_start.':'.$request->mins_start;
+             $schedule->end = $request->hour_end.':'.$request->mins_end;
+             $schedule->state = 'horario';
+             $schedule->save();
+
+           }
+           $day = $request->day;
+           return back()->with('success', 'Se a han agregado nuevas horas a todos los dias desde:: '.$request->day)->with('day',$day);
+         }
+
+         if($request->day == 'lunes a sabado'){
+           $data = array('lunes','martes','miercoles','jueves','viernes','sabado');
+           $dow = 0;
+           foreach ($data as $i => $value) {
+             echo $value;
+             $schedule = new event;
+             $dow = $dow + 1;
+             $schedule->dow = $dow;
+             $schedule->color = 'rgba(162, 231, 50, 0.64)';
+             $schedule->rendering = 'background';
+             $schedule->medico_id = $id;
+             $schedule->eventType = 'horario';
+             $schedule->title = $value;
+             $schedule->start = $request->hour_start.':'.$request->mins_start;
+             $schedule->end = $request->hour_end.':'.$request->mins_end;
+             $schedule->state = 'horario';
+             $schedule->save();
+           }
+           $day = $request->day;
+           return back()->with('success', 'Se a han agregado nuevas horas a todos los dias desde: '.$request->day)->with('day',$day);
+         }
          //dd($request->all());
-         $medicalCenter = medico::find($id);
-         $schedule = new event;
+
+           // $medicalCenter = medico::find($id);
+           $schedule = new event;
+
 
          if($request->day == 'domingo'){
           $schedule->title = 'domingo';
@@ -1018,19 +1093,25 @@ class medico_diaryController extends Controller
          }elseif($request->day == 'sabado'){
            $schedule->title = 'sabado';
            $schedule->dow = 6;
+
          }
 
-         $schedule->color = 'rgba(162, 231, 50, 0.64)';
 
-         $schedule->rendering = 'background';
-         $schedule->medico_id = $id;
-         $schedule->eventType = 'horario';
-         $schedule->title = $request->day;
-         $schedule->start = $request->hour_start.':'.$request->mins_start;
-         $schedule->end = $request->hour_end.':'.$request->mins_end;
-         $schedule->save();
 
-         return back()->with('success', 'Se a han agregado nuevas horas al dia: '.$request->day);
+          $schedule->color = 'rgba(162, 231, 50, 0.64)';
+          $schedule->rendering = 'background';
+          $schedule->medico_id = $id;
+          $schedule->eventType = 'horario';
+          $schedule->title = $request->day;
+          $schedule->start = $request->hour_start.':'.$request->mins_start;
+          $schedule->end = $request->hour_end.':'.$request->mins_end;
+          $schedule->state = 'horario';
+          $schedule->save();
+
+
+
+         $day = $request->day;
+         return back()->with('success', 'Se a han agregado nuevas horas al dia: '.$request->day)->with('day',$day);
 
      }
 

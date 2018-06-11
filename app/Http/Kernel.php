@@ -62,5 +62,7 @@ class Kernel extends HttpKernel
         'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
         'medicalCenterConfirm' => \App\Http\Middleware\medicalCenterConfirmMidleware::class,
+        'medic_plan_basic' => \App\Http\Middleware\medic_plan_basic::class,
+        'medic_plan_agenda' => \App\Http\Middleware\medic_plan_agenda::class,
     ];
 }

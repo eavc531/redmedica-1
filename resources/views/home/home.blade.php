@@ -9,9 +9,8 @@
 
    </style>
 
-
-   @endsection
-   @section('content')
+@endsection
+@section('content')
 
 
   @if(!isset(Auth::user()->id))
@@ -70,8 +69,14 @@
             <div class="col-12 mt-3">
               <div class="form-group">
                 <p><strong>Filtrar por:</strong></p>
-                {{Form::radio('points')}}
-                <label class="custom-control-description">Puntaje de los usuarios</label>
+
+                  <label class="custom-control-description">Ordenar por Puntaje</label>
+
+                  <div class="text-center">
+                  {{Form::select('filter_ranking',['no'=>'no','si'=>'si'],null,['class'=>'form-control','id'=>'filter_ranking','style'=>'width:100px'])}}
+                </div>
+
+
               </div>
             </div>
           </div>
@@ -354,16 +359,23 @@
                       <div class="form-inline">
                         Calificación:
                         <span class="ml-2 mr-2">@include('home.star_rate')</span>
-                        <span> de "{{$medico['votes']}}" voto(s).</span>
+           						 @if($medico['calification'] != Null)
+           						 	<span> de "{{$medico['votes']}}" voto(s).</span>
+           					  	@endif
                       </div>
-
+                      {{-- <button onclick="show_calification(this)" type="button" name="{{$medico['id']}}">test</button>
+                      <a href"{{route('list_calification_medico',['medico_id'=>$medico['id']])}}">Opiniones de los usuarios</a> --}}
                     </div>
                     <div class="row mt-3 align-self-end">
                       <div class="col-12">
                         <a href="{{route('detail_medic_map',$medico['id'])}}" class="btn btn-primary btn-sm text-white"><p class="card-text"><i class="fas fa-map-marker-alt mr-1"></i><b>{{$medico['state']}},{{$medico['city']}}</b></p></a>
                       </div>
                     </div>
+
+
+
                   </div>
+
                 </div>
                 <div class="col-12 col-sm-4 col-lg-4 p-4">
                   <div class="form-group">
@@ -646,11 +658,28 @@
         // function conocerEvento(e) {
         //  if(!e) var e = window.event;
         //     console.log(e.type);
-        // }
-        // $(document).ready(function(){
-        //   geolocation();
+
+
+        // function show_calification(result){
+        //   medico_id = result.name;
+        //   route = " ";
+        //   $.ajax({
+        //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        //     type:'post',
+        //     url: route,
+        //     data:{medico_id:medico_id},
+        //     success:function(result){
+        //       console.log(result);
+        //       $('#list_calification').html(result);
+        //       $('#modal_calification').modal('show');
         //
+        //     },
+        //     error:function(error){
+        //       console.log(error);
+        //   }
         // });
+        //
+        // }
 
         typeSearch2 =$('#typeSearch2').val();
 
@@ -662,19 +691,6 @@
           $('#typeSearch').val('Especialidad Medica');
         }
         medicosCercCount = $('#medicosCercCount').val();
-
-          // if(typeof medicosCercCount !== "undefined"){
-          //   $("#map").addClass("widthDiv");
-          //   map();
-          // }
-          //define si se mostrara el div medical centre filros
-
-          // medicalCenterCount = $('#medicalCenterCount').val();
-          // if(typeof medicalCenterCount !== "undefined" && medicalCenterCount != 0){
-          //   $("#map").addClass("widthDiv");
-          //   map();
-          // }
-
 
 
           function login(){
@@ -733,6 +749,7 @@
           state = $('#stateRequest').val();
           dist = $('#dist').val();
           numberPageNow = $('#numberPageNow').val();
+          filter_ranking = $('#filter_ranking').val();
           route = "{{route('ajax_map')}}";
           var number = 0;
 
@@ -740,7 +757,7 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:'post',
             url: route,
-            data:{search:search,typeSearch:typeSearch,typeSearch2:typeSearch2,lat:lat,lng:lng,city:city,state:state,dist:dist,numberPageNow:numberPageNow,medicalCenter_id:medicalCenter_id},
+            data:{search:search,typeSearch:typeSearch,typeSearch2:typeSearch2,lat:lat,lng:lng,city:city,state:state,dist:dist,numberPageNow:numberPageNow,medicalCenter_id:medicalCenter_id,filter_ranking:filter_ranking},
             success:function(result){
               console.log(result);
 

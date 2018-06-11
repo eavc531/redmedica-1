@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\plan;
 use App\city;
 use App\cities_plan;
+use App\medico;
+use App\specialty;
+//use App\specialty_category;
+
 class plansController extends Controller
 {
     /**
@@ -13,6 +17,46 @@ class plansController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+  
+
+     public function planes_medic($id){
+       $medico = medico::find($id);
+
+       $specialty = specialty::where('name', $medico->specialty)->first();
+
+
+       if($specialty->specialty_category->name != 'Medicos y Especialistas'){
+         $plan_basico = plan::where('name','Plan Basico')->where('applicable','!=','Medicos y Especialistas' )->where('applicable','!=','Nucleos Medicos')->first();
+
+          $plan_mi_agenda = plan::where('name','Plan Mi Agenda')->where('applicable','!=','Medicos y Especialistas' )->where('applicable','!=','Nucleos Medicos')->first();
+
+          $plan_profesional = plan::where('name','Plan Profesional')->where('applicable','!=','Medicos y Especialistas' )->where('applicable','!=','Nucleos Medicos')->first();
+
+          $plan_platino = plan::where('name','Plan Platino')->where('applicable','!=','Medicos y Especialistas' )->where('applicable','!=','Nucleos Medicos')->first();
+
+
+
+       }else{
+
+         $plan_basico = plan::where('name','Plan Basico')->where('applicable',$specialty->specialty_category->name )->first();
+
+         $plan_mi_agenda = plan::where('name','Plan Mi Agenda')->where('applicable', $specialty->specialty_category->name)->first();
+
+         $plan_profesional = plan::where('name','Plan Profesional')->where('applicable', $specialty->specialty_category->name)->first();
+
+         $plan_platino = plan::where('name','Plan Platino')->where('applicable', $specialty->specialty_category->name)->first();
+
+       }
+
+
+       return view('plans.professional-promotions',compact('plan_mi_agenda','plan_profesional','plan_platino'));
+     }
+
+     public function planes(){
+       return view('plans.professional-promotions');
+     }
+
     public function index()
     {
         $plans1 = plan::where('applicable','Medicos y Especialistas')->get();
@@ -27,9 +71,7 @@ class plansController extends Controller
 
     public function deleteCityplan($id)
     {
-
         $cities_plan = cities_plan::find($id);
-
         $city1 = $cities_plan->name;
         cities_plan::destroy($id);
 

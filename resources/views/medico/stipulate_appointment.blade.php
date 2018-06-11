@@ -413,6 +413,7 @@
 
 
     function store_event(){
+      loader();
       $('#btn_agendar').attr("disabled", true);
       $('#alert_carga').fadeIn();
       title = $('#eventType2').val();
@@ -434,6 +435,7 @@
        url:route,
        data:{title:title,payment_method:payment_method,date_start:date_start,hourStart:hourStart,minsStart:minsStart,dateEnd:dateEnd,hourEnd:hourEnd,minsEnd:minsEnd,medico_id:medico_id,patient_id:patient_id},
        error:function(error){
+         stop_loader();
           console.log(error);
           $('#btn_agendar').attr("disabled", false);
           $('#alert_carga').fadeOut();
@@ -472,7 +474,7 @@
           $('#btn_agendar').attr("disabled", false);
           $('#alert_carga').fadeOut();
         }
-
+        stop_loader();
       }
     });
 

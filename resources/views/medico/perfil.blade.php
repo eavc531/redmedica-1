@@ -18,7 +18,7 @@
     @endisset
   </div>
   <div class="col-lg-6 col-12">
-
+    {{$medico->calification}}
   </div>
 </div>
 

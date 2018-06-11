@@ -8,11 +8,16 @@
       <div class="col-lg-11 col-10">
         <h3 class="font-title text-center">Editar Horario</h3>
       </div>
-      <div class="col-lg-1 col-1 text-right"> 
+      <div class="col-lg-1 col-1 text-right">
         <a href="{{route('medico_diary',$medico->id)}}" data-toggle="tooltip" data-placement="top" title="Atras" name="button" class="btn"><i class="fas fa-arrow-left mr-2"></i></a>
       </div>
     </div>
     <div class="my-4 card p-3">
+      @if(Session::Has('day'))
+          <input type="hidden" name="" value="{!!$day = Session::get('day')!!}">
+      @else
+        <input type="hidden" name="" value="{!!$day = Null!!}">
+      @endif
       {!!Form::open(['route'=>['medico_schedule_store',$medico->id],'method'=>'post'])!!}
       <div class="row">
         <label for="" class="col-form-label col-sm-3 font-title">Agregar Horas a dia:</label>
@@ -22,7 +27,7 @@
           'jueves'=>'jueves',
           'viernes'=>'viernes',
           'sabado'=>'sabado',
-          'domingo'=>'domingo'],null,['placeholder'=>'opciones', 'class' => 'form-control'])}}</div>
+          'domingo'=>'domingo','lunes a viernes'=>'lunes a viernes','lunes a sabado'=>'lunes a sabado'],$day,['placeholder'=>'opciones', 'class' => 'form-control'])}}</div>
         </div>
         <div class="row my-4">
           <div class="col-lg-8 m-auto">

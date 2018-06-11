@@ -407,7 +407,7 @@
         </div>
       </div>
     </div>
-  </div>
+  {{-- </div> --}}
 
 
 
@@ -460,7 +460,41 @@
     </div>
   </div>
 </div>
+{{-- modal marcar como pagado --}}
+<div class="modal fade" id="confirmed_payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><h5>¿Que desea realizar?</h5></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
+        <p>Si marca la cita como "pagada", el precio establecido no podra ser editado, es importante que el precio agregado a la cita sea real, para mostrar sus ingresos de forma correcta</p>
+        <div class="text-center">
+          <h5>Marcar Cita como:</h5>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <button onclick="confirmed_payment_app()" type="button" name="button" class="btn btn-info btn-block">Pagada</button>
+
+          </div>
+          <div class="col-6">
+            <button onclick="confirmed_completed()" type="button" name="button" class="btn btn-warning btn-block">Pagada y Completada</button>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+      </div>
+    </div>
+  </div>
+</div>
   @endsection
   {{-- ///////////////////////////////////////////////////////CONTENIDO//////////////////// --}}
 
@@ -471,6 +505,96 @@
   <script src='{{asset('fullcalendar/locale/es.js')}}'></script>
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.js"></script> --}}
   <script type="text/javascript">
+
+  function confirmed_payment_or_completed(){
+    if($('#price9').val().length == 0){
+      alert('Para marcar esta Cita como pagada, debe añadir el precio de la misma.El precio real de la cita es necesario para poder llevar el registro de los ingresos de forma correcta.');
+      return false;
+    }
+    $('#confirmed_payment').modal('show');
+  }
+
+  function confirmed_completed(){
+    price = $('#price9').val();
+
+    // medico_id = "{{$medico->id}}";
+    event_id = $('#event_id9').val();
+    route = "{{route('confirmed_completed_app')}}";
+    $.ajax({
+      headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+      type: 'get',
+      url: route,
+      data:{price:price,event_id:event_id},
+      success:function(result){
+        $('#text_success_up1').html('Se a marcado el Cita como Completada');
+        $('#alert_success_up1').fadeIn();
+        $('#price9').attr('readonly',true);
+        $('#button_confirmed_payment').hide();
+        $('#button_confirmed_complete').show();
+        $('#calendar').fullCalendar('removeEvents');
+        $('#calendar').fullCalendar('refetchEvents');
+        $('#confirmed_patient9').attr('disabled',true);
+        $('#confirmed_medico9').attr('disabled',true);
+        $('#price9').attr('disabled',true);
+        $('#title9').attr('disabled',true);
+        $('#state9').attr('disabled',true);
+        $('#description9').attr('disabled',true);
+        $('#eventType9').attr('disabled',true);
+        $('#payment_method9').attr('disabled',true);
+        $('#dateStart9').attr('disabled',true);
+        $('#hourStart9').attr('disabled',true);
+        $('#minsStart9').attr('disabled',true);
+        $('#dateEndU9').attr('disabled',true);
+        $('#hourEnd9').attr('disabled',true);
+        $('#minsEnd9').attr('disabled',true);
+        $('#event_id9').attr('disabled',true);
+        $('#event_id9').attr('disabled',true);
+        $('#event_id_destroy9').attr('disabled',true);
+        $('#namePatient9').attr('disabled',true);
+        $('#payment_state9').attr('disabled',true);
+        $('#confirmed_payment').modal('hide');
+        $('#rechazar').hide();
+        $('#button_confirmed_payment').hide();
+        $('#button_confirmed_complete').hide();
+        $('#but_save').hide();
+        $('#payment_state9').val('Si');
+
+      },
+      error:function(error){
+        $('#confirmed_payment').modal('hide');
+       console.log(error);
+     },
+  });
+  }
+
+  function confirmed_payment_app(){
+
+    price = $('#price9').val();
+    // medico_id = "{{$medico->id}}";
+    event_id = $('#event_id9').val();
+    route = "{{route('confirmed_payment_app')}}";
+    $.ajax({
+      headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+      type: 'get',
+      url: route,
+      data:{price:price,event_id:event_id},
+      success:function(result){
+        $('#text_success_up1').html('Se a marcado el Cita como Pagada');
+        $('#alert_success_up1').fadeIn();
+        console.log(result);
+        $('#price9').attr('readonly',true);
+        $('#button_confirmed_payment').hide();
+        $('#button_confirmed_complete').show();
+        $('#calendar').fullCalendar('removeEvents');
+        $('#calendar').fullCalendar('refetchEvents');
+        $('#confirmed_payment').modal('hide');
+      },
+      error:function(error){
+        $('#confirmed_payment').modal('hide');
+       console.log(error);
+     },
+  });
+  }
 
 
     function reminder_time_confirmed(request){
@@ -511,11 +635,29 @@
     });
     }
 
-
+    function switch_reminder1(request){
+      medico_id = "{{$medico->id}}";
+      options = request;
+      route = "{{route('reminder_switch_confirmed')}}";
+      $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type: 'POST',
+        url: route,
+        data:{medico_id:medico_id,options:options},
+        // Mostramos un mensaje con la respuesta de PHP
+        success:function(result){
+          console.log(result);
+        },
+        error:function(error){
+         console.log(error);
+       },
+    });
+    }
 
     $(document).ready(function(){
 
       $('#form, #fo3').submit(function() {
+
         cerrar();
         $('#alert_carga5').fadeIn();
         $('#guardar5').attr("disabled", true);
@@ -685,6 +827,7 @@
             mins_start = $.fullCalendar.moment(event.start).format('mm');
             hour_end = $.fullCalendar.moment(event.end).format('HH');
             mins_end = $.fullCalendar.moment(event.end).format('mm');
+
             $('#confirmed_patient9').val(event.confirmed_patient);
             $('#confirmed_medico9').val(event.confirmed_medico);
             $('#price9').val(event.price);
@@ -703,17 +846,83 @@
             $('#event_id9').val(event.id);
             $('#event_id_destroy9').val(event.id);
             $('#namePatient9').val(event.namePatient);
+            $('#payment_state9').val(event.payment_state);
+
+            // $('#button_confirmed_payment').val(event.id);
+
             $('#card_edit').fadeOut();
             $('#card_edit').fadeIn();
 
             $('#alert_success_up1').fadeOut();
             vaciar();
             if(event.confirmed_medico == 'Si'){
-              $('#confirmar').attr('disabled', true);
+              $('#but_save').attr('value','Guardar Cambios');
             }else{
-              $('#confirmar').attr('disabled', false);
+              $('#but_save').attr('value','Guardar y Confirmar');
             }
 
+            if(event.state == 'Pagada y Completada'){
+              $('#rechazar').hide();
+              $('#button_confirmed_payment').hide();
+              $('#button_confirmed_complete').hide();
+              $('#but_save').hide();
+            }else if(event.payment_state == 'Si'){
+              $('#price9').attr('readonly',true);
+              $('#rechazar').hide();
+              $('#button_confirmed_payment').hide();
+              $('#button_confirmed_complete').show();
+              $('#but_save').show();
+            }else{
+              $('#rechazar').show();
+              $('#price9').attr('readonly',false);
+              $('#button_confirmed_payment').show();
+              $('#button_confirmed_complete').hide();
+              $('#but_save').show();
+            }
+
+            if(event.state == 'Pagada y Completada'){
+              $('#confirmed_patient9').attr('disabled',true);
+              $('#confirmed_medico9').attr('disabled',true);
+              $('#price9').attr('disabled',true);
+              $('#title9').attr('disabled',true);
+              $('#state9').attr('disabled',true);
+              $('#description9').attr('disabled',true);
+              $('#eventType9').attr('disabled',true);
+              $('#payment_method9').attr('disabled',true);
+              $('#dateStart9').attr('disabled',true);
+              $('#hourStart9').attr('disabled',true);
+              $('#minsStart9').attr('disabled',true);
+              $('#dateEndU9').attr('disabled',true);
+              $('#hourEnd9').attr('disabled',true);
+              $('#minsEnd9').attr('disabled',true);
+              $('#event_id9').attr('disabled',true);
+              $('#event_id9').attr('disabled',true);
+              $('#event_id_destroy9').attr('disabled',true);
+              $('#namePatient9').attr('disabled',true);
+              $('#payment_state9').attr('disabled',true);
+
+            }else{
+              $('#confirmed_patient9').attr('disabled',false);
+              $('#confirmed_medico9').attr('disabled',false);
+              $('#price9').attr('disabled',false);
+              $('#title9').attr('disabled',false);
+              $('#state9').attr('disabled',false);
+              $('#description9').attr('disabled',false);
+              $('#eventType9').attr('disabled',false);
+              $('#payment_method9').attr('disabled',false);
+              $('#dateStart9').attr('disabled',false);
+              $('#hourStart9').attr('disabled',false);
+              $('#minsStart9').attr('disabled',false);
+              $('#dateEndU9').attr('disabled',false);
+              $('#hourEnd9').attr('disabled',false);
+              $('#minsEnd9').attr('disabled',false);
+              $('#event_id9').attr('disabled',false);
+              $('#event_id9').attr('disabled',false);
+              $('#event_id_destroy9').attr('disabled',false);
+              $('#namePatient9').attr('disabled',false);
+              $('#payment_state9').attr('disabled',false);
+
+            }
         },
         eventRender: function (event, element, view) {
           if(event.title == 'Ausente'){
@@ -845,17 +1054,15 @@
     });
 
     function cancel(){
-
       cerrar();
-      $('#alert_carga5').fadeIn();
-      $('#guardar5').attr("disabled", true);
-      $('#delete5').attr("disabled", true);
-      $('#cancelar5').attr("disabled", true);
-
       question = confirm('Esta a punto de Rechazar/Cancelar esta Cita,se enviara un corredo al paciente para notificarle de este suceso,¿Esta segur@ de Continuar?.');
       if(question == false){
        return false;
      }
+     $('#alert_carga5').fadeIn();
+     $('#guardar5').attr("disabled", true);
+     $('#delete5').attr("disabled", true);
+     $('#cancelar5').attr("disabled", true);
       event_id = $('#event_id9').val();
 
       route = "{{route('cancel_appointment')}}";
@@ -1111,7 +1318,10 @@ function  PendientePorCobrar(){
     }
 
 
-
+    function cerrar_edit(){
+      $("#card_edit").fadeOut();
+      cerrar();
+    }
 
   </script>
 

@@ -121,5 +121,16 @@
 			</div>
 		</div>
 	</div>
+	<img src="{{asset('img\spinner\ajax-loader.gif')}}" alt="">
+	<button type="button" name="button" onclick="mostrar()"></button>
+	@endsection
 
+	@section('scriptJS')
+		<script type="text/javascript">
+		function mostrar(){
+			alert('sdxxx');
+				$('.spinner-wrapper').show;
+		}
+
+		</script>
 	@endsection

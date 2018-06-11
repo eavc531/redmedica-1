@@ -4,6 +4,7 @@
 
 @endsection
 @section('content')
+
 <section class="box-register">
   <div class="container">
    <div class="register">
@@ -18,15 +19,15 @@
       <a href="{{route('patient_appointments',$patient->id)}}" class="btn btn-primary" data-toggle="tooltip" data-html="true" title="<em>Todas</em>"><i class="fas fa-bars"></i></a>
       <a href="{{route('patient_appointments_pending',$patient->id)}}" class="btn btn-warning disabled" data-toggle="tooltip" data-html="true" title="<em>Pendientes</em>"><i class="fas fa-exclamation-triangle"></i></a>
 
-      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="<em>Realizadas</em>"><i class="fas fa-ban"></i></a>
+      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="<em>Por Calificar</em>"><i class="fas fa-star"></i></a>
     @elseif(isset($unrated))
       <a href="{{route('patient_appointments',$patient->id)}}" class="btn btn-primary" data-toggle="tooltip" data-html="true" title="<em>Todas</em>"><i class="fas fa-bars"></i></a>
       <a href="{{route('patient_appointments_pending',$patient->id)}}" class="btn btn-warning" data-toggle="tooltip" data-html="true" title="<em>Pendientes</em>"><i class="fas fa-exclamation-triangle"></i></a>
-      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger disabled" data-toggle="tooltip" data-html="true" title="<em>Sin calificar</em>"><i class="fas fa-ban"></i></a>
+      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger disabled" data-toggle="tooltip" data-html="true" title="<em>Por Calificar</em>"><i class="fas fa-star"></i></a>
     @else
       <a href="{{route('patient_appointments',$patient->id)}}" class="btn btn-primary disabled" data-toggle="tooltip" data-html="true" title="<em>Todas</em>"><i class="fas fa-bars"></i></a>
       <a href="{{route('patient_appointments_pending',$patient->id)}}" class="btn btn-warning" data-toggle="tooltip" data-html="true" title="<em>Pendientes</em>"><i class="fas fa-exclamation-triangle"></i></a>
-      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="<em>Sin calificar</em>"><i class="fas fa-ban"></i></a>
+      <a href="{{route('patient_appointments_unrated',$patient->id)}}" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="<em>Por Calificar</em>"><i class="fas fa-star"></i></a>
     @endif
   </div>
   @if($appointments->first() != Null)
@@ -54,11 +55,8 @@
 
             <label for="" class="font-title-grey">Hora:</label> <p>{{\Carbon\Carbon::parse($app->start)->format('H:i')}}</p>
             <label for="" class="font-title-grey">Estado:</label>
-            @if(\Carbon\Carbon::now() > \Carbon\Carbon::parse($app->start))
-              Pendiente
-            @else
-              Realizada
-            @endif
+              {{$app->state}}
+
 
           </div>
         </div>
@@ -71,14 +69,15 @@
               @endif
 
                 @if($app->status == 'calificada')
+                  <div class="">
 
-                @elseif(\Carbon\Carbon::now() >= \Carbon\Carbon::parse($app->end))
-                  {{-- {!!Form::open(['route'=>'qualify_medic','method'=>'POST'])!!}
-                  {!!Form::hidden('medico_id',$app->medico_id)!!}
-                  {!!Form::hidden('patient_id',$app->patient_id)!!}
-                  {!!Form::hidden('event_id',$app->id)!!}
-                  {!!Form::submit('Calificar Médico',['class'=>'btn btn-success'])!!}
-                  {!!Form::close()!!} --}}
+                      <strong class="text-success">Calificada</strong>
+
+                  </div>
+
+                @elseif(\Carbon\Carbon::parse($app->end) < \Carbon\Carbon::now())
+                  <a class="btn btn-primary mt-2" href="{{route('qualify_medic',['p_id'=>$app->patient_id,'m_id'=>$app->medico_id,'app_id'=>$app->id])}}">Calificar Médico</a>
+
               @else
                 <a onclick="return alert('No podras calificar al médico hasta despues de la cita, luego de la fecha de la cita este boton se activara y podras calificar al médico.')" href="" class="btn btn-warning mt-4" data-toggle="tooltip" data-placement="top" title="No podras Calificar al médico hasta despues de la cita."><strong>Calificar Médico</strong></a>
 
@@ -109,7 +108,7 @@
 </div>
 @else
 <div class="text-center">
-  <h4 class="text-primary">No hay registro de citas agendadas</h4>
+  <h4 class="text-primary">No se encontraron resultados</h4>
 </div>
 @endif
 </div>

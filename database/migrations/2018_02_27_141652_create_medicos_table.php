@@ -54,6 +54,7 @@ class CreateMedicosTable extends Migration
             $table->string('type_patient_service')->nullable();
             $table->string('calification')->nullable();
             $table->string('votes')->default(0);
+            $table->string('show_comentary')->default('No');
             $table->timestamps();
         });
     }

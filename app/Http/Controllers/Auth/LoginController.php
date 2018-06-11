@@ -5,7 +5,7 @@ use Auth;
 use App\medico;
 use App\User;
 use App\medicalCenter;
-
+use App\patient;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Request;
@@ -45,6 +45,10 @@ class LoginController extends Controller
           return redirect()->route('address_patient',Auth::user()->patient->id)->with('success', 'Bienvendi@: '.Auth::user()->patient->name.' '.Auth::user()->patient->lastName.' antes de Continuar por favor agrega los datos correspondientes a tu dirección.');
         }elseif(Auth::user()->patient->stateConfirm == 'complete'){
           return back();
+        }elseif(Auth::user()->patient->stateConfirm == Null){
+          $patient = patient::find(Auth::user()->patient_id);
+          Auth::logout();
+          return redirect()->route('successRegPatient',$patient->id)->with('warning', 'Aun no has confirmado tu cuenta, para ello debes ingresar al correo  asociado a tu cuenta MédicosSi, y aceptar el mensaje de confirmación, si aun no recibes el correo reintenta el envio del mismo a travez del boton "Reenviar correo de confirmacion", mostrado a continuacion.   ');
         }
 
       }else{

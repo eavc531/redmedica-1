@@ -40,7 +40,7 @@
       <div id="alert_success_1" class="alert alert-success alert-dismissible fade show text-left" role="alert" style="display:none">
        <button type="button" class="close" onclick="cerrar()"><span >&times;</span></button>
        <p id="text_success_1" style="font-size:12px"></p>
-       {{-- <a href="{{route('home')}}" class="btn btn-outline-primary">volver a inicio</a> --}}
+
        <a href="{{route('patient_appointments_pending',Auth::user()->patient->id)}}" class="btn btn-outline-primary">Ver mis Citas Pendienes</a>
 
        {{--<a class="btn btn-outline-success" href="{{route('patient_appointments',Auth::user()->patient->id)}}">Tus Citas Pendientes</a>--}}
@@ -69,11 +69,7 @@
       <span>{{$medico->name}} {{$medico->lastName}}</span>
     </div>
 
-    {{-- <div class="col-12 border-panel-green text-center my-1">
-      <a class="btn btn-block btn-config-green" href="{{route('medico_schedule',$medico->id)}}">
-        Otorgar horario de consulta
-      </a>
-    </div> --}}
+
     <div class="border-panel-blue my-1">
 
       <div class="col-12">
@@ -551,41 +547,6 @@
 
     }
 
-    function delete_event(){
-      question = confirm('¿Esta segur@ de Borrar este Evento?');
-      if(question == false){
-       exit();
-     }
-     event_id = $('#event_id2').val();
-
-
-     route = "{{route('delete_event')}}";
-     errormsj = '';
-
-     $.ajax({
-       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-       type:'post',
-       url:route,
-       data:{event_id:event_id},
-       error:function(error){
-         console.log(error);
-       },
-       success:function(result){
-        console.log(result);
-        $('#text_danger_up1').html(result);
-        $('#alert_danger_up1').fadeIn();
-
-        $('#alert_error_up1').fadeOut();
-        $('#calendar').fullCalendar('removeEvents');
-        $('#calendar').fullCalendar('refetchEvents');
-        close_edit();
-      }
-    });
-
-   }
-
-
-
 
    function filtrar(filtro){
       $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
@@ -611,130 +572,7 @@
 
     }
 
-    function filtroDisponible(filtro){
-        $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
-        test = 1;
-        route = '{{route('medico_diary_events2',$medico->id)}}';
-        $.ajax({
-         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-         type:'post',
-         url:route,
-         data:{test:test},
-         error:function(error){
-           console.log(error);
-         },
-         success:function(result){
-                  $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                    if(value.state != 'Cancelada' & value.state != 'Cerrada y Cobrada'){
-                      $("#calendar").fullCalendar('renderEvent', value, true);
-                    }
-                  });
-
-                }
-              });
-
-      }
-
-      function filtroCitaPorInternet(){
-          $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
-          test = 1;
-          route = '{{route('medico_diary_events2',$medico->id)}}';
-          $.ajax({
-           headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-           type:'post',
-           url:route,
-           data:{test:test},
-           error:function(error){
-             console.log(error);
-           },
-           success:function(result){
-                    $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                      if(value.eventType == 'Cita por Internet'){
-                        $("#calendar").fullCalendar('renderEvent', value, true);
-                      }
-                    });
-
-                  }
-                });
-
-        }
-
-
-        function  CerradaYCobrada(){
-            $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
-            test = 1;
-            route = '{{route('medico_diary_events2',$medico->id)}}';
-            $.ajax({
-             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-             type:'post',
-             url:route,
-             data:{test:test},
-             error:function(error){
-               console.log(error);
-             },
-             success:function(result){
-                      $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                        if(value.state == 'Cerrada y Cobrada'){
-                          $("#calendar").fullCalendar('renderEvent', value, true);
-                        }
-                      });
-
-                    }
-                  });
-
-          }
-
-
-
-          function  PendientePorCobrar(){
-  $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
-  test = 1;
-  route = '{{route('medico_diary_events2',$medico->id)}}';
-  $.ajax({
-   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-   type:'post',
-   url:route,
-   data:{test:test},
-   error:function(error){
-     console.log(error);
-   },
-   success:function(result){
-            $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-              if(value.state == 'Pendiente'){
-                $("#calendar").fullCalendar('renderEvent', value, true);
-              }
-            });
-
-          }
-        });
-
-}
-
-
-function  FiltroPacienteCancelo(){
-    $("#calendar").fullCalendar('removeEvents');//remove the old filtered events
-    test = 1;
-    route = '{{route('medico_diary_events2',$medico->id)}}';
-    $.ajax({
-     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-     type:'post',
-     url:route,
-     data:{test:test},
-     error:function(error){
-       console.log(error);
-     },
-     success:function(result){
-              $.each(result,function(index,value){//for each event, I will compare the value with the filter, if true, render
-                if(value.state == 'Pagada'){
-                  $("#calendar").fullCalendar('renderEvent', value, true);
-                }
-              });
-
-            }
-          });
-
-  }
-
+        
 
   function parpadeo(){
 

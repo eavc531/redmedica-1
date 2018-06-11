@@ -30,26 +30,7 @@ class DatabaseSeeder extends Seeder
       DB::table('countries')->insert([
      'name'=>'Chile',
      ]);
-
-      DB::table('specialties')->insert([
-     'name'=>'psicologia',
-     'specialty_category_id'=>1,
-
-     ]);
-
-     DB::table('specialties')->insert([
-    'name'=>'pediatria',
-    'specialty_category_id'=>2,
-
-    ]);
-
-    DB::table('specialties')->insert([
-   'name'=>'odontologia',
-   'specialty_category_id'=>2,
-
-   ]);
-
-
+     
         DB::table('users')->insert([
        'name'=>'admin',
        'email'=>'admin@admin.com',
@@ -205,7 +186,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('plans')->insert([
        'name'=>'Plan Platino-Plus',
-       'applicable'=>'Centros Medicos',
+       'applicable'=>'Nucleos Medicos',
        'price'=>0,
        ]);
 

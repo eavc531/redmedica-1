@@ -871,7 +871,7 @@ a:hover, a:active, a:focus{
 	border: 2px solid #0060DF;
 	border-radius: 5px;
 	padding: 1rem;
-	color:
+	color: 
 	-webkit-transition: -webkit-transform 300ms ease;
 	transition: -webkit-transform 300ms ease;
 	transition: transform 300ms ease;
