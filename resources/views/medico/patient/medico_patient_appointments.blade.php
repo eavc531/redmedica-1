@@ -46,7 +46,7 @@
 
         </p>
         <div class="form-inline">
-          <a href="{{route('medico_app_details',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i>Detalles</a>
+          <a href="{{route('medico_app_details',['m_id'=>$app->medico_id,'p_id'=>$app->patient_id,'app_id'=>$app->id])}}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar Cita"><i class="far fa-edit"></i>Editar</a>
           {{-- <a href="{{route('marcar_como_vista',$app->id)}}" class="btn btn-success ml-2" data-toggle="tooltip" data-placement="top" title="Marcar como vista"><i class="fas fa-check"></i></a> --}}
 
 

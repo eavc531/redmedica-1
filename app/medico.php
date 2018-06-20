@@ -21,6 +21,7 @@ class medico extends Model
       'id_promoter',
       'stateConfirm',
       'showNumber',
+      'showNumberOffice',
       'phoneOffice1',
        'phoneOffice2',
        'specialty',

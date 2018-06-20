@@ -24,9 +24,9 @@ class CreateMedicosTable extends Migration
             $table->integer('medicalCenter_id')->unsigned()->nullable();
             $table->foreign('medicalCenter_id')->references('id')->on('medical_centers');
             $table->string('phone')->nullable();
-            //$table->string('facebook')->nullable();
             $table->string('id_promoter')->nullable();
-            $table->string('showNumber')->nullable();
+            $table->string('showNumber')->default('no');
+            $table->string('showNumberOffice')->default('no');
             $table->string('phoneOffice1')->nullable();
             $table->string('phoneOffice2')->nullable();
             $table->string('specialty')->nullable();
@@ -55,6 +55,7 @@ class CreateMedicosTable extends Migration
             $table->string('calification')->nullable();
             $table->string('votes')->default(0);
             $table->string('show_comentary')->default('No');
+            $table->string('plan')->nullable();
             $table->timestamps();
         });
     }

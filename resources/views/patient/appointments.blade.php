@@ -70,19 +70,16 @@
 
                 @if($app->status == 'calificada')
                   <div class="">
-
                       <strong class="text-success">Calificada</strong>
-
                   </div>
+                @elseif($app->medico->plan != 'plan_profesional' and $app->medico->plan != 'plan_platino')
 
                 @elseif(\Carbon\Carbon::parse($app->end) < \Carbon\Carbon::now())
                   <a class="btn btn-primary mt-2" href="{{route('qualify_medic',['p_id'=>$app->patient_id,'m_id'=>$app->medico_id,'app_id'=>$app->id])}}">Calificar Médico</a>
 
-              @else
-                <a onclick="return alert('No podras calificar al médico hasta despues de la cita, luego de la fecha de la cita este boton se activara y podras calificar al médico.')" href="" class="btn btn-warning mt-4" data-toggle="tooltip" data-placement="top" title="No podras Calificar al médico hasta despues de la cita."><strong>Calificar Médico</strong></a>
-
-
-              @endif
+                @else
+                  <a onclick="return alert('No podras calificar al médico hasta despues de la cita, luego de la fecha de la cita este boton se activara y podras calificar al médico.')" href="" class="btn btn-warning mt-4" data-toggle="tooltip" data-placement="top" title="No podras Calificar al médico hasta despues de la cita."><strong>Calificar Médico</strong></a>
+                @endif
             {{-- <label for="" class="font-title-grey">Estrellas Otorgadas:</label> <p><div class="rateYo p-1" style="border: solid 1px rgb(139, 139, 138);border-radius:10px"></div></p>
             <label for="" class="font-title-grey">Calificación:</label> <p>{{$app->calification}}</p> --}}
             {{-- <label for="" class="font-title-grey">Comentario:</label> <p>{{$app->comentary}}</p> --}}

@@ -30,13 +30,23 @@ class DatabaseSeeder extends Seeder
       DB::table('countries')->insert([
      'name'=>'Chile',
      ]);
-     
+
+         DB::table('administrators')->insert([
+        'name'=>'admin',
+        'lastName'=>'',
+        'password'=>bcrypt('1234'),
+
+        ]);
+
         DB::table('users')->insert([
        'name'=>'admin',
        'email'=>'admin@admin.com',
        'password'=>bcrypt('1234'),
        'role'=>'Administrador',
+       'administrator_id'=>1;
        ]);
+
+
 
           DB::table('medicos')->insert([
          'name'=>'med',
@@ -120,25 +130,38 @@ class DatabaseSeeder extends Seeder
         DB::table('plans')->insert([
        'name'=>'Plan Basico',
        'applicable'=>'Medicos y Especialistas',
-       'price'=>0,
+       'price1'=>0,
+       'price2'=>0,
+       'price3'=>0,
+
        ]);
 
         DB::table('plans')->insert([
        'name'=>'Plan Mi Agenda',
        'applicable'=>'Medicos y Especialistas',
-       'price'=>0,
+       'price1'=>0,
+       'price2'=>0,
+       'price3'=>0,
+
        ]);
 
 
         DB::table('plans')->insert([
        'name'=>'Plan Profesional',
        'applicable'=>'Medicos y Especialistas',
-       'price'=>0,
+       'price1'=>0,
+       'price2'=>0,
+       'price3'=>0,
+
        ]);
+
        DB::table('plans')->insert([
          'name'=>'Plan Platino',
          'applicable'=>'Medicos y Especialistas',
-         'price'=>0,
+         'price1'=>0,
+         'price2'=>0,
+         'price3'=>0,
+
        ]);
 
        DB::table('plans')->insert([

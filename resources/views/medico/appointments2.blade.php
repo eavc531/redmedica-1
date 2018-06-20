@@ -6,13 +6,9 @@
   <div class="row">
     <div class="col-12 mb-3">
 
-      @if($type == 'sin confirmar')
-        <h2 class="text-center font-title">Citas por Confirmar</h2>
-      @elseif($type == 'confirmadas')
-        <h2 class="text-center font-title">Citas Confirmadas</h2>
-      @else
-        <h2 class="text-center font-title">Citas Canceladas</h2>
-      @endif
+
+        <h2 class="text-center font-title">Citas {{$type}}</h2>
+
 
     </div>
   </div>

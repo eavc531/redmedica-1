@@ -82,15 +82,45 @@
         </div>
 
       </div>
+
+
+      <div class="text-center mt-3">
+        <p style="color:rgb(127, 131, 128)">Selecciones disponibles para el plan Profesional o plan Platino activo</p>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-8">
+                <p for="">¿Desea que su teléfono celular aparezca visible en información a pacientes?</p>
+              </div>
+              <div class="col-4">
+                
+                @if (Auth::user()->medico->plan == 'plan_profesional' or Auth::user()->medico->plan == 'plan_platino')
+                  {{Form::select('showNumber',['si'=>'si','no'=>'no'],null,['class'=>'form-control'])}}
+                @else
+                  {{Form::select('showNumber',['si'=>'si','no'=>'no'],null,['class'=>'form-control','disabled'])}}
+                @endif
+
+             </div>
+           </div>
+         </div>
+       </div>
+      </div>
       <div class="row">
         <div class="col-12">
           <div class="form-group">
             <div class="row">
               <div class="col-8">
-                <p for="">¿Desea que su Teléfono celular aparezca visible en formatos e información a pacientes?</p>
+                <p for="">¿Desea que sus teléfonos de Oficina aparezcan visibles en información a pacientes?</p>
               </div>
               <div class="col-4">
-               {{Form::select('showNumber',['si'=>'Si','no'=>'No'],null,['class'=>'form-control'])}}
+                @if (Auth::user()->medico->plan == 'plan_profesional' or Auth::user()->medico->plan == 'plan_platino')
+                  {{Form::select('showNumberOffice',['si'=>'si','no'=>'no'],null,['class'=>'form-control'])}}
+                @else
+                  {{Form::select('showNumberOffice',['si'=>'si','no'=>'no'],null,['class'=>'form-control','disabled'])}}
+                @endif
+
              </div>
            </div>
          </div>

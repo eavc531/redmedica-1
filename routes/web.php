@@ -14,21 +14,37 @@ Route::get('/', function(){
     return redirect()->route('home');
 });
 
+//plans
 
+
+Route::post('medico/plan/set','plansController@set_plan')->name('set_plan');
+
+Route::get('medico/{id}/plan/agenda/contract','plansController@plan_agenda_contract')->name('plan_agenda_contract');
+
+Route::get('medico/{id}/plan/profesional/contract','plansController@plan_profesional_contract')->name('plan_profesional_contract');
+
+Route::get('medico/{id}/plans/contract_basic','plansController@contract_basic')->name('contract_basic');
+////////////
 Route::post('compare/hours/{id}','medico_diaryController@compare_hours')->name('compare_hours');
-Route::get('medico/{id}/diary/events','medico_diaryController@medico_diary_events')->name('medico_diary_events');
+
+Route::get('medico/{id}/diary/event','medico_diaryController@medico_diary_events')->name('medico_diary_events');
+// Route::get('event_agenda','medico_diaryController@event_agenda')->name('event_agenda');
+
 Route::post('medico/{id}/diary/events2','medico_diaryController@medico_diary_events2')->name('medico_diary_events2');
 Route::resource('medico_diary','medico_diaryController');
 Route::post('appoitment/store','medico_diaryController@appointment_store')->name('appointment_store');
 Route::post('medico/update/event', 'medico_diaryController@update_event')->name('update_event');
+
 Route::get('stipulate/{id}/appointment','medico_diaryController@stipulate_appointment')->name('stipulate_appointment');
 
 
 Route::group(['middleware' => ['medic_plan_basic']], function (){
 
 });
-
+//PLAN AGENDA
 Route::group(['middleware' => ['medic_plan_agenda']], function (){
+    Route::post('search_patients','medicoController@search_patients')->name('search_patients');
+    Route::post('search_patients_diary','medico_diaryController@search_patients_diary')->name('search_patients_diary');
     Route::post('verify_change_date','medico_diaryController@verify_change_date')->name('verify_change_date');
     Route::get('medico/confirmed/payment/appointment/','medico_diaryController@confirmed_payment_app')->name('confirmed_payment_app');
     Route::get('medico/confirmed/appointment/completed','medico_diaryController@confirmed_completed_app')->name('confirmed_completed_app');
@@ -47,19 +63,60 @@ Route::group(['middleware' => ['medic_plan_agenda']], function (){
     Route::get('medico/{id}/panel/diary', 'medico_diaryController@medico_diary')->name('medico_diary');
     Route::get('medico/{id}/panel/schedule', 'medico_diaryController@medico_schedule')->name('medico_schedule');
     Route::post('medico/{id}/schedule/store','medico_diaryController@medico_schedule_store')->name('medico_schedule_store');
-    Route::get('medico/{m_id}/stipulate/appointment/patient/{p_id}','medico_diaryController@medico_stipulate_appointment')->name('medico_stipulate_appointment');
+
     Route::get('medico/{id}/delete/schedule','medico_diaryController@medico_schedule_delete')->name('medico_schedule_delete');
 });
 
+//PLAN Profesional
+Route::group(['middleware' => ['medic_plan_profesional']], function (){
+//calification_medic//b
+    Route::get('medico/{m_id}/stipulate/appointment/patient/{p_id}','medico_diaryController@medico_stipulate_appointment')->name('medico_stipulate_appointment');
+    Route::post('patient/medico/calification/comentaries','patientController@calification_medic_show_patient')->name('calification_medic_show_patient');
+    Route::get('medico/{m_id}/calification','medicoController@calification_medic')->name('calification_medic');
+    Route::get('medico/{m_id}/calification/viewed','medicoController@calification_medic_viewed')->name('calification_medic_viewed');
+    Route::get('mark_all_see/{id}','medicoController@mark_all_see')->name('mark_all_see');
+    Route::post('calification/show_comentary','medicoController@show_comentary')->name('show_comentary');
+    Route::post('calification/hide_comentary','medicoController@hide_comentary')->name('hide_comentary');
+    Route::post('calification/checked_comentary','medicoController@checked_comentary')->name('checked_comentary');
+    Route::get('show_all_comentary_default/{id}','medicoController@show_all_comentary_default')->name('show_all_comentary_default');
+    Route::get('hide_all_comentary_default/{id}','medicoController@hide_all_comentary_default')->name('hide_all_comentary_default');
+    Route::get('show_all_comentary/{id}','medicoController@show_all_comentary')->name('show_all_comentary');
+    Route::get('hide_all_comentary/{id}','medicoController@hide_all_comentary')->name('hide_all_comentary');
+////////
+});
 
+//PLAN PLATINO
+Route::group(['middleware' => ['medic_plan_profesional']], function (){
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/edit','medicoController@medico_note_edit')->name('medico_note_edit');
+    Route::post('medico/patient/note/config/store','notesController@note_config_store')->name('note_config_store');
+    Route::get('medico/{m_id}/patient/{p_id}/edit/appointment/{app_id}','medico_diaryController@edit_appointment')->name('edit_appointment');
+    ///////////////NOTES
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/view_preview','notesController@view_preview')->name('view_preview');
+    Route::get('medico/{m_id}/patient/{p_id}/type_notes','notesController@type_notes')->name('type_notes');
 
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/config','notesController@note_config')->name('note_config');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/ini_create','notesController@note_medic_ini_create')->name('note_medic_ini_create');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/ini_edit','notesController@note_ini_edit')->name('note_ini_edit');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/evo_edit','notesController@note_evo_edit')->name('note_evo_edit');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/inter_edit','notesController@note_inter_edit')->name('note_inter_edit');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/urgencias_edit','notesController@note_urgencias_edit')->name('note_urgencias_edit');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/egreso_edit','notesController@note_egreso_edit')->name('note_egreso_edit');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/referencia_edit','notesController@note_referencia_edit')->name('note_referencia_edit');
+
+    Route::get('medico/{m_id}/patient/{p_id}/notes/','notesController@notes_patient')->name('notes_patient');
+    Route::post('medico/patient/note/store','notesController@note_store')->name('note_store');
+    Route::post('medico/patient/note/update/{id}','notesController@note_update')->name('note_update');
+
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/referencia/create','notesController@note_referencia_create')->name('note_referencia_create');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/interconsulta_create','notesController@note_inter_create')->name('note_inter_create');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/urg_create','notesController@note_urgencias_create')->name('note_urgencias_create');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/egreso_create','notesController@note_egreso_create')->name('note_egreso_create');
+    Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/evo_create','notesController@note_evo_create')->name('note_evo_create');
+});
 
 // income_medic
-
 Route::get('medico/{id}/income','medicoController@income_medic')->name('income_medic');
 Route::get('medico/{id}/income/without_pay','medicoController@income_medic_without_pay')->name('income_medic_without_pay');
-
-
 //
 
 Route::get('loginRedirect', 'Auth\LoginController@loginRedirect')->name('loginRedirect');
@@ -93,26 +150,9 @@ Route::post('patient/{id}/updates','patientController@patient_update')->name('pa
 Route::get('patient/{id}resend/mail/confirm','patientController@resend_mail_confirm_patient')->name('resend_mail_confirm_patient');
 
 
-//calification_medic//
-Route::post('patient/medico/calification/comentaries','patientController@calification_medic_show_patient')->name('calification_medic_show_patient');
 
-Route::get('medico/{m_id}/calification','medicoController@calification_medic')->name('calification_medic');
-
-Route::get('medico/{m_id}/calification/viewed','medicoController@calification_medic_viewed')->name('calification_medic_viewed');
-Route::get('mark_all_see/{id}','medicoController@mark_all_see')->name('mark_all_see');
-
-
-Route::post('calification/show_comentary','medicoController@show_comentary')->name('show_comentary');
-Route::post('calification/hide_comentary','medicoController@hide_comentary')->name('hide_comentary');
-Route::post('calification/checked_comentary','medicoController@checked_comentary')->name('checked_comentary');
-Route::get('show_all_comentary_default/{id}','medicoController@show_all_comentary_default')->name('show_all_comentary_default');
-Route::get('hide_all_comentary_default/{id}','medicoController@hide_all_comentary_default')->name('hide_all_comentary_default');
-
-Route::get('show_all_comentary/{id}','medicoController@show_all_comentary')->name('show_all_comentary');
-Route::get('hide_all_comentary/{id}','medicoController@hide_all_comentary')->name('hide_all_comentary');
 //event appoitment diary
 
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/edit','medicoController@medico_note_edit')->name('medico_note_edit');
 
 
 
@@ -120,34 +160,10 @@ Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/edit','medicoController@med
 
 
 
-// Route::get('medico/{m_id}/patient/{p_id}/note/{app_id}/config','notesController@note_replace_config')->name('note_replace_config');
 
-Route::post('medico/patient/note/config/store','notesController@note_config_store')->name('note_config_store');
 
-Route::get('medico/{m_id}/patient/{p_id}/edit/appointment/{app_id}','medico_diaryController@edit_appointment')->name('edit_appointment');
 
-///////////////NOTES
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/view_preview','notesController@view_preview')->name('view_preview');
-Route::get('medico/{m_id}/patient/{p_id}/type_notes','notesController@type_notes')->name('type_notes');
 
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/config','notesController@note_config')->name('note_config');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/ini_create','notesController@note_medic_ini_create')->name('note_medic_ini_create');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/ini_edit','notesController@note_ini_edit')->name('note_ini_edit');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/evo_edit','notesController@note_evo_edit')->name('note_evo_edit');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/inter_edit','notesController@note_inter_edit')->name('note_inter_edit');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/urgencias_edit','notesController@note_urgencias_edit')->name('note_urgencias_edit');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/egreso_edit','notesController@note_egreso_edit')->name('note_egreso_edit');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/referencia_edit','notesController@note_referencia_edit')->name('note_referencia_edit');
-
-Route::get('medico/{m_id}/patient/{p_id}/notes/','notesController@notes_patient')->name('notes_patient');
-Route::post('medico/patient/note/store','notesController@note_store')->name('note_store');
-Route::post('medico/patient/note/update/{id}','notesController@note_update')->name('note_update');
-
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/referencia/create','notesController@note_referencia_create')->name('note_referencia_create');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/interconsulta_create','notesController@note_inter_create')->name('note_inter_create');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/urg_create','notesController@note_urgencias_create')->name('note_urgencias_create');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/egreso_create','notesController@note_egreso_create')->name('note_egreso_create');
-Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}/evo_create','notesController@note_evo_create')->name('note_evo_create');
 
 /////////////////
 Route::get('medico/{m_id}/patient/{p_id}/note/{n_id}','medicoController@create_note_patient')->name('create_note_patient');
@@ -179,7 +195,12 @@ Route::post('medico/service/store','medicoController@service_medico_store')->nam
 Route::post('medic/experience/store','medicoController@medico_experience_store')->name('medico_experience_store');
 Route::post('medic/social_network/store','medicoController@medico_social_network_store')->name('medico_social_network_store');
 
+
+Route::get('medico/{id}/appointments/all', 'medicoController@appointments_all')->name('appointments_all');
+Route::get('medico/{id}/appointments/past_collect', 'medicoController@appointments_past_collect')->name('appointments_past_collect');
+
 Route::get('medico/{id}/appointments', 'medicoController@appointments')->name('appointments');
+Route::get('medico/{id}/appointments/completed', 'medicoController@appointments_completed')->name('appointments_completed');
 
 Route::get('medico/{id}/appointments/paid_and_pending', 'medicoController@appointments_paid_and_pending')->name('appointments_paid_and_pending');
 
@@ -402,7 +423,14 @@ Route::get('patient/{p_id}/medic/{m_id}/qualify/{app_id}','patientController@qua
 
 
 
-
+//config reminder
 Route::post('reminder_switch_confirmed','reminderController@reminder_switch_confirmed')->name('reminder_switch_confirmed');
 Route::post('reminder_time_confirmed','reminderController@reminder_time_confirmed')->name('reminder_time_confirmed');
+Route::post('switch_payment_and_past','reminderController@switch_payment_and_past')->name('switch_payment_and_past');
+
 Route::get('test','reminderController@test')->name('test');
+//
+
+
+//Recordatorios
+Route::get('medico/{id}/reminders','reminderController@reminders_medico')->name('reminders_medico');

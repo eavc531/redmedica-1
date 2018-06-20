@@ -29,10 +29,11 @@ use App\rate_medic;
 use App\video;
 use DB;
 use Auth;
-
 use App\insurrance_show;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class medicoController extends Controller
 {
@@ -41,6 +42,53 @@ class medicoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function search_patients(Request $request){
+
+       $patients = DB::table('patients_doctors')
+       ->Join('medicos', 'patients_doctors.medico_id', '=', 'medicos.id')
+       ->Join('patients', 'patients_doctors.patient_id', '=', 'patients.id')
+       ->select('patients.*')
+       ->where(function($query) use($request){
+          $query->where('medico_id',$request->medico_id)
+          ->where('patients.name','LIKE','%'.$request->search.'%');
+        })->orWhere(function($query) use($request){
+           $query->where('medico_id',$request->medico_id)
+           ->where('patients.lastName','LIKE','%'.$request->search.'%');
+         })->orWhere(function($query) use($request){
+            $query->where('medico_id',$request->medico_id)
+            ->where('patients.identification','LIKE','%'.$request->search.'%');
+          })->get();
+
+
+          $medico = medico::find($request->medico_id);
+
+          $data = [];
+          foreach ($patients as $patient) {
+          $photo = photo::where('patient_id',$patient->id)->where('type', 'perfil')->first();
+          if($photo == Null){
+            $image = Null;
+          }else{
+            $image = $photo->path;
+          }
+
+          $data[$patient->id] = ['id'=>$patient->id,'identification'=>$patient->identification,'name'=>$patient->name,'lastName'=>$patient->lastName,'city'=>$patient->city,'state'=>$patient->state,'image'=>$image];
+
+          }
+
+          $currentPage = LengthAwarePaginator::resolveCurrentPage();
+          $col = new Collection($data);
+          $perPage = 10;
+
+
+          $currentPageSearchResults = $col->slice(($currentPage - 1) * $perPage, $perPage)->all();
+          $patients = new LengthAwarePaginator($currentPageSearchResults, count($col), $perPage);
+          $patients->setPath(route('tolist2'));
+
+
+        return view('medico.patient.medico_patients',compact('medico','patients'));
+
+     }
+
      public function calification_medic($id){
 
       $medico = medico::find($id);
@@ -58,7 +106,6 @@ class medicoController extends Controller
        $rate_medic2 = rate_medic::where('medico_id',$id)->paginate(5);
        return view('medico.calification_medic',compact('rate_medic1','medico','rate_medic2','type'));
      }
-
 
      public function medico_create_add_insurrances(Request $request,$id){
 
@@ -91,31 +138,65 @@ class medicoController extends Controller
 
      }
 
+
+     public function appointments_all($id){
+       $appointments = event::where('medico_id',$id)->whereNull('rendering')->where('title','!=', 'Ausente')->paginate(4);
+       $type = 'todas';
+       $medico = medico::find($id);
+       return view('medico.appointments',compact('appointments','type','medico'));
+
+     }
+
      public function appointments($id){
+       $medico = medico::find($id);
+       if($medico->plan != 'plan_profesional' and $medico->plan != 'plan_platino'){
+         return redirect()->route('appointments_all',$id);
+       }
+
        $appointments = event::where('medico_id',$id)->where('confirmed_medico','No')->where('state','!=', 'Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
        $type = 'sin confirmar';
-       return view('medico.appointments',compact('appointments','type'));
+       return view('medico.appointments',compact('appointments','type','medico'));
+
+     }
+
+     public function appointments_past_collect($id){
+       $medico = medico::find($id);
+       $appointments = event::where('medico_id',$id)->where('state','Pasada y por Cobrar')->where('title','!=','Ausente')->paginate(4);
+
+       $type = 'Pasada y por Cobrar';
+       return view('medico.appointments',compact('appointments','type','medico'));
 
      }
 
      public function appointments_paid_and_pending($id){
-       $appointments = event::where('medico_id',$id)->where('state','!=', 'Pagada y Pendiente')->paginate(4);
-       $type = 'Pagada y Pendiente';
-       return view('medico.appointments',compact('appointments','type'));
+       $medico = medico::find($id);
+       $appointments = event::where('medico_id',$id)->where('state','Pagada y Pendiente')->paginate(4);
+       $type = 'Pagadas y Pendientes';
+       return view('medico.appointments',compact('appointments','type','medico'));
 
      }
 
      public function appointments_confirmed($id){
+       $medico = medico::find($id);
        $appointments = event::where('medico_id',$id)->Where('confirmed_medico','Si')->where('state','!=' ,'Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
        $type = 'confirmadas';
-       return view('medico.appointments',compact('appointments','type'));
+       return view('medico.appointments',compact('appointments','type','medico'));
 
      }
 
      public function appointments_canceled($id){
+       $medico = medico::find($id);
        $appointments = event::where('medico_id',$id)->where('state','Rechazada/Cancelada')->whereNull('rendering')->paginate(4);
-       $type = 'caneladas';
-       return view('medico.appointments',compact('appointments','type'));
+       $type = 'canceladas';
+       return view('medico.appointments',compact('appointments','type','medico'));
+
+     }
+
+     public function appointments_completed($id){
+       $medico = medico::find($id);
+       $appointments = event::where('medico_id',$id)->where('state','Pagada y Completada')->paginate(4);
+       $type = 'Pagadas y Completadas';
+       return view('medico.appointments',compact('appointments','type','medico'));
 
      }
 
@@ -153,7 +234,6 @@ class medicoController extends Controller
          }else{
            $noteMedicIni = note::where('type_note', 'customized')->where('medico_id', $id_medico)->where('title', 'Nota Médica Inicial')->first();
          }
-
 
          return view('medico.admin_data_patient',compact('patient','medico','noteMedicIni'));
      }
@@ -333,33 +413,31 @@ class medicoController extends Controller
 
      public function medico_experience_list(Request $request){
 
-       $experiencesCount = medico_experience::where('medico_id', $request->medico_id)->count();
+       // $experiencesCount = medico_experience::where('medico_id', $request->medico_id)->count();
 
-       $paginate = 6;//MARCAR
-        $page = 1;//no
-        if($request->page == 'Sig'){
-            $page = $request->page1 + 1;
-        }elseif($request->page == 'Ant'){
-            $page = $request->page1 - 1;
-        }else{
-          if($request->page != null){
-            $page = $request->page;
-          }
-        }
+       // $paginate = 6;//MARCAR
+       //  $page = 1;//no
+       //  if($request->page == 'Sig'){
+       //      $page = $request->page1 + 1;
+       //  }elseif($request->page == 'Ant'){
+       //      $page = $request->page1 - 1;
+       //  }else{
+       //    if($request->page != null){
+       //      $page = $request->page;
+       //    }
+       //  }
+       //
+       //  $skip = ($page - 1)* $paginate;//
+       //  $cant_page = round($experiencesCount / $paginate);
 
-        $skip = ($page - 1)* $paginate;//
-        $cant_page = round($experiencesCount / $paginate);
+        // if($page > $cant_page){
+        //   return response()->json('limite');
+        // }
 
+        // $experiences = medico_experience::where('medico_id', $request->medico_id)->skip($skip)->take($paginate)->get();
+        $experiences = medico_experience::where('medico_id', $request->medico_id)->get();
 
-
-
-        if($page > $cant_page){
-          return response()->json('limite');
-        }
-
-        $experiences = medico_experience::where('medico_id', $request->medico_id)->skip($skip)->take($paginate)->get();
-
-         return view('medico.includes_perfil.list_experience',compact('experiences','cant_page','page'));
+         return view('medico.includes_perfil.list_experience',compact('experiences'));
 
      }
 
@@ -516,8 +594,8 @@ class medicoController extends Controller
 
         Mail::send('mails.confirmMedico',['medico'=>$medico,'user'=>$user,'code'=>$code],function($msj) use($medico){
            $msj->subject('Médicos Si');
-           $msj->to($medico->email);
-           //$msj->to('eavc53189@gmail.com');
+           // $msj->to($medico->email);
+           $msj->to('eavc53189@gmail.com');
 
       });
 
@@ -547,7 +625,7 @@ class medicoController extends Controller
             $msj->to('eavc53189@gmail.com');
         });
 
-        return redirect()->route('successRegMedico',$medico->id)->with('success', 'Se ha reenviado el mensaje de confirmación al correo electronico, asociado a tu cuenta MédicosSi')->with('user', $user);
+        return redirect()->route('successRegMedico',$medico->id)->with('success', 'Se ha reenviado el mensaje de confirmación al correo electronico asociado a tu cuenta MédicosSi')->with('user', $user);
    }
     /**
      * Display the specified resource.
@@ -586,11 +664,23 @@ class medicoController extends Controller
 
     public function edit($id)
     {
+      //permission_patient
+        if(Auth::user()->role == 'medico' and Auth::user()->medico_id != $id){
+          return redirect()->route('home');
+        }
+
+
         $insurance_carrier = insurance_carrier::where('medico_id',$id)->get();
         $medicalCenter = medicalCenter::orderBy('name','asc')->pluck('name','name');
         $cities = city::orderBy('name','asc')->pluck('name','id');
         $states = state::orderBy('name','asc')->pluck('name','id');
         $medico = medico::find($id);
+
+        if($medico->plan != 'plan_profesional' and $medico->plan != 'plan_platino'){
+          $medico->showNumber = 'no';
+          $medico->showNumberOffice = 'no';
+          $medico->save();
+        }
         $consulting_room = consulting_room::where('medico_id',$medico->id)->get();
         $consultingIsset = consulting_room::where('medico_id',$medico->id)->count();
         $photo = photo::where('medico_id', $medico->id)->where('type', 'perfil')->first();
@@ -647,7 +737,7 @@ class medicoController extends Controller
       }else{
         $medico->stateConfirm = 'data_primordial_complete';
         $medico->save();
-          return redirect()->route('medico_edit_address',$id)->with('success', 'Sus datos han sido actualizados con exito, por Favor Agregue su dirección de trabajo.');
+          return redirect()->route('medico_edit_address',$id)->with('success', 'Sus datos han sido Guardados con exito, por Favor Agregue su dirección de trabajo.');
           // return redirect()->route('medico.edit',$id)->with('successComplete', 'valusse');
       }
 
@@ -685,7 +775,30 @@ class medicoController extends Controller
                                     ->select('patients.*','patients_doctors.id as patients_doctor_id')
                                     ->where('medicos.id',$id)
                                     ->orderBy('patients_doctors.created_at','desc')
-                                    ->paginate(10);
+                                    ->get();
+
+          $data = [];
+          foreach ($patients as $patient) {
+          $photo = photo::where('patient_id',$patient->id)->where('type', 'perfil')->first();
+          if($photo == Null){
+            $image = Null;
+          }else{
+            $image = $photo->path;
+          }
+
+          $data[$patient->id] = ['id'=>$patient->id,'identification'=>$patient->identification,'name'=>$patient->name,'lastName'=>$patient->lastName,'city'=>$patient->city,'state'=>$patient->state,'image'=>$image];
+
+          }
+
+          $currentPage = LengthAwarePaginator::resolveCurrentPage();
+          $col = new Collection($data);
+          $perPage = 10;
+
+
+          $currentPageSearchResults = $col->slice(($currentPage - 1) * $perPage, $perPage)->all();
+          $patients = new LengthAwarePaginator($currentPageSearchResults, count($col), $perPage);
+          $patients->setPath(route('tolist2'));
+
 
         return view('medico.patient.medico_patients',compact('medico','patients'));
 

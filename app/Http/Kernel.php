@@ -64,5 +64,7 @@ class Kernel extends HttpKernel
         'medicalCenterConfirm' => \App\Http\Middleware\medicalCenterConfirmMidleware::class,
         'medic_plan_basic' => \App\Http\Middleware\medic_plan_basic::class,
         'medic_plan_agenda' => \App\Http\Middleware\medic_plan_agenda::class,
+        'medic_plan_profesional' => \App\Http\Middleware\medic_plan_profesional::class,
+        'medic_plan_platino'=> \App\Http\Middleware\medic_plan_platino::class, 
     ];
 }

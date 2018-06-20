@@ -38,22 +38,27 @@
                   <td class="text-center">
                     {!!Form::open(['route'=>'plans.store','method'=>'POST'])!!}
 
-                        <input type="hidden" name="plan_id" value="{{$plan->id}}">
-                        <div class="input-group">
-                              <input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control" name="price" value="{{$plan->price}}">
-                            <div class="input-group-append">
-                               <button class="btn btn-config-blue" data-toggle="tooltip" data-placement="top" title="Guardar precio" type="submit"><i class="fas fa-save"></i></button>
-                            </div>
-                          </div>
+										<input type="hidden" name="plan_id" value="{{$plan->id}}">
+										<div class="input-group">
+											<div class="form-inline">
+												<span>Mensual: </span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price1" value="{{$plan->price1}}">
+												<span>6 Meses</span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price2" value="{{$plan->price2}}">
+												<span>1 año</span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price3" value="{{$plan->price3}}">
+												<button class="btn btn-config-blue" data-toggle="tooltip" data-placement="top" title="Guardar precio" type="submit"><i class="fas fa-save"></i></button>
+											</div>
+										</div>
 
                     {!!Form::close()!!}
                   <td>
                     <div class="row">
-                        <div class="col-6 px-1">
+                        <div class="col-12">
                           <a  class="btn btn-secondary  text-center" data-toggle="tooltip" data-placement="top" title="Modulos" role="button" href=""><i class="fas fa-bars"></i></a>
                         </div>
-                        <div class="col-6 px-1">                            <a  class="btn btn-secondary  text-center" data-toggle="tooltip" data-placement="top" title="Ciudades" role="button" href="{{route('citiesPlans',$plan->id)}}"><i class="fas fa-filter"></i>
-                          </a></div>
+                        {{-- <div class="col-6 px-1">                            <a  class="btn btn-secondary  text-center" data-toggle="tooltip" data-placement="top" title="Ciudades" role="button" href="{{route('citiesPlans',$plan->id)}}"><i class="fas fa-filter"></i>
+                          </a></div> --}}
                       </div>
                     </td>
                 @endforeach
@@ -88,15 +93,20 @@
                   <td>{{$plan->name}}</th>
                   <td class="text-center">{{$plan->applicable}}</td>
                   <td class="text-center">
-                    {!!Form::open(['route'=>'plans.store','method'=>'POST'])!!}
+										{!!Form::open(['route'=>'plans.store','method'=>'POST'])!!}
 
-                        <input type="hidden" name="plan_id" value="{{$plan->id}}">
-                        <div class="input-group">
-                              <input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control" name="price" value="{{$plan->price}}">
-                            <div class="input-group-append">
-                               <button class="btn btn-config-blue" data-toggle="tooltip" data-placement="top" title="Guardar precio" type="submit"><i class="fas fa-save"></i></button>
-                            </div>
-                          </div>
+										<input type="hidden" name="plan_id" value="{{$plan->id}}">
+										<div class="input-group">
+											<div class="form-inline">
+												<span>Mensual: </span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price1" value="{{$plan->price1}}">
+												<span>6 Meses</span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price2" value="{{$plan->price2}}">
+												<span>1 año</span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price3" value="{{$plan->price3}}">
+												<button class="btn btn-config-blue" data-toggle="tooltip" data-placement="top" title="Guardar precio" type="submit"><i class="fas fa-save"></i></button>
+											</div>
+										</div>
 
                     {!!Form::close()!!}
                   <td>
@@ -104,26 +114,21 @@
                         <div class="col-6 px-1">
                           <a  class="btn btn-secondary  text-center" data-toggle="tooltip" data-placement="top" title="Modulos" role="button" href=""><i class="fas fa-bars"></i></a>
                         </div>
-                        <div class="col-6 px-1">                            <a  class="btn btn-secondary  text-center" data-toggle="tooltip" data-placement="top" title="Ciudades" role="button" href="{{route('citiesPlans',$plan->id)}}"><i class="fas fa-filter"></i>
+                        <div class="col-6 px-1">
+													<a  class="btn btn-secondary  text-center" data-toggle="tooltip" data-placement="top" title="Ciudades" role="button" href="{{route('citiesPlans',$plan->id)}}"><i class="fas fa-filter"></i>
                           </a></div>
                       </div>
                     </td>
                 @endforeach
-
 						  </tbody>
               <tfoot>
                 <tr>
-
                 </tr>
               </tfoot>
 						</table>
-
-
-
             <div class="col-12 mb-5">
               <h3>Planes para Centros Medicos</h3>
             </div>
-
             <table class="table table-responsive table-config">
 						  <thead class="thead-color">
 						    <tr>
@@ -134,25 +139,24 @@
 						    </tr>
 						  </thead>
 						  <tbody>
-
-
-
-
                 @foreach ($plans3 as $plan)
                 <tr>
                   <td>{{$plan->name}}</th>
                   <td class="text-center">{{$plan->applicable}}</td>
                   <td class="text-center">
-                    {!!Form::open(['route'=>'plans.store','method'=>'POST'])!!}
-
-                        <input type="hidden" name="plan_id" value="{{$plan->id}}">
-                        <div class="input-group">
-                              <input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control" name="price" value="{{$plan->price}}">
-                            <div class="input-group-append">
-                               <button class="btn btn-config-blue" data-toggle="tooltip" data-placement="top" title="Guardar precio" type="submit"><i class="fas fa-save"></i></button>
-                            </div>
-                          </div>
-
+										{!!Form::open(['route'=>'plans.store','method'=>'POST'])!!}
+										<input type="hidden" name="plan_id" value="{{$plan->id}}">
+										<div class="input-group">
+											<div class="form-inline">
+												<span>Mensual: </span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price1" value="{{$plan->price1}}">
+												<span>6 Meses</span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price2" value="{{$plan->price2}}">
+												<span>1 año</span>
+												<input onFocus="mostrar('{{$plan->id}}')" type="text" class="form-control ml-2 mr-2" name="price3" value="{{$plan->price3}}">
+												<button class="btn btn-config-blue" data-toggle="tooltip" data-placement="top" title="Guardar precio" type="submit"><i class="fas fa-save"></i></button>
+											</div>
+										</div>
                     {!!Form::close()!!}
                   <td>
                     <div class="row">

@@ -17,19 +17,15 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
       class HomeController extends Controller
       {
-
         public function __construct(){
           $states = state::orderby('name','asc')->pluck('name','name');
           $cities = city::orderby('name','asc')->pluck('name','name');
           $this->states = $states;
           $this->cities = $cities;
-
         }
 
         public function home(){
-          // $myCoordinates = Geocoder::getCoordinatesForAddress('calle paez,1404');
-          // dd($myCoordinates);
-          // dd('aqui');
+
           $medicos_json = '';
           if(auth::check()){
             $user = user::find(Auth::user()->id);
@@ -41,41 +37,41 @@ use Illuminate\Pagination\LengthAwarePaginator;
         }
 
         public function calculate_dist_to_array($medicos,$dist,$lat,$lng){
+
           $data = [];
           //ordenar array
-
           foreach ($medicos as $medico){
-            //Haversine
+            if($medico->latitud != Null and $medico->longitud != Null){
+              //Haversine
+              $myLat = deg2rad($lat);
+              //$myLat = deg2rad($myCoordinates['lat']);
+              $myLng = deg2rad($lng);
+              //$myLng = deg2rad($myCoordinates['lng']);
+              $medicLat = deg2rad($medico->latitud);
+              $medicLng = deg2rad($medico->longitud);
 
-            $myLat = deg2rad($lat);
-            //$myLat = deg2rad($myCoordinates['lat']);
+              $latDelta = $medicLat - $myLat;
+              $lonDelta = $medicLng - $myLng;
 
-            $myLng = deg2rad($lng);
-            //$myLng = deg2rad($myCoordinates['lng']);
+              $earthRadius = 6371; //en km
 
-            $medicLat = deg2rad($medico->latitud);
-            $medicLng = deg2rad($medico->longitud);
+              $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+              cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
+              $distCalculate =  $angle * $earthRadius;
 
-            $latDelta = $medicLat - $myLat;
-            $lonDelta = $medicLng - $myLng;
+              if($dist > $distCalculate or $dist == Null){
+                $consulting_room = consulting_room::where('medico_id',$medico->id)->get()->toArray();
+                $photo = photo::where('medico_id',$medico->id)->where('type', 'perfil')->first();
+                if($photo == Null){
+                  $image = Null;
+                }else{
+                  $image = $photo->path;
+                }
 
-            $earthRadius = 6371; //en km
-
-            $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-            cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
-            $distCalculate =  $angle * $earthRadius;
-
-            if($dist > $distCalculate or $dist == Null){
-              $consulting_room = consulting_room::where('medico_id',$medico->id)->get()->toArray();
-              $photo = photo::where('medico_id',$medico->id)->where('type', 'perfil')->first();
-              if($photo == Null){
-                $image = Null;
-              }else{
-                $image = $photo->path;
+                $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'dist'=>$distCalculate,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'calification'=>$medico->calification, 'votes'=>$medico->votes,'plan'=>$medico->plan];
               }
-
-              $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'dist'=>$distCalculate,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'calification'=>$medico->calification, 'votes'=>$medico->votes];
             }
+
           }
 
 
@@ -88,42 +84,42 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
           foreach ($medicalCenter as $medico) {
             //Haversine
+            if($medico->latitud != Null and $medico->longitud != Null){
+              $myLat = deg2rad($lat);
+              //$myLat = deg2rad($myCoordinates['lat']);
 
-            $myLat = deg2rad($lat);
-            //$myLat = deg2rad($myCoordinates['lat']);
+              $myLng = deg2rad($lng);
+              //$myLng = deg2rad($myCoordinates['lng']);
 
-            $myLng = deg2rad($lng);
-            //$myLng = deg2rad($myCoordinates['lng']);
+              $medicLat = deg2rad($medico->latitud);
+              $medicLng = deg2rad($medico->longitud);
 
-            $medicLat = deg2rad($medico->latitud);
-            $medicLng = deg2rad($medico->longitud);
+              $latDelta = $medicLat - $myLat;
+              $lonDelta = $medicLng - $myLng;
 
-            $latDelta = $medicLat - $myLat;
-            $lonDelta = $medicLng - $myLng;
+              $earthRadius = 6371; //en km
 
-            $earthRadius = 6371; //en km
-
-            $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-            cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
-            $distCalculate =  $angle * $earthRadius;
+              $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+              cos($myLat) * cos($medicLat) * pow(sin($lonDelta / 2), 2)));
+              $distCalculate =  $angle * $earthRadius;
 
 
 
-              if($dist > $distCalculate or $dist == Null){
-                $photo = photo::where('medicalCenter_id',$medico->id)->where('type', 'perfil')->first();
-                if($photo == Null){
-                  $image = Null;
-                }else{
-                  $image = $photo->path;
+                if($dist > $distCalculate or $dist == Null){
+                  $photo = photo::where('medicalCenter_id',$medico->id)->where('type', 'perfil')->first();
+                  if($photo == Null){
+                    $image = Null;
+                  }else{
+                    $image = $photo->path;
+                  }
+
+                  $data[$medico->id] = ['id'=>$medico->id,'name'=>$medico->name,'city'=>$medico->city,'state'=>$medico->state,'dist'=>$distCalculate,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'plan'=>$medico->plan];
                 }
 
-                $data[$medico->id] = ['id'=>$medico->id,'name'=>$medico->name,'city'=>$medico->city,'state'=>$medico->state,'dist'=>$distCalculate,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image];
-              }
+            }
 
+            }
 
-
-
-          }
           return $data;
         }
 
@@ -139,7 +135,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
             $image = $photo->path;
           }
 
-          $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'calification'=>$medico->calification, 'votes'=>$medico->votes];
+          $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'consulting_room'=>$consulting_room,'specialty'=>$medico->specialty,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'calification'=>$medico->calification, 'votes'=>$medico->votes,'plan'=>$medico->plan];
           }
 
           return $data;
@@ -221,7 +217,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
             ]);
           }
 
-
           $lat = $request->latitud;
           $lng = $request->longitud;
 
@@ -235,6 +230,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
               if($request->filter_ranking == 'si'){
                 $data = collect($data)->sortByDesc('calification')->toArray();
+              }else{
+                $data = collect($data)->sortBy('dist')->toArray();
               }
               $currentPage = LengthAwarePaginator::resolveCurrentPage();
               $medicosCerc = HomeController::paginate_custom($data,$currentPage);
@@ -326,6 +323,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
                   $data = HomeController::create_array_medicos($medicos);
                   if($request->filter_ranking == 'si'){
                     $data = collect($data)->sortByDesc('calification')->toArray();
+                  }else{
+                    $data = collect($data)->sortBy('dist')->toArray();
                   }
                   $currentPage = LengthAwarePaginator::resolveCurrentPage();
                   $medicosCerc = HomeController::paginate_custom($data,$currentPage);
@@ -348,6 +347,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
                   $data = HomeController::create_array_medicos($medicos);
                   if($request->filter_ranking == 'si'){
                     $data = collect($data)->sortByDesc('calification')->toArray();
+                  }else{
+                    $data = collect($data)->sortBy('dist')->toArray();
                   }
                   $currentPage = LengthAwarePaginator::resolveCurrentPage();
                   $medicosCerc = HomeController::paginate_custom($data,$currentPage);
@@ -368,7 +369,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
           $data = HomeController::calculate_dist_to_array($medicos,$dist,$lat,$lng);
           if($request->filter_ranking == 'si'){
             $data = collect($data)->sortByDesc('calification')->toArray();
+          }else{
+            $data = collect($data)->sortBy('dist')->toArray();
           }
+
           $currentPage = LengthAwarePaginator::resolveCurrentPage();
           $medicosCerc = HomeController::paginate_custom($data,$currentPage);
           $medicosCercCount = count($medicosCerc);
@@ -392,8 +396,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
               ->orWhere('medicos.identification','LIKE','%'.$request->search.'%')
               ->get();
 
+
               $data = [];
               foreach ($medicos as $medico){
+
 
                 if($medico->city == $request->city){
                   $consulting_room = consulting_room::where('medico_id',$medico->id)->get()->toArray();
@@ -404,12 +410,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
                       $image = $photo->path;
                     }
 
-                  $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'consulting_room'=>$consulting_room,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'calification'=>$medico->calification, 'votes'=>$medico->votes];
+                  $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'consulting_room'=>$consulting_room,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'calification'=>$medico->calification, 'votes'=>$medico->votes,'plan'=>$medico->plan];
                 }
               }
 
               if($request->filter_ranking == 'si'){
                 $data = collect($data)->sortByDesc('calification')->toArray();
+              }else{
+                $data = collect($data)->sortBy('dist')->toArray();
               }
 
 
@@ -445,12 +453,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
                     }else{
                       $image = $photo->path;
                     }
-                    $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'consulting_room'=>$consulting_room,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'calification'=>$medico->calification, 'votes'=>$medico->votes
+                    $data[$medico->id] = ['id'=>$medico->id,'identification'=>$medico->identification,'name'=>$medico->name,'lastName'=>$medico->lastName,'city'=>$medico->city,'state'=>$medico->state,'specialty'=>$medico->specialty,'sub_specialty'=>$medico->sub_specialty,'consulting_room'=>$consulting_room,'latitud'=>$medico->latitud,'longitud'=>$medico->longitud,'image'=>$image,'calification'=>$medico->calification, 'votes'=>$medico->votes,'plan'=>$medico->plan
                   ];
                   }
                 }
                 if($request->filter_ranking == 'si'){
                   $data = collect($data)->sortByDesc('calification')->toArray();
+                }else{
+                  $data = collect($data)->sortBy('dist')->toArray();
                 }
                 $currentPage = LengthAwarePaginator::resolveCurrentPage();
                 $medicosCerc = HomeController::paginate_custom($data,$currentPage);
@@ -475,6 +485,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
               $data = HomeController::calculate_dist_to_array($medicos,$dist,$lat,$lng);
               if($request->filter_ranking == 'si'){
                 $data = collect($data)->sortByDesc('calification')->toArray();
+              }else{
+                $data = collect($data)->sortBy('dist')->toArray();
               }
 
 
@@ -501,6 +513,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
             // if(isset())
             if($request->filter_ranking == 'si'){
               $data = collect($data)->sortByDesc('calification')->toArray();
+            }else{
+              $data = collect($data)->sortBy('dist')->toArray();
             }
 
           // dd($data);
@@ -561,7 +575,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 
       public function ajax_map(Request $request){
-        return response()->json($request->all());
+        // return response()->json($request->all());
         $lat = $request->latitud;
         $lng = $request->longitud;
 
@@ -574,6 +588,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
             $data = array_slice($data,$numberPageNow, 4);
             if($request->filter_ranking == 'si'){
               $data = collect($data)->sortByDesc('calification')->toArray();
+            }else{
+              $data = collect($data)->sortBy('dist')->toArray();
             }
             return response()->json($data);
         }
@@ -643,6 +659,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
                 $data = HomeController::create_array_medicos($medicos);
                 if($request->filter_ranking == 'si'){
                   $data = collect($data)->sortByDesc('calification')->toArray();
+                }else{
+                  $data = collect($data)->sortBy('dist')->toArray();
                 }
                 $data = array_slice($data,$numberPageNow, 4);
                 return response()->json($data);
@@ -666,6 +684,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
                 $data = array_slice($data,$numberPageNow, 4);
                 if($request->filter_ranking == 'si'){
                   $data = collect($data)->sortByDesc('calification')->toArray();
+                }else{
+                  $data = collect($data)->sortBy('dist')->toArray();
                 }
                 return response()->json($data);
           }
@@ -681,6 +701,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
         $data = HomeController::calculate_dist_to_array($medicos,$dist,$lat,$lng);
         if($request->filter_ranking == 'si'){
           $data = collect($data)->sortByDesc('calification')->toArray();
+        }else{
+          $data = collect($data)->sortBy('dist')->toArray();
         }
         $data = array_slice($data,$numberPageNow, 4);
         return response()->json($data);
@@ -712,6 +734,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
             if($request->filter_ranking == 'si'){
               $data = collect($data)->sortByDesc('calification')->toArray();
+            }else{
+              $data = collect($data)->sortBy('dist')->toArray();
             }
             $data = array_slice($data,$numberPageNow, 4);
             return response()->json($data);
@@ -740,6 +764,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
               if($request->filter_ranking == 'si'){
                 $data = collect($data)->sortByDesc('calification')->toArray();
+              }else{
+                $data = collect($data)->sortBy('dist')->toArray();
               }
               $data = array_slice($data,$numberPageNow, 4);
               return response()->json($data);
@@ -760,6 +786,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
             $data = HomeController::calculate_dist_to_array($medicos,$dist,$lat,$lng);
             if($request->filter_ranking == 'si'){
               $data = collect($data)->sortByDesc('calification')->toArray();
+            }else{
+              $data = collect($data)->sortBy('dist')->toArray();
             }
             $data = array_slice($data,$numberPageNow, 4);
             return response()->json($data);
@@ -781,6 +809,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
         $data = HomeController::create_array_medicos($medicos,$dist);
         if($request->filter_ranking == 'si'){
           $data = collect($data)->sortByDesc('calification')->toArray();
+        }else{
+          $data = collect($data)->sortBy('dist')->toArray();
         }
         $data = array_slice($data,$numberPageNow, 4);
         return response()->json($data);

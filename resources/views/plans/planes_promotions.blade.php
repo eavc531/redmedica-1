@@ -1,12 +1,47 @@
 @extends('layouts.app')
 @section('content')
+
+
   <div class="container my-5 box-register">
+    @if($plan_actual != Null)
 
-<!--     <div class="row">
-      <div class="col-lg-2  col-12">
+          <div class="card mb-5">
+            <div class="card-header text-center">
+              <h3 class="font-title">Tu Plan Actual</h3>
+            </div>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Periodo Pagado</th>
+                    <th>Fecha de Inicio</th>
+                    <th>fecha de Culminacion</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    @if ($plan_actual->name == 'plan_basico')
+                      <td>Plan Basico</td>
+                      <td>Gratis</td>
+                      <td>indefinido</td>
+                      <td>indefinida</td>
+                      <td>indefinida</td>
+                    @else
+                      <td>{{$plan_actual->name}}</td>
+                      <td>{{$plan_actual->price}}</td>
+                      <td>{{$plan_actual->period}}</td>
+                      <td>{{$plan_actual->date_start}}</td>
+                      <td>{{$plan_actual->date_end}}</td>
+                    @endif
 
-      </div>
-      <div class="col-lg-10 col-12"> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        @endif
+
        <div class="row">
         <div class="col-12 text-center">
           <h2 class="font-title">Suscribete</h2>
@@ -24,7 +59,7 @@
                     <label for="">Pago mensual</label>
                   </div>
                   <div class="col-lg col-12 text-center px-2">
-                   <label for=""> {{$plan_mi_agenda->price}}<b> MXN</b></label>
+                   <label for="">{{$plan_mi_agenda->price1}}<b> MXN</b></label>
                  </div>
                </div>
              </div>
@@ -40,7 +75,7 @@
             </div>
             <div class="my-2">
               <div class="col-12 text-center">
-                <button type="button" name="button" class="btn btn-primary btn-block" onclick="modal_agenda()">Contratar</button>
+                <a href="{{route('plan_agenda_contract',Auth::user()->medico_id)}}" class="btn btn-primary btn-block">Contratar</a>
               </div>
             </div>
           </div>
@@ -54,7 +89,7 @@
                   <label for="">Pago mensual</label>
                 </div>
                 <div class="col-lg col-12 text-center px-2">
-                 <label for="">{{$plan_profesional->price}}<b> MXN</b></label>
+                 <label for="">{{$plan_profesional->price1}}<b> MXN</b></label>
                </div>
              </div>
            </div>
@@ -84,7 +119,7 @@
           <div class="my-2">
             <div class="col-12 text-center">
 
-              <button type="button" name="button" class="btn btn-primary btn-block" onclick="modal_plan_profesional()">Contratar</button>
+              <a href="{{route('plan_profesional_contract',Auth::user()->medico_id)}}" class="btn btn-primary btn-block">Contratar</a>
 
             </div>
           </div>
@@ -99,7 +134,7 @@
                 <label for="">Pago mensual</label>
               </div>
               <div class="col-lg col-12 text-center px-2">
-               <label for=""> {{$plan_platino->price}}<b> MXN</b></label>
+               <label for=""> {{$plan_platino->price1}}<b> MXN</b></label>
              </div>
            </div>
          </div>
@@ -141,12 +176,13 @@
 
         <p class="card-text">-Perfíl Basico</p>
         <p class="card-text">-Podran encontrar tu perfil por geolocalización</p>
-        <p class="card-text">-App movil para andriod y Ios</p>
+        <p class="card-text">-App movil para Ios y android</p>
         {{-- <p class="card-text">-Dar de alta a tus especialistas</p> --}}
       </div>
       <div class="my-2">
         <div class="col-12 text-center">
-          <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#information">Contratar</a>
+          {{-- <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#information">Contratar</a> --}}
+          <a class="btn btn-primary btn-block" href="{{route('contract_basic',Auth::user()->medico_id)}}">Contratar</a>
         </div>
       </div>
     </div>

@@ -22,7 +22,7 @@ class LoginController extends Controller
           return redirect()->route('medico_diary',$medico->id);
         }else{
           Auth::logout();
-          return redirect()->route('home')->with('warning', 'Su Cuenta no esta Verificada, o a sido Bloqueada');
+          return redirect()->route('successRegMedico',$medico->id)->with('warning', 'Su Cuenta no esta "Verificada", debes confirmar el mensaje de confirmacion, enviado a tu email asociado a tu cuenta MédicosSi, si no ha llegado el mesaje solicita reenvio de email con el boton "Reenviar Correo de Confirmacion". en la aprte de abajo de este panel.');
         }
 
       }elseif(Auth::user()->hasRole('medical_center')){

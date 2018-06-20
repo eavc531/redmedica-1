@@ -82,7 +82,7 @@
 					</div>
 					<div class="custom-control custom-checkbox">
 						{{Form::checkbox('terminos',null)}}
-						<label for="customCheck1">Al seleccionar este recuadro e leído y estoy de acuerdo con las políticas de la plataforma asi como el aviso de privacidad para el uso de mis datos personales</label>
+						<label for="customCheck1">Al seleccionar este recuadro acepto que estoy de acuerdo con las políticas de la plataforma asi como el aviso de privacidad para el uso de mis datos personales.</label>
 					</div>
 				</div>
 			</div>
@@ -92,7 +92,7 @@
 					<a href="" class="btn-config-blue btn btn-block">Limpiar</a>
 				</div>
 				<div class="col-lg-6 col-12 mt-2">
-					<button type="submit" class="btn-config-green btn btn-block">Registrar</button>
+					<button onclick="loader();this.form.submit()" type="submit" class="btn-config-green btn btn-block">Registrar</button>
 				</div>
 			</div>
 			<div class="row">
@@ -121,11 +121,11 @@
 			</div>
 		</div>
 	</div>
-	<img src="{{asset('img\spinner\ajax-loader.gif')}}" alt="">
-	<button type="button" name="button" onclick="mostrar()"></button>
+	{{-- <img src="{{asset('img\spinner\ajax-loader.gif')}}" alt="">
+	<button type="button" name="button" onclick="mostrar()"></button> --}}
 	@endsection
 
-	@section('scriptJS')
+	{{-- @section('scriptJS')
 		<script type="text/javascript">
 		function mostrar(){
 			alert('sdxxx');
@@ -133,4 +133,4 @@
 		}
 
 		</script>
-	@endsection
+	@endsection --}}
